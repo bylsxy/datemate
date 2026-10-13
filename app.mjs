@@ -57,8 +57,10 @@ function syncControls(){
 }
 function traceText(t){return t.message||t.text||t.title||rules.find(r=>r.id===t.ruleId)?.title||t.rule||'规则已触发';}
 function traceHTML(t){const ins=t.inputFacts||[],outs=t.outputFacts||[];return `<div class="trace-item"><span class="trace-id">${esc(t.ruleId||t.id||t.rule||'状态更新')}</span><p>${esc(traceText(t))}</p>${ins.length?`<p>输入：${esc(ins.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}${outs.length?`<p>推导：${esc(outs.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}</div>`;}
-function metricsHTML(m={}){return `<div class="metrics">${[['我方偏好',m.utilityA??m.satisfactionA??m.preferenceA],['对方偏好',m.utilityB??m.satisfactionB??m.preferenceB],['公平指标',m.fairness],['新鲜度',m.novelty]].filter(([,v])=>Number.isFinite(v)).map(([k,v])=>`<div class="metric"><span>${k}</span><strong>${Math.round(v*100)/100}</strong></div>`).join('')}</div>`;}
+function metricsHTML(m={}){return `<div class="metrics">${[['我方偏好',m.utilityA??m.satisfactionA??m.preferenceA],['对方偏好',m.utilityB??m.satisfactionB??m.preferenceB],['公平指标',m.fairness],['新鲜度',m.novelty],['占用分钟',m.totalMinutes],['终段负担',Math.max(...Object.values(m.predictedLoadByPerson||{}))]].filter(([,v])=>Number.isFinite(v)).map(([k,v])=>`<div class="metric"><span>${k}</span><strong>${Math.round(v*100)/100}</strong></div>`).join('')}</div>`;}
 function render(){
+  const focused=document.activeElement;
+  const focusTarget=focused?.dataset?.stage!==undefined?{stage:focused.dataset.stage,scene:focused.dataset.scene,activity:focused.dataset.activity}:null;
   const positions=Object.fromEntries($$('.scene-strip').map(x=>[x.dataset.index,x.scrollLeft]));
   $('#stages').innerHTML=result.stages.map(st=>{
     const scene=sceneById.get(st.sceneId),cs=[...(st.candidates||[])];if(!cs.some(c=>c.sceneId===scene.id))cs.unshift({sceneId:scene.id,score:st.score??st.recommendationIndex,activityIds:st.activityIds});
@@ -75,6 +77,13 @@ function render(){
   $('#reason-content').innerHTML=result.stages.map(st=>{const s=sceneById.get(st.sceneId),refs=[...new Set([...(s.evidenceIds||[]),...s.activities.filter(a=>st.activityIds.includes(a.id)).flatMap(a=>a.evidenceIds||[]),...(st.trace||[]).flatMap(t=>t.evidenceIds||[])])].map(id=>evidence.find(e=>e.id===id)).filter(Boolean);const loadBefore=st.before?.fatigue||st.stateBefore?.fatigue||[],loadAfter=st.after?.fatigue||st.stateAfter?.fatigue||[];return `<div class="evidence"><h3>阶段 ${st.index+1} · ${esc(s.title)}</h3><p>模型负担：${esc(loadBefore.join(' / '))} → ${esc(loadAfter.join(' / '))}，按双方分别更新。</p>${(st.trace||[]).slice(0,8).map(traceHTML).join('')}${refs.map(e=>`<p>来源 ${esc(sourceById.get(e.sourceDocumentId||e.sourceId)?.title||e.sourceDocumentId||e.sourceId)} · ${esc(e.sourceLocator||e.locator)} · ${esc(e.id)}：${esc(e.summary)}（${esc(e.assertionKind||e.sourceKind)}）</p>`).join('')}<p>准备：${esc((st.preparationIds||s.preparationIds||[]).map(id=>preparationOptions.find(x=>x.id===id)?.label||id).join('、')||'按场景基本体验，出发前确认开放与可用性。')}</p></div>`;}).join('')+`<p class="field-hint">${esc((r.warnings||[]).join('；'))}</p>`;
   $('#replay-id').textContent=`输入 ${r.fingerprint} · 输出 ${r.outputFingerprint} · ${catalog.version}`;
   renderReasoning();renderComparison();bindCards();
+  // 重算替换卡片节点后恢复键盘焦点，避免Tab从页面开头重新开始。
+  if(focusTarget){
+    const {stage,scene,activity}=focusTarget;
+    const selector=activity?`input[data-stage="${stage}"][data-activity="${CSS.escape(activity)}"]`:scene?`.scene-card[data-stage="${stage}"][data-scene="${CSS.escape(scene)}"]`:null;
+    const target=(selector?$(selector):null)||$(`.scene-card.selected[data-stage="${stage}"]`);
+    target?.focus({preventScroll:true});
+  }
 }
 async function commitStage(index,sceneId,activityIds){
   const intended=snapshot();
