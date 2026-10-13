@@ -1,0 +1,1579 @@
+{
+  "_comment": "独立玩法定义；活动不设置耗时，全部在场景固定时段内进行。一个活动 id 可由多个不同地点的 activityIds 引用；地点费用、体力或准备差异写场景 activityOverrides。",
+  "schemaVersion": "manual-knowledge-1.0",
+  "activities": [
+    {
+      "id": "aqua_observe",
+      "title": "各选一种海洋动物",
+      "description": "轮流指出最想多看一会儿的动物。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "nature",
+        "learning"
+      ],
+      "evidenceIds": [
+        "E-P009"
+      ]
+    },
+    {
+      "id": "aqua_photo",
+      "title": "剪影拍照",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "在允许拍摄区域进行，不影响其他观众。",
+      "novelty": 60,
+      "tags": [
+        "nature",
+        "indoor",
+        "photo"
+      ],
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-P009"
+      ]
+    },
+    {
+      "id": "arcade_basket",
+      "title": "投篮机",
+      "cost": [
+        5,
+        15
+      ],
+      "load": 3,
+      "group": "play",
+      "mode": "multi",
+      "description": "轻松玩一轮，不把输赢当表现考核。",
+      "novelty": 60,
+      "tags": [
+        "play"
+      ],
+      "evidenceIds": [
+        "E-P006"
+      ]
+    },
+    {
+      "id": "arcade_claw",
+      "title": "抓娃娃",
+      "cost": [
+        5,
+        10
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "设定次数，不为了奖品不断追加花费。",
+      "novelty": 45,
+      "tags": [
+        "play"
+      ],
+      "evidenceIds": [
+        "E-P006"
+      ]
+    },
+    {
+      "id": "arcade_race",
+      "title": "赛车对决",
+      "cost": [
+        10,
+        15
+      ],
+      "load": 2,
+      "group": "play",
+      "mode": "multi",
+      "description": "可互换操作方式；竞赛规则由双方同意。",
+      "novelty": 82,
+      "tags": [
+        "play"
+      ],
+      "evidenceIds": [
+        "E-P006"
+      ]
+    },
+    {
+      "id": "architecture_detail",
+      "title": "找一处建筑细节",
+      "description": "各选门窗、纹理或颜色中的一个细节。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "culture",
+        "creative"
+      ],
+      "evidenceIds": [
+        "E-citywalk"
+      ]
+    },
+    {
+      "id": "badminton_rally",
+      "title": "一起连续回球",
+      "description": "轮流放慢球速，目标是一起多接几个球。",
+      "cost": [
+        0,
+        30
+      ],
+      "load": 4,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "play",
+        "exercise"
+      ],
+      "evidenceIds": [
+        "E-campus-sport"
+      ],
+      "requires": [
+        "badminton_kit",
+        "court_checked"
+      ],
+      "preconditions": [
+        "badminton_kit",
+        "court_checked"
+      ],
+      "preparationIds": [
+        "badminton_kit",
+        "court_checked"
+      ]
+    },
+    {
+      "id": "bakery_share",
+      "title": "分一份面包",
+      "description": "核对食材后分享小份烘焙点心。",
+      "cost": [
+        8,
+        18
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-campus-food"
+      ],
+      "dietaryTags": [
+        "gluten",
+        "dairy"
+      ]
+    },
+    {
+      "id": "boardgame_cards",
+      "title": "玩一轮轻量卡牌",
+      "description": "只选双方熟悉的规则，输赢不设置额外惩罚。",
+      "cost": [
+        20,
+        50
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "play",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-G001"
+      ]
+    },
+    {
+      "id": "boardgame_coop",
+      "title": "完成一个合作关卡",
+      "description": "共同解决一关，遇到复杂规则可改成简单模式。",
+      "cost": [
+        20,
+        50
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "play",
+        "learning"
+      ],
+      "evidenceIds": [
+        "E-shared-game"
+      ]
+    },
+    {
+      "id": "book_recommend",
+      "title": "互荐一本书",
+      "description": "各自挑一个想分享的主题，允许跳过长篇介绍。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "culture",
+        "learning",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-city-library"
+      ]
+    },
+    {
+      "id": "botany_shapes",
+      "title": "寻找三种叶形",
+      "description": "用观察比较叶形，保留植物原貌。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "nature",
+        "learning"
+      ],
+      "evidenceIds": [
+        "E-campus-nature"
+      ]
+    },
+    {
+      "id": "botany_sketch",
+      "title": "画一片叶子",
+      "description": "用纸笔各画一个观察细节，作品不必精致。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "nature",
+        "creative"
+      ],
+      "requires": [
+        "paper_pen"
+      ],
+      "preconditions": [
+        "paper_pen"
+      ],
+      "provides": [
+        "shared_sketch"
+      ],
+      "preparationIds": [
+        "paper_pen"
+      ],
+      "evidenceIds": [
+        "E-fiction-garden"
+      ]
+    },
+    {
+      "id": "breakfast_pack",
+      "title": "买好明早早餐",
+      "description": "购买可妥善保存的早餐，携带方式由双方确认。",
+      "cost": [
+        10,
+        20
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "breakfast_pack"
+      ],
+      "evidenceIds": [
+        "E-campus-food"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ]
+    },
+    {
+      "id": "bridge_view",
+      "title": "找一个共同景物",
+      "description": "各自挑一个喜欢的细节，再看看对方选的地方。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "nature",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-campus-walk"
+      ]
+    },
+    {
+      "id": "cafe_focus",
+      "title": "专注聊十分钟",
+      "description": "双方愿意时暂放手机，谈一个轻松话题。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "quiet",
+        "daily"
+      ],
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-research-phone"
+      ]
+    },
+    {
+      "id": "cafe_warm",
+      "title": "选一杯温饮",
+      "description": "按双方口味选择，费用已计入咖啡小坐。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "drink",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-P007"
+      ],
+      "dietaryTags": [
+        "caffeine"
+      ]
+    },
+    {
+      "id": "campus_photo",
+      "title": "轮流拍照",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "双方愿意再拍，不要求完成照片任务。",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "quiet"
+      ],
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-P001"
+      ]
+    },
+    {
+      "id": "campus_watch",
+      "title": "观察景物",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "把注意力放在共同看到的东西上。",
+      "novelty": 30,
+      "tags": [
+        "nature",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-P001"
+      ]
+    },
+    {
+      "id": "canteen_pair",
+      "title": "各选一道菜",
+      "description": "核对明确忌口后，各挑一种想吃的菜。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P002"
+      ]
+    },
+    {
+      "id": "craft_card",
+      "title": "制作一张小卡片",
+      "description": "各做一张简单卡片，表达内容由本人选择。",
+      "cost": [
+        30,
+        60
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "creative",
+        "romantic"
+      ],
+      "requires": [
+        "craft_kit"
+      ],
+      "preconditions": [
+        "craft_kit"
+      ],
+      "provides": [
+        "handmade_card"
+      ],
+      "consumes": [
+        "craft_kit"
+      ],
+      "evidenceIds": [
+        "E-fiction-living"
+      ]
+    },
+    {
+      "id": "craft_clay",
+      "title": "捏一个小物件",
+      "description": "使用场地提供的材料，选择各自想做的形状。",
+      "cost": [
+        45,
+        85
+      ],
+      "load": 1,
+      "group": "material",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "creative",
+        "play"
+      ],
+      "evidenceIds": [
+        "E-research-novelty"
+      ],
+      "exclusiveKey": "craft_material"
+    },
+    {
+      "id": "dessert_ice",
+      "title": "冰淇淋分享",
+      "description": "双方愿意且未限制冷饮时，选小份冰淇淋。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "dessert",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "play"
+      ],
+      "evidenceIds": [
+        "E-campus-food"
+      ],
+      "dietaryTags": [
+        "dairy",
+        "cold"
+      ]
+    },
+    {
+      "id": "dessert_warm",
+      "title": "温热甜点",
+      "description": "按明确口味挑一份温热甜点。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "dessert",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P001"
+      ],
+      "dietaryTags": [
+        "dairy",
+        "gluten"
+      ]
+    },
+    {
+      "id": "exhib_fav",
+      "title": "各选喜欢的展品",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "组内设计扩展：对照各自看中的内容。",
+      "novelty": 65,
+      "tags": [
+        "culture",
+        "learning",
+        "indoor"
+      ],
+      "evidenceIds": [
+        "E-G001",
+        "E-G003"
+      ]
+    },
+    {
+      "id": "film_exchange",
+      "title": "聊一个印象镜头",
+      "description": "离场后各说一个记住的画面，允许意见不同。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "culture",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-G001"
+      ],
+      "predecessorIds": [
+        "film_pick"
+      ]
+    },
+    {
+      "id": "film_pick",
+      "title": "共同选片并观影",
+      "description": "各提一个片型，选择双方接受且已确认场次的一部。票价为两人设计区间。",
+      "cost": [
+        60,
+        100
+      ],
+      "load": 0,
+      "group": "film",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "culture",
+        "play"
+      ],
+      "evidenceIds": [
+        "E-P006"
+      ]
+    },
+    {
+      "id": "garden_photo",
+      "title": "拍照留念",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "只保留愿意拍的部分，不必一直取景。",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "romantic",
+        "photo"
+      ],
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-P008"
+      ]
+    },
+    {
+      "id": "garden_roles",
+      "title": "互换取景视角",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "基于拍照活动的创作扩展，不是原作事实。",
+      "novelty": 97,
+      "tags": [
+        "nature",
+        "romantic",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-P008"
+      ]
+    },
+    {
+      "id": "glass_burger",
+      "title": "汉堡简餐",
+      "description": "根据双方食量选择汉堡与配餐。",
+      "cost": [
+        30,
+        55
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "evidenceIds": [
+        "E-campus-food"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "glass_noodle",
+      "title": "热汤河粉",
+      "description": "核对肉类与食材后选择热汤主食。",
+      "cost": [
+        30,
+        55
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "evidenceIds": [
+        "E-campus-food"
+      ],
+      "dietaryTags": [
+        "meat"
+      ],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "ice_practice",
+      "title": "轮流练习",
+      "cost": [
+        100,
+        160
+      ],
+      "load": 6,
+      "group": "pace",
+      "mode": "single",
+      "description": "双方均愿意且具备条件时再练习。",
+      "novelty": 70,
+      "tags": [
+        "play",
+        "exercise",
+        "indoor"
+      ],
+      "evidenceIds": [
+        "E-P009"
+      ],
+      "requires": [
+        "closed_shoes"
+      ],
+      "preconditions": [
+        "closed_shoes"
+      ],
+      "preparationIds": [
+        "closed_shoes"
+      ]
+    },
+    {
+      "id": "ice_slow",
+      "title": "慢速体验",
+      "cost": [
+        100,
+        160
+      ],
+      "load": 6,
+      "group": "pace",
+      "mode": "single",
+      "description": "量力而行，不做危险挑战。",
+      "novelty": 45,
+      "tags": [
+        "play",
+        "exercise",
+        "indoor"
+      ],
+      "evidenceIds": [
+        "E-P009"
+      ],
+      "requires": [
+        "closed_shoes"
+      ],
+      "preconditions": [
+        "closed_shoes"
+      ],
+      "preparationIds": [
+        "closed_shoes"
+      ]
+    },
+    {
+      "id": "mall_snacks",
+      "title": "挑选零食",
+      "cost": [
+        15,
+        30
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "一起选少量零食；费用为原型假设。",
+      "novelty": 35,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P006",
+        "E-P009",
+        "E-P010"
+      ]
+    },
+    {
+      "id": "mall_stores",
+      "title": "连续逛店",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 3,
+      "group": "play",
+      "mode": "multi",
+      "description": "浏览不等于消费，也不默认适合疲惫状态。",
+      "novelty": 45,
+      "tags": [
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P006",
+        "E-P009",
+        "E-P010"
+      ]
+    },
+    {
+      "id": "meal_style_c",
+      "title": "中式简餐",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "description": "仍需现场确认菜品与个人忌口。",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P006"
+      ]
+    },
+    {
+      "id": "meal_style_raw",
+      "title": "生食风格",
+      "description": "双方明确接受生食时再选择，费用包含在简餐设计区间中。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "food"
+      ],
+      "evidenceIds": [
+        "E-P007",
+        "E-C002"
+      ],
+      "dietaryTags": [
+        "raw"
+      ]
+    },
+    {
+      "id": "meal_style_spicy",
+      "title": "辣味风格",
+      "description": "按双方明确口味选择，限制辣味时此活动会被过滤。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 45,
+      "tags": [
+        "food"
+      ],
+      "evidenceIds": [
+        "E-P005",
+        "E-C002"
+      ],
+      "dietaryTags": [
+        "spicy"
+      ]
+    },
+    {
+      "id": "meal_style_w",
+      "title": "西式简餐",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "description": "风味选择，不另算一顿饭。",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P006"
+      ]
+    },
+    {
+      "id": "museum_pick",
+      "title": "挑一个最想再看的展品",
+      "description": "每人选一件展品，说明吸引自己的细节。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "culture",
+        "learning"
+      ],
+      "evidenceIds": [
+        "E-campus-museum"
+      ]
+    },
+    {
+      "id": "museum_tool",
+      "title": "猜猜农具的用途",
+      "description": "先说各自猜测，再阅读展签核对。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "culture",
+        "learning",
+        "play"
+      ],
+      "evidenceIds": [
+        "E-campus-museum"
+      ]
+    },
+    {
+      "id": "music_memory",
+      "title": "聊一段音乐记忆",
+      "description": "围绕这首歌聊一个轻松记忆，允许跳过私人话题。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "music",
+        "romantic",
+        "quiet"
+      ],
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-research-phone"
+      ]
+    },
+    {
+      "id": "music_swap",
+      "title": "交换一首推荐歌",
+      "description": "每人选一首，听完说一个想分享的理由。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "music",
+        "culture",
+        "quiet"
+      ],
+      "requires": [
+        "earphones"
+      ],
+      "preconditions": [
+        "earphones"
+      ],
+      "preparationIds": [
+        "earphones"
+      ],
+      "evidenceIds": [
+        "E-lab-time"
+      ]
+    },
+    {
+      "id": "photo_color",
+      "title": "寻找同一种颜色",
+      "description": "各找一个同色细节，比较画面里的变化。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "photo",
+        "creative"
+      ],
+      "evidenceIds": [
+        "E-citywalk"
+      ]
+    },
+    {
+      "id": "photo_pair",
+      "title": "轮流拍一组照片",
+      "description": "双方同意再拍，照片用途由本人决定。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "photo",
+        "creative"
+      ],
+      "requiresExplicitConsent": true,
+      "provides": [
+        "photo_pair"
+      ],
+      "evidenceIds": [
+        "E-P007"
+      ]
+    },
+    {
+      "id": "photo_print",
+      "title": "冲印一张共同照片",
+      "description": "从已完成拍照活动里选一张，双方确认后冲印。",
+      "cost": [
+        10,
+        20
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "photo",
+        "creative",
+        "romantic"
+      ],
+      "requiresExplicitConsent": true,
+      "predecessorIds": [
+        "photo_pair"
+      ],
+      "requires": [
+        "photo_pair"
+      ],
+      "preconditions": [
+        "photo_pair"
+      ],
+      "provides": [
+        "printed_photo"
+      ],
+      "evidenceIds": [
+        "E-P007"
+      ]
+    },
+    {
+      "id": "picnic_cloud",
+      "title": "看云说一个联想",
+      "description": "轮流说一个云朵或景物带来的轻松联想。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "nature",
+        "creative",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-fiction-garden"
+      ]
+    },
+    {
+      "id": "picnic_share",
+      "title": "分享备好的野餐",
+      "description": "食物来自之前采购或自行准备，食材按双方限制选择。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": -1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "requires": [
+        "picnic_pack"
+      ],
+      "preconditions": [
+        "picnic_pack"
+      ],
+      "consumes": [
+        "picnic_pack"
+      ],
+      "evidenceIds": [
+        "E-fiction-picnic"
+      ]
+    },
+    {
+      "id": "pingpong_rally",
+      "title": "协作连续回球",
+      "description": "以一起接住十个球为目标，失误就重新来。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 3,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "play",
+        "exercise"
+      ],
+      "evidenceIds": [
+        "E-campus-note"
+      ],
+      "requires": [
+        "racket",
+        "ball"
+      ],
+      "preconditions": [
+        "racket",
+        "ball"
+      ],
+      "preparationIds": [
+        "racket",
+        "ball"
+      ]
+    },
+    {
+      "id": "pingpong_teach",
+      "title": "轮流练一个动作",
+      "description": "会打的一方示范，另一方可随时换成轻松打球。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "play",
+        "learning"
+      ],
+      "evidenceIds": [
+        "E-campus-note"
+      ],
+      "requires": [
+        "racket",
+        "ball"
+      ],
+      "preconditions": [
+        "racket",
+        "ball"
+      ],
+      "preparationIds": [
+        "racket",
+        "ball"
+      ]
+    },
+    {
+      "id": "purchase_picnic",
+      "title": "采购一份野餐包",
+      "description": "购买可携带的食物与水，本次采购只供一次分享。",
+      "cost": [
+        25,
+        45
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "picnic_pack"
+      ],
+      "evidenceIds": [
+        "E-P010"
+      ]
+    },
+    {
+      "id": "rainforest_leaf",
+      "title": "比较两种叶形",
+      "description": "找两个看起来不同的叶片，说说各自的观察。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "nature",
+        "learning"
+      ],
+      "evidenceIds": [
+        "E-P009"
+      ]
+    },
+    {
+      "id": "read_alone",
+      "title": "安静各读",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "reading_style",
+      "mode": "single",
+      "description": "不强迫交流，也不要求读同一本书。",
+      "novelty": 30,
+      "tags": [
+        "culture",
+        "learning",
+        "quiet",
+        "indoor"
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-P010"
+      ]
+    },
+    {
+      "id": "read_share",
+      "title": "分享一段",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "reading_style",
+      "mode": "single",
+      "description": "仅在允许交谈的区域分享自己的理解。",
+      "novelty": 60,
+      "tags": [
+        "culture",
+        "learning",
+        "quiet",
+        "indoor"
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-P010"
+      ]
+    },
+    {
+      "id": "script_mystery",
+      "title": "共同推理一个剧本",
+      "description": "先确认题材、人数、场次与双方接受程度，再参加共同推理。",
+      "cost": [
+        80,
+        160
+      ],
+      "load": 2,
+      "group": "play",
+      "mode": "single",
+      "novelty": 65,
+      "tags": [
+        "play",
+        "culture",
+        "learning"
+      ],
+      "evidenceIds": [
+        "E-user-mystery"
+      ],
+      "mental": 3,
+      "requires": [
+        "booking_checked"
+      ],
+      "preparationIds": [
+        "booking_checked"
+      ]
+    },
+    {
+      "id": "street_look",
+      "title": "浏览小店",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "group": "play",
+      "mode": "multi",
+      "description": "不预设消费，也不承诺所有店都能进。",
+      "novelty": 60,
+      "tags": [
+        "culture",
+        "photo",
+        "creative"
+      ],
+      "evidenceIds": [
+        "E-P007"
+      ]
+    },
+    {
+      "id": "street_style",
+      "title": "互选反差风格",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "组内设计扩展：只选双方愿意尝试的风格，不偷拍、不强买。",
+      "novelty": 100,
+      "tags": [
+        "culture",
+        "photo",
+        "creative"
+      ],
+      "evidenceIds": [
+        "E-P007"
+      ]
+    },
+    {
+      "id": "super_exchange",
+      "title": "互相挑一件",
+      "cost": [
+        10,
+        20
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "组内设计扩展：预算内互选，接受拒绝。",
+      "novelty": 95,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P010"
+      ]
+    },
+    {
+      "id": "super_fruit",
+      "title": "选水果",
+      "cost": [
+        10,
+        20
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "活动可以不选；不选就是浏览。",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P010"
+      ]
+    },
+    {
+      "id": "super_snacks",
+      "title": "选零食",
+      "cost": [
+        30,
+        60
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "description": "原语料包含共同选购；此处分段是设计拆分。",
+      "novelty": 40,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P010"
+      ]
+    },
+    {
+      "id": "switch_coop",
+      "title": "玩一个合作关卡",
+      "description": "选双方接受的合作游戏，设备和游戏需先确认。",
+      "cost": [
+        30,
+        60
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play"
+      ],
+      "evidenceIds": [
+        "E-user-switch"
+      ]
+    },
+    {
+      "id": "switch_race",
+      "title": "玩一轮赛车游戏",
+      "description": "按双方愿意的规则体验一轮，输赢不设置惩罚。",
+      "cost": [
+        20,
+        40
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play"
+      ],
+      "evidenceIds": [
+        "E-user-switch"
+      ]
+    },
+    {
+      "id": "talk_highlight",
+      "title": "分享今天一个小亮点",
+      "description": "各说一件愿意分享的事情，认真听完再回应。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "quiet",
+        "daily"
+      ],
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-research-phone"
+      ]
+    },
+    {
+      "id": "talk_next",
+      "title": "各提一个下次想做的事",
+      "description": "把下一次兴趣写成备选，不要求当场承诺。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "quiet",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-research-novelty"
+      ]
+    },
+    {
+      "id": "tea_share",
+      "title": "分着尝两样茶点",
+      "description": "先核对食材和双方食量，茶点费用包含在场景中。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-P004"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ]
+    },
+    {
+      "id": "track_observe",
+      "title": "看一会儿校园夜色",
+      "description": "找不影响运动的人行位置，看天空和周围变化。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "nature",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-campus-walk"
+      ]
+    },
+    {
+      "id": "track_stretch",
+      "title": "各自轻拉伸",
+      "description": "双方愿意时做熟悉的轻拉伸动作，不安排挑战。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "exercise",
+        "daily"
+      ],
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-campus-walk"
+      ]
+    },
+    {
+      "id": "waterside_sketch",
+      "title": "速写一个画面",
+      "description": "用简单线条记下共同看到的景物。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 45,
+      "tags": [
+        "creative",
+        "nature"
+      ],
+      "requires": [
+        "paper_pen"
+      ],
+      "preconditions": [
+        "paper_pen"
+      ],
+      "preparationIds": [
+        "paper_pen"
+      ],
+      "evidenceIds": [
+        "E-fiction-paint"
+      ]
+    }
+  ]
+}

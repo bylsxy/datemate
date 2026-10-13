@@ -676,9 +676,11 @@
     "when": {
       "all": [
         {
-          "fact": "scene.id",
-          "op": "eq",
-          "value": "badminton"
+          "fact": "activity.id",
+          "op": "in",
+          "value": [
+            "badminton_rally"
+          ]
         },
         {
           "fact": "context.preparedIds",
@@ -750,9 +752,12 @@
     "when": {
       "all": [
         {
-          "fact": "scene.id",
-          "op": "eq",
-          "value": "campus_tabletennis"
+          "fact": "activity.id",
+          "op": "in",
+          "value": [
+            "pingpong_rally",
+            "pingpong_teach"
+          ]
         },
         {
           "fact": "context.preparedIds",
@@ -787,9 +792,12 @@
     "when": {
       "all": [
         {
-          "fact": "scene.id",
-          "op": "eq",
-          "value": "campus_tabletennis"
+          "fact": "activity.id",
+          "op": "in",
+          "value": [
+            "pingpong_rally",
+            "pingpong_teach"
+          ]
         },
         {
           "fact": "context.preparedIds",
@@ -824,9 +832,12 @@
     "when": {
       "all": [
         {
-          "fact": "scene.id",
-          "op": "eq",
-          "value": "ice"
+          "fact": "activity.id",
+          "op": "in",
+          "value": [
+            "ice_slow",
+            "ice_practice"
+          ]
         },
         {
           "fact": "context.preparedIds",

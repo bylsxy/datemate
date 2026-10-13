@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""DateMate 语料登记、证据定位和知识库构建；只导出原创摘要与设计参数。"""
+"""DateMate 初始语料候选抽取；日常构建使用 node tools/build_catalog.mjs。
+
+本脚本只在 --extract-candidates 与独立 --output 同时指定时运行。
+knowledge/*.json 是手工编辑源，候选结果必须经人工核对后再合入。
+"""
 from __future__ import annotations
 
 import argparse
@@ -419,8 +423,19 @@ def main() -> None:
     workspace = project.parent
     parser.add_argument("--corpus", type=Path, default=workspace / "语料资料")
     parser.add_argument("--prototype", type=Path, default=workspace / "DateMate_策划书与交互原型_V2.0/datemate_v2/prototype/catalog.json")
-    parser.add_argument("--output", type=Path, default=project / "data")
+    parser.add_argument("--extract-candidates", action="store_true", help="显式启用初始候选抽取；不会更新手工知识源")
+    parser.add_argument("--output", type=Path, help="必填的独立候选目录；禁止写入 data/ 或 knowledge/")
     args = parser.parse_args()
+    if not args.extract_candidates or args.output is None:
+        parser.error("日常构建请运行 node tools/build_catalog.mjs；初始抽取须同时提供 --extract-candidates --output 独立候选目录")
+    args.output = args.output.resolve()
+    protected = [(project / name).resolve() for name in ("data", "knowledge")]
+    if args.output == project.resolve() or any(args.output == root or args.output.is_relative_to(root) for root in protected):
+        parser.error("候选输出不得写入项目根目录、data/、knowledge/ 或其子目录")
+    generated_names = ("catalog.json", "catalog.mjs", "activities.mjs", "rules.json", "graph.json", "evidence.json", "source-registry.json", "conditions.json", "extraction-report.json")
+    existing = [name for name in generated_names if (args.output / name).exists()]
+    if existing:
+        parser.error("候选输出已存在，请选择新的空目录，避免覆盖：" + ", ".join(existing))
     sources, texts = scan_corpus(args.corpus)
     evidence = build_evidence(texts)
     prototype = json.loads(args.prototype.read_text(encoding="utf-8"))
@@ -448,6 +463,7 @@ def main() -> None:
     for name, data in (("interestTags", INTEREST_TAGS), ("interestOptions", [{"id": tag, "label": INTEREST_LABELS[tag]} for tag in INTEREST_TAGS]), ("preparationOptions", [{"id": key, "label": label} for key, label in PREPARATIONS.items()]), ("dietaryOptions", [{"id": key, "label": label} for key, label in DIETARY_LABELS.items()])):
         metadata += f"export const {name} = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n"
     (args.output / "activities.mjs").write_text(metadata, encoding="utf-8", newline="\n")
+    print("候选抽取完成；请人工核对并编辑 knowledge/*.json，然后运行 node tools/build_catalog.mjs。")
     print(json.dumps(checks, ensure_ascii=False, indent=2))
 
 

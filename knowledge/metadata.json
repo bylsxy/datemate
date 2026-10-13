@@ -1,0 +1,249 @@
+{
+  "schemaVersion": "manual-knowledge-1.0",
+  "version": "knowledge-4.0.0",
+  "rulesVersion": "production-4.0.0",
+  "runtimeSchemaVersion": "place-activity-4.0",
+  "rights": "包含原创结构化摘要和设计参数；本地原材料独立保留，公开数据不包含语料原文。",
+  "disclaimer": "费用为两人整段的人民币设计区间，时长、负担、排序权重与窗口属于课程模型参数；现实价格、开放和场地可用性需要用户确认。研究与剧情线索不表示关系成功率、医学结论或现实因果。",
+  "interestTags": [
+    "nature",
+    "culture",
+    "food",
+    "play",
+    "creative",
+    "romantic",
+    "quiet",
+    "indoor",
+    "exercise",
+    "learning",
+    "daily",
+    "photo",
+    "music"
+  ],
+  "interestOptions": [
+    {
+      "id": "nature",
+      "label": "自然观察"
+    },
+    {
+      "id": "culture",
+      "label": "文化体验"
+    },
+    {
+      "id": "food",
+      "label": "餐饮"
+    },
+    {
+      "id": "play",
+      "label": "游戏互动"
+    },
+    {
+      "id": "creative",
+      "label": "创作手作"
+    },
+    {
+      "id": "romantic",
+      "label": "浪漫氛围"
+    },
+    {
+      "id": "quiet",
+      "label": "安静"
+    },
+    {
+      "id": "indoor",
+      "label": "室内"
+    },
+    {
+      "id": "exercise",
+      "label": "轻运动"
+    },
+    {
+      "id": "learning",
+      "label": "共同学习"
+    },
+    {
+      "id": "daily",
+      "label": "日常生活"
+    },
+    {
+      "id": "photo",
+      "label": "拍照"
+    },
+    {
+      "id": "music",
+      "label": "音乐"
+    }
+  ],
+  "preparationOptions": [
+    {
+      "id": "water",
+      "label": "饮水"
+    },
+    {
+      "id": "racket",
+      "label": "乒乓球拍"
+    },
+    {
+      "id": "ball",
+      "label": "乒乓球"
+    },
+    {
+      "id": "closed_shoes",
+      "label": "合适的包脚鞋"
+    },
+    {
+      "id": "paper_pen",
+      "label": "纸笔"
+    },
+    {
+      "id": "opening_checked",
+      "label": "已核对开放与预约"
+    },
+    {
+      "id": "picnic_mat",
+      "label": "可用野餐垫"
+    },
+    {
+      "id": "picnic_pack",
+      "label": "一份野餐食物"
+    },
+    {
+      "id": "phone_camera",
+      "label": "可用相机或手机"
+    },
+    {
+      "id": "craft_kit",
+      "label": "一份手作材料"
+    },
+    {
+      "id": "earphones",
+      "label": "可用耳机"
+    },
+    {
+      "id": "badminton_kit",
+      "label": "羽毛球拍与球"
+    },
+    {
+      "id": "court_checked",
+      "label": "已确认可用场地"
+    },
+    {
+      "id": "photo_pair",
+      "label": "已完成共同拍照"
+    },
+    {
+      "id": "breakfast_pack",
+      "label": "已采购早餐"
+    },
+    {
+      "id": "printed_photo",
+      "label": "已冲印照片"
+    },
+    {
+      "id": "shared_sketch",
+      "label": "共同速写"
+    },
+    {
+      "id": "handmade_card",
+      "label": "手作卡片"
+    },
+    {
+      "id": "meal_completed",
+      "label": "已完成正餐"
+    },
+    {
+      "id": "boardgame_kit",
+      "label": "已准备桌游或卡牌"
+    },
+    {
+      "id": "venue_checked",
+      "label": "已确认场地允许所选活动"
+    },
+    {
+      "id": "booking_checked",
+      "label": "已确认场次与预约"
+    }
+  ],
+  "dietaryOptions": [
+    {
+      "id": "raw",
+      "label": "生食"
+    },
+    {
+      "id": "cold",
+      "label": "冷饮冷食"
+    },
+    {
+      "id": "spicy",
+      "label": "辣味"
+    },
+    {
+      "id": "dairy",
+      "label": "乳制品"
+    },
+    {
+      "id": "gluten",
+      "label": "含麸质食物"
+    },
+    {
+      "id": "meat",
+      "label": "肉类"
+    },
+    {
+      "id": "caffeine",
+      "label": "含咖啡因饮品"
+    }
+  ],
+  "defaultContext": {
+    "duration": 180,
+    "budget": null,
+    "weather": "unknown",
+    "area": "all",
+    "fatigueA": 2,
+    "fatigueB": 2,
+    "preferences": [],
+    "quietRequired": false,
+    "theme": "any",
+    "bans": [],
+    "preferencesA": [],
+    "preferencesB": [],
+    "preparedIds": [],
+    "dietaryRestrictions": [],
+    "robust": true,
+    "mealNeed": false,
+    "crowdAvoidance": false,
+    "windows": [
+      {
+        "id": "afternoon",
+        "startMinute": 840,
+        "endMinute": 1020
+      }
+    ]
+  },
+  "extraction": {
+    "categoryCounts": {
+      "1文学剧情描述": 82,
+      "2经验描述": 39,
+      "3现实场景": 4,
+      "4学术参考": 7,
+      "5旮旯专辑": 12,
+      "6组员提供": 7
+    },
+    "candidateHitsByFeature": {
+      "nature": 677,
+      "culture": 608,
+      "food": 622,
+      "play": 734,
+      "creative": 523,
+      "music": 988,
+      "weather": 1198,
+      "fatigue": 1748,
+      "preparation": 966,
+      "budget": 208,
+      "communication": 9386,
+      "consent": 246
+    },
+    "prototypeSha256": "0fbb3c5b631f55a9902d84a00d9992376c491bc2fd726bbdafff5ad408c44896",
+    "processingPolicy": "全文本扫描与哈希登记；关键词用于候选发现，正式采用项以定位证据为准。原始材料不写入公开数据。"
+  }
+}

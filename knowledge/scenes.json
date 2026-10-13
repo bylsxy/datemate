@@ -1,0 +1,1527 @@
+{
+  "_comment": "地点是名词。minutes 是唯一耗时入口：同地点选0个或多个活动时，场景时长固定。编辑 place.name、场地设计参数和 activityIds；场地增量写 activityOverrides。rest 为原地休息且无活动。",
+  "schemaVersion": "manual-knowledge-1.0",
+  "scenes": [
+    {
+      "id": "agriculture_museum",
+      "description": "挑一个展厅轻量参观，围绕共同感兴趣的展品聊天。",
+      "minutes": 60,
+      "cost": [
+        0,
+        30
+      ],
+      "load": 2,
+      "kind": "culture",
+      "area": "campus",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 70,
+      "evidenceIds": [
+        "E-campus-museum",
+        "E-game-ffa64d6a",
+        "E-game-18aca666"
+      ],
+      "quiet": false,
+      "mental": 2,
+      "bold": false,
+      "tags": [
+        "culture",
+        "nature",
+        "learning",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "preconditions": [
+        "opening_checked"
+      ],
+      "preparationIds": [
+        "opening_checked"
+      ],
+      "windows": [
+        {
+          "id": "daytime",
+          "startMinute": 540,
+          "endMinute": 1020
+        }
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "农业主题博物馆",
+        "kind": "ordinary",
+        "category": "农业主题博物馆",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "museum_tool",
+        "museum_pick"
+      ]
+    },
+    {
+      "id": "aquarium",
+      "description": "围绕鱼群和展陈一起观察，不需要持续主动聊天；门票和站立时间不可忽略。",
+      "minutes": 90,
+      "cost": [
+        260,
+        380
+      ],
+      "load": 3,
+      "kind": "observe",
+      "area": "off",
+      "indoor": true,
+      "fit": 77,
+      "novelty": 68,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-P009"
+      ],
+      "place": {
+        "name": "水族馆",
+        "kind": "ordinary",
+        "category": "水族馆",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "aqua_photo",
+        "aqua_observe"
+      ]
+    },
+    {
+      "id": "badminton",
+      "description": "先确认场地和装备，采用合作回球而非强度挑战。",
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "sport",
+      "area": "campus",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-campus-sport"
+      ],
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "校园羽毛球场",
+        "kind": "ordinary",
+        "category": "校园羽毛球场",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "badminton_rally"
+      ]
+    },
+    {
+      "id": "boardgame",
+      "description": "桌游店内可选择合作桌游或轻量卡牌，店铺与游戏可用性需先确认。",
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 70,
+      "evidenceIds": [
+        "E-shared-game",
+        "E-G001"
+      ],
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "桌游店",
+        "kind": "ordinary",
+        "category": "桌游店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "boardgame_coop",
+        "boardgame_cards"
+      ]
+    },
+    {
+      "id": "bridge_walk",
+      "description": "把桥边作为短路线的折返点，避免为了走远而赶路。",
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-campus-walk"
+      ],
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "romantic",
+        "quiet",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "校园桥边",
+        "kind": "ordinary",
+        "category": "校园桥边",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "bridge_view"
+      ]
+    },
+    {
+      "id": "cafe",
+      "description": "这里可以聊天，也可以安静待一会儿；仅在双方接受饮品和现场环境时合适。",
+      "minutes": 45,
+      "cost": [
+        80,
+        100
+      ],
+      "load": -2,
+      "kind": "snack",
+      "area": "near",
+      "indoor": true,
+      "fit": 76,
+      "novelty": 25,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "quiet",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P007",
+        "E-C004"
+      ],
+      "place": {
+        "name": "咖啡店",
+        "kind": "ordinary",
+        "category": "咖啡店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "cafe_warm",
+        "cafe_focus"
+      ]
+    },
+    {
+      "id": "campus",
+      "description": "校园步道支持短距离步行、景物与植物观察，路线和入校条件需先确认。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "fit": 84,
+      "novelty": 40,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "quiet",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "preparationIds": [
+        "water"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-P001",
+        "E-campus-nature",
+        "E-fiction-garden"
+      ],
+      "place": {
+        "name": "校园步道",
+        "kind": "ordinary",
+        "category": "校园步道",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "campus_watch",
+        "campus_photo",
+        "botany_shapes",
+        "botany_sketch"
+      ]
+    },
+    {
+      "id": "campus_picnic",
+      "description": "带好已经准备的食物与铺垫，在允许停留的草地坐一会儿。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": -1,
+      "kind": "snack",
+      "area": "campus",
+      "indoor": false,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-P001",
+        "E-fiction-picnic"
+      ],
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "food",
+        "daily",
+        "romantic",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "requires": [
+        "picnic_mat"
+      ],
+      "preconditions": [
+        "picnic_mat"
+      ],
+      "preparationIds": [
+        "picnic_mat",
+        "water"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "place": {
+        "name": "校园草地",
+        "kind": "ordinary",
+        "category": "校园草地",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "picnic_share",
+        "picnic_cloud"
+      ]
+    },
+    {
+      "id": "campus_tabletennis",
+      "description": "带好拍子和球，从轻松对打开始，按双方体力决定时长。",
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "sport",
+      "area": "campus",
+      "indoor": false,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-campus-note"
+      ],
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "daily",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "泰山区乒乓球桌",
+        "kind": "ordinary",
+        "category": "泰山区乒乓球桌",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "pingpong_rally",
+        "pingpong_teach"
+      ]
+    },
+    {
+      "id": "canteen",
+      "description": "认真不等于高消费；错开拥挤时段，并确认支付和进入场地的条件。",
+      "minutes": 45,
+      "cost": [
+        40,
+        70
+      ],
+      "load": -2,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": true,
+      "fit": 82,
+      "novelty": 20,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P002"
+      ],
+      "exclusiveKey": "main_meal",
+      "place": {
+        "name": "校园食堂",
+        "kind": "ordinary",
+        "category": "校园食堂",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "canteen_pair"
+      ]
+    },
+    {
+      "id": "cantonese",
+      "description": "可以用茶点与用餐衔接交流；菜品、份量和忌口仍需自己确认。",
+      "minutes": 60,
+      "cost": [
+        120,
+        200
+      ],
+      "load": -2,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "fit": 77,
+      "novelty": 30,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P003",
+        "E-P010"
+      ],
+      "exclusiveKey": "main_meal",
+      "place": {
+        "name": "粤式茶楼",
+        "kind": "ordinary",
+        "category": "粤式茶楼",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": []
+    },
+    {
+      "id": "cinema",
+      "description": "电影院提供观影场地；开放、预约和场次需要先确认。票价计入所选观影活动。",
+      "minutes": 120,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "watch",
+      "area": "near",
+      "indoor": true,
+      "fit": 73,
+      "novelty": 35,
+      "quiet": true,
+      "mental": 2,
+      "bold": false,
+      "tags": [
+        "culture",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P006",
+        "E-P010"
+      ],
+      "place": {
+        "name": "电影院",
+        "kind": "ordinary",
+        "category": "电影院",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "film_pick",
+        "film_exchange"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "preconditions": [
+        "opening_checked"
+      ],
+      "preparationIds": [
+        "opening_checked"
+      ]
+    },
+    {
+      "id": "craft",
+      "description": "做一个小而明确的作品，预留收尾和清理时间。",
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "creative",
+      "area": "near",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 70,
+      "evidenceIds": [
+        "E-research-novelty",
+        "E-fiction-living"
+      ],
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "手作店",
+        "kind": "ordinary",
+        "category": "手作店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "craft_card",
+        "craft_clay"
+      ]
+    },
+    {
+      "id": "dessert",
+      "description": "酸奶、双皮奶或点心也能成为轻松停顿；饮食以双方真实偏好为准。",
+      "minutes": 30,
+      "cost": [
+        10,
+        35
+      ],
+      "load": -2,
+      "kind": "snack",
+      "area": "campus",
+      "indoor": true,
+      "fit": 77,
+      "novelty": 30,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "daily",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P001",
+        "E-C004"
+      ],
+      "place": {
+        "name": "校园甜品店",
+        "kind": "ordinary",
+        "category": "校园甜品店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "dessert_warm",
+        "dessert_ice"
+      ]
+    },
+    {
+      "id": "exhibition",
+      "description": "让展品提供话题，不等于每个人都喜欢深度解说；按当下精力决定看多少。",
+      "minutes": 60,
+      "cost": [
+        0,
+        80
+      ],
+      "load": 2,
+      "kind": "culture",
+      "area": "near",
+      "indoor": true,
+      "fit": 77,
+      "novelty": 60,
+      "quiet": true,
+      "mental": 3,
+      "bold": false,
+      "tags": [
+        "culture",
+        "learning",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-G001",
+        "E-G003",
+        "E-game-c73b126a"
+      ],
+      "place": {
+        "name": "展览馆",
+        "kind": "ordinary",
+        "category": "展览馆",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "exhib_fav"
+      ]
+    },
+    {
+      "id": "garden",
+      "description": "灯光和建筑提供共同看的内容；它仍是户外场景，不能因为浪漫就忽略大雨。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "photo",
+      "area": "off",
+      "indoor": false,
+      "fit": 80,
+      "novelty": 65,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "romantic",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-P008"
+      ],
+      "place": {
+        "name": "花园",
+        "kind": "ordinary",
+        "category": "花园",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "garden_photo",
+        "garden_roles"
+      ]
+    },
+    {
+      "id": "ice",
+      "description": "身体参与较多，也可能摔倒；按个人能力与意愿选，不因关系阶段默认适合。",
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "sport",
+      "area": "off",
+      "indoor": true,
+      "fit": 65,
+      "novelty": 85,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-P009"
+      ],
+      "place": {
+        "name": "滑冰场",
+        "kind": "ordinary",
+        "category": "滑冰场",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "ice_slow",
+        "ice_practice"
+      ]
+    },
+    {
+      "id": "mall",
+      "description": "商场内支持逛店、零食和电玩等活动，具体商场与店铺可用性需先确认。",
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "explore",
+      "area": "near",
+      "indoor": true,
+      "fit": 90,
+      "novelty": 35,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "high",
+      "seated": false,
+      "evidenceIds": [
+        "E-P006",
+        "E-P009",
+        "E-P010"
+      ],
+      "place": {
+        "name": "商场",
+        "kind": "ordinary",
+        "category": "商场",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "mall_stores",
+        "mall_snacks",
+        "arcade_claw",
+        "arcade_basket",
+        "arcade_race"
+      ]
+    },
+    {
+      "id": "meal",
+      "description": "正餐本身也是相处：不用每次都追求大场面，选择双方真正愿意吃的内容。",
+      "minutes": 60,
+      "cost": [
+        140,
+        140
+      ],
+      "load": -2,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 15,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P006"
+      ],
+      "exclusiveKey": "main_meal",
+      "place": {
+        "name": "餐馆",
+        "kind": "ordinary",
+        "category": "餐馆",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "meal_style_w",
+        "meal_style_c",
+        "meal_style_raw",
+        "meal_style_spicy"
+      ]
+    },
+    {
+      "id": "mystery_store",
+      "place": {
+        "name": "剧本杀店",
+        "kind": "ordinary",
+        "category": "剧本杀店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "剧本杀店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
+      "minutes": 90,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "quiet": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-mystery"
+      ],
+      "activityIds": [
+        "script_mystery"
+      ]
+    },
+    {
+      "id": "photo_printing",
+      "description": "选之前共同拍下的一张照片，确认本人同意后制作纸质纪念。",
+      "minutes": 15,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "creative",
+      "area": "near",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 70,
+      "evidenceIds": [
+        "E-P007",
+        "E-research-novelty"
+      ],
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "requires": [
+        "photo_pair"
+      ],
+      "preconditions": [
+        "photo_pair"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "place": {
+        "name": "照片冲印店",
+        "kind": "ordinary",
+        "category": "照片冲印店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "photo_print"
+      ]
+    },
+    {
+      "id": "public_lounge",
+      "description": "选择允许停留和轻声交流的公共休息区，具体位置与可用座位需先确认。",
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "snack",
+      "area": "near",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-user-public-lounge",
+        "E-research-phone",
+        "E-C004",
+        "E-lab-time"
+      ],
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "quiet",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "place": {
+        "name": "公共休息区",
+        "kind": "ordinary",
+        "category": "公共休息区",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "talk_highlight",
+        "talk_next",
+        "music_swap",
+        "music_memory"
+      ]
+    },
+    {
+      "id": "rainforest",
+      "description": "一起观察植物与空间，把体验留给共同发现；收费与场馆开放需要确认。",
+      "minutes": 60,
+      "cost": [
+        260,
+        380
+      ],
+      "load": 3,
+      "kind": "observe",
+      "area": "off",
+      "indoor": true,
+      "fit": 73,
+      "novelty": 78,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "learning",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-P009"
+      ],
+      "place": {
+        "name": "雨林馆",
+        "kind": "ordinary",
+        "category": "雨林馆",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "rainforest_leaf"
+      ]
+    },
+    {
+      "id": "reading",
+      "description": "可以各读各的，再分享有兴趣的部分；安静不等于没内容，先确认场所可进入。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "culture",
+      "area": "campus",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 30,
+      "quiet": true,
+      "mental": 4,
+      "bold": false,
+      "tags": [
+        "culture",
+        "learning",
+        "quiet",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-C004",
+        "E-P010",
+        "E-game-c4c3a316",
+        "E-game-aa91d97d",
+        "E-game-ec909165"
+      ],
+      "place": {
+        "name": "图书馆",
+        "kind": "ordinary",
+        "category": "图书馆",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "read_alone",
+        "read_share",
+        "book_recommend"
+      ]
+    },
+    {
+      "id": "rest",
+      "description": "在当前位置暂停行程并休息，实际停留条件由双方确认。",
+      "minutes": 20,
+      "cost": [
+        0,
+        0
+      ],
+      "load": -6,
+      "kind": "rest",
+      "area": "current",
+      "indoor": true,
+      "fit": 35,
+      "novelty": 5,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "quiet",
+        "indoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-G003",
+        "E-G004"
+      ],
+      "place": {
+        "name": "休息",
+        "kind": "休息",
+        "category": "原地休息",
+        "verificationStatus": "current_location"
+      },
+      "activityIds": []
+    },
+    {
+      "id": "street",
+      "description": "街区内支持浏览小店、建筑观察和拍照，具体路线与店铺需先确认。",
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 3,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "fit": 72,
+      "novelty": 90,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "culture",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-P007",
+        "E-citywalk"
+      ],
+      "place": {
+        "name": "街区",
+        "kind": "ordinary",
+        "category": "街区",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "street_look",
+        "street_style",
+        "architecture_detail",
+        "photo_pair",
+        "photo_color"
+      ]
+    },
+    {
+      "id": "supermarket",
+      "description": "超市内支持选零食、水果及采购野餐物资，具体店铺需先确认。",
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "everyday",
+      "area": "near",
+      "indoor": true,
+      "fit": 79,
+      "novelty": 42,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "evidenceIds": [
+        "E-P010",
+        "E-game-e4116c62"
+      ],
+      "place": {
+        "name": "超市",
+        "kind": "ordinary",
+        "category": "超市",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "super_snacks",
+        "super_fruit",
+        "super_exchange",
+        "purchase_picnic"
+      ]
+    },
+    {
+      "id": "switch_store",
+      "place": {
+        "name": "Switch店",
+        "kind": "ordinary",
+        "category": "游戏体验店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "Switch店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "quiet": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-switch"
+      ],
+      "activityIds": [
+        "switch_coop",
+        "switch_race"
+      ]
+    },
+    {
+      "id": "taishan_glass",
+      "description": "用户本地自述中的泰山十栋玻璃房，可选简餐、烘焙采购；自带桌游需要确认座位与场地许可。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "explore",
+      "area": "campus",
+      "indoor": true,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-campus-food",
+        "E-user-glass-boardgame"
+      ],
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "place": {
+        "name": "泰山十栋玻璃房",
+        "kind": "ordinary",
+        "category": "校园公共餐饮空间",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "glass_noodle",
+        "glass_burger",
+        "bakery_share",
+        "breakfast_pack",
+        "boardgame_coop",
+        "boardgame_cards"
+      ],
+      "activityOverrides": {
+        "boardgame_coop": {
+          "cost": [
+            0,
+            0
+          ],
+          "requires": [
+            "boardgame_kit",
+            "venue_checked"
+          ],
+          "preconditions": [
+            "boardgame_kit",
+            "venue_checked"
+          ],
+          "preparationIds": [
+            "boardgame_kit",
+            "venue_checked"
+          ],
+          "evidenceIds": [
+            "E-shared-game",
+            "E-user-glass-boardgame"
+          ],
+          "description": "共同解决一关，遇到复杂规则可改成简单模式。 自带游戏并先确认此处允许玩桌游。"
+        },
+        "boardgame_cards": {
+          "cost": [
+            0,
+            0
+          ],
+          "requires": [
+            "boardgame_kit",
+            "venue_checked"
+          ],
+          "preconditions": [
+            "boardgame_kit",
+            "venue_checked"
+          ],
+          "preparationIds": [
+            "boardgame_kit",
+            "venue_checked"
+          ],
+          "evidenceIds": [
+            "E-G001",
+            "E-user-glass-boardgame"
+          ],
+          "description": "只选双方熟悉的规则，输赢不设置额外惩罚。 自带游戏并先确认此处允许玩桌游。"
+        }
+      }
+    },
+    {
+      "id": "tea",
+      "description": "坐下吃点心、喝茶，给聊天留一点空间；不是必须在正式餐厅才算认真安排。",
+      "minutes": 45,
+      "cost": [
+        70,
+        70
+      ],
+      "load": -2,
+      "kind": "snack",
+      "area": "campus",
+      "indoor": true,
+      "fit": 77,
+      "novelty": 35,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "quiet",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P004",
+        "E-game-81ef99db"
+      ],
+      "place": {
+        "name": "校园茶点店",
+        "kind": "ordinary",
+        "category": "校园茶点店",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "tea_share"
+      ]
+    },
+    {
+      "id": "track_walk",
+      "description": "沿平坦外圈走一小段，随时放慢速度或坐下休息。",
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-campus-walk"
+      ],
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "quiet",
+        "daily",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "操场外圈",
+        "kind": "ordinary",
+        "category": "操场外圈",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "track_stretch",
+        "track_observe"
+      ]
+    },
+    {
+      "id": "waterside",
+      "description": "在允许停留的公共步道看水面，按天气和体力缩短路线。",
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "off",
+      "indoor": false,
+      "fit": 78,
+      "novelty": 45,
+      "evidenceIds": [
+        "E-citywalk",
+        "E-fiction-paint"
+      ],
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "nature",
+        "quiet",
+        "romantic",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "crowdRisk": "unknown",
+      "seated": false,
+      "place": {
+        "name": "水边公共步道",
+        "kind": "ordinary",
+        "category": "水边公共步道",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": [
+        "waterside_sketch"
+      ]
+    },
+    {
+      "id": "western",
+      "description": "意面、扒类与焗饭提供另一种正餐选择；不是生理周期决定它是否更好。",
+      "minutes": 60,
+      "cost": [
+        80,
+        120
+      ],
+      "load": -2,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": true,
+      "fit": 79,
+      "novelty": 40,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "tags": [
+        "food",
+        "indoor",
+        "romantic"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "evidenceIds": [
+        "E-P004"
+      ],
+      "exclusiveKey": "main_meal",
+      "place": {
+        "name": "校内西式餐馆",
+        "kind": "ordinary",
+        "category": "校内西式餐馆",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": []
+    }
+  ]
+}

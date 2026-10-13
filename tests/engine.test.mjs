@@ -10,14 +10,31 @@ const context = { duration: 150, reserve: 0, robust: false, fatigueA: 0, fatigue
 const fullCatalog = { ...catalog, rules, graph };
 const realContext = { windows: [{ id: 'pm', startMinute: 840, endMinute: 1020 }], preparedIds: ['water', 'phone_camera', 'picnic_mat', 'racket', 'ball', 'opening_checked', 'craft_kit', 'closed_shoes', 'badminton_kit', 'court_checked'] };
 
-test('零活动、活动增量、费用与双方状态真实核算', () => {
-  const c = data([scene('mall', { minutes: 25, cost: [1, 2], load: 1, activities: [activity('play', { minutes: 15, cost: [3, 5], load: 3 })] })]);
-  const empty = planDate({ ...context, fixedPrefix: [{ sceneId: 'mall', activityIds: [] }] }, c, { maxStages: 1 });
-  const selected = planDate({ ...context, fixedPrefix: [{ sceneId: 'mall', activityIds: ['play'] }] }, c, { maxStages: 1 });
+test('同场景选0、1、3活动起止时间固定，费用、负担与资源仍逐项核算', () => {
+  const c = data([scene('mall', { minutes: 25, cost: [1, 2], load: 1, activities: [activity('play', { minutes: 15, cost: [3, 5], load: 3 }), activity('buy', { minutes: 100, cost: [2, 4], load: 1, consumes: ['water'], provides: ['kit'] }), activity('craft', { minutes: 200, cost: [1, 3], load: 1, predecessorIds: ['buy'], consumes: ['kit'] })] })]);
+  const input = { ...context, resources: { water: 1 } };
+  const empty = planDate({ ...input, fixedPrefix: [{ sceneId: 'mall', activityIds: [] }] }, c, { maxStages: 1 });
+  const selected = planDate({ ...input, fixedPrefix: [{ sceneId: 'mall', activityIds: ['play'] }] }, c, { maxStages: 1 });
+  const three = planDate({ ...input, fixedPrefix: [{ sceneId: 'mall', activityIds: ['play', 'buy', 'craft'] }] }, c, { maxStages: 1 });
+  assert.equal(three.ok, true);
   assert.equal(empty.stages[0].minutes, 25);
-  assert.equal(selected.stages[0].minutes, 40);
+  assert.equal(selected.stages[0].minutes, 25);
+  assert.equal(three.stages[0].minutes, 25);
+  for (const result of [selected, three]) {
+    assert.equal(result.stages[0].start, empty.stages[0].start);
+    assert.equal(result.stages[0].end, empty.stages[0].end);
+    assert.equal(result.metrics.totalMinutes, empty.metrics.totalMinutes);
+    assert.ok(result.stages[0].schedule.every(s => s.compositionMode === 'within_scene' && s.startOffset === 0 && s.endOffset === 25));
+  }
+  assert.deepEqual(empty.totalCostCents, [100, 200]);
   assert.deepEqual(selected.totalCostCents, [400, 700]);
+  assert.deepEqual(three.totalCostCents, [700, 1400]);
+  assert.deepEqual(empty.stages[0].after.fatigue, [1, 1]);
   assert.deepEqual(selected.stages[0].after.fatigue, [4, 4]);
+  assert.deepEqual(three.stages[0].after.fatigue, [6, 6]);
+  assert.equal(empty.stages[0].after.resources.water, 1);
+  assert.equal(three.stages[0].after.resources.water, 0);
+  assert.equal(three.stages[0].after.resources.kit, 0);
   assert.equal(selected.stages[0].candidates.find(x => x.sceneId === 'mall').activityIds[0], 'play');
 });
 
@@ -47,12 +64,15 @@ test('固定人工组合不在活动子集枚举中仍接受精确校验', () =>
   assert.equal(result.search.activitySubsetsTruncated, true);
 });
 
-test('顺序、包含与并行按关键路径核算，包含型不重复相加', () => {
+test('顺序、包含与并行活动均在固定场景内，保留依赖顺序而不增加时长', () => {
   const c = data([scene('s', { minutes: 30, activities: [activity('included', { compositionMode: 'included', minutes: 15, load: 0 }), activity('parallel', { compositionMode: 'parallel', minutes: 40, load: 0 }), activity('after', { predecessorIds: ['parallel'], minutes: 10, load: 0 })] })]);
   const result = planDate({ ...context, fixedPrefix: [{ sceneId: 's', activityIds: ['included', 'parallel', 'after'] }] }, c, { maxStages: 1 });
   assert.equal(result.ok, true);
-  assert.equal(result.stages[0].minutes, 50);
-  assert.equal(result.stages[0].schedule.find(s => s.activityId === 'after').startOffset, 40);
+  const stage = result.stages[0];
+  assert.equal(stage.minutes, 30);
+  assert.equal(stage.end - stage.start, 30);
+  assert.ok(stage.schedule.every(s => s.compositionMode === 'within_scene' && s.startOffset === 0 && s.endOffset === 30));
+  assert.ok(stage.schedule.find(s => s.activityId === 'after').order > stage.schedule.find(s => s.activityId === 'parallel').order);
 });
 
 test('采购→后续使用→消耗资源跨阶段生效，缺准备时不得假定已准备', () => {
@@ -170,9 +190,9 @@ test('新目录0→90→0可复现，前缀保持、输入不变，mall可浏览
   assert.equal(canonical(realContext), snapshot);
   assert.ok(original.stages[0].candidates.length >= 8);
   assert.ok(original.stages[0].candidates.some(s => s.sceneId === 'mall'));
-  const prefix = [{ sceneId: 'mall', activityIds: ['mall_arcade', 'mall_shops', 'mall_snack'] }];
+  const prefix = [{ sceneId: 'mall', activityIds: [] }];
   const actualIds = catalog.scenes.find(s => s.id === 'mall').activities.map(a => a.id);
-  prefix[0].activityIds = actualIds.filter(id => /arcade|stores|snack/.test(id));
+  prefix[0].activityIds = actualIds.filter(id => /claw|stores|snack/.test(id));
   const selected = planner.plan(realContext, 90, prefix);
   assert.equal(selected.ok, true);
   assert.deepEqual(selected.stages[0].activityIds, prefix[0].activityIds.sort());
@@ -180,7 +200,7 @@ test('新目录0→90→0可复现，前缀保持、输入不变，mall可浏览
   assert.ok(selected.trace.some(t => /^R-/.test(t.ruleId)));
 });
 
-test('低探索使用明确空默认活动，低负担不靠休息或正收益无限填满', () => {
+test('低探索无匹配兴趣时允许空组合，低负担不靠休息或无限填满', () => {
   const planner = createPlanner(fullCatalog);
   const input = { duration: 180, windows: [{ id: 'pm', startMinute: 840, endMinute: 1020 }], area: 'near', robust: true, fatigueA: 2, fatigueB: 2 };
   const initial = planner.plan(input, 0);
@@ -188,7 +208,7 @@ test('低探索使用明确空默认活动，低负担不靠休息或正收益�
   assert.deepEqual(initial.stages[0].activityIds, []);
   assert.ok(initial.stages.length < 5);
   assert.ok(initial.stages.every(s => catalog.scenes.find(sc => sc.id === s.sceneId).kind !== 'rest'));
-  const three = ['mall_arcade', 'mall_stores', 'mall_snacks'];
+  const three = ['arcade_basket', 'mall_stores', 'mall_snacks'];
   const loaded = planner.plan(input, 0, [{ sceneId: 'mall', activityIds: three }]);
   assert.equal(loaded.ok, true);
   assert.equal(loaded.stages[0].after.fatigue[0], 10);
@@ -197,7 +217,8 @@ test('低探索使用明确空默认活动，低负担不靠休息或正收益�
   assert.ok(loaded.stages[1].trace.some(t => t.ruleId === 'R-fatigue-derive'));
   assert.ok(!loaded.stages[2].trace.some(t => t.ruleId === 'R-fatigue-derive'));
   const cleared = planner.plan(input, 0, [{ sceneId: 'mall', activityIds: [] }]);
-  assert.equal(cleared.outputFingerprint, initial.outputFingerprint);
+  assert.deepEqual(cleared.stages[0].activityIds, []);
+  assert.deepEqual(cleared.stages[0].after.fatigue, initial.stages[0].after.fatigue);
 });
 
 test('场景与功能重复是软偏好；显式跨窗口重复用餐仍可执行', () => {

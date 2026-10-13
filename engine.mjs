@@ -1,8 +1,8 @@
 import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs';
 
 export { canonical, digest } from './reasoning.mjs';
-export const VERSION = 'datemate-engine-3.0.2';
-export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'utility-3.0.1', tieBreak: 'stable-id' });
+export const VERSION = 'datemate-engine-3.0.4';
+export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.0.2', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const copy = value => JSON.parse(JSON.stringify(value));
@@ -63,10 +63,9 @@ export function normalize(input = {}) {
 
 function normalizeAction(action, scene) {
   const costs = action.costCents ? range(action.costCents).map(Math.round) : range(action.cost ?? action.baseline?.cost).map(cents);
-  const duration = range(action.minutes ?? action.duration ?? action.baseline?.duration)[1];
   const load = range(action.load ?? action.baseline?.load)[1];
-  if (!action.id || !Number.isFinite(duration) || duration < 0 || !Number.isInteger(duration) || costs.some(n => n < 0) || costs[1] < costs[0] || !Number.isFinite(load)) throw Error(fail('H_DATA', `活动${action.id || '(无ID)'}的资源字段无效。`));
-  return { ...action, id: String(action.id), minutes: duration, costCents: costs, load, group: action.group || 'optional', mode: action.mode || 'multiple', tags: list(action.tags), compositionMode: action.compositionMode || 'sequential_extra', predecessorIds: list(action.predecessorIds), preparationIds: list(action.preparationIds), requires: inventory(action.requires ?? action.preconditions), provides: inventory(action.provides), consumes: inventory(action.consumes), sceneId: scene.id };
+  if (!action.id || costs.some(n => n < 0) || costs[1] < costs[0] || !Number.isFinite(load)) throw Error(fail('H_DATA', `活动${action.id || '(无ID)'}的资源字段无效。`));
+  return { ...action, id: String(action.id), minutes: 0, costCents: costs, load, group: action.group || 'optional', mode: action.compositionMode === 'exclusive' ? 'single' : action.mode || 'multiple', tags: list(action.tags), compositionMode: 'within_scene', predecessorIds: list(action.predecessorIds), preparationIds: list(action.preparationIds), requires: inventory(action.requires ?? action.preconditions), provides: inventory(action.provides), consumes: inventory(action.consumes), sceneId: scene.id };
 }
 
 function compileCatalog(catalog) {
@@ -138,7 +137,7 @@ function permittedGroups(scene, acts) {
   const groupCounts = new Map(), exclusive = new Set();
   for (const a of acts) {
     const group = scene.activityGroups?.find(g => g.id === a.group);
-    const max = group?.max ?? ((a.mode === 'single' || a.compositionMode === 'exclusive') ? 1 : Infinity);
+    const max = group?.max ?? (a.mode === 'single' ? 1 : Infinity);
     const count = (groupCounts.get(a.group) || 0) + 1;
     groupCounts.set(a.group, count);
     if (count > max) return false;
@@ -168,21 +167,9 @@ function orderActivities(acts, completed) {
   }
   return { ordered };
 }
-function composeMinutes(scene, acts) {
-  // 顺序增量排在基础体验后；parallel按显式依赖计算关键路径，included不重复计时。
-  let sequentialEnd = scene.minutes, total = scene.minutes;
-  const ends = {}, schedule = [];
-  for (const a of acts) {
-    const dependencyEnd = Math.max(0, ...a.predecessorIds.map(id => ends[id] || 0));
-    let start, end;
-    if (a.compositionMode === 'included') {
-      start = dependencyEnd; end = start + a.minutes;
-      if (end > scene.minutes) return { error: fail('H_COMPOSITION', '包含型活动及其前置时长超过场景基础时长。') };
-    } else if (a.compositionMode === 'parallel') { start = dependencyEnd; end = start + a.minutes; }
-    else { start = Math.max(sequentialEnd, dependencyEnd); end = start + a.minutes; sequentialEnd = end; }
-    ends[a.id] = end; total = Math.max(total, end); schedule.push({ activityId: a.id, startOffset: start, endOffset: end, compositionMode: a.compositionMode });
-  }
-  return { minutes: total, schedule };
+function scheduleWithinScene(scene, acts) {
+  // 活动只在场景内执行，顺序记录依赖关系；阶段时长仅由场景决定，不分配活动耗时。
+  return acts.map((a, order) => ({ activityId: a.id, order, predecessorIds: a.predecessorIds, startOffset: 0, endOffset: scene.minutes, compositionMode: 'within_scene' }));
 }
 function resourceCheck(item, resources, completed) {
   const required = { ...inventory(item.preparationIds), ...item.requires };
@@ -243,8 +230,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (errors.length) return { errors };
     const ordering = orderActivities(acts, st.completed);
     if (ordering.error) return { errors: [ordering.error] };
-    const composition = composeMinutes(scene, ordering.ordered);
-    if (composition.error) return { errors: [composition.error] };
+    const schedule = scheduleWithinScene(scene, ordering.ordered);
     const resources = { ...st.resources }, completed = [...st.completed];
     let resourceError = resourceCheck(scene, resources, completed);
     if (resourceError) return { errors: [resourceError] };
@@ -262,7 +248,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const transit = transfer(st, scene, catalog);
     const uncertainty = ctx.robust ? integer(scene.uncertaintyMinutes, scene.indoor === false && ctx.weather === 'unknown' ? 5 : scene.reliable === false ? 10 : 0, 0, 120) : 0;
     const exactStart = anchor?.startMinute ?? choice.startMinute;
-    const isMeal = scene.kind === 'meal' || acts.some(a => a.exclusiveKey === 'main_meal');
+    const isMeal = scene.kind === 'meal' || acts.some(a => a.exclusiveKey === 'main_meal' || a.provides.meal_completed > 0);
     let slot = null;
     for (let wi = st.windowIndex; wi < ctx.windows.length; wi++) {
       const window = ctx.windows[wi];
@@ -271,17 +257,17 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
       const priorUncertainty = st.uncertaintyByWindow[window.id] || 0;
       const openWindows = scene.windows || scene.openWindows;
       const sceneWindows = Array.isArray(openWindows) && openWindows.length ? [...openWindows].sort((a, b) => (a.startMinute ?? a.start) - (b.startMinute ?? b.start)) : [{ startMinute: window.startMinute, endMinute: window.endMinute }];
-      const possible = sceneWindows.map(w => ({ start: exactStart ?? Math.max(earliest, w.startMinute ?? w.start), openEnd: w.endMinute ?? w.end, openStart: w.startMinute ?? w.start })).find(s => s.start >= earliest && (exactStart === undefined || s.start >= earliest + priorUncertainty) && s.start >= s.openStart && s.start + composition.minutes <= s.openEnd && s.start + composition.minutes + ctx.reserve + Math.max(0, priorUncertainty - (s.start - earliest)) + uncertainty <= window.endMinute);
+      const possible = sceneWindows.map(w => ({ start: exactStart ?? Math.max(earliest, w.startMinute ?? w.start), openEnd: w.endMinute ?? w.end, openStart: w.startMinute ?? w.start })).find(s => s.start >= earliest && (exactStart === undefined || s.start >= earliest + priorUncertainty) && s.start >= s.openStart && s.start + scene.minutes <= s.openEnd && s.start + scene.minutes + ctx.reserve + Math.max(0, priorUncertainty - (s.start - earliest)) + uncertainty <= window.endMinute);
       if (!possible) continue;
-      const start = possible.start, end = start + composition.minutes;
+      const start = possible.start, end = start + scene.minutes;
       const uncertaintyCarry = Math.max(0, priorUncertainty - (start - earliest)) + uncertainty;
       const uncertaintyTotal = st.uncertaintyTotal - priorUncertainty + uncertaintyCarry;
       const reserve = ctx.reserve + uncertaintyCarry;
       if (acts.some(a => a.windows?.length && !a.windows.some(w => {
-        const scheduled = composition.schedule.find(s => s.activityId === a.id);
+        const scheduled = schedule.find(s => s.activityId === a.id);
         return start + scheduled.startOffset >= (w.startMinute ?? w.start) && start + scheduled.endOffset <= (w.endMinute ?? w.end);
       }))) continue;
-      const used = start - depart + composition.minutes;
+      const used = start - depart + scene.minutes;
       if (st.usedMinutes + used + ctx.reserve + uncertaintyTotal > ctx.duration) continue;
       if (isMeal && st.mealWindows.includes(window.id)) continue;
       slot = { start, end, windowIndex: wi, windowId: window.id, wait: start - earliest, used, reserve, uncertainty, uncertaintyCarry, uncertaintyTotal }; break;
@@ -299,10 +285,16 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const restBase = Math.max(...st.fatigue) >= 3 ? 14 + Math.max(0, Math.max(...st.fatigue) - 3) * 12 : 2;
     const themeBonus = ctx.theme !== 'any' && (tags.includes(ctx.theme) || scene.theme === ctx.theme) ? 7 : 0;
     const fit = scene.kind === 'rest' ? restBase : scene.fit;
-    const defaults = list(scene.default ?? scene.defaultActivityIds);
-    const extraActivityPenalty = acts.filter(a => !defaults.includes(a.id)).reduce((sum, a) => sum + 4 + a.minutes * 0.25 + Math.max(0, a.load) * 2 + a.costCents[1] * 0.003, 0) * (1 - exploration / 100 * 0.7);
-    const resourcePenalty = costCents[1] * 0.001 + composition.minutes * 0.05;
-    const values = [matchA, matchB].map((matches, i) => Math.max(0, fit + matches * 18 + sharedInterest + generalPreference + goalBonus + themeBonus - comfortPenalty[i] - transit * 0.12 - extraActivityPenalty - resourcePenalty));
+    // 地点匹配不能替代实际体验。选中的活动按明示兴趣增益，同类玩法递减，默认勾选不参与效用。
+    const activityMatches = new Map();
+    for (const a of acts) for (const tag of a.tags) activityMatches.set(tag, (activityMatches.get(tag) || 0) + 1);
+    const experienceFor = preferences => preferences.reduce((sum, tag) => sum + (activityMatches.has(tag) ? 20 * (1 + 0.2 * (activityMatches.get(tag) - 1)) : 0), 0);
+    const activityExperience = [experienceFor(ctx.preferencesA), experienceFor(ctx.preferencesB)];
+    const sharedActivityExperience = ctx.preferencesA.filter(tag => ctx.preferencesB.includes(tag) && activityMatches.has(tag)).length * 8;
+    const generalActivityExperience = ctx.preferences.filter(tag => activityMatches.has(tag)).length * 5 + ctx.goals.filter(tag => activityMatches.has(tag)).length * 6;
+    const extraActivityPenalty = (2 * acts.length * (acts.length - 1) + acts.reduce((sum, a) => sum + 4 + Math.max(0, a.load) * 2 + a.costCents[1] * 0.003, 0)) * (1 - exploration / 100 * 0.7);
+    const resourcePenalty = costCents[1] * 0.001 + scene.minutes * 0.05;
+    const values = [matchA, matchB].map((matches, i) => Math.max(0, fit + matches * 18 + sharedInterest + generalPreference + goalBonus + themeBonus + activityExperience[i] + sharedActivityExperience + generalActivityExperience - comfortPenalty[i] - transit * 0.12 - extraActivityPenalty - resourcePenalty));
     const novelty = Math.max(scene.novelty, ...acts.map(a => number(a.novelty, 0)));
     const repeatFunctionPenalty = st.kinds.includes(scene.kind) ? 18 : 0;
     const repeatScenePenalty = st.visited.includes(scene.id) ? 36 : 0;
@@ -311,10 +303,10 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const newKind = st.kinds.includes(scene.kind) ? 0 : 1;
     const discounted = 0.88 ** st.stages.length;
     const stageComplexityPenalty = 8 * (2 * st.stages.length + 1);
-    const features = { preferenceA: matchA * 18, preferenceB: matchB * 18, sharedInterest, generalPreference, goalBonus, themeBonus, comfort: fit - (comfortPenalty[0] + comfortPenalty[1]) / 2, transferPenalty: -transit * 0.12, extraActivityPenalty: -extraActivityPenalty, resourcePenalty: -resourcePenalty, repeatFunctionPenalty: -repeatFunctionPenalty, repeatScenePenalty: -repeatScenePenalty, unnecessaryRestPenalty: -unnecessaryRestPenalty, stageComplexityPenalty: -stageComplexityPenalty, novelty: novelty * exploration / 100 * 0.55, variety: newKind * (4 + exploration * 0.06), ruleBonus, fairnessFloor: Math.min(...values) * 0.3 };
-    const local = ((values[0] + values[1]) / 2 * (0.7 - exploration * 0.002) + Math.min(...values) * 0.3 + features.novelty + features.variety + ruleBonus) * discounted - stageComplexityPenalty;
-    const stage = { sceneId: scene.id, activityIds: ids, minutes: composition.minutes, transfer: transit, wait: slot.wait, start: slot.start, end: slot.end, startMinute: slot.start, endMinute: slot.end, fixedStartMinute: exactStart ?? null, windowId: slot.windowId, cost: costCents.map(money), costCents, load: Math.max(...load), loadByPerson: { A: load[0], B: load[1] }, schedule: composition.schedule, reserve: slot.reserve, uncertaintyMinutes: uncertainty, tags, localUtility: local, featureContributions: features, trace: [...inferences.flatMap(i => i.trace), ...graph.trace, { ruleId: 'RESOURCE_ACCOUNTING', rule: 'RESOURCE_ACCOUNTING', message: '基础资源、活动编排、转场及缓冲统一核算；费用使用整数分', inputFacts: [{ id: 'composition', value: composition.schedule }], outputFacts: [{ id: 'costCents', value: costCents }, { id: 'minutes', value: composition.minutes }], evidenceIds: [], assertionKind: 'designed' }], warnings: list(inferences.flatMap(i => i.warnings)), preparationIds: list([...(scene.preparationIds || []), ...acts.flatMap(a => a.preparationIds)]), manual, ...(anchor ? { anchorId: anchor.id } : {}), realWorldStatus: 'needs_confirmation' };
+    const features = { preferenceA: matchA * 18, preferenceB: matchB * 18, sharedInterest, generalPreference, goalBonus, themeBonus, activityExperienceA: activityExperience[0], activityExperienceB: activityExperience[1], sharedActivityExperience, generalActivityExperience, comfort: fit - (comfortPenalty[0] + comfortPenalty[1]) / 2, transferPenalty: -transit * 0.12, extraActivityPenalty: -extraActivityPenalty, resourcePenalty: -resourcePenalty, repeatFunctionPenalty: -repeatFunctionPenalty, repeatScenePenalty: -repeatScenePenalty, unnecessaryRestPenalty: -unnecessaryRestPenalty, stageComplexityPenalty: -stageComplexityPenalty, novelty: novelty * exploration / 100 * 0.55, variety: newKind * (4 + exploration * 0.06), ruleBonus, fairnessFloor: Math.min(...values) * 0.3 };
+    const stage = { sceneId: scene.id, activityIds: ids, minutes: scene.minutes, transfer: transit, wait: slot.wait, start: slot.start, end: slot.end, startMinute: slot.start, endMinute: slot.end, fixedStartMinute: exactStart ?? null, windowId: slot.windowId, cost: costCents.map(money), costCents, load: Math.max(...load), loadByPerson: { A: load[0], B: load[1] }, schedule: schedule, reserve: slot.reserve, uncertaintyMinutes: uncertainty, tags, featureContributions: features, trace: [...inferences.flatMap(i => i.trace), ...graph.trace, { ruleId: 'RESOURCE_ACCOUNTING', rule: 'RESOURCE_ACCOUNTING', message: '阶段时长固定取场景，活动只改变费用、负担和资源；转场及缓冲照常核算，费用使用整数分', inputFacts: [{ id: 'composition', value: schedule }], outputFacts: [{ id: 'costCents', value: costCents }, { id: 'minutes', value: scene.minutes }], evidenceIds: [], assertionKind: 'designed' }], warnings: list(inferences.flatMap(i => i.warnings)), preparationIds: list([...(scene.preparationIds || []), ...acts.flatMap(a => a.preparationIds)]), manual, ...(anchor ? { anchorId: anchor.id } : {}), realWorldStatus: 'needs_confirmation' };
     const next = { ...st, time: slot.end, elapsed: slot.end - ctx.windows[0].startMinute, usedMinutes: st.usedMinutes + slot.used, windowIndex: slot.windowIndex, uncertaintyByWindow: { ...st.uncertaintyByWindow, [slot.windowId]: slot.uncertaintyCarry }, uncertaintyTotal: slot.uncertaintyTotal, costCents: st.costCents.map((n, i) => n + costCents[i]), cost: st.costCents.map((n, i) => money(n + costCents[i])), fatigue: fatigueAfter, resources, completed: list([...completed, scene.id]), visited: [...st.visited, scene.id], kinds: [...st.kinds, scene.kind], mealWindows: isMeal ? [...st.mealWindows, slot.windowId] : st.mealWindows, meal: st.meal || isMeal, hasRest: st.hasRest || scene.kind === 'rest', last: scene.id, lastKind: scene.kind, area: scene.area === 'current' ? st.area : scene.area, anchorIndex: st.anchorIndex + (anchor ? 1 : 0), utilities: st.utilities.map((v, i) => v + values[i] * discounted), novelty: st.novelty + novelty * discounted, variety: st.variety + newKind, ruleUtility: st.ruleUtility + ruleBonus * discounted, stages: [...st.stages, stage] };
+    stage.localUtility = objective(next, exploration) - objective(st, exploration);
     stage.before = stateSnapshot(st, ctx); stage.after = stateSnapshot(next, ctx); stage.stateBefore = stage.before; stage.stateAfter = stage.after;
     return { next, stage, errors: [] };
   }
@@ -326,6 +318,7 @@ function objective(st, exploration) {
   return mean * (0.7 - exploration * 0.002) + Math.min(...st.utilities) * 0.3 + st.novelty * exploration / 100 * 0.55 + st.variety * (4 + exploration * 0.06) + st.ruleUtility - 8 * st.stages.length ** 2;
 }
 function planKey(st) { return st.stages.map(s => `${s.sceneId}[${s.activityIds.join(',')}]@${s.start}`).join('/'); }
+function stateKey(st) { return `${planKey(st)}#${st.anchorIndex}`; }
 function orderStates(a, b, exploration) { return objective(b, exploration) - objective(a, exploration) || a.costCents[1] - b.costCents[1] || a.usedMinutes - b.usedMinutes || cmp(planKey(a), planKey(b)); }
 function metrics(st, ctx, exploration) {
   const mean = (st.utilities[0] + st.utilities[1]) / 2, high = Math.max(...st.utilities);
@@ -350,7 +343,9 @@ function errorResponse(status, errors, ctx, versions, extra = {}) {
 /** 有界束搜索；人工固定组合独立精确校验，不受活动枚举Top-K限制。 */
 export function planDate(input = {}, catalog, options = {}) {
   let ctx, compiled, prefix, anchors;
-  const versions = { engine: VERSION, rules: catalog?.rulesVersion || REASONING_VERSION, knowledge: catalog?.version || 'unversioned', data: catalog?.version || 'unversioned', score: CONFIG.scoreVersion, schema: 'datemate-3.0' };
+  const versions = { engine: VERSION, rules: catalog?.rulesVersion || REASONING_VERSION, knowledge: catalog?.version || 'unversioned', knowledgeRevision: catalog?.contentRevision || digest({scenes:catalog?.scenes,rules:catalog?.rules}), data: catalog?.version || 'unversioned', score: CONFIG.scoreVersion, schema: 'datemate-3.0' };
+  const expectedVersions = options.expectedVersions ?? input.expectedVersions;
+  if (expectedVersions && Object.entries(expectedVersions).some(([key, value]) => versions[key] !== value)) return errorResponse('invalid_input', [fail('H_VERSION', '复盘的引擎、知识或评分版本与当前版本不一致。')], null, versions);
   try { ctx = normalize(input); } catch (error) { return errorResponse('invalid_input', [error.message], null, versions); }
   try { compiled = compileCatalog(catalog); } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
   try {
@@ -362,10 +357,10 @@ export function planDate(input = {}, catalog, options = {}) {
   } catch (error) { return errorResponse('invalid_input', [error.message], ctx, versions); }
   const exploration = integer(options.exploration ?? input.exploration, 0, 0, 100);
   const rawConfig = { ...CONFIG, ...(input.searchConfig || {}), ...options };
-  const config = { method: rawConfig.method === 'exact' ? 'exact' : 'bounded', maxStages: integer(rawConfig.maxStages ?? rawConfig.maxDepth, CONFIG.maxStages, 1, 24), beamWidth: integer(rawConfig.beamWidth, CONFIG.beamWidth, 1, 2048), maxExpandedNodes: integer(rawConfig.maxExpandedNodes, CONFIG.maxExpandedNodes, 1, 1000000), activitySubsetLimit: integer(rawConfig.activitySubsetLimit, CONFIG.activitySubsetLimit, 1, 4096), candidateLimit: integer(rawConfig.candidateLimit, CONFIG.candidateLimit, 1, 64), tieBreak: 'stable-id' };
+  const config = { method: rawConfig.method === 'exact' ? 'exact' : 'bounded', maxStages: integer(rawConfig.maxStages ?? rawConfig.maxDepth, CONFIG.maxStages, 1, 24), beamWidth: integer(rawConfig.beamWidth, CONFIG.beamWidth, 1, 2048), maxExpandedNodes: integer(rawConfig.maxExpandedNodes, CONFIG.maxExpandedNodes, 1, 1000000), maxCandidateExpandedNodes: integer(rawConfig.maxCandidateExpandedNodes, CONFIG.maxCandidateExpandedNodes, 0, 100000), activitySubsetLimit: integer(rawConfig.activitySubsetLimit, CONFIG.activitySubsetLimit, 1, 4096), candidateLimit: integer(rawConfig.candidateLimit, CONFIG.candidateLimit, 1, 64), tieBreak: 'stable-id' };
   if (ctx.endAfterStage !== null) config.maxStages = Math.min(config.maxStages, ctx.endAfterStage + 1);
   if (prefix.length > config.maxStages) return errorResponse('invalid_input', [fail('H_PREFIX_LENGTH', '固定前缀超过主动结束位置或阶段上限。')], ctx, versions);
-  const stats = { ...config, expandedNodes: 0, generatedNodes: 0, feasibleNodes: 0, terminalPlans: 0, constraintRejections: {}, beamPruned: 0, activitySubsetsTruncated: false, nodeBudgetReached: false, maxDepthReached: false, provedOptimal: false, proofScope: '未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。' };
+  const stats = { ...config, expandedNodes: 0, candidateExpandedNodes: 0, candidateNodeBudgetReached: false, generatedNodes: 0, feasibleNodes: 0, terminalPlans: 0, constraintRejections: {}, beamPruned: 0, activitySubsetsTruncated: false, nodeBudgetReached: false, maxDepthReached: false, provedOptimal: false, proofScope: '未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。' };
   const subsets = new Map(compiled.scenes.map(s => [s.id, enumerateSubsets(s, config.activitySubsetLimit, stats)]));
   const evaluator = createEvaluator(ctx, compiled, catalog, exploration);
   let start = initial(ctx);
@@ -380,84 +375,123 @@ export function planDate(input = {}, catalog, options = {}) {
     start = checked.next;
   }
   const isComplete = st => st.stages.length > 0 && st.anchorIndex === anchors.length && (!ctx.mealNeed || st.meal);
-  const finished = [], history = new Map();
-  let beam = [start];
-  if (isComplete(start)) finished.push(start);
-  for (let depth = prefix.length; depth < config.maxStages && beam.length; depth++) {
-    const children = [];
-    for (const st of beam) {
-      if (stats.expandedNodes >= config.maxExpandedNodes) { stats.nodeBudgetReached = true; break; }
-      const pending = anchors[st.anchorIndex];
-      if (pending?.index !== undefined && pending.index < depth) continue;
-      const forceAnchor = pending?.index === depth;
-      const transitions = [];
-      const choices = forceAnchor ? [] : compiled.scenes.flatMap(scene => subsets.get(scene.id).map(activityIds => ({ choice: { sceneId: scene.id, activityIds }, anchor: null })));
-      if (pending && (pending.index === undefined || pending.index === depth)) choices.push({ choice: pending.choice, anchor: pending });
-      for (const item of choices) {
-        if (stats.expandedNodes >= config.maxExpandedNodes) { stats.nodeBudgetReached = true; break; }
-        stats.expandedNodes++;
-        const evaluated = evaluator.evaluate(st, item.choice, item.anchor);
-        if (evaluated.errors.length) { reject(evaluated.errors); continue; }
-        stats.feasibleNodes++; stats.generatedNodes++;
-        transitions.push(evaluated.next); children.push(evaluated.next);
-        if (isComplete(evaluated.next)) finished.push(evaluated.next);
-      }
-      history.set(planKey(st), transitions);
+  const automaticChoices = compiled.scenes.flatMap(scene => subsets.get(scene.id).map(activityIds => ({ choice: { sceneId: scene.id, activityIds }, anchor: null })));
+  function choicesFor(st, extra) {
+    const depth = st.stages.length, pending = anchors[st.anchorIndex];
+    if (pending?.index !== undefined && pending.index < depth) return [];
+    const choices = pending?.index === depth ? [] : [...automaticChoices];
+    if (pending && (pending.index === undefined || pending.index === depth)) choices.push({ choice: pending.choice, anchor: pending });
+    if (extra && (pending?.index !== depth || choiceEqual(extra.choice, pending.choice))) {
+      const same = choices.findIndex(item => canonical(item.choice) === canonical(extra.choice) && item.anchor?.id === extra.anchor?.id);
+      if (same >= 0) choices[same] = extra; else choices.unshift(extra);
     }
-    const unique = [...new Map(children.map(s => [`${planKey(s)}#${s.anchorIndex}`, s])).values()].sort((a, b) => orderStates(a, b, exploration));
-    const width = config.method === 'exact' ? unique.length : config.beamWidth;
-    stats.beamPruned += Math.max(0, unique.length - width); beam = unique.slice(0, width);
-    if (depth === config.maxStages - 1 && beam.length) stats.maxDepthReached = true;
-    if (stats.nodeBudgetReached) break;
+    return choices;
   }
+  // 人工阶段的反事实求解复用同一评估器，每轮调用共用固定节点预算，避免逐卡重跑规划器。
+  function searchFrom(root, nodeLimit, counterfactual = false, extra = null) {
+    const finished = [], history = new Map();
+    let beam = [root], expanded = 0, budgetReached = false;
+    if (isComplete(root)) finished.push(root);
+    for (let depth = root.stages.length; depth < config.maxStages && beam.length; depth++) {
+      const children = [];
+      for (const st of beam) {
+        if (expanded >= nodeLimit) { budgetReached = true; break; }
+        const transitions = [];
+        for (const item of choicesFor(st, st === root ? extra : null)) {
+          if (expanded >= nodeLimit) { budgetReached = true; break; }
+          expanded++;
+          const evaluated = evaluator.evaluate(st, item.choice, item.anchor, item.manual === true);
+          if (evaluated.errors.length) { if (!counterfactual) reject(evaluated.errors); continue; }
+          if (!counterfactual) { stats.feasibleNodes++; stats.generatedNodes++; }
+          transitions.push(evaluated.next); children.push(evaluated.next);
+          if (isComplete(evaluated.next)) finished.push(evaluated.next);
+        }
+        history.set(stateKey(st), transitions);
+      }
+      const unique = [...new Map(children.map(s => [stateKey(s), s])).values()].sort((a, b) => orderStates(a, b, exploration));
+      const width = config.method === 'exact' && !counterfactual ? unique.length : config.beamWidth;
+      if (!counterfactual) stats.beamPruned += Math.max(0, unique.length - width);
+      beam = unique.slice(0, width);
+      // 已选组合独立校验后也进入后续评估，不能被活动子集或局部Top-K悄悄排除。
+      if (counterfactual && depth === root.stages.length && extra) {
+        const own = unique.find(s => choiceEqual(s.stages.at(-1), extra.choice) && s.stages.at(-1).fixedStartMinute === (extra.anchor?.startMinute ?? extra.choice.startMinute ?? null));
+        if (own && !beam.includes(own)) beam.push(own);
+      }
+      if (!counterfactual && depth === config.maxStages - 1 && beam.length) stats.maxDepthReached = true;
+      if (budgetReached) break;
+    }
+    return { finished, history, expanded, budgetReached };
+  }
+  const searched = searchFrom(start, config.maxExpandedNodes);
+  const { finished, history } = searched;
+  stats.expandedNodes = searched.expanded; stats.nodeBudgetReached = searched.budgetReached;
   stats.terminalPlans = finished.length;
   stats.reasoningSnapshots = evaluator.reasoningCache.size;
   if (!finished.length) return errorResponse('no_plan_found', [fail('SEARCH_NO_PLAN', '有界搜索未找到同时满足前缀、锚点和必要目标的完整方案；不据此证明模型无解。')], ctx, versions, { prefix, exploration, search: stats, evaluated: stats.expandedNodes, paretoPlans: [] });
   finished.sort((a, b) => orderStates(a, b, exploration));
   const best = finished[0];
-  const continuationValues = new Map(), continuationStageCounts = new Map();
-  for (const terminal of finished) {
-    const value = objective(terminal, exploration);
-    for (let i = 0; i < terminal.stages.length; i++) {
-      const key = planKey({ stages: terminal.stages.slice(0, i + 1) });
-      if (!continuationValues.has(key) || continuationValues.get(key) < value) { continuationValues.set(key, value); continuationStageCounts.set(key, terminal.stages.length); }
+  function continuationValues(terminals, searchHistory) {
+    const values = new Map();
+    for (const terminal of terminals) {
+      const value = objective(terminal, exploration);
+      let anchorIndex = 0;
+      for (let i = 0; i < terminal.stages.length; i++) {
+        if (terminal.stages[i].anchorId) anchorIndex++;
+        const key = stateKey({ stages: terminal.stages.slice(0, i + 1), anchorIndex });
+        const evaluated = terminal.stages.length > i + 1 || searchHistory.has(key) || i + 1 === config.maxStages;
+        const old = values.get(key);
+        values.set(key, { value: Math.max(old?.value ?? -Infinity, value), evaluated: evaluated || old?.evaluated === true });
+      }
     }
+    return values;
   }
+  const mainContinuations = continuationValues(finished, history);
   let before = initial(ctx);
   const stages = best.stages.map((original, index) => {
-    const scoreForContinuation = (value, count) => {
-      const weights = Array.from({ length: Math.max(1, count - index) }, (_, j) => 0.88 ** (index + j)).reduce((a, b) => a + b, 0);
-      return clamp(Math.round((value - objective(before, exploration)) / weights), 1, 99);
-    };
-    let transitions = history.get(planKey(before));
-    if (!transitions) {
-      // 前缀是用户确认的结果，仍需展示从此前状态出发可修改的候选卡。
-      transitions = compiled.scenes.flatMap(scene => subsets.get(scene.id).map(activityIds => evaluator.evaluate(before, { sceneId: scene.id, activityIds }, null, true))).filter(r => !r.errors.length).map(r => r.next);
+    const anchor = original.anchorId ? anchors.find(a => a.id === original.anchorId) : null;
+    const replayChoice = { sceneId: original.sceneId, activityIds: original.activityIds, ...(original.fixedStartMinute !== null ? { startMinute: original.fixedStartMinute } : {}) };
+    const ownState = evaluator.evaluate(before, replayChoice, anchor, true).next;
+    const prefixUtility = objective(before, exploration), referenceUtility = 80 * 0.88 ** index;
+    const scoreReference = { version: CONFIG.scoreVersion, stageIndex: index, prefixUtility, referenceUtility, zeroUtilityScore: 50, label: '方案契合分', unit: 'points', range: [0, 100], method: 'signed_remaining_utility', formula: '50 + 50 * (q - prefixUtility) / (abs(q - prefixUtility) + referenceUtility)', scope: 'previous_stages_and_anchors', searchStatus: 'bounded_not_proved_optimal' };
+    // 单调映射使用本阶段共同参考尺；0效用为50分，正负收益均可区分，不以批内最高分强制100。
+    const scoreForContinuation = q => +(50 + 50 * (q - prefixUtility) / (Math.abs(q - prefixUtility) + referenceUtility)).toFixed(2);
+    let stageHistory = history, values = mainContinuations;
+    if (index < prefix.length) {
+      const remaining = config.maxCandidateExpandedNodes - stats.candidateExpandedNodes;
+      const budget = Math.floor(remaining / (prefix.length - index));
+      const counterfactual = searchFrom(before, budget, true, { choice: replayChoice, anchor, manual: true });
+      stats.candidateExpandedNodes += counterfactual.expanded;
+      stats.candidateNodeBudgetReached ||= counterfactual.budgetReached;
+      stageHistory = counterfactual.history;
+      // 保留此前阶段及锚点，释放当前与后续人工前缀；实际完整方案也是合法的已知后续。
+      values = continuationValues([...counterfactual.finished, best], stageHistory);
+    }
+    const transitions = [...(stageHistory.get(stateKey(before)) || []), ownState];
+    function entryFor(candidateState, knownPlan = false) {
+      const candidate = candidateState.stages.at(-1), key = stateKey(candidateState), completion = values.get(key);
+      const found = knownPlan || completion?.evaluated === true;
+      const q = found ? Math.max(completion?.value ?? -Infinity, knownPlan ? objective(best, exploration) : -Infinity) : null;
+      const fitScore = found ? scoreForContinuation(q) : null;
+      const evaluationStatus = found ? 'complete_continuation_found' : stageHistory.has(key) ? 'bounded_no_continuation_found' : 'continuation_not_evaluated';
+      return { sceneId: candidate.sceneId, activityIds: candidate.activityIds, minutes: candidate.minutes, transfer: candidate.transfer, cost: candidate.cost, costCents: candidate.costCents, load: candidate.load, start: candidate.start, end: candidate.end, localUtility: objective(candidateState, exploration) - prefixUtility, rawUtility: q, q, fitScore, score: fitScore, recommendationIndex: fitScore, scoreVersion: CONFIG.scoreVersion, scoreStatus: found ? 'evaluated' : 'pending', evaluationStatus, conditional: true, continuationFound: found, feasibilityStatus: found ? 'feasible_continuation_found' : 'local_feasible_future_not_proved', featureContributions: candidate.featureContributions };
     }
     const byScene = new Map();
     for (const candidateState of transitions) {
-      const candidate = candidateState.stages.at(-1);
-      const candidateKey = planKey(candidateState), completionValue = continuationValues.get(candidateKey);
-      const found = completionValue !== undefined;
-      const q = found ? completionValue : objective(candidateState, exploration);
-      const recommendationIndex = scoreForContinuation(q, continuationStageCounts.get(candidateKey) || index + 1);
-      const entry = { sceneId: candidate.sceneId, activityIds: candidate.activityIds, minutes: candidate.minutes, transfer: candidate.transfer, cost: candidate.cost, costCents: candidate.costCents, load: candidate.load, start: candidate.start, end: candidate.end, rawUtility: q, q, score: recommendationIndex, recommendationIndex, conditional: true, continuationFound: found, feasibilityStatus: found ? 'feasible_continuation_found' : 'local_feasible_future_not_proved', featureContributions: candidate.featureContributions };
+      const entry = entryFor(candidateState);
       const old = byScene.get(entry.sceneId);
-      if (!old || entry.q > old.q || entry.q === old.q && cmp(canonical(entry.activityIds), canonical(old.activityIds)) < 0) byScene.set(entry.sceneId, entry);
+      if (!old || Number(entry.continuationFound) > Number(old.continuationFound) || entry.continuationFound === old.continuationFound && ((entry.q ?? entry.localUtility) > (old.q ?? old.localUtility) || (entry.q ?? entry.localUtility) === (old.q ?? old.localUtility) && cmp(canonical(entry.activityIds), canonical(old.activityIds)) < 0)) byScene.set(entry.sceneId, entry);
     }
-    // 固定/已选场景的指数必须使用该卡真实选中的活动，不能拿另一玩法的分数替代。
-    const ownScore = scoreForContinuation(objective(best, exploration), best.stages.length);
-    const own = { sceneId: original.sceneId, activityIds: original.activityIds, minutes: original.minutes, transfer: original.transfer, cost: original.cost, costCents: original.costCents, load: original.load, start: original.start, end: original.end, rawUtility: objective(best, exploration), q: objective(best, exploration), score: ownScore, recommendationIndex: ownScore, conditional: true, continuationFound: true, feasibilityStatus: 'feasible_continuation_found', featureContributions: original.featureContributions };
+    // 选中卡仍使用实际活动组合的完整方案效用；人工锁定允许低于其他方案。
+    const own = entryFor(ownState, true);
     byScene.set(own.sceneId, own);
-    const ordered = [...byScene.values()].sort((a, b) => Number(b.continuationFound) - Number(a.continuationFound) || b.q - a.q || cmp(a.sceneId, b.sceneId));
-    const selectedIndex = ordered.findIndex(c => c.sceneId === own.sceneId);
-    if (selectedIndex >= config.candidateLimit) { ordered.splice(selectedIndex, 1); ordered.splice(config.candidateLimit - 1, 0, own); }
-    const stage = { ...original, index, score: own.score, recommendationIndex: own.score, rawUtility: own.rawUtility, candidates: ordered.slice(0, config.candidateLimit), manual: index < prefix.length, selected: true };
-    const anchor = original.anchorId ? anchors.find(a => a.id === original.anchorId) : null;
-    const replayChoice = { sceneId: original.sceneId, activityIds: original.activityIds, ...(original.fixedStartMinute !== null ? { startMinute: original.fixedStartMinute } : {}) };
-    before = evaluator.evaluate(before, replayChoice, anchor, true).next;
+    const orderEntries = (a, b) => Number(b.continuationFound) - Number(a.continuationFound) || (a.continuationFound ? b.q - a.q : 0) || cmp(a.sceneId, b.sceneId);
+    let ordered = [...byScene.values()].sort(orderEntries).slice(0, config.candidateLimit);
+    if (!ordered.some(c => c.sceneId === own.sceneId)) ordered = [...ordered.slice(0, config.candidateLimit - 1), own].sort(orderEntries);
+    const stage = { ...original, index, fitScore: own.fitScore, score: own.score, recommendationIndex: own.score, scoreStatus: own.scoreStatus, evaluationStatus: own.evaluationStatus, scoreVersion: own.scoreVersion, scoreReference, rawUtility: own.rawUtility, candidates: ordered, manual: index < prefix.length, selected: true };
+    before = ownState;
     return stage;
   });
+  stats.reasoningSnapshots = evaluator.reasoningCache.size;
   const measured = metrics(best, ctx, exploration);
   const assumptions = ['时间、费用、负担和恢复量为教学设计参数；实际开放、交通与双方感受仍需确认。', '费用区间为双人总额，约束使用整数分的上界。'];
   if (ctx.weather === 'unknown') assumptions.push('天气未提供，保留unknown；鲁棒模式对未知室外天气计入额外时间预留。');

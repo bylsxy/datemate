@@ -1,0 +1,1747 @@
+{
+  "_comment": "产生式规则手工源。when 是条件，then 是动作；引用地点、活动及 evidenceIds 须与手工源一致。",
+  "schemaVersion": "manual-knowledge-1.0",
+  "rules": [
+    {
+      "id": "R-fatigue-derive",
+      "title": "任意一方明显疲惫时推导恢复需求",
+      "priority": 100,
+      "strength": "hard",
+      "when": {
+        "all": [],
+        "any": [
+          {
+            "fact": "context.fatigueA",
+            "op": "gte",
+            "value": 6
+          },
+          {
+            "fact": "context.fatigueB",
+            "op": "gte",
+            "value": 6
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "set_fact",
+          "fact": "derived.needsRecovery",
+          "value": true
+        }
+      ],
+      "evidenceIds": [
+        "E-G003"
+      ],
+      "evidence": [
+        "E-G003"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-meal-derive",
+      "title": "明确需要正餐时建立用餐目标",
+      "priority": 98,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.mealNeed",
+            "op": "eq",
+            "value": true
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "set_fact",
+          "fact": "derived.needsMeal",
+          "value": true
+        }
+      ],
+      "evidenceIds": [
+        "E-C001"
+      ],
+      "evidence": [
+        "E-C001"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-short-derive",
+      "title": "短时间建立近距离目标",
+      "priority": 97,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.duration",
+            "op": "lte",
+            "value": 90
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "set_fact",
+          "fact": "derived.shortVisit",
+          "value": true
+        }
+      ],
+      "evidenceIds": [
+        "E-lab-time",
+        "E-G006"
+      ],
+      "evidence": [
+        "E-lab-time",
+        "E-G006"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-lowbudget-derive",
+      "title": "低预算推导节约目标",
+      "priority": 96,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.budget",
+            "op": "exists"
+          },
+          {
+            "fact": "context.budget",
+            "op": "lte",
+            "value": 80
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "set_fact",
+          "fact": "derived.saveBudget",
+          "value": true
+        }
+      ],
+      "evidenceIds": [
+        "E-P001",
+        "E-C001"
+      ],
+      "evidence": [
+        "E-P001",
+        "E-C001"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-fatigue-rest",
+      "title": "恢复需求优先安排休息",
+      "priority": 95,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "derived.needsRecovery",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.kind",
+            "op": "eq",
+            "value": "rest"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 30
+        }
+      ],
+      "evidenceIds": [
+        "E-G003"
+      ],
+      "evidence": [
+        "E-G003"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-fatigue-scene",
+      "title": "恢复需求过滤高负担场景",
+      "priority": 94,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "derived.needsRecovery",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.load",
+            "op": "gte",
+            "value": 4
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_scene",
+          "reason": "任意一方疲惫，当前场景负担较高"
+        }
+      ],
+      "evidenceIds": [
+        "E-G003"
+      ],
+      "evidence": [
+        "E-G003"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-fatigue-activity",
+      "title": "恢复需求过滤高负担活动",
+      "priority": 93,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "derived.needsRecovery",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "activity.load",
+            "op": "gte",
+            "value": 3
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "当前活动会增加较多累计负担"
+        }
+      ],
+      "evidenceIds": [
+        "E-G003"
+      ],
+      "evidence": [
+        "E-G003"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-rain-outdoor",
+      "title": "雨天过滤纯露天场景",
+      "priority": 90,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.weather",
+            "op": "eq",
+            "value": "rain"
+          },
+          {
+            "fact": "scene.indoor",
+            "op": "eq",
+            "value": false
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_scene",
+          "reason": "雨天与露天场景冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-G002",
+        "E-P001"
+      ],
+      "evidence": [
+        "E-G002",
+        "E-P001"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-rain-indoor",
+      "title": "雨天优先室内候选",
+      "priority": 89,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.weather",
+            "op": "eq",
+            "value": "rain"
+          },
+          {
+            "fact": "scene.indoor",
+            "op": "eq",
+            "value": true
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 12
+        }
+      ],
+      "evidenceIds": [
+        "E-G002"
+      ],
+      "evidence": [
+        "E-G002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-quiet-hard",
+      "title": "明确要求安静时过滤嘈杂候选",
+      "priority": 88,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.quietRequired",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.quiet",
+            "op": "eq",
+            "value": false
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_scene",
+          "reason": "场景与明确安静要求冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-G005",
+        "E-P009"
+      ],
+      "evidence": [
+        "E-G005",
+        "E-P009"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-crowd",
+      "title": "避人流时过滤高人流模型标签",
+      "priority": 87,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.crowdAvoidance",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.crowdRisk",
+            "op": "eq",
+            "value": "high"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_scene",
+          "reason": "避人流要求与高人流候选冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-P009"
+      ],
+      "evidence": [
+        "E-P009"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-diet-caffeine",
+      "title": "明确caffeine饮食限制过滤冲突活动",
+      "priority": 86,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.dietaryRestrictions",
+            "op": "contains",
+            "value": "caffeine"
+          },
+          {
+            "fact": "activity.dietaryTags",
+            "op": "contains",
+            "value": "caffeine"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "活动与明确饮食限制冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-C002"
+      ],
+      "evidence": [
+        "E-C002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-diet-cold",
+      "title": "明确cold饮食限制过滤冲突活动",
+      "priority": 86,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.dietaryRestrictions",
+            "op": "contains",
+            "value": "cold"
+          },
+          {
+            "fact": "activity.dietaryTags",
+            "op": "contains",
+            "value": "cold"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "活动与明确饮食限制冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-C002"
+      ],
+      "evidence": [
+        "E-C002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-diet-dairy",
+      "title": "明确dairy饮食限制过滤冲突活动",
+      "priority": 86,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.dietaryRestrictions",
+            "op": "contains",
+            "value": "dairy"
+          },
+          {
+            "fact": "activity.dietaryTags",
+            "op": "contains",
+            "value": "dairy"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "活动与明确饮食限制冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-C002"
+      ],
+      "evidence": [
+        "E-C002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-diet-gluten",
+      "title": "明确gluten饮食限制过滤冲突活动",
+      "priority": 86,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.dietaryRestrictions",
+            "op": "contains",
+            "value": "gluten"
+          },
+          {
+            "fact": "activity.dietaryTags",
+            "op": "contains",
+            "value": "gluten"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "活动与明确饮食限制冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-C002"
+      ],
+      "evidence": [
+        "E-C002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-diet-meat",
+      "title": "明确meat饮食限制过滤冲突活动",
+      "priority": 86,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.dietaryRestrictions",
+            "op": "contains",
+            "value": "meat"
+          },
+          {
+            "fact": "activity.dietaryTags",
+            "op": "contains",
+            "value": "meat"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "活动与明确饮食限制冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-C002"
+      ],
+      "evidence": [
+        "E-C002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-diet-raw",
+      "title": "明确raw饮食限制过滤冲突活动",
+      "priority": 86,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.dietaryRestrictions",
+            "op": "contains",
+            "value": "raw"
+          },
+          {
+            "fact": "activity.dietaryTags",
+            "op": "contains",
+            "value": "raw"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "活动与明确饮食限制冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-C002"
+      ],
+      "evidence": [
+        "E-C002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-diet-spicy",
+      "title": "明确spicy饮食限制过滤冲突活动",
+      "priority": 86,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "context.dietaryRestrictions",
+            "op": "contains",
+            "value": "spicy"
+          },
+          {
+            "fact": "activity.dietaryTags",
+            "op": "contains",
+            "value": "spicy"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "exclude_activity",
+          "reason": "活动与明确饮食限制冲突"
+        }
+      ],
+      "evidenceIds": [
+        "E-C002"
+      ],
+      "evidence": [
+        "E-C002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-prepare-agriculture_museum-opening_checked",
+      "title": "agriculture_museum需要准备opening_checked",
+      "priority": 80,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "scene.id",
+            "op": "eq",
+            "value": "agriculture_museum"
+          },
+          {
+            "fact": "context.preparedIds",
+            "op": "not_contains",
+            "value": "opening_checked"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "require_preparation",
+          "preparationId": "opening_checked",
+          "id": "opening_checked",
+          "message": "候选需要先确认准备事项"
+        }
+      ],
+      "evidenceIds": [
+        "E-G006"
+      ],
+      "evidence": [
+        "E-G006"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-prepare-badminton-badminton_kit",
+      "title": "badminton需要准备badminton_kit",
+      "priority": 80,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "activity.id",
+            "op": "in",
+            "value": [
+              "badminton_rally"
+            ]
+          },
+          {
+            "fact": "context.preparedIds",
+            "op": "not_contains",
+            "value": "badminton_kit"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "require_preparation",
+          "preparationId": "badminton_kit",
+          "id": "badminton_kit",
+          "message": "候选需要先确认准备事项"
+        }
+      ],
+      "evidenceIds": [
+        "E-G006"
+      ],
+      "evidence": [
+        "E-G006"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-prepare-campus_picnic-picnic_mat",
+      "title": "campus_picnic需要准备picnic_mat",
+      "priority": 80,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "scene.id",
+            "op": "eq",
+            "value": "campus_picnic"
+          },
+          {
+            "fact": "context.preparedIds",
+            "op": "not_contains",
+            "value": "picnic_mat"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "require_preparation",
+          "preparationId": "picnic_mat",
+          "id": "picnic_mat",
+          "message": "候选需要先确认准备事项"
+        }
+      ],
+      "evidenceIds": [
+        "E-G006"
+      ],
+      "evidence": [
+        "E-G006"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-prepare-campus_tabletennis-ball",
+      "title": "campus_tabletennis需要准备ball",
+      "priority": 80,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "activity.id",
+            "op": "in",
+            "value": [
+              "pingpong_rally",
+              "pingpong_teach"
+            ]
+          },
+          {
+            "fact": "context.preparedIds",
+            "op": "not_contains",
+            "value": "ball"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "require_preparation",
+          "preparationId": "ball",
+          "id": "ball",
+          "message": "候选需要先确认准备事项"
+        }
+      ],
+      "evidenceIds": [
+        "E-campus-note"
+      ],
+      "evidence": [
+        "E-campus-note"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-prepare-campus_tabletennis-racket",
+      "title": "campus_tabletennis需要准备racket",
+      "priority": 80,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "activity.id",
+            "op": "in",
+            "value": [
+              "pingpong_rally",
+              "pingpong_teach"
+            ]
+          },
+          {
+            "fact": "context.preparedIds",
+            "op": "not_contains",
+            "value": "racket"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "require_preparation",
+          "preparationId": "racket",
+          "id": "racket",
+          "message": "候选需要先确认准备事项"
+        }
+      ],
+      "evidenceIds": [
+        "E-campus-note"
+      ],
+      "evidence": [
+        "E-campus-note"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-prepare-ice-closed_shoes",
+      "title": "ice需要准备closed_shoes",
+      "priority": 80,
+      "strength": "hard",
+      "when": {
+        "all": [
+          {
+            "fact": "activity.id",
+            "op": "in",
+            "value": [
+              "ice_slow",
+              "ice_practice"
+            ]
+          },
+          {
+            "fact": "context.preparedIds",
+            "op": "not_contains",
+            "value": "closed_shoes"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "require_preparation",
+          "preparationId": "closed_shoes",
+          "id": "closed_shoes",
+          "message": "候选需要先确认准备事项"
+        }
+      ],
+      "evidenceIds": [
+        "E-G006"
+      ],
+      "evidence": [
+        "E-G006"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-meal-prefer",
+      "title": "用餐目标优先正餐",
+      "priority": 70,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "derived.needsMeal",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.kind",
+            "op": "eq",
+            "value": "meal"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 28
+        }
+      ],
+      "evidenceIds": [
+        "E-C001"
+      ],
+      "evidence": [
+        "E-C001"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-short-near",
+      "title": "短时间优先附近与校内",
+      "priority": 65,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "derived.shortVisit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.area",
+            "op": "in",
+            "value": [
+              "campus",
+              "near",
+              "current"
+            ]
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 12
+        }
+      ],
+      "evidenceIds": [
+        "E-lab-time"
+      ],
+      "evidence": [
+        "E-lab-time"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-indoor-soft",
+      "title": "室内偏好优先室内候选",
+      "priority": 60,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferences",
+            "op": "contains",
+            "value": "indoor"
+          },
+          {
+            "fact": "scene.indoor",
+            "op": "eq",
+            "value": true
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 10
+        }
+      ],
+      "evidenceIds": [
+        "E-G002"
+      ],
+      "evidence": [
+        "E-G002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-quiet-soft",
+      "title": "轻度安静偏好优先安静场景",
+      "priority": 60,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferences",
+            "op": "contains",
+            "value": "quiet"
+          },
+          {
+            "fact": "scene.quiet",
+            "op": "eq",
+            "value": true
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 10
+        }
+      ],
+      "evidenceIds": [
+        "E-G005"
+      ],
+      "evidence": [
+        "E-G005"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-theme-daily",
+      "title": "日常主题优先生活化场景",
+      "priority": 60,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.theme",
+            "op": "eq",
+            "value": "daily"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "daily"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 14
+        }
+      ],
+      "evidenceIds": [
+        "E-P010"
+      ],
+      "evidence": [
+        "E-P010"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-theme-fresh",
+      "title": "新鲜主题优先探索型候选",
+      "priority": 60,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.theme",
+            "op": "eq",
+            "value": "fresh"
+          },
+          {
+            "fact": "scene.novelty",
+            "op": "gte",
+            "value": 60
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 14
+        }
+      ],
+      "evidenceIds": [
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-theme-romantic",
+      "title": "浪漫主题优先明确氛围标签",
+      "priority": 60,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.theme",
+            "op": "eq",
+            "value": "romantic"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "romantic"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 14
+        }
+      ],
+      "evidenceIds": [
+        "E-P008"
+      ],
+      "evidence": [
+        "E-P008"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-creative",
+      "title": "双方共同creative兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "creative"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "creative"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "creative"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-culture",
+      "title": "双方共同culture兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "culture"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "culture"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "culture"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-exercise",
+      "title": "双方共同exercise兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "exercise"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "exercise"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "exercise"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-food",
+      "title": "双方共同food兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "food"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "food"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "food"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-learning",
+      "title": "双方共同learning兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "learning"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "learning"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "learning"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-music",
+      "title": "双方共同music兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "music"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "music"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "music"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-nature",
+      "title": "双方共同nature兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "nature"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "nature"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "nature"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-photo",
+      "title": "双方共同photo兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "photo"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "photo"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "photo"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-play",
+      "title": "双方共同play兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "play"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "play"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "play"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-shared-romantic",
+      "title": "双方共同romantic兴趣优先匹配",
+      "priority": 58,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.preferencesA",
+            "op": "contains",
+            "value": "romantic"
+          },
+          {
+            "fact": "context.preferencesB",
+            "op": "contains",
+            "value": "romantic"
+          },
+          {
+            "fact": "scene.tags",
+            "op": "contains",
+            "value": "romantic"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 16
+        }
+      ],
+      "evidenceIds": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "evidence": [
+        "E-C004",
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-robust",
+      "title": "稳妥模式优先室内固定场景",
+      "priority": 55,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "context.robust",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.indoor",
+            "op": "eq",
+            "value": true
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 4
+        }
+      ],
+      "evidenceIds": [
+        "E-G005"
+      ],
+      "evidence": [
+        "E-G005"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-opening-confirm",
+      "title": "文化设施需要核对可用性",
+      "priority": 45,
+      "strength": "hint",
+      "when": {
+        "all": [
+          {
+            "fact": "context.robust",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.preparationIds",
+            "op": "contains",
+            "value": "opening_checked"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "add_warning",
+          "message": "设施名称线索需要通过开放与预约确认后才能使用"
+        }
+      ],
+      "evidenceIds": [
+        "E-game-c73b126a",
+        "E-campus-museum"
+      ],
+      "evidence": [
+        "E-game-c73b126a",
+        "E-campus-museum"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-photo-consent",
+      "title": "需明确同意的活动确认双方意愿",
+      "priority": 45,
+      "strength": "hint",
+      "when": {
+        "all": [
+          {
+            "fact": "activity.requiresExplicitConsent",
+            "op": "eq",
+            "value": true
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "add_warning",
+          "message": "此活动需要双方明确愿意，可随时取消或调整。"
+        }
+      ],
+      "evidenceIds": [
+        "E-P007"
+      ],
+      "evidence": [
+        "E-P007"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-short-off",
+      "title": "短时间提示远距离成本",
+      "priority": 45,
+      "strength": "hint",
+      "when": {
+        "all": [
+          {
+            "fact": "derived.shortVisit",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.area",
+            "op": "eq",
+            "value": "off"
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "add_warning",
+          "message": "短时行程需额外核对往返时间"
+        }
+      ],
+      "evidenceIds": [
+        "E-G006"
+      ],
+      "evidence": [
+        "E-G006"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-weather-unknown",
+      "title": "天气未知时提示核对露天计划",
+      "priority": 40,
+      "strength": "hint",
+      "when": {
+        "all": [
+          {
+            "fact": "context.weather",
+            "op": "eq",
+            "value": "unknown"
+          },
+          {
+            "fact": "scene.indoor",
+            "op": "eq",
+            "value": false
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "add_warning",
+          "message": "露天阶段需要出发前确认天气"
+        }
+      ],
+      "evidenceIds": [
+        "E-G002"
+      ],
+      "evidence": [
+        "E-G002"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    },
+    {
+      "id": "R-lowbudget-free",
+      "title": "节约目标优先免费基线",
+      "priority": 35,
+      "strength": "soft",
+      "when": {
+        "all": [
+          {
+            "fact": "derived.saveBudget",
+            "op": "eq",
+            "value": true
+          },
+          {
+            "fact": "scene.cost.1",
+            "op": "eq",
+            "value": 0
+          }
+        ]
+      },
+      "then": [
+        {
+          "action": "prefer_scene",
+          "amount": 8
+        }
+      ],
+      "evidenceIds": [
+        "E-C001"
+      ],
+      "evidence": [
+        "E-C001"
+      ],
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "enabled": true
+    }
+  ]
+}

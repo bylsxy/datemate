@@ -272,7 +272,10 @@
       "printed_photo",
       "shared_sketch",
       "handmade_card",
-      "meal_completed"
+      "meal_completed",
+      "boardgame_kit",
+      "venue_checked",
+      "booking_checked"
     ],
     "subjectTypes": [
       "couple",

@@ -1,14 +1,14 @@
 {
-  "version": "knowledge-3.0.1",
+  "version": "knowledge-4.0.0",
   "checks": {
     "status": "passed",
-    "assertions": 23,
-    "sceneCount": 38,
-    "activityCount": 66,
+    "sceneCount": 33,
+    "activityCount": 68,
+    "activityPlacementCount": 70,
     "ruleCount": 47,
-    "evidenceCount": 48,
-    "graphNodeCount": 383,
-    "graphEdgeCount": 544,
+    "evidenceCount": 52,
+    "graphNodeCount": 390,
+    "graphEdgeCount": 662,
     "sourceCount": 151,
     "scannedSourceCount": 151,
     "adoptedSourceCount": 26,
@@ -38,10 +38,28 @@
     "communication": 9386,
     "consent": 246
   },
-  "processingPolicy": "全文本扫描与哈希登记；关键词用于候选发现，正式采用项以定位证据为准。原始材料不写入公开数据。",
   "prototypeSha256": "0fbb3c5b631f55a9902d84a00d9992376c491bc2fd726bbdafff5ad408c44896",
-  "buildScriptSha256": "ac8343f3231bcb42c032f8ee8ce801a1fe7a42a3468a0593b106617d51bdf145",
-  "catalogContentSha256": "a2c3124114ab86911e8f974649b3fe0b58faad234c1fdbac8171515b763ec7fd",
+  "processingPolicy": "手工 UTF-8 JSON 为唯一编辑源；耗时由地点固定时长决定。原始语料抽取仅产生候选，发布只含原创摘要与设计参数。",
+  "durationPolicy": "scene_only",
+  "sourceFiles": [
+    "knowledge/scenes.json",
+    "knowledge/activities.json",
+    "knowledge/rules.json",
+    "knowledge/metadata.json",
+    "knowledge/evidence.json",
+    "knowledge/source-registry.json",
+    "knowledge/conditions.json"
+  ],
+  "sourceHashes": {
+    "scenes.json": "9fc47dbb6dad0b6ad9244eada88a4b3ff2924a2a8fe86964c5bf0c972d937286",
+    "activities.json": "c4c13bd9a1041057d9b58964f7a790bcfd25fa0122e235c4aee537f91f704cbd",
+    "rules.json": "304735ebc6a9fc98371cafed6a0f0b262efb2d89b13ff4e145bf6a660f31d923",
+    "metadata.json": "4d8de63a8ec4b3e3f4b90f2e25a8824798aca3402bc0633cfa1c5a8eb24eec7e",
+    "evidence.json": "ab6179013475de59e66684efb2bb9a5eb1254005bb949c2b093e966d3ecccca6",
+    "source-registry.json": "a1851738ed3ec0eaa206813e46230413a227c6507a44786dac523b7074271792",
+    "conditions.json": "2f24bbc77487fa175a71e67158203c6d7b9eb8d3cb094cfd896d11b68ab9a619"
+  },
+  "catalogContentSha256": "32959aa3d50d0ab75d32627831a8ec18dc1373dc9c8f91bd462cff9af56ce2cc",
   "defaultContext": {
     "duration": 180,
     "budget": null,
@@ -87,6 +105,9 @@
     "printed_photo": "已冲印照片",
     "shared_sketch": "共同速写",
     "handmade_card": "手作卡片",
-    "meal_completed": "已完成正餐"
+    "meal_completed": "已完成正餐",
+    "boardgame_kit": "已准备桌游或卡牌",
+    "venue_checked": "已确认场地允许所选活动",
+    "booking_checked": "已确认场次与预约"
   }
 }

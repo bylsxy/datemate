@@ -4,11 +4,10 @@ import { createHash } from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const project = fileURLToPath(new URL('..', import.meta.url));
-const python = process.env.DATEMATE_PYTHON || 'python';
 const files = ['catalog.json','catalog.mjs','activities.mjs','rules.json','graph.json','source-registry.json','evidence.json','conditions.json','extraction-report.json'];
 const hashes = () => Object.fromEntries(files.map(name => [name, createHash('sha256').update(readFileSync(new URL(`../data/${name}`, import.meta.url))).digest('hex')]));
 function rebuild() {
-  const r = spawnSync(python, ['tools/build_knowledge.py'], {cwd:project, encoding:'utf8', timeout:60000, env:{...process.env,PYTHONUTF8:'1',PYTHONIOENCODING:'utf-8'}});
+  const r = spawnSync(process.execPath, ['tools/build_catalog.mjs'], {cwd:project, encoding:'utf8', timeout:60000});
   if (r.status !== 0) throw Error(r.stderr || r.error?.message || '知识构建失败');
 }
 // 统一LF使Windows生成字节与GitHub发布字节一致，再比较两次完整构建。

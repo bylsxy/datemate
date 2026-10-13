@@ -1,30 +1,32 @@
 {
   "status": "passed_with_recorded_scope",
   "browser": "Codex in-app Chromium",
-  "knowledge": "knowledge-3.0.1",
-  "engine": "datemate-engine-3.0.2",
-  "score": "utility-3.0.1",
+  "knowledge": "knowledge-4.0.0",
+  "engine": "datemate-engine-3.0.4",
+  "score": "planning-fit-3.0.2",
   "publicUrl": "https://bylsxy.github.io/datemate/",
   "checks": {
     "zeroInputPlan": "passed",
-    "naturalPhotoPreferencesChangeRoute": "passed",
-    "rainChangesOutdoorToIndoor": "passed",
-    "bothTiredMovesRestToBeginning": "passed",
+    "minimalHomeAndDefaultClosedConditions": "passed",
+    "technicalEntriesOnlyInsideBottomMenu": "passed",
+    "aboutVersionsHiddenUntilOpened": "passed",
+    "scoreAtCardTopRightWithSharedScale": "passed",
+    "selectedCardKeepsOriginalOrderAndCenters": "passed",
+    "firstAndLastCenterErrorWithinOnePixel": "passed",
+    "edgeCardsScaleDownWithoutChangingSelection": "passed",
+    "immediateHighlightAndSkeletonBeforeWorkerResponse": "passed",
+    "sceneClockUnchangedByActivitySelection": "passed",
+    "activityLabelsHaveNoDurationOrPrice": "passed",
+    "moneyOnlyInFinalBalanceLine": "passed",
+    "plainLanguageReasons": "passed",
     "threeMallActivitiesStaySelected": "passed",
     "restHasNoActivitiesAndPlanContinues": "passed",
-    "twoHopGraphPathAndForwardChainVisible": "passed",
-    "explicitConsentSelectionAndActivityEvidence": "passed",
-    "explorationZeroNinetyZeroFingerprint": "passed",
     "exportImportReplayFingerprint": "passed",
-    "differentPreferencesAndParetoComparison": "passed",
-    "longDesktopSidebarControlsReachable": "passed",
-    "keyboardFocusAfterReplanning": "passed",
-    "mobile390x844NoPageHorizontalOverflow": "passed",
-    "singleHtmlRunsWithNoExternalScriptOrStylesheet": "passed",
-    "singleHtmlThreeActivityRestContinuation": "passed"
+    "mobile390x844NoPageHorizontalOverflow": "passed"
   },
   "limits": {
     "directFileProtocol": "not_tested: automation browser URL policy permits only http and https",
     "wechatSafariRealDevicesAndMobileNetwork": "not_tested"
-  }
+  },
+  "scope": "本轮真实浏览器交互；固定场景时长与极简首页。离线和公网在发布前分别验收。"
 }

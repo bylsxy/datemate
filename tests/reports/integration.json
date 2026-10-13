@@ -1,635 +1,391 @@
 {
-  "environment": {
-    "node": "v24.19.0",
-    "platform": "win32"
-  },
-  "dataVersion": "knowledge-3.0.1",
-  "counts": {
-    "scenes": 38,
-    "activities": 66,
-    "rules": 47,
-    "edges": 544,
-    "sources": 151
-  },
+  "dataVersion": "knowledge-4.0.0",
+  "contentRevision": "73b1f64b36bdc9d7",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 418.81,
+      "elapsedMs": 446.1613,
       "status": "feasible",
-      "scenes": [
-        "mall",
-        "arcade",
-        "quiet_talk",
-        "supermarket"
-      ],
-      "activityIds": [
-        [],
-        [],
-        [],
-        []
-      ],
-      "cost": [
-        15,
-        25
-      ],
-      "metrics": {
-        "totalMinutes": 125,
-        "elapsedMinutes": 125,
-        "totalCost": [
-          15,
-          25
-        ],
-        "totalCostCents": [
-          1500,
-          2500
-        ],
-        "budgetHighCents": null,
-        "remainingBudgetCents": null,
-        "utilityA": 267.299,
-        "utilityB": 267.299,
-        "meanUtility": 267.299,
-        "fairness": 1,
-        "novelty": 37.817,
-        "variety": 4,
-        "objective": 168.643,
-        "predictedLoadByPerson": {
-          "A": 4,
-          "B": 4
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "start": 860,
+          "end": 920,
+          "fitScore": 83.38
         },
-        "mealSatisfied": true,
-        "anchorsSatisfied": true,
-        "endingBuffer": 55,
-        "robustReserve": 15,
-        "totalUncertaintyMinutes": 0,
-        "uncertaintyByWindow": {
-          "default": 0
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 930,
+          "end": 960,
+          "fitScore": 75.97
         },
-        "reserveSatisfied": true,
-        "preparationsRemaining": []
-      },
-      "search": {
-        "method": "bounded",
-        "maxStages": 8,
-        "beamWidth": 24,
-        "maxExpandedNodes": 18000,
-        "activitySubsetLimit": 64,
-        "candidateLimit": 20,
-        "tieBreak": "stable-id",
-        "expandedNodes": 17145,
-        "generatedNodes": 4883,
-        "feasibleNodes": 4883,
-        "terminalPlans": 4883,
-        "constraintRejections": {
-          "H_PREPARATION": 3556,
-          "H_RANGE": 2667,
-          "H_CONSENT": 2159,
-          "H_REST_USE": 40,
-          "H_TIME_WINDOW": 4091,
-          "H_LOAD": 255,
-          "H_REST_LOOP": 2
-        },
-        "beamPruned": 4757,
-        "activitySubsetsTruncated": false,
-        "nodeBudgetReached": false,
-        "maxDepthReached": false,
-        "provedOptimal": false,
-        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
-        "reasoningSnapshots": 832
-      },
-      "digest": "8673a91d"
-    },
-    {
-      "label": "exploration90",
-      "elapsedMs": 302.14,
-      "status": "feasible",
-      "scenes": [
-        "supermarket",
-        "quiet_talk",
-        "arcade",
-        "mall"
-      ],
-      "activityIds": [
-        [
-          "super_exchange"
-        ],
-        [],
-        [],
-        []
-      ],
-      "cost": [
-        25,
-        45
-      ],
-      "metrics": {
-        "totalMinutes": 135,
-        "elapsedMinutes": 135,
-        "totalCost": [
-          25,
-          45
-        ],
-        "totalCostCents": [
-          2500,
-          4500
-        ],
-        "budgetHighCents": null,
-        "remainingBudgetCents": null,
-        "utilityA": 255.714,
-        "utilityB": 255.714,
-        "meanUtility": 255.714,
-        "fairness": 1,
-        "novelty": 51.229,
-        "variety": 4,
-        "objective": 234.062,
-        "predictedLoadByPerson": {
-          "A": 5,
-          "B": 5
-        },
-        "mealSatisfied": true,
-        "anchorsSatisfied": true,
-        "endingBuffer": 45,
-        "robustReserve": 15,
-        "totalUncertaintyMinutes": 0,
-        "uncertaintyByWindow": {
-          "default": 0
-        },
-        "reserveSatisfied": true,
-        "preparationsRemaining": []
-      },
-      "search": {
-        "method": "bounded",
-        "maxStages": 8,
-        "beamWidth": 24,
-        "maxExpandedNodes": 18000,
-        "activitySubsetLimit": 64,
-        "candidateLimit": 20,
-        "tieBreak": "stable-id",
-        "expandedNodes": 16335,
-        "generatedNodes": 3532,
-        "feasibleNodes": 3532,
-        "terminalPlans": 3532,
-        "constraintRejections": {
-          "H_PREPARATION": 3360,
-          "H_RANGE": 2541,
-          "H_CONSENT": 2057,
-          "H_REST_USE": 12,
-          "H_TIME_WINDOW": 4833,
-          "H_LOAD": 311,
-          "H_RULE_ACTIVITY": 210,
-          "H_RULE_SCENE": 70,
-          "H_REST_LOOP": 5
-        },
-        "beamPruned": 3412,
-        "activitySubsetsTruncated": false,
-        "nodeBudgetReached": false,
-        "maxDepthReached": false,
-        "provedOptimal": false,
-        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
-        "reasoningSnapshots": 832
-      },
-      "digest": "150b1464"
-    },
-    {
-      "label": "baseline-replayed",
-      "elapsedMs": 288.19,
-      "status": "feasible",
-      "scenes": [
-        "mall",
-        "arcade",
-        "quiet_talk",
-        "supermarket"
-      ],
-      "activityIds": [
-        [],
-        [],
-        [],
-        []
-      ],
-      "cost": [
-        15,
-        25
-      ],
-      "metrics": {
-        "totalMinutes": 125,
-        "elapsedMinutes": 125,
-        "totalCost": [
-          15,
-          25
-        ],
-        "totalCostCents": [
-          1500,
-          2500
-        ],
-        "budgetHighCents": null,
-        "remainingBudgetCents": null,
-        "utilityA": 267.299,
-        "utilityB": 267.299,
-        "meanUtility": 267.299,
-        "fairness": 1,
-        "novelty": 37.817,
-        "variety": 4,
-        "objective": 168.643,
-        "predictedLoadByPerson": {
-          "A": 4,
-          "B": 4
-        },
-        "mealSatisfied": true,
-        "anchorsSatisfied": true,
-        "endingBuffer": 55,
-        "robustReserve": 15,
-        "totalUncertaintyMinutes": 0,
-        "uncertaintyByWindow": {
-          "default": 0
-        },
-        "reserveSatisfied": true,
-        "preparationsRemaining": []
-      },
-      "search": {
-        "method": "bounded",
-        "maxStages": 8,
-        "beamWidth": 24,
-        "maxExpandedNodes": 18000,
-        "activitySubsetLimit": 64,
-        "candidateLimit": 20,
-        "tieBreak": "stable-id",
-        "expandedNodes": 17145,
-        "generatedNodes": 4883,
-        "feasibleNodes": 4883,
-        "terminalPlans": 4883,
-        "constraintRejections": {
-          "H_PREPARATION": 3556,
-          "H_RANGE": 2667,
-          "H_CONSENT": 2159,
-          "H_REST_USE": 40,
-          "H_TIME_WINDOW": 4091,
-          "H_LOAD": 255,
-          "H_REST_LOOP": 2
-        },
-        "beamPruned": 4757,
-        "activitySubsetsTruncated": false,
-        "nodeBudgetReached": false,
-        "maxDepthReached": false,
-        "provedOptimal": false,
-        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
-        "reasoningSnapshots": 832
-      },
-      "digest": "8673a91d"
-    },
-    {
-      "label": "mall-three",
-      "elapsedMs": 196.87,
-      "status": "feasible",
-      "scenes": [
-        "mall",
-        "rest",
-        "quiet_talk",
-        "groceries"
-      ],
-      "activityIds": [
-        [
-          "mall_arcade",
-          "mall_snacks",
-          "mall_stores"
-        ],
-        [],
-        [],
-        []
-      ],
-      "cost": [
-        30,
-        55
-      ],
-      "metrics": {
-        "totalMinutes": 165,
-        "elapsedMinutes": 165,
-        "totalCost": [
-          30,
-          55
-        ],
-        "totalCostCents": [
-          3000,
-          5500
-        ],
-        "budgetHighCents": null,
-        "remainingBudgetCents": null,
-        "utilityA": 196.815,
-        "utilityB": 196.815,
-        "meanUtility": 196.815,
-        "fairness": 1,
-        "novelty": 31.229,
-        "variety": 4,
-        "objective": 140.398,
-        "predictedLoadByPerson": {
-          "A": 3,
-          "B": 3
-        },
-        "mealSatisfied": true,
-        "anchorsSatisfied": true,
-        "endingBuffer": 15,
-        "robustReserve": 15,
-        "totalUncertaintyMinutes": 0,
-        "uncertaintyByWindow": {
-          "default": 0
-        },
-        "reserveSatisfied": true,
-        "preparationsRemaining": []
-      },
-      "search": {
-        "method": "bounded",
-        "maxStages": 8,
-        "beamWidth": 24,
-        "maxExpandedNodes": 18000,
-        "activitySubsetLimit": 64,
-        "candidateLimit": 20,
-        "tieBreak": "stable-id",
-        "expandedNodes": 7290,
-        "generatedNodes": 114,
-        "feasibleNodes": 114,
-        "terminalPlans": 115,
-        "constraintRejections": {
-          "H_PREPARATION": 1452,
-          "H_RANGE": 1134,
-          "H_CONSENT": 918,
-          "H_LOAD": 368,
-          "H_RULE_ACTIVITY": 450,
-          "H_RULE_SCENE": 150,
-          "H_TIME_WINDOW": 3155,
-          "H_REST_LOOP": 4,
-          "H_REST_USE": 1
-        },
-        "beamPruned": 61,
-        "activitySubsetsTruncated": false,
-        "nodeBudgetReached": false,
-        "maxDepthReached": false,
-        "provedOptimal": false,
-        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
-        "reasoningSnapshots": 1456
-      },
-      "digest": "752484e7"
-    },
-    {
-      "label": "rain-budget",
-      "elapsedMs": 262.85,
-      "status": "feasible",
-      "scenes": [
-        "mall",
-        "quiet_talk",
-        "supermarket",
-        "music_corner"
-      ],
-      "activityIds": [
-        [],
-        [],
-        [],
-        []
+        {
+          "sceneId": "public_lounge",
+          "activityIds": [],
+          "start": 970,
+          "end": 1000,
+          "fitScore": 64.54
+        }
       ],
       "cost": [
         0,
         0
       ],
-      "metrics": {
-        "totalMinutes": 130,
-        "elapsedMinutes": 130,
-        "totalCost": [
-          0,
-          0
-        ],
-        "totalCostCents": [
-          0,
-          0
-        ],
-        "budgetHighCents": 5000,
-        "remainingBudgetCents": 5000,
-        "utilityA": 264.648,
-        "utilityB": 264.648,
-        "meanUtility": 264.648,
-        "fairness": 1,
-        "novelty": 34.448,
-        "variety": 4,
-        "objective": 232.709,
-        "predictedLoadByPerson": {
-          "A": 1,
-          "B": 1
+      "digest": "3b714131"
+    },
+    {
+      "label": "exploration90",
+      "elapsedMs": 338.86840000000007,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_race"
+          ],
+          "start": 860,
+          "end": 920,
+          "fitScore": 87.03
         },
-        "mealSatisfied": true,
-        "anchorsSatisfied": true,
-        "endingBuffer": 50,
-        "robustReserve": 15,
-        "totalUncertaintyMinutes": 0,
-        "uncertaintyByWindow": {
-          "default": 0
+        {
+          "sceneId": "supermarket",
+          "activityIds": [
+            "super_exchange"
+          ],
+          "start": 930,
+          "end": 960,
+          "fitScore": 81.32
         },
-        "reserveSatisfied": true,
-        "preparationsRemaining": []
-      },
-      "search": {
-        "method": "bounded",
-        "maxStages": 8,
-        "beamWidth": 24,
-        "maxExpandedNodes": 18000,
-        "activitySubsetLimit": 64,
-        "candidateLimit": 20,
-        "tieBreak": "stable-id",
-        "expandedNodes": 17415,
-        "generatedNodes": 2457,
-        "feasibleNodes": 2457,
-        "terminalPlans": 2457,
-        "constraintRejections": {
-          "H_PREPARATION": 1546,
-          "H_RANGE": 2709,
-          "H_CONSENT": 2193,
-          "H_BUDGET": 4965,
-          "H_RULE_SCENE": 4907,
-          "H_RULE_ACTIVITY": 4530,
-          "H_REST_USE": 57,
-          "H_LOAD": 23,
-          "H_TIME_WINDOW": 1386,
-          "H_REST_LOOP": 3
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "start": 960,
+          "end": 980,
+          "fitScore": 72.41
+        }
+      ],
+      "cost": [
+        20,
+        35
+      ],
+      "digest": "c66aad79"
+    },
+    {
+      "label": "replayed",
+      "elapsedMs": 288.2949,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "start": 860,
+          "end": 920,
+          "fitScore": 83.38
         },
-        "beamPruned": 2329,
-        "activitySubsetsTruncated": false,
-        "nodeBudgetReached": false,
-        "maxDepthReached": false,
-        "provedOptimal": false,
-        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
-        "reasoningSnapshots": 728
-      },
-      "digest": "7390b999"
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 930,
+          "end": 960,
+          "fitScore": 75.97
+        },
+        {
+          "sceneId": "public_lounge",
+          "activityIds": [],
+          "start": 970,
+          "end": 1000,
+          "fitScore": 64.54
+        }
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "digest": "3b714131"
+    },
+    {
+      "label": "mall-0",
+      "elapsedMs": 279.4986999999999,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "start": 860,
+          "end": 920,
+          "fitScore": 83.38
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 930,
+          "end": 960,
+          "fitScore": 75.97
+        },
+        {
+          "sceneId": "public_lounge",
+          "activityIds": [],
+          "start": 970,
+          "end": 1000,
+          "fitScore": 64.54
+        }
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "digest": "3b714131"
+    },
+    {
+      "label": "mall-1",
+      "elapsedMs": 266.4988000000001,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_claw"
+          ],
+          "start": 860,
+          "end": 920,
+          "fitScore": 82.66
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 930,
+          "end": 960,
+          "fitScore": 75.97
+        },
+        {
+          "sceneId": "public_lounge",
+          "activityIds": [],
+          "start": 970,
+          "end": 1000,
+          "fitScore": 64.54
+        }
+      ],
+      "cost": [
+        5,
+        10
+      ],
+      "digest": "7e549e35"
+    },
+    {
+      "label": "mall-2",
+      "elapsedMs": 263.1171999999999,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_claw",
+            "mall_snacks",
+            "mall_stores"
+          ],
+          "start": 860,
+          "end": 920,
+          "fitScore": 80.37
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "start": 920,
+          "end": 940,
+          "fitScore": 81.13
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 950,
+          "end": 980,
+          "fitScore": 64.85
+        }
+      ],
+      "cost": [
+        20,
+        40
+      ],
+      "digest": "816a5520"
+    },
+    {
+      "label": "shared-play",
+      "elapsedMs": 324.4403,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "dessert",
+          "activityIds": [
+            "dessert_ice"
+          ],
+          "start": 850,
+          "end": 880,
+          "fitScore": 87.64
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_claw"
+          ],
+          "start": 900,
+          "end": 960,
+          "fitScore": 81.79
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 970,
+          "end": 1000,
+          "fitScore": 64.85
+        }
+      ],
+      "cost": [
+        15,
+        45
+      ],
+      "digest": "85397c4c"
+    },
+    {
+      "label": "rain-budget",
+      "elapsedMs": 235.35710000000017,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "start": 860,
+          "end": 920,
+          "fitScore": 86.38
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 930,
+          "end": 960,
+          "fitScore": 80.4
+        },
+        {
+          "sceneId": "public_lounge",
+          "activityIds": [],
+          "start": 970,
+          "end": 1000,
+          "fitScore": 69.88
+        }
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "digest": "7e220425"
     },
     {
       "label": "nature-play",
-      "elapsedMs": 315.24,
+      "elapsedMs": 309.47800000000007,
       "status": "feasible",
-      "scenes": [
-        "mall",
-        "arcade",
-        "track_walk",
-        "rest"
-      ],
-      "activityIds": [
-        [],
-        [],
-        [],
-        []
+      "stages": [
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "start": 850,
+          "end": 880,
+          "fitScore": 84.95
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_claw"
+          ],
+          "start": 900,
+          "end": 960,
+          "fitScore": 79.95
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "start": 960,
+          "end": 980,
+          "fitScore": 70.26
+        }
       ],
       "cost": [
-        15,
-        25
+        5,
+        10
       ],
-      "metrics": {
-        "totalMinutes": 130,
-        "elapsedMinutes": 130,
-        "totalCost": [
-          15,
-          25
-        ],
-        "totalCostCents": [
-          1500,
-          2500
-        ],
-        "budgetHighCents": null,
-        "remainingBudgetCents": null,
-        "utilityA": 253.636,
-        "utilityB": 273.537,
-        "meanUtility": 263.586,
-        "fairness": 0.9272,
-        "novelty": 31.514,
-        "variety": 4,
-        "objective": 191.558,
-        "predictedLoadByPerson": {
-          "A": 0,
-          "B": 0
-        },
-        "mealSatisfied": true,
-        "anchorsSatisfied": true,
-        "endingBuffer": 50,
-        "robustReserve": 20,
-        "totalUncertaintyMinutes": 5,
-        "uncertaintyByWindow": {
-          "default": 5
-        },
-        "reserveSatisfied": true,
-        "preparationsRemaining": []
-      },
-      "search": {
-        "method": "bounded",
-        "maxStages": 8,
-        "beamWidth": 24,
-        "maxExpandedNodes": 18000,
-        "activitySubsetLimit": 64,
-        "candidateLimit": 20,
-        "tieBreak": "stable-id",
-        "expandedNodes": 16470,
-        "generatedNodes": 4202,
-        "feasibleNodes": 4202,
-        "terminalPlans": 4202,
-        "constraintRejections": {
-          "H_PREPARATION": 3412,
-          "H_RANGE": 2562,
-          "H_CONSENT": 2074,
-          "H_REST_USE": 19,
-          "H_TIME_WINDOW": 4327,
-          "H_LOAD": 336,
-          "H_RULE_ACTIVITY": 30,
-          "H_RULE_SCENE": 10,
-          "H_REST_LOOP": 2
-        },
-        "beamPruned": 4081,
-        "activitySubsetsTruncated": false,
-        "nodeBudgetReached": false,
-        "maxDepthReached": false,
-        "provedOptimal": false,
-        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
-        "reasoningSnapshots": 832
-      },
-      "digest": "a9b70b54"
+      "digest": "e3cfd054"
     },
     {
       "label": "play-nature",
-      "elapsedMs": 304.26,
+      "elapsedMs": 290.4385000000002,
       "status": "feasible",
-      "scenes": [
-        "mall",
-        "arcade",
-        "track_walk",
-        "rest"
-      ],
-      "activityIds": [
-        [],
-        [],
-        [],
-        []
+      "stages": [
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "start": 850,
+          "end": 880,
+          "fitScore": 84.95
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_claw"
+          ],
+          "start": 900,
+          "end": 960,
+          "fitScore": 79.95
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "start": 960,
+          "end": 980,
+          "fitScore": 70.26
+        }
       ],
       "cost": [
-        15,
-        25
+        5,
+        10
       ],
-      "metrics": {
-        "totalMinutes": 130,
-        "elapsedMinutes": 130,
-        "totalCost": [
-          15,
-          25
-        ],
-        "totalCostCents": [
-          1500,
-          2500
-        ],
-        "budgetHighCents": null,
-        "remainingBudgetCents": null,
-        "utilityA": 273.537,
-        "utilityB": 253.636,
-        "meanUtility": 263.586,
-        "fairness": 0.9272,
-        "novelty": 31.514,
-        "variety": 4,
-        "objective": 191.558,
-        "predictedLoadByPerson": {
-          "A": 0,
-          "B": 0
+      "digest": "cdd08426"
+    },
+    {
+      "label": "revision",
+      "elapsedMs": 213.7865999999999,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "start": 860,
+          "end": 920,
+          "fitScore": 83.38
         },
-        "mealSatisfied": true,
-        "anchorsSatisfied": true,
-        "endingBuffer": 50,
-        "robustReserve": 20,
-        "totalUncertaintyMinutes": 5,
-        "uncertaintyByWindow": {
-          "default": 5
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "start": 930,
+          "end": 960,
+          "fitScore": 75.97
         },
-        "reserveSatisfied": true,
-        "preparationsRemaining": []
-      },
-      "search": {
-        "method": "bounded",
-        "maxStages": 8,
-        "beamWidth": 24,
-        "maxExpandedNodes": 18000,
-        "activitySubsetLimit": 64,
-        "candidateLimit": 20,
-        "tieBreak": "stable-id",
-        "expandedNodes": 16470,
-        "generatedNodes": 4202,
-        "feasibleNodes": 4202,
-        "terminalPlans": 4202,
-        "constraintRejections": {
-          "H_PREPARATION": 3412,
-          "H_RANGE": 2562,
-          "H_CONSENT": 2074,
-          "H_REST_USE": 19,
-          "H_TIME_WINDOW": 4327,
-          "H_LOAD": 336,
-          "H_RULE_ACTIVITY": 30,
-          "H_RULE_SCENE": 10,
-          "H_REST_LOOP": 2
-        },
-        "beamPruned": 4081,
-        "activitySubsetsTruncated": false,
-        "nodeBudgetReached": false,
-        "maxDepthReached": false,
-        "provedOptimal": false,
-        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
-        "reasoningSnapshots": 832
-      },
-      "digest": "2d485d00"
+        {
+          "sceneId": "public_lounge",
+          "activityIds": [],
+          "start": 970,
+          "end": 1000,
+          "fitScore": 64.54
+        }
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "digest": "3b714131"
     }
   ]
 }
