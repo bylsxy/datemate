@@ -24,6 +24,7 @@ p { margin: 8px 0; }
 .panel { padding: 26px; background: #fffdf8; border: 1px solid var(--border); border-radius: 14px; }
 .hint { font-size: .88rem; color: var(--muted); }
 fieldset { min-width: 0; padding: 18px 0; margin: 14px 0 0; border: 0; border-top: 1px solid var(--border); }
+form > fieldset:first-of-type { margin-top: 0; border-top: 0; padding-top: 0; }
 legend { padding: 0 12px 0 0; font-size: 1rem; font-weight: 700; }
 .option-group { margin-bottom: 12px; }
 .option-group legend { font-weight: 500; font-size: .9rem; margin-bottom: 6px; }

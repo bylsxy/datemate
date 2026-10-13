@@ -41,12 +41,12 @@ addOptions("#preferences", "diet", "忌口", ["生食", "热气", "辣"]);
 addOptions("#preferences", "behavior", "行为", ["日常", "小别", "经后第14天附近"]);
 addOptions("#preferences", "themes", "主题", ["中式", "日式", "浪漫", "新鲜"]);
 addOptions("#state-options", "relationship", "关系", ["初次约会", "暧昧", "热恋", "稳定", "老夫老妻"], "radio");
-addOptions("#state-options", "cycle", "生理状态（仅备注）", ["经期临近", "经期期间"], "radio");
+addOptions("#state-options", "cycle", "生理状态", ["经期临近", "经期期间"], "radio");
 addOptions("#state-options", "culture", "文化体力", [["high", "高"], ["medium", "中"], ["light", "轻松 / 无脑"]], "radio");
 addOptions("#current-options", "mood", "心情", ["开心"]);
 addOptions("#current-options", "energy", "精力", ["疲惫", "紧张", "想放松"]);
 addOptions("#current-options", "period", "时期", ["假期", "临考"]);
-addOptions("#time-options", "slots", "一天（多选）", [["morning", "上午"], ["afternoon", "下午"], ["evening", "晚上"]]);
+addOptions("#time-options", "slots", "一天", [["morning", "上午"], ["afternoon", "下午"], ["evening", "晚上"]]);
 addOptions("#time-options", "week", "一周", ["周中", "周末"], "radio");
 
 function updateControls() {
@@ -123,7 +123,6 @@ function renderPlan(plan) {
     for (const note of plan.notes) notes.append(element("li", note));
     content.append(notes);
   }
-  content.append(element("p", "活动与场地均为虚构教学示例，请根据实际资料确认场地与费用。", "hint"));
   result.replaceChildren(content);
 }
 
