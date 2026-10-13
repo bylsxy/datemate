@@ -410,7 +410,7 @@ def verify(catalog: dict, evidence: list[dict], rules: list[dict], graph: dict, 
 
 
 def write_json(path: Path, data: Any) -> None:
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2) + "\n", encoding="utf-8", newline="\n")
 
 
 def main() -> None:
@@ -443,11 +443,11 @@ def main() -> None:
         module += f"export const {name} = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n"
     module += "catalog.rules = rules;\ncatalog.graph = graph;\n"
     module += "export default catalog;\n"
-    (args.output / "catalog.mjs").write_text(module, encoding="utf-8")
+    (args.output / "catalog.mjs").write_text(module, encoding="utf-8", newline="\n")
     metadata = "// 标签元数据由 tools/build_knowledge.py 生成。\n"
     for name, data in (("interestTags", INTEREST_TAGS), ("interestOptions", [{"id": tag, "label": INTEREST_LABELS[tag]} for tag in INTEREST_TAGS]), ("preparationOptions", [{"id": key, "label": label} for key, label in PREPARATIONS.items()]), ("dietaryOptions", [{"id": key, "label": label} for key, label in DIETARY_LABELS.items()])):
         metadata += f"export const {name} = " + json.dumps(data, ensure_ascii=False, separators=(",", ":")) + ";\n"
-    (args.output / "activities.mjs").write_text(metadata, encoding="utf-8")
+    (args.output / "activities.mjs").write_text(metadata, encoding="utf-8", newline="\n")
     print(json.dumps(checks, ensure_ascii=False, indent=2))
 
 

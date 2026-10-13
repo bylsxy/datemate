@@ -14,7 +14,7 @@
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 418.35,
+      "elapsedMs": 418.81,
       "status": "feasible",
       "scenes": [
         "mall",
@@ -100,7 +100,7 @@
     },
     {
       "label": "exploration90",
-      "elapsedMs": 333.09,
+      "elapsedMs": 302.14,
       "status": "feasible",
       "scenes": [
         "supermarket",
@@ -190,7 +190,7 @@
     },
     {
       "label": "baseline-replayed",
-      "elapsedMs": 403.3,
+      "elapsedMs": 288.19,
       "status": "feasible",
       "scenes": [
         "mall",
@@ -276,7 +276,7 @@
     },
     {
       "label": "mall-three",
-      "elapsedMs": 237.85,
+      "elapsedMs": 196.87,
       "status": "feasible",
       "scenes": [
         "mall",
@@ -368,7 +368,7 @@
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 271.16,
+      "elapsedMs": 262.85,
       "status": "feasible",
       "scenes": [
         "mall",
@@ -457,7 +457,7 @@
     },
     {
       "label": "nature-play",
-      "elapsedMs": 327.15,
+      "elapsedMs": 315.24,
       "status": "feasible",
       "scenes": [
         "mall",
@@ -545,7 +545,7 @@
     },
     {
       "label": "play-nature",
-      "elapsedMs": 335.79,
+      "elapsedMs": 304.26,
       "status": "feasible",
       "scenes": [
         "mall",

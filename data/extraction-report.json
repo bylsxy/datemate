@@ -40,7 +40,7 @@
   },
   "processingPolicy": "全文本扫描与哈希登记；关键词用于候选发现，正式采用项以定位证据为准。原始材料不写入公开数据。",
   "prototypeSha256": "0fbb3c5b631f55a9902d84a00d9992376c491bc2fd726bbdafff5ad408c44896",
-  "buildScriptSha256": "40eda974b3ce550285e2b9c4aef32883a3ea608c290f9baf8eac09e361186b45",
+  "buildScriptSha256": "ac8343f3231bcb42c032f8ee8ce801a1fe7a42a3468a0593b106617d51bdf145",
   "catalogContentSha256": "a2c3124114ab86911e8f974649b3fe0b58faad234c1fdbac8171515b763ec7fd",
   "defaultContext": {
     "duration": 180,

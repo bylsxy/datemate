@@ -1,19 +1,29 @@
 {
   "status": "passed",
-  "version": "knowledge-3.0.1",
-  "buildCount": 2,
+  "encoding": "UTF-8",
+  "lineEndings": "LF",
+  "filesChecked": 9,
   "byteIdentical": true,
-  "files": {
-    "catalog.json": "b92843ef7302478e29a5674651cba93e5e1fd7d9fe4fbf5c23ca9d66b8e6e3d4",
-    "catalog.mjs": "1ce61b66bf12652242cbadaebc817fbc89d7edee2f3655e92ebe21799682e748",
-    "rules.json": "0eb5e9e58148e44bd009b0090861a69156f595d511fdb923d411dde51179ddfe",
-    "graph.json": "70da0834187f2eb9b9a6275379e0e732e591963660f66baf5553bcaa75dbf50a",
-    "evidence.json": "811f2aee99ef9755fcb69bc46604648d44e2457de94d6dad475e3970bc14bab5",
-    "source-registry.json": "32216284548c297841274c852139ab4f444a4a7adc51f8e881c94aef0bf5c76d",
-    "conditions.json": "a8c0c3f7a0cd73f798ed9e40c4ea587d0416634c2edfcdb218d6fa94df13c1e4",
-    "extraction-report.json": "cc6c961ea115555cb6d798768cf76f045983479b7e454efb7c6ba5ee099bfb33",
-    "activities.mjs": "186ba8a4d25da43361b155cc67a014b9fab51d99f52d46a615787bd20877a3e7"
+  "first": {
+    "catalog.json": "3793358bd5f8e3c3e4b0a702f9edda6ca0b13dc1be03b5faaf9f93701dd61c6e",
+    "catalog.mjs": "36f05f2514a58d0456b3b1eaedd93490754341d342260a3e7e3e38ff1e7e8575",
+    "activities.mjs": "fd6cd03ecd08391a66f1b149f56439148abf81b349cbf99c1bef656794f007b1",
+    "rules.json": "4eaf0ab03569e9235f93eebe56bb66b4665d54745a5a2910f7d06f1a60d3bd52",
+    "graph.json": "00bb104e240e69bbcf69a75fed852d91138528c1ca168469fcd7e251dcb9adf8",
+    "source-registry.json": "d3f38c7cafc251b8d51a9a9aed2568fde9865427e27083571854406f6cff18b2",
+    "evidence.json": "cab9726ce89f870199e098997977d21644c58a65ef0ce8858553a897ce83b09f",
+    "conditions.json": "b577177017708722394d59658f2637997f80bb93842ca44d54d82a74966743f6",
+    "extraction-report.json": "8c83182b1e9ec556a0db333a9165c4a32cfb378a3c155b0540e285d569180b51"
   },
-  "sourceRegistryFiles": 151,
-  "method": "同一构建脚本和本地输入连续构建两次，逐文件比较SHA-256。"
+  "second": {
+    "catalog.json": "3793358bd5f8e3c3e4b0a702f9edda6ca0b13dc1be03b5faaf9f93701dd61c6e",
+    "catalog.mjs": "36f05f2514a58d0456b3b1eaedd93490754341d342260a3e7e3e38ff1e7e8575",
+    "activities.mjs": "fd6cd03ecd08391a66f1b149f56439148abf81b349cbf99c1bef656794f007b1",
+    "rules.json": "4eaf0ab03569e9235f93eebe56bb66b4665d54745a5a2910f7d06f1a60d3bd52",
+    "graph.json": "00bb104e240e69bbcf69a75fed852d91138528c1ca168469fcd7e251dcb9adf8",
+    "source-registry.json": "d3f38c7cafc251b8d51a9a9aed2568fde9865427e27083571854406f6cff18b2",
+    "evidence.json": "cab9726ce89f870199e098997977d21644c58a65ef0ce8858553a897ce83b09f",
+    "conditions.json": "b577177017708722394d59658f2637997f80bb93842ca44d54d82a74966743f6",
+    "extraction-report.json": "8c83182b1e9ec556a0db333a9165c4a32cfb378a3c155b0540e285d569180b51"
+  }
 }
