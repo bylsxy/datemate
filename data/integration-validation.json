@@ -1,0 +1,59 @@
+{
+  "status": "passed",
+  "checks": [
+    {
+      "name": "fatigue_chain",
+      "status": "passed"
+    },
+    {
+      "name": "fatigue_excludes_high_load",
+      "status": "passed"
+    },
+    {
+      "name": "rain_excludes_outdoor",
+      "status": "passed"
+    },
+    {
+      "name": "diet_optional_only",
+      "status": "passed"
+    },
+    {
+      "name": "graph_preparation_path",
+      "status": "passed"
+    },
+    {
+      "name": "graph_procurement_supply_path",
+      "status": "passed"
+    },
+    {
+      "name": "metadata_integrity",
+      "status": "passed"
+    },
+    {
+      "name": "engine_plain_meal_survives_diet",
+      "status": "passed"
+    },
+    {
+      "name": "engine_resource_production_consumption",
+      "status": "passed"
+    },
+    {
+      "name": "engine_tabletennis_preparation_rejected",
+      "status": "passed"
+    },
+    {
+      "name": "engine_meal_style_exclusive",
+      "status": "passed"
+    },
+    {
+      "name": "engine_photo_predecessor",
+      "status": "passed"
+    },
+    {
+      "name": "low_budget_free_chain",
+      "status": "passed"
+    }
+  ],
+  "checkCount": 13,
+  "boundary": "截至本次工具调用，已对当前共享工作区引擎完成数据集成抽查；完整引擎验收由主线负责。"
+}

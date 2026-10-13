@@ -1,109 +1,19 @@
 <!doctype html>
 <html lang="zh-CN">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="color-scheme" content="light">
-  <title>DateMate 约会策划（测试占位版，后续将会整个推翻UI并重做）</title>
-  <link rel="stylesheet" href="./styles.css">
-  <script type="module" src="./app.mjs"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#fbf9f6"><meta name="description" content="DateMate 约会搭子：知识图谱、产生式推理与约束规划，让每一段选择照顾两个人。纯前端、可复盘。"><title>DateMate · 约会搭子</title><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css"><script type="module" src="./app.mjs"></script>
 </head>
-
-<body>
-  <header class="page-header">
-    <h1 class="brand">DateMate <span>约会策划</span></h1>
-  </header>
-  <main class="workspace">
-    <section class="panel" aria-label="约会条件">
-      <form id="planner-form">
-        <fieldset>
-          <legend>偏好</legend>
-          <div id="preferences"></div>
-          <label class="field-label" for="excluded">不去的地方</label>
-          <input id="excluded" name="excluded" type="text" placeholder="地点关键词，用逗号分隔" aria-describedby="excluded-help">
-          <p id="excluded-help" class="hint">可留空。</p>
-        </fieldset>
-        <fieldset>
-          <legend>状态</legend>
-          <div id="state-options"></div>
-        </fieldset>
-        <fieldset>
-          <legend>当前</legend>
-          <div id="current-options"></div>
-        </fieldset>
-        <fieldset>
-          <legend>时间段</legend>
-          <div id="time-options"></div>
-        </fieldset>
-        <fieldset>
-          <legend>预算上限</legend>
-          <div class="choices">
-            <label class="choice"><input type="radio" name="budgetMode" value="none" checked>无限制</label>
-            <label class="choice"><input type="radio" name="budgetMode" value="limited">自填上限</label>
-            <label class="choice"><input type="radio" name="budgetMode" value="saving">省钱 · ¥50</label>
-          </div>
-          <label class="field-label" for="budget">两人预算上限（元）</label>
-          <input id="budget" name="budget" type="number" min="0" step="any" inputmode="decimal" disabled
-            placeholder="可填写 0">
-        </fieldset>
-        <fieldset>
-          <legend>活动范围</legend>
-          <div class="choices">
-            <label class="choice"><input type="radio" name="scope" value="campus">仅校内</label>
-            <label class="choice"><input type="radio" name="scope" value="nearby" checked>校内及周边</label>
-          </div>
-        </fieldset>
-        <details>
-          <summary>高级设置</summary>
-          <div class="advanced">
-            <label class="field-label" for="weather">预期天气</label>
-            <select id="weather" name="weather">
-              <option value="any">不限</option>
-              <option value="sunny">晴天</option>
-              <option value="rain">下雨</option>
-            </select>
-            <label class="field-label" for="interaction">互动程度</label>
-            <select id="interaction" name="interaction">
-              <option value="any">不限</option>
-              <option value="high">多一些互动</option>
-              <option value="low">少一些互动</option>
-            </select>
-            <label class="field-label" for="randomness">规划随机性 · <output id="randomness-value"
-                for="randomness">0</output></label>
-            <input id="randomness" name="randomness" type="range" min="0" max="100" value="0"
-              aria-describedby="randomness-help">
-            <p id="randomness-help" class="hint">0 按示例评分排序；100 随机排序。预算与范围约束始终有效。</p>
-            <label class="field-label" for="personality-a">男方人格（后续支持）</label>
-            <select id="personality-a" disabled>
-              <option>尚未接入人格规则</option>
-            </select>
-            <label class="field-label" for="personality-b">女方人格（后续支持）</label>
-            <select id="personality-b" disabled>
-              <option>尚未接入人格规则</option>
-            </select>
-          </div>
-        </details>
-        <p id="form-error" class="error" role="alert" hidden></p>
-        <div class="actions"><button type="submit" class="primary">生成方案</button><button type="reset">重置条件</button></div>
-      </form>
-      <noscript>
-        <p class="error">请启用 JavaScript 后使用规划工具。</p>
-      </noscript>
-    </section>
-    <section class="panel result-panel" aria-labelledby="result-title">
-      <div class="result-heading">
-        <h2 id="result-title" tabindex="-1">你的约会方案</h2><span class="badge">示例数据</span>
-      </div>
-      <p id="result-status" class="sr-only" role="status" aria-live="polite"></p>
-      <div id="result">
-        <div class="empty-state">
-          <p>选择条件后，生成你的第一份方案</p>
-          <p class="hint">这里会显示两人预算、活动时间线和实际触发的推荐依据。</p>
-        </div>
-      </div>
-    </section>
-  </main>
-</body>
-
-</html>
+<body><div class="page-shell">
+<header class="site-header"><a class="brand" href="./" aria-label="DateMate 首页"><span class="brand-mark" aria-hidden="true">d.</span><span>DateMate<small>约会搭子</small></span></a><span class="local-badge"><i></i> 本地演算 · 无需账号</span></header>
+<section class="hero"><div><p class="eyebrow">GOOD PLANS, BETTER COMPANY</p><h1>今天，一起<span>出发。</span></h1><p class="intro">找点灵感，也留点余地。你改变这一段，后面的安排跟着改变。</p></div><div class="hero-art" aria-hidden="true"><span class="orb orb-one"></span><span class="orb orb-two"></span><svg viewBox="0 0 230 130"><path d="M14 98C70 130 60 16 126 44S177 107 213 20"/><circle cx="14" cy="98" r="7"/><circle cx="126" cy="44" r="7"/><circle cx="213" cy="20" r="7"/></svg><span class="art-label label-one">灵感</span><span class="art-label label-two">同行</span></div></section>
+<nav class="view-tabs" aria-label="查看内容"><button class="tab active" data-view="plan" aria-pressed="true">约会规划 <span>01</span></button><button class="tab" data-view="knowledge" aria-pressed="false">知识与推理 <span>02</span></button><button class="tab" data-view="compare" aria-pressed="false">方案对比 <span>03</span></button></nav>
+<div class="workspace"><aside class="sidebar"><details class="conditions" id="conditions" open><summary><span>加一点条件<small>不填，也能开始</small></span><span class="plus">＋</span></summary><form id="conditions-form" class="form" autocomplete="off">
+<div class="form-grid"><label class="field">可用时长<select id="duration"><option value="120">2 小时</option><option value="180" selected>3 小时</option><option value="240">4 小时</option><option value="360">6 小时</option></select></label><label class="field">双人预算上限<input id="budget" type="number" min="0" max="100000" step="0.01" placeholder="留空＝无上限"></label></div>
+<fieldset><legend>环境与安排</legend><div class="choices"><label class="choice"><input type="checkbox" id="quiet">安静</label><label class="choice"><input type="checkbox" id="crowd">人少</label><label class="choice"><input type="checkbox" id="indoor">室内</label><label class="choice"><input type="checkbox" id="rain">预计下雨</label><label class="choice"><input type="checkbox" id="quiet-hard">必须安静</label><label class="choice"><input type="checkbox" id="meal">安排正餐</label><label class="choice"><input type="checkbox" id="saving">穷穷模式 · ¥50</label></div></fieldset>
+<fieldset><legend>这一刻的状态</legend><div class="choices"><label class="choice"><input type="checkbox" id="tired-a">我方疲惫</label><label class="choice"><input type="checkbox" id="tired-b">对方疲惫</label></div><p class="field-hint">按当前感受选择，未勾选采用公开的模型初值。</p></fieldset>
+<fieldset><legend>双方的兴趣 <small>未选＝未知</small></legend><p class="person-label"><i class="person-a"></i> 我方喜欢</p><div class="choices" id="preferences-a"></div><p class="person-label"><i class="person-b"></i> 对方喜欢</p><div class="choices" id="preferences-b"></div></fieldset>
+<div class="form-grid"><label class="field">本次倾向<select id="theme"><option value="any">顺其自然</option><option value="daily">日常陪伴</option><option value="romantic">拍照与氛围</option><option value="fresh">新体验</option></select></label><label class="field">活动范围<select id="area"><option value="all">不限制</option><option value="near" selected>校内及周边</option><option value="campus">仅校内</option></select></label></div>
+<details class="advanced"><summary>时间窗、准备与明确限制</summary><fieldset><legend>可用时段 <small>不选默认14:00开始</small></legend><div class="choices"><label class="choice"><input name="slots" type="checkbox" value="morning">上午</label><label class="choice"><input name="slots" type="checkbox" value="afternoon">下午</label><label class="choice"><input name="slots" type="checkbox" value="evening">晚上</label></div></fieldset><fieldset><legend>已经准备好</legend><div class="choices"><label class="choice"><input name="prepared" type="checkbox" value="picnic_pack">野餐包</label><label class="choice"><input name="prepared" type="checkbox" value="racket">球拍</label><label class="choice"><input name="prepared" type="checkbox" value="ball">球</label><label class="choice"><input name="prepared" type="checkbox" value="reservation">已预约</label></div></fieldset><fieldset><legend>双方明确的饮食限制</legend><div class="choices"><label class="choice"><input name="diet" type="checkbox" value="raw">不吃生食</label><label class="choice"><input name="diet" type="checkbox" value="spicy">不吃辣</label><label class="choice"><input name="diet" type="checkbox" value="seafood">避开海鲜</label><label class="choice"><input name="diet" type="checkbox" value="caffeine">避开咖啡因</label></div></fieldset><label class="field">这类场景不去<select id="exclude"><option value="">暂无明确排除</option></select></label><label class="field">保留一项后续安排<select id="anchor"><option value="">没有预约锚点</option></select></label><label class="choice robust-choice"><input id="robust" type="checkbox" checked>多留一点余地</label><p class="field-hint">费用上界控制预算，时间波动预留缓冲。场所、营业时间与交通需出发前确认。</p></details><button class="apply-button" type="submit">按这些条件重新规划 <span>↗</span></button></form></details><div class="knowledge-counts" id="knowledge-counts"><span>正在读取知识库…</span></div><p class="sidebar-note">知识提供线索，规则推导限制，规划照顾前后联系。所有输入在当前浏览器内计算。</p></aside>
+<main id="main-content"><section id="view-plan" class="view"><section class="exploration" aria-labelledby="exploration-title"><div class="slider-top"><div><p class="eyebrow">A LITTLE MORE POSSIBILITY</p><h2 id="exploration-title">规划探索度</h2></div><output id="exploration-value" for="exploration">0<small>/ 100</small></output></div><input id="exploration" type="range" min="0" max="100" step="1" value="0" aria-label="规划探索度"><div class="range-ends"><span>稳妥日常</span><span>新鲜尝试</span><span>大胆反差</span></div><p class="slider-note">同样条件、探索度和版本，得到同样安排。已点选的阶段会保留。</p></section><div class="plan-tools"><span id="status" role="status" aria-live="polite">正在生成第一份灵感…</span><div><button id="undo" class="text-button" disabled>撤销</button><button id="release" class="text-button" disabled>释放已选</button><button id="reset" class="text-button">零输入</button></div></div><div id="stages" aria-busy="true"><div class="loading-card"><span class="loading-dot"></span>正在规划，让每一段都接得上。</div></div><section class="ending" id="ending"></section><details class="explanation"><summary>为什么这样安排？<span>推理、准备与来源</span></summary><div id="reason-content"></div></details><div class="replay-row"><button id="export" class="text-button">导出复盘 JSON</button><button id="import" class="text-button">导入复盘 JSON</button><input id="import-file" type="file" accept="application/json,.json" hidden><span id="replay-id"></span></div></section>
+<section id="view-knowledge" class="view" hidden><div class="section-heading"><p class="eyebrow">FROM EVIDENCE TO ACTION</p><h2>每个建议，都有一条来路。</h2><p>图谱保存场景、活动、条件与证据的联系；产生式规则把当前事实推导为筛选与排序依据。</p></div><div class="knowledge-summary" id="knowledge-summary"></div><section class="insight-panel"><h3>知识图谱 · 多跳路径查询</h3><div class="graph-query"><label class="field">起点<select id="graph-from"></select></label><label class="field">终点<select id="graph-to"></select></label><button id="query-graph" class="apply-button">查找路径 ↗</button></div><div id="graph-paths"></div></section><section class="insight-panel"><h3>产生式 · 当前真实推理链</h3><p class="field-hint">规则按条件匹配执行，派生事实继续触发下一轮规则。以下轨迹来自当前方案。</p><div id="rule-trace"></div></section><section class="insight-panel"><h3>从语料到可执行知识</h3><div id="source-audit"></div></section></section>
+<section id="view-compare" class="view" hidden><div class="section-heading"><p class="eyebrow">TWO PEOPLE, MORE THAN ONE ANSWER</p><h2>好的安排，可以有不同取舍。</h2><p>比较已满足硬约束的方案，看双方偏好、支出与负担如何平衡。</p></div><div id="comparison"></div><section class="insight-panel"><h3>方法与边界</h3><p>确定性束搜索探索多阶段序列；透明加权效用组织排序，Pareto 筛选保留不同取舍。预算采用费用上界，鲁棒模式另留时间余地。推荐指数是模型内的相对评价。</p><div id="search-details"></div></section></section><noscript><p>请启用 JavaScript 后使用规划、规则推理与知识图谱查询。</p></noscript></main></div><footer><span>DateMate · 让计划照顾两个人。</span><span>地点类型与设计估值，实际条件需确认。<a href="https://github.com/bylsxy/datemate" target="_blank" rel="noreferrer">项目源码 ↗</a></span></footer></div></body></html>

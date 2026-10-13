@@ -1,0 +1,4360 @@
+{
+  "protocol": {
+    "warmupRuns": 5,
+    "measuredRuns": 20,
+    "repetitionsPerScenario": 1,
+    "percentileMethod": "nearest_rank",
+    "timingScope": "本机桌面Node同步规划，包括目录编译、搜索、规则、图谱、候选与Pareto；不含浏览器Worker通信和页面渲染。",
+    "interpretation": "20种固定请求各测一次；本批p95不能表示单一输入的长期p95，也不是手机或浏览器测试结果。"
+  },
+  "environmentFile": "benchmark-environment.json",
+  "versions": {
+    "engine": "datemate-engine-3.0.2",
+    "score": "utility-3.0.1",
+    "knowledge": "knowledge-3.0.1"
+  },
+  "counts": {
+    "scenes": 38,
+    "activities": 66,
+    "rules": 47,
+    "graphEdges": 544
+  },
+  "summary": {
+    "p50Ms": 288.979,
+    "p95Ms": 424.691,
+    "maxMs": 454.735,
+    "minMs": 199.995,
+    "meanMs": 300.953,
+    "allFeasible": true,
+    "provedOptimal": false,
+    "nodeLimitedCases": [
+      "shared-rain-fatigue8",
+      "shared-rain-fatigue9"
+    ]
+  },
+  "observations": [
+    {
+      "id": "default",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [],
+        "preferencesB": [],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 291.76,
+      "status": "feasible",
+      "outputDigest": "8673a91d",
+      "stageCount": 4,
+      "scenes": [
+        "mall",
+        "arcade",
+        "quiet_talk",
+        "supermarket"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 860,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 890,
+          "endMinute": 910,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 930,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "startMinute": 940,
+          "endMinute": 965,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 125,
+        "elapsedMinutes": 125,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 267.299,
+        "utilityB": 267.299,
+        "meanUtility": 267.299,
+        "fairness": 1,
+        "novelty": 37.817,
+        "variety": 4,
+        "objective": 168.643,
+        "predictedLoadByPerson": {
+          "A": 4,
+          "B": 4
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 55,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 17145,
+        "generatedNodes": 4883,
+        "feasibleNodes": 4883,
+        "terminalPlans": 4883,
+        "constraintRejections": {
+          "H_PREPARATION": 3556,
+          "H_RANGE": 2667,
+          "H_CONSENT": 2159,
+          "H_REST_USE": 40,
+          "H_TIME_WINDOW": 4091,
+          "H_LOAD": 255,
+          "H_REST_LOOP": 2
+        },
+        "beamPruned": 4757,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 832
+      }
+    },
+    {
+      "id": "shared-nature-photo",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 367.841,
+      "status": "feasible",
+      "outputDigest": "91dbe542",
+      "stageCount": 4,
+      "scenes": [
+        "bridge_walk",
+        "track_walk",
+        "mall",
+        "rest"
+      ],
+      "stages": [
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 850,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "track_walk",
+          "activityIds": [],
+          "startMinute": 890,
+          "endMinute": 910,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 930,
+          "endMinute": 950,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            6,
+            6
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 950,
+          "endMinute": 970,
+          "loadBefore": [
+            6,
+            6
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 130,
+        "elapsedMinutes": 130,
+        "totalCost": [
+          0,
+          0
+        ],
+        "totalCostCents": [
+          0,
+          0
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 305.12,
+        "utilityB": 305.12,
+        "meanUtility": 305.12,
+        "fairness": 1,
+        "novelty": 28.778,
+        "variety": 3,
+        "objective": 241.894,
+        "predictedLoadByPerson": {
+          "A": 0,
+          "B": 0
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 50,
+        "robustReserve": 25,
+        "totalUncertaintyMinutes": 10,
+        "uncertaintyByWindow": {
+          "default": 10
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16335,
+        "generatedNodes": 3866,
+        "feasibleNodes": 3866,
+        "terminalPlans": 3866,
+        "constraintRejections": {
+          "H_PREPARATION": 3376,
+          "H_RANGE": 2541,
+          "H_CONSENT": 2057,
+          "H_REST_USE": 17,
+          "H_TIME_WINDOW": 4600,
+          "H_LOAD": 283,
+          "H_RULE_ACTIVITY": 90,
+          "H_RULE_SCENE": 30,
+          "H_REST_LOOP": 7
+        },
+        "beamPruned": 3746,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1040
+      }
+    },
+    {
+      "id": "shared-clear",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "clear",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 394.586,
+      "status": "feasible",
+      "outputDigest": "4f70e281",
+      "stageCount": 4,
+      "scenes": [
+        "bridge_walk",
+        "track_walk",
+        "mall",
+        "rest"
+      ],
+      "stages": [
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 850,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-shared-nature",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "track_walk",
+          "activityIds": [],
+          "startMinute": 890,
+          "endMinute": 910,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-shared-nature",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 930,
+          "endMinute": 950,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            6,
+            6
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 950,
+          "endMinute": 970,
+          "loadBefore": [
+            6,
+            6
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 130,
+        "elapsedMinutes": 130,
+        "totalCost": [
+          0,
+          0
+        ],
+        "totalCostCents": [
+          0,
+          0
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 305.12,
+        "utilityB": 305.12,
+        "meanUtility": 305.12,
+        "fairness": 1,
+        "novelty": 28.778,
+        "variety": 3,
+        "objective": 241.894,
+        "predictedLoadByPerson": {
+          "A": 0,
+          "B": 0
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 50,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16335,
+        "generatedNodes": 4270,
+        "feasibleNodes": 4270,
+        "terminalPlans": 4270,
+        "constraintRejections": {
+          "H_PREPARATION": 3376,
+          "H_RANGE": 2541,
+          "H_CONSENT": 2057,
+          "H_REST_USE": 18,
+          "H_TIME_WINDOW": 4221,
+          "H_LOAD": 258,
+          "H_RULE_ACTIVITY": 90,
+          "H_RULE_SCENE": 30,
+          "H_REST_LOOP": 6
+        },
+        "beamPruned": 4150,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1144
+      }
+    },
+    {
+      "id": "shared-rain",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "rain",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 383.144,
+      "status": "feasible",
+      "outputDigest": "e8cd26a1",
+      "stageCount": 4,
+      "scenes": [
+        "mall",
+        "arcade",
+        "quiet_talk",
+        "supermarket"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 860,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 890,
+          "endMinute": 910,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 930,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "startMinute": 940,
+          "endMinute": 965,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 125,
+        "elapsedMinutes": 125,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 267.299,
+        "utilityB": 267.299,
+        "meanUtility": 267.299,
+        "fairness": 1,
+        "novelty": 37.817,
+        "variety": 4,
+        "objective": 208.673,
+        "predictedLoadByPerson": {
+          "A": 4,
+          "B": 4
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 55,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 18,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 17145,
+        "generatedNodes": 4487,
+        "feasibleNodes": 4487,
+        "terminalPlans": 4487,
+        "constraintRejections": {
+          "H_PREPARATION": 1524,
+          "H_RANGE": 2667,
+          "H_CONSENT": 2159,
+          "H_RULE_SCENE": 4826,
+          "H_RULE_ACTIVITY": 4445,
+          "H_REST_USE": 43,
+          "H_TIME_WINDOW": 3985,
+          "H_LOAD": 246,
+          "H_REST_LOOP": 2
+        },
+        "beamPruned": 4361,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 832
+      }
+    },
+    {
+      "id": "shared-rain-fatigue8",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "rain",
+        "area": "near",
+        "fatigueA": 8,
+        "fatigueB": 8,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 454.735,
+      "status": "feasible",
+      "outputDigest": "787613b4",
+      "stageCount": 4,
+      "scenes": [
+        "rest",
+        "mall",
+        "arcade",
+        "quiet_talk"
+      ],
+      "stages": [
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 840,
+          "endMinute": 860,
+          "loadBefore": [
+            8,
+            8
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-rain-indoor",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 880,
+          "endMinute": 900,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 930,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 930,
+          "endMinute": 950,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 110,
+        "elapsedMinutes": 110,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 262.317,
+        "utilityB": 262.317,
+        "meanUtility": 262.317,
+        "fairness": 1,
+        "novelty": 28.233,
+        "variety": 4,
+        "objective": 251.691,
+        "predictedLoadByPerson": {
+          "A": 3,
+          "B": 3
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 70,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 19,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 18000,
+        "generatedNodes": 4468,
+        "feasibleNodes": 4468,
+        "terminalPlans": 4468,
+        "constraintRejections": {
+          "H_PREPARATION": 1554,
+          "H_RANGE": 2799,
+          "H_CONSENT": 2267,
+          "H_LOAD": 292,
+          "H_RULE_ACTIVITY": 5027,
+          "H_RULE_SCENE": 5189,
+          "H_TIME_WINDOW": 4151,
+          "H_REST_LOOP": 1,
+          "H_REST_USE": 43
+        },
+        "beamPruned": 4324,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": true,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1456
+      }
+    },
+    {
+      "id": "shared-rain-fatigue9",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "rain",
+        "area": "near",
+        "fatigueA": 9,
+        "fatigueB": 9,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 424.691,
+      "status": "feasible",
+      "outputDigest": "e7ea84df",
+      "stageCount": 4,
+      "scenes": [
+        "rest",
+        "mall",
+        "quiet_talk",
+        "arcade"
+      ],
+      "stages": [
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 840,
+          "endMinute": 860,
+          "loadBefore": [
+            9,
+            9
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-rain-indoor",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 880,
+          "endMinute": 900,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 900,
+          "endMinute": 920,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 930,
+          "endMinute": 950,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 110,
+        "elapsedMinutes": 110,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 274.196,
+        "utilityB": 274.196,
+        "meanUtility": 274.196,
+        "fairness": 1,
+        "novelty": 27.884,
+        "variety": 4,
+        "objective": 263.57,
+        "predictedLoadByPerson": {
+          "A": 4,
+          "B": 4
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 70,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 17,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 18000,
+        "generatedNodes": 4311,
+        "feasibleNodes": 4311,
+        "terminalPlans": 4311,
+        "constraintRejections": {
+          "H_PREPARATION": 1544,
+          "H_RANGE": 2799,
+          "H_CONSENT": 2267,
+          "H_LOAD": 405,
+          "H_RULE_ACTIVITY": 5102,
+          "H_RULE_SCENE": 5214,
+          "H_TIME_WINDOW": 4161,
+          "H_REST_LOOP": 1,
+          "H_REST_USE": 27
+        },
+        "beamPruned": 4167,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": true,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1456
+      }
+    },
+    {
+      "id": "shared-rain-budget0",
+      "input": {
+        "duration": 180,
+        "budget": 0,
+        "weather": "rain",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 216.241,
+      "status": "feasible",
+      "outputDigest": "10c0dfff",
+      "stageCount": 4,
+      "scenes": [
+        "mall",
+        "quiet_talk",
+        "supermarket",
+        "music_corner"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 860,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 880,
+          "endMinute": 900,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 935,
+          "loadBefore": [
+            1,
+            1
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "music_corner",
+          "activityIds": [],
+          "startMinute": 955,
+          "endMinute": 970,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 130,
+        "elapsedMinutes": 130,
+        "totalCost": [
+          0,
+          0
+        ],
+        "totalCostCents": [
+          0,
+          0
+        ],
+        "budgetHighCents": 0,
+        "remainingBudgetCents": 0,
+        "utilityA": 264.648,
+        "utilityB": 264.648,
+        "meanUtility": 264.648,
+        "fairness": 1,
+        "novelty": 34.448,
+        "variety": 4,
+        "objective": 232.709,
+        "predictedLoadByPerson": {
+          "A": 1,
+          "B": 1
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 50,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 6,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16200,
+        "generatedNodes": 846,
+        "feasibleNodes": 846,
+        "terminalPlans": 846,
+        "constraintRejections": {
+          "H_PREPARATION": 1438,
+          "H_RANGE": 2520,
+          "H_CONSENT": 2040,
+          "H_BUDGET": 6591,
+          "H_RULE_SCENE": 4565,
+          "H_RULE_ACTIVITY": 4215,
+          "H_REST_USE": 59,
+          "H_TIME_WINDOW": 772,
+          "H_REST_LOOP": 2
+        },
+        "beamPruned": 727,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 728
+      }
+    },
+    {
+      "id": "shared-rain-budget20",
+      "input": {
+        "duration": 180,
+        "budget": 20,
+        "weather": "rain",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 199.995,
+      "status": "feasible",
+      "outputDigest": "5e94854f",
+      "stageCount": 4,
+      "scenes": [
+        "mall",
+        "quiet_talk",
+        "supermarket",
+        "music_corner"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 860,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 880,
+          "endMinute": 900,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 935,
+          "loadBefore": [
+            1,
+            1
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "music_corner",
+          "activityIds": [],
+          "startMinute": 955,
+          "endMinute": 970,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 130,
+        "elapsedMinutes": 130,
+        "totalCost": [
+          0,
+          0
+        ],
+        "totalCostCents": [
+          0,
+          0
+        ],
+        "budgetHighCents": 2000,
+        "remainingBudgetCents": 2000,
+        "utilityA": 264.648,
+        "utilityB": 264.648,
+        "meanUtility": 264.648,
+        "fairness": 1,
+        "novelty": 34.448,
+        "variety": 4,
+        "objective": 232.709,
+        "predictedLoadByPerson": {
+          "A": 1,
+          "B": 1
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 50,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 6,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16200,
+        "generatedNodes": 1000,
+        "feasibleNodes": 1000,
+        "terminalPlans": 1000,
+        "constraintRejections": {
+          "H_PREPARATION": 1438,
+          "H_RANGE": 2520,
+          "H_CONSENT": 2040,
+          "H_BUDGET": 6363,
+          "H_RULE_SCENE": 4565,
+          "H_RULE_ACTIVITY": 4215,
+          "H_REST_USE": 58,
+          "H_TIME_WINDOW": 847,
+          "H_REST_LOOP": 2
+        },
+        "beamPruned": 881,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 728
+      }
+    },
+    {
+      "id": "shared-rain-budget50",
+      "input": {
+        "duration": 180,
+        "budget": 50,
+        "weather": "rain",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 260.249,
+      "status": "feasible",
+      "outputDigest": "7390b999",
+      "stageCount": 4,
+      "scenes": [
+        "mall",
+        "quiet_talk",
+        "supermarket",
+        "music_corner"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 860,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 880,
+          "endMinute": 900,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 935,
+          "loadBefore": [
+            1,
+            1
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "music_corner",
+          "activityIds": [],
+          "startMinute": 955,
+          "endMinute": 970,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-lowbudget-derive",
+            "R-rain-indoor",
+            "R-robust",
+            "R-lowbudget-free",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 130,
+        "elapsedMinutes": 130,
+        "totalCost": [
+          0,
+          0
+        ],
+        "totalCostCents": [
+          0,
+          0
+        ],
+        "budgetHighCents": 5000,
+        "remainingBudgetCents": 5000,
+        "utilityA": 264.648,
+        "utilityB": 264.648,
+        "meanUtility": 264.648,
+        "fairness": 1,
+        "novelty": 34.448,
+        "variety": 4,
+        "objective": 232.709,
+        "predictedLoadByPerson": {
+          "A": 1,
+          "B": 1
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 50,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 10,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 17415,
+        "generatedNodes": 2457,
+        "feasibleNodes": 2457,
+        "terminalPlans": 2457,
+        "constraintRejections": {
+          "H_PREPARATION": 1546,
+          "H_RANGE": 2709,
+          "H_CONSENT": 2193,
+          "H_BUDGET": 4965,
+          "H_RULE_SCENE": 4907,
+          "H_RULE_ACTIVITY": 4530,
+          "H_REST_USE": 57,
+          "H_LOAD": 23,
+          "H_TIME_WINDOW": 1386,
+          "H_REST_LOOP": 3
+        },
+        "beamPruned": 2329,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 728
+      }
+    },
+    {
+      "id": "mall-one",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "mall_arcade"
+          ]
+        }
+      ],
+      "elapsedMs": 261.89,
+      "status": "feasible",
+      "outputDigest": "7d938bd7",
+      "stageCount": 4,
+      "scenes": [
+        "mall",
+        "rest",
+        "bridge_walk",
+        "quiet_talk"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "mall_arcade"
+          ],
+          "startMinute": 860,
+          "endMinute": 900,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            6,
+            6
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 900,
+          "endMinute": 920,
+          "loadBefore": [
+            6,
+            6
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 940,
+          "endMinute": 970,
+          "loadBefore": [
+            0,
+            0
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 970,
+          "endMinute": 990,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 150,
+        "elapsedMinutes": 150,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 240.78,
+        "utilityB": 240.78,
+        "meanUtility": 240.78,
+        "fairness": 1,
+        "novelty": 31.229,
+        "variety": 4,
+        "objective": 193.656,
+        "predictedLoadByPerson": {
+          "A": 0,
+          "B": 0
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 30,
+        "robustReserve": 20,
+        "totalUncertaintyMinutes": 5,
+        "uncertaintyByWindow": {
+          "default": 5
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 9990,
+        "generatedNodes": 1104,
+        "feasibleNodes": 1104,
+        "terminalPlans": 1105,
+        "constraintRejections": {
+          "H_PREPARATION": 2034,
+          "H_RANGE": 1554,
+          "H_CONSENT": 1258,
+          "H_LOAD": 149,
+          "H_RULE_ACTIVITY": 285,
+          "H_RULE_SCENE": 95,
+          "H_TIME_WINDOW": 3946,
+          "H_REST_LOOP": 8,
+          "H_REST_USE": 5
+        },
+        "beamPruned": 1031,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1456
+      }
+    },
+    {
+      "id": "mall-two",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "mall_arcade",
+            "mall_stores"
+          ]
+        }
+      ],
+      "elapsedMs": 216.976,
+      "status": "feasible",
+      "outputDigest": "2eaad0a3",
+      "stageCount": 3,
+      "scenes": [
+        "mall",
+        "rest",
+        "bridge_walk"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "mall_arcade",
+            "mall_stores"
+          ],
+          "startMinute": 860,
+          "endMinute": 925,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            9,
+            9
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 925,
+          "endMinute": 945,
+          "loadBefore": [
+            9,
+            9
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 965,
+          "endMinute": 995,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 155,
+        "elapsedMinutes": 155,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 175.486,
+        "utilityB": 175.486,
+        "meanUtility": 175.486,
+        "fairness": 1,
+        "novelty": 31.416,
+        "variety": 3,
+        "objective": 177.637,
+        "predictedLoadByPerson": {
+          "A": 5,
+          "B": 5
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 25,
+        "robustReserve": 20,
+        "totalUncertaintyMinutes": 5,
+        "uncertaintyByWindow": {
+          "default": 5
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 9855,
+        "generatedNodes": 331,
+        "feasibleNodes": 331,
+        "terminalPlans": 332,
+        "constraintRejections": {
+          "H_PREPARATION": 1992,
+          "H_RANGE": 1533,
+          "H_CONSENT": 1241,
+          "H_LOAD": 252,
+          "H_RULE_ACTIVITY": 390,
+          "H_RULE_SCENE": 130,
+          "H_TIME_WINDOW": 4479,
+          "H_REST_LOOP": 3,
+          "H_REST_USE": 4
+        },
+        "beamPruned": 259,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1352
+      }
+    },
+    {
+      "id": "mall-three",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "mall_arcade",
+            "mall_stores",
+            "mall_snacks"
+          ]
+        }
+      ],
+      "elapsedMs": 309.39,
+      "status": "feasible",
+      "outputDigest": "bbcd7fdd",
+      "stageCount": 3,
+      "scenes": [
+        "mall",
+        "rest",
+        "track_walk"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "mall_arcade",
+            "mall_snacks",
+            "mall_stores"
+          ],
+          "startMinute": 860,
+          "endMinute": 940,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            10,
+            10
+          ],
+          "costCents": [
+            3000,
+            5500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 940,
+          "endMinute": 960,
+          "loadBefore": [
+            10,
+            10
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "track_walk",
+          "activityIds": [],
+          "startMinute": 980,
+          "endMinute": 1000,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 160,
+        "elapsedMinutes": 160,
+        "totalCost": [
+          30,
+          55
+        ],
+        "totalCostCents": [
+          3000,
+          5500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 163.265,
+        "utilityB": 163.265,
+        "meanUtility": 163.265,
+        "fairness": 1,
+        "novelty": 31.416,
+        "variety": 3,
+        "objective": 165.415,
+        "predictedLoadByPerson": {
+          "A": 5,
+          "B": 5
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 20,
+        "robustReserve": 20,
+        "totalUncertaintyMinutes": 5,
+        "uncertaintyByWindow": {
+          "default": 5
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 7290,
+        "generatedNodes": 114,
+        "feasibleNodes": 114,
+        "terminalPlans": 115,
+        "constraintRejections": {
+          "H_PREPARATION": 1452,
+          "H_RANGE": 1134,
+          "H_CONSENT": 918,
+          "H_LOAD": 368,
+          "H_RULE_ACTIVITY": 450,
+          "H_RULE_SCENE": 150,
+          "H_TIME_WINDOW": 3155,
+          "H_REST_LOOP": 4,
+          "H_REST_USE": 1
+        },
+        "beamPruned": 61,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1456
+      }
+    },
+    {
+      "id": "mall-cleared",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [
+        {
+          "sceneId": "mall",
+          "activityIds": []
+        }
+      ],
+      "elapsedMs": 246.923,
+      "status": "feasible",
+      "outputDigest": "904345e0",
+      "stageCount": 4,
+      "scenes": [
+        "mall",
+        "bridge_walk",
+        "track_walk",
+        "rest"
+      ],
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 860,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 900,
+          "endMinute": 930,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "track_walk",
+          "activityIds": [],
+          "startMinute": 940,
+          "endMinute": 960,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            6,
+            6
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 960,
+          "endMinute": 980,
+          "loadBefore": [
+            6,
+            6
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 140,
+        "elapsedMinutes": 140,
+        "totalCost": [
+          0,
+          0
+        ],
+        "totalCostCents": [
+          0,
+          0
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 298.204,
+        "utilityB": 298.204,
+        "meanUtility": 298.204,
+        "fairness": 1,
+        "novelty": 28.214,
+        "variety": 3,
+        "objective": 234.172,
+        "predictedLoadByPerson": {
+          "A": 0,
+          "B": 0
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 40,
+        "robustReserve": 25,
+        "totalUncertaintyMinutes": 10,
+        "uncertaintyByWindow": {
+          "default": 10
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 9855,
+        "generatedNodes": 1660,
+        "feasibleNodes": 1660,
+        "terminalPlans": 1661,
+        "constraintRejections": {
+          "H_PREPARATION": 2030,
+          "H_RANGE": 1533,
+          "H_CONSENT": 1241,
+          "H_LOAD": 183,
+          "H_TIME_WINDOW": 3398,
+          "H_REST_USE": 11,
+          "H_RULE_ACTIVITY": 105,
+          "H_RULE_SCENE": 35,
+          "H_REST_LOOP": 7
+        },
+        "beamPruned": 1588,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 936
+      }
+    },
+    {
+      "id": "shared-explore90",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 90,
+      "fixedPrefix": [],
+      "elapsedMs": 290.437,
+      "status": "feasible",
+      "outputDigest": "50c6bd73",
+      "stageCount": 4,
+      "scenes": [
+        "bridge_walk",
+        "supermarket",
+        "rest",
+        "arcade"
+      ],
+      "stages": [
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 850,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [
+            "super_exchange"
+          ],
+          "startMinute": 900,
+          "endMinute": 935,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            6,
+            6
+          ],
+          "costCents": [
+            1000,
+            2000
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 935,
+          "endMinute": 955,
+          "loadBefore": [
+            6,
+            6
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [
+            "arcade_race"
+          ],
+          "startMinute": 965,
+          "endMinute": 1000,
+          "loadBefore": [
+            0,
+            0
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            2500,
+            4000
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 160,
+        "elapsedMinutes": 160,
+        "totalCost": [
+          35,
+          60
+        ],
+        "totalCostCents": [
+          3500,
+          6000
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 262.498,
+        "utilityB": 262.498,
+        "meanUtility": 262.498,
+        "fairness": 1,
+        "novelty": 47.088,
+        "variety": 4,
+        "objective": 280.598,
+        "predictedLoadByPerson": {
+          "A": 4,
+          "B": 4
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 20,
+        "robustReserve": 20,
+        "totalUncertaintyMinutes": 5,
+        "uncertaintyByWindow": {
+          "default": 5
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 13635,
+        "generatedNodes": 3327,
+        "feasibleNodes": 3327,
+        "terminalPlans": 3327,
+        "constraintRejections": {
+          "H_PREPARATION": 2804,
+          "H_RANGE": 2121,
+          "H_CONSENT": 1717,
+          "H_REST_USE": 8,
+          "H_TIME_WINDOW": 3623,
+          "H_LOAD": 287,
+          "H_RULE_ACTIVITY": 180,
+          "H_RULE_SCENE": 60,
+          "H_REST_LOOP": 8
+        },
+        "beamPruned": 3227,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 832
+      }
+    },
+    {
+      "id": "shared-explore0-restored",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 329.335,
+      "status": "feasible",
+      "outputDigest": "91dbe542",
+      "stageCount": 4,
+      "scenes": [
+        "bridge_walk",
+        "track_walk",
+        "mall",
+        "rest"
+      ],
+      "stages": [
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 850,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "track_walk",
+          "activityIds": [],
+          "startMinute": 890,
+          "endMinute": 910,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 930,
+          "endMinute": 950,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            6,
+            6
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 950,
+          "endMinute": 970,
+          "loadBefore": [
+            6,
+            6
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 25,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 130,
+        "elapsedMinutes": 130,
+        "totalCost": [
+          0,
+          0
+        ],
+        "totalCostCents": [
+          0,
+          0
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 305.12,
+        "utilityB": 305.12,
+        "meanUtility": 305.12,
+        "fairness": 1,
+        "novelty": 28.778,
+        "variety": 3,
+        "objective": 241.894,
+        "predictedLoadByPerson": {
+          "A": 0,
+          "B": 0
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 50,
+        "robustReserve": 25,
+        "totalUncertaintyMinutes": 10,
+        "uncertaintyByWindow": {
+          "default": 10
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16335,
+        "generatedNodes": 3866,
+        "feasibleNodes": 3866,
+        "terminalPlans": 3866,
+        "constraintRejections": {
+          "H_PREPARATION": 3376,
+          "H_RANGE": 2541,
+          "H_CONSENT": 2057,
+          "H_REST_USE": 17,
+          "H_TIME_WINDOW": 4600,
+          "H_LOAD": 283,
+          "H_RULE_ACTIVITY": 90,
+          "H_RULE_SCENE": 30,
+          "H_REST_LOOP": 7
+        },
+        "beamPruned": 3746,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1040
+      }
+    },
+    {
+      "id": "rain-explore90",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "rain",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 90,
+      "fixedPrefix": [],
+      "elapsedMs": 253.73,
+      "status": "feasible",
+      "outputDigest": "0738de27",
+      "stageCount": 4,
+      "scenes": [
+        "supermarket",
+        "quiet_talk",
+        "arcade",
+        "mall"
+      ],
+      "stages": [
+        {
+          "sceneId": "supermarket",
+          "activityIds": [
+            "super_exchange"
+          ],
+          "startMinute": 860,
+          "endMinute": 895,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            1000,
+            2000
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 895,
+          "endMinute": 915,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 925,
+          "endMinute": 945,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 955,
+          "endMinute": 975,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-rain-indoor",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 135,
+        "elapsedMinutes": 135,
+        "totalCost": [
+          25,
+          45
+        ],
+        "totalCostCents": [
+          2500,
+          4500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 255.714,
+        "utilityB": 255.714,
+        "meanUtility": 255.714,
+        "fairness": 1,
+        "novelty": 51.229,
+        "variety": 4,
+        "objective": 274.092,
+        "predictedLoadByPerson": {
+          "A": 5,
+          "B": 5
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 45,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 18,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16335,
+        "generatedNodes": 3256,
+        "feasibleNodes": 3256,
+        "terminalPlans": 3256,
+        "constraintRejections": {
+          "H_PREPARATION": 1420,
+          "H_RANGE": 2541,
+          "H_CONSENT": 2057,
+          "H_RULE_SCENE": 4678,
+          "H_RULE_ACTIVITY": 4475,
+          "H_REST_USE": 12,
+          "H_TIME_WINDOW": 4610,
+          "H_LOAD": 306,
+          "H_REST_LOOP": 5
+        },
+        "beamPruned": 3136,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 832
+      }
+    },
+    {
+      "id": "different-interests",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "culture",
+          "learning"
+        ],
+        "preferencesB": [
+          "play",
+          "music"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 271.397,
+      "status": "feasible",
+      "outputDigest": "cb87540a",
+      "stageCount": 4,
+      "scenes": [
+        "reading",
+        "mall",
+        "arcade",
+        "rest"
+      ],
+      "stages": [
+        {
+          "sceneId": "reading",
+          "activityIds": [],
+          "startMinute": 850,
+          "endMinute": 890,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 930,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 940,
+          "endMinute": 960,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            6,
+            6
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "startMinute": 960,
+          "endMinute": 980,
+          "loadBefore": [
+            6,
+            6
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-fatigue-derive",
+            "R-fatigue-rest",
+            "R-robust",
+            "CORE_HIGH_LOAD",
+            "CORE_REST_PRIORITY",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 140,
+        "elapsedMinutes": 140,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 274.066,
+        "utilityB": 267.845,
+        "meanUtility": 270.956,
+        "fairness": 0.9773,
+        "novelty": 27.668,
+        "variety": 4,
+        "objective": 204.077,
+        "predictedLoadByPerson": {
+          "A": 0,
+          "B": 0
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 40,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 15930,
+        "generatedNodes": 3184,
+        "feasibleNodes": 3184,
+        "terminalPlans": 3184,
+        "constraintRejections": {
+          "H_PREPARATION": 3294,
+          "H_RANGE": 2478,
+          "H_CONSENT": 2006,
+          "H_REST_USE": 20,
+          "H_TIME_WINDOW": 5101,
+          "H_LOAD": 252,
+          "H_RULE_ACTIVITY": 75,
+          "H_RULE_SCENE": 25,
+          "H_REST_LOOP": 7
+        },
+        "beamPruned": 3067,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 832
+      }
+    },
+    {
+      "id": "meal-required",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [],
+        "preferencesB": [],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": true,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 288.979,
+      "status": "feasible",
+      "outputDigest": "f47f0043",
+      "stageCount": 4,
+      "scenes": [
+        "canteen",
+        "mall",
+        "arcade",
+        "quiet_talk"
+      ],
+      "stages": [
+        {
+          "sceneId": "canteen",
+          "activityIds": [],
+          "startMinute": 850,
+          "endMinute": 890,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            0,
+            0
+          ],
+          "costCents": [
+            4000,
+            7000
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-meal-prefer",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 910,
+          "endMinute": 930,
+          "loadBefore": [
+            0,
+            0
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 940,
+          "endMinute": 960,
+          "loadBefore": [
+            1,
+            1
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 960,
+          "endMinute": 980,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            1,
+            1
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 140,
+        "elapsedMinutes": 140,
+        "totalCost": [
+          55,
+          95
+        ],
+        "totalCostCents": [
+          5500,
+          9500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 261.117,
+        "utilityB": 261.117,
+        "meanUtility": 261.117,
+        "fairness": 1,
+        "novelty": 31.983,
+        "variety": 4,
+        "objective": 190.46,
+        "predictedLoadByPerson": {
+          "A": 1,
+          "B": 1
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 40,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": [
+          "meal_completed"
+        ]
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16335,
+        "generatedNodes": 3251,
+        "feasibleNodes": 3251,
+        "terminalPlans": 2317,
+        "constraintRejections": {
+          "H_PREPARATION": 3388,
+          "H_RANGE": 2541,
+          "H_CONSENT": 2057,
+          "H_REST_USE": 67,
+          "H_TIME_WINDOW": 5431,
+          "H_LOAD": 84
+        },
+        "beamPruned": 3131,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1040
+      }
+    },
+    {
+      "id": "two-windows",
+      "input": {
+        "duration": 240,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [
+          "nature",
+          "photo"
+        ],
+        "preferencesB": [
+          "nature",
+          "photo"
+        ],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": true,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "pm",
+            "startMinute": 840,
+            "endMinute": 960
+          },
+          {
+            "id": "eve",
+            "startMinute": 1080,
+            "endMinute": 1200
+          }
+        ],
+        "anchors": []
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 345.226,
+      "status": "feasible",
+      "outputDigest": "cf55c7a1",
+      "stageCount": 4,
+      "scenes": [
+        "bridge_walk",
+        "canteen",
+        "track_walk",
+        "mall"
+      ],
+      "stages": [
+        {
+          "sceneId": "bridge_walk",
+          "activityIds": [
+            "bridge_view"
+          ],
+          "startMinute": 850,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "canteen",
+          "activityIds": [],
+          "startMinute": 890,
+          "endMinute": 930,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            2,
+            2
+          ],
+          "costCents": [
+            4000,
+            7000
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-meal-prefer",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "track_walk",
+          "activityIds": [],
+          "startMinute": 1090,
+          "endMinute": 1110,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-shared-nature",
+            "R-weather-unknown",
+            "KG_PREFERENCE_PATH",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 1130,
+          "endMinute": 1150,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 20,
+          "ruleIds": [
+            "R-meal-derive",
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 160,
+        "elapsedMinutes": 310,
+        "totalCost": [
+          40,
+          70
+        ],
+        "totalCostCents": [
+          4000,
+          7000
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 323.083,
+        "utilityB": 323.083,
+        "meanUtility": 323.083,
+        "fairness": 1,
+        "novelty": 30.325,
+        "variety": 3,
+        "objective": 252.42,
+        "predictedLoadByPerson": {
+          "A": 4,
+          "B": 4
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 50,
+        "robustReserve": 20,
+        "totalUncertaintyMinutes": 10,
+        "uncertaintyByWindow": {
+          "pm": 5,
+          "eve": 5
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": [
+          "meal_completed"
+        ]
+      },
+      "candidateCount": 20,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 16740,
+        "generatedNodes": 3256,
+        "feasibleNodes": 3256,
+        "terminalPlans": 2278,
+        "constraintRejections": {
+          "H_PREPARATION": 3468,
+          "H_RANGE": 2604,
+          "H_CONSENT": 2108,
+          "H_TIME_WINDOW": 5528,
+          "H_REST_USE": 35,
+          "H_LOAD": 213,
+          "H_RULE_ACTIVITY": 30,
+          "H_RULE_SCENE": 10
+        },
+        "beamPruned": 3133,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 1352
+      }
+    },
+    {
+      "id": "timed-anchor",
+      "input": {
+        "duration": 180,
+        "budget": null,
+        "weather": "unknown",
+        "area": "near",
+        "fatigueA": 2,
+        "fatigueB": 2,
+        "preferences": [],
+        "quietRequired": false,
+        "theme": "any",
+        "bans": [],
+        "preferencesA": [],
+        "preferencesB": [],
+        "preparedIds": [],
+        "dietaryRestrictions": [],
+        "robust": true,
+        "mealNeed": false,
+        "crowdAvoidance": false,
+        "windows": [
+          {
+            "id": "default",
+            "startMinute": 840,
+            "endMinute": 1020
+          }
+        ],
+        "anchors": [
+          {
+            "id": "booking",
+            "choice": {
+              "sceneId": "mall",
+              "activityIds": []
+            },
+            "windowId": "default",
+            "startMinute": 930,
+            "index": 1
+          }
+        ]
+      },
+      "exploration": 0,
+      "fixedPrefix": [],
+      "elapsedMs": 211.538,
+      "status": "feasible",
+      "outputDigest": "fb28b25a",
+      "stageCount": 4,
+      "scenes": [
+        "arcade",
+        "mall",
+        "quiet_talk",
+        "supermarket"
+      ],
+      "stages": [
+        {
+          "sceneId": "arcade",
+          "activityIds": [],
+          "startMinute": 860,
+          "endMinute": 880,
+          "loadBefore": [
+            2,
+            2
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            1500,
+            2500
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "startMinute": 930,
+          "endMinute": 950,
+          "loadBefore": [
+            4,
+            4
+          ],
+          "loadAfter": [
+            5,
+            5
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "quiet_talk",
+          "activityIds": [],
+          "startMinute": 950,
+          "endMinute": 970,
+          "loadBefore": [
+            5,
+            5
+          ],
+          "loadAfter": [
+            3,
+            3
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        },
+        {
+          "sceneId": "supermarket",
+          "activityIds": [],
+          "startMinute": 980,
+          "endMinute": 1005,
+          "loadBefore": [
+            3,
+            3
+          ],
+          "loadAfter": [
+            4,
+            4
+          ],
+          "costCents": [
+            0,
+            0
+          ],
+          "reserveMinutes": 15,
+          "ruleIds": [
+            "R-robust",
+            "RESOURCE_ACCOUNTING"
+          ]
+        }
+      ],
+      "metrics": {
+        "totalMinutes": 165,
+        "elapsedMinutes": 165,
+        "totalCost": [
+          15,
+          25
+        ],
+        "totalCostCents": [
+          1500,
+          2500
+        ],
+        "budgetHighCents": null,
+        "remainingBudgetCents": null,
+        "utilityA": 266.159,
+        "utilityB": 266.159,
+        "meanUtility": 266.159,
+        "fairness": 1,
+        "novelty": 38.567,
+        "variety": 4,
+        "objective": 167.503,
+        "predictedLoadByPerson": {
+          "A": 4,
+          "B": 4
+        },
+        "mealSatisfied": true,
+        "anchorsSatisfied": true,
+        "endingBuffer": 15,
+        "robustReserve": 15,
+        "totalUncertaintyMinutes": 0,
+        "uncertaintyByWindow": {
+          "default": 0
+        },
+        "reserveSatisfied": true,
+        "preparationsRemaining": []
+      },
+      "candidateCount": 19,
+      "search": {
+        "method": "bounded",
+        "maxStages": 8,
+        "beamWidth": 24,
+        "maxExpandedNodes": 18000,
+        "activitySubsetLimit": 64,
+        "candidateLimit": 20,
+        "tieBreak": "stable-id",
+        "expandedNodes": 9879,
+        "generatedNodes": 1087,
+        "feasibleNodes": 1087,
+        "terminalPlans": 1023,
+        "constraintRejections": {
+          "H_PREPARATION": 2044,
+          "H_RANGE": 1533,
+          "H_CONSENT": 1241,
+          "H_ANCHOR_TIME": 5,
+          "H_REST_USE": 18,
+          "H_TIME_WINDOW": 4091,
+          "H_LOAD": 152
+        },
+        "beamPruned": 991,
+        "activitySubsetsTruncated": false,
+        "nodeBudgetReached": false,
+        "maxDepthReached": false,
+        "provedOptimal": false,
+        "proofScope": "未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。",
+        "reasoningSnapshots": 833
+      }
+    }
+  ]
+}

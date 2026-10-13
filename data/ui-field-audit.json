@@ -1,0 +1,95 @@
+{
+  "scope": "只读代码与真实数据计算；未打开浏览器或改写UI",
+  "checks": [
+    {
+      "name": "ui_interest_ids_match_catalog",
+      "status": "passed"
+    },
+    {
+      "name": "ui_prepared_and_diet_metadata_resolve",
+      "status": "passed"
+    },
+    {
+      "name": "ui_default_graph_query",
+      "status": "passed"
+    },
+    {
+      "name": "ui_preparation_graph_query",
+      "status": "passed"
+    },
+    {
+      "name": "rule_chain_uses_produced_fact",
+      "status": "passed"
+    },
+    {
+      "name": "ui_meal_style_toggle_matches_exclusive_group",
+      "status": "passed"
+    },
+    {
+      "name": "source_ids_resolve",
+      "status": "passed"
+    },
+    {
+      "name": "actual_ui_consent_expression_propagates_and_cancels",
+      "status": "passed"
+    },
+    {
+      "name": "actual_ui_source_expression_includes_activity_evidence",
+      "status": "passed"
+    }
+  ],
+  "checkCount": 9,
+  "sourceSha256": {
+    "app.mjs": "fe44a6c4e0dbb83ef4d8cb1ad54ed26d9f3528bb4e133d4952006ce96333673f",
+    "index.html": "414e2b2563edb1cbb4b187f3fd9075c7e3a58aa27a02979cf481d2426555f6ae",
+    "planner.mjs": "76310230e1f554019a34dbbddfd85a955a14b0beacc0915705c901a77eed28b2"
+  },
+  "engineControlTest": {
+    "withoutConsent": "rejected_as_expected",
+    "withConsent": "accepted"
+  },
+  "sourceConnectionControlTest": {
+    "missingActivityEvidence": [
+      "E-research-phone"
+    ]
+  },
+  "resolvedFindings": [
+    {
+      "priority": 1,
+      "title": "需要明确同意的活动缺少UI输入传播",
+      "status": "verified_resolved_in_current_snapshot",
+      "file": "app.mjs",
+      "lines": [
+        44,
+        82,
+        83
+      ],
+      "evidence": {
+        "engineWithoutConsent": [
+          "H_CONSENT:活动photo_pair需要单独明确同意。"
+        ],
+        "engineWithExplicitConsent": "feasible",
+        "action": "photo_pair"
+      },
+      "fix": "明确活动点击时传入explicitConsentIds，取消或释放时同步更新。"
+    },
+    {
+      "priority": 2,
+      "title": "阶段来源展示缺少活动独有证据",
+      "status": "verified_resolved_in_current_snapshot",
+      "file": "app.mjs",
+      "lines": [
+        74
+      ],
+      "evidence": {
+        "sceneId": "cafe",
+        "activityId": "cafe_focus",
+        "missingEvidenceIds": [
+          "E-research-phone"
+        ]
+      },
+      "fix": "来源列表合并场景、所选活动及实际推理trace的evidenceIds并去重。"
+    }
+  ],
+  "unresolvedFindings": []
+}

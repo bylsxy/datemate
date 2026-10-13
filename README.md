@@ -1,7 +1,35 @@
-### GitHub Pages
+# DateMate · 约会搭子
 
-站点地址为 [https://bylsxy.github.io/datemate/](https://bylsxy.github.io/datemate/)。
+DateMate 把知识图谱、产生式规则与运筹规划连接到同一条浏览器计算链。打开页面即可获得完整安排；横向浏览场景，点击场景或勾选活动后，资源状态与后续阶段一起重算。
 
-### 许可证
+在线体验：[bylsxy.github.io/datemate](https://bylsxy.github.io/datemate/)。离线演示：[DateMate_offline.html](dist/DateMate_offline.html)。
 
-项目采用 [MIT License](LICENSE)，版权归属为 2026 bylsxy。
+## 功能与数据
+
+知识库包含 38 个场景、66 个活动、47 条数据规则和 544 条图谱边。151 份本地语料完成扫描与哈希登记，26 份形成局部采用证据，125 份保留候选统计供后续审核。公开包包含原创摘要、定位和设计参数。
+
+规划使用确定性有界束搜索、透明加权效用和已发现方案的 Pareto 筛选。状态包含双方预计负担、准备库存、资源消耗、活动依赖、预算、多个可用窗口、固定前缀与预约锚点。费用内部使用整数分，预算以上界检查；鲁棒模式把时间波动跨阶段累计，并留出结束缓冲。软偏好与功能重复惩罚可调整；硬约束始终先检查。
+
+两个独立页签可以查看真实规则链、图谱多跳路径以及已满足硬约束的不同方案。探索度改变风格权重，相同输入、版本、前缀和搜索配置能复现相同输出。复盘 JSON 由用户自行导入导出。
+
+## 运行与验证
+
+无需安装前端依赖。使用 Node 22 或更新版本进行测试，Python 可用于启动静态预览：
+
+```bash
+node --test tests/*.test.mjs
+python -m http.server 8793 --bind 127.0.0.1
+node tools/build_offline.mjs
+```
+
+访问 `http://127.0.0.1:8793/`。单文件离线构建同时写入 `dist/DateMate_offline.html` 和相邻课程交付目录。
+
+当前 36 项自动检查通过。20 类固定请求在预热 5 次后各测量一次，桌面 Node 内核 P50、P95 与最大耗时见 [性能实测](tests/reports/benchmark.json) 和独立的 [测试环境](tests/reports/benchmark-environment.json)。该批性能结果不代表手机、浏览器通信或渲染。
+
+完整原材料仅在本地用于 `tools/build_knowledge.py` 的重复抽取与审计。字段、来源和审核状态见 [知识审计](docs/knowledge-audit.md)，教师要求与验收映射见 [课程要求](docs/course-requirements.md)。
+
+## 使用边界
+
+场景表示地点类型；价格、时间、负担和评价权重属于设计估值。真实营业、场地、交通与准备情况须出发前确认。推荐指数用于模型内比较。有限搜索可能触及节点上限，找到可行方案时明确保留“未证明全局最优”状态；没有找到完整方案也不推断现实无解。
+
+模型尊重双方明确输入，未选兴趣按未知处理。需双方同意的活动在界面标明，勾选代表用户已沟通确认。复盘可能含个人条件，分享前请审查。微信、Safari 与手机实机体验仍需单独验收。

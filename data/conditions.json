@@ -1,0 +1,323 @@
+[
+  {
+    "key": "weather",
+    "type": "enum",
+    "allowedValues": [
+      "unknown",
+      "clear",
+      "rain"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "area",
+    "type": "enum",
+    "allowedValues": [
+      "all",
+      "near",
+      "campus"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "theme",
+    "type": "enum",
+    "allowedValues": [
+      "any",
+      "daily",
+      "romantic",
+      "fresh"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "duration",
+    "type": "integer",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "hard",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": "minute"
+  },
+  {
+    "key": "budget",
+    "type": "integer",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "hard",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": "CNY"
+  },
+  {
+    "key": "fatigueA",
+    "type": "integer",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": "design-load-unit"
+  },
+  {
+    "key": "fatigueB",
+    "type": "integer",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": "design-load-unit"
+  },
+  {
+    "key": "quietRequired",
+    "type": "boolean",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "hard",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "robust",
+    "type": "boolean",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "mealNeed",
+    "type": "boolean",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "crowdAvoidance",
+    "type": "boolean",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "preferences",
+    "type": "set",
+    "allowedValues": [
+      "nature",
+      "culture",
+      "food",
+      "play",
+      "creative",
+      "romantic",
+      "quiet",
+      "indoor",
+      "exercise",
+      "learning",
+      "daily",
+      "photo",
+      "music"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "preferencesA",
+    "type": "set",
+    "allowedValues": [
+      "nature",
+      "culture",
+      "food",
+      "play",
+      "creative",
+      "romantic",
+      "quiet",
+      "indoor",
+      "exercise",
+      "learning",
+      "daily",
+      "photo",
+      "music"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "preferencesB",
+    "type": "set",
+    "allowedValues": [
+      "nature",
+      "culture",
+      "food",
+      "play",
+      "creative",
+      "romantic",
+      "quiet",
+      "indoor",
+      "exercise",
+      "learning",
+      "daily",
+      "photo",
+      "music"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "preparedIds",
+    "type": "set",
+    "allowedValues": [
+      "water",
+      "racket",
+      "ball",
+      "closed_shoes",
+      "paper_pen",
+      "opening_checked",
+      "picnic_mat",
+      "picnic_pack",
+      "phone_camera",
+      "craft_kit",
+      "earphones",
+      "badminton_kit",
+      "court_checked",
+      "photo_pair",
+      "breakfast_pack",
+      "printed_photo",
+      "shared_sketch",
+      "handmade_card",
+      "meal_completed"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "soft",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "dietaryRestrictions",
+    "type": "set",
+    "allowedValues": [
+      "raw",
+      "cold",
+      "spicy",
+      "dairy",
+      "gluten",
+      "meat",
+      "caffeine"
+    ],
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": true,
+    "defaultStrength": "hard",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  },
+  {
+    "key": "bans",
+    "type": "set",
+    "allowedValues": null,
+    "subjectTypes": [
+      "couple",
+      "environment",
+      "plan"
+    ],
+    "sensitive": false,
+    "defaultStrength": "hard",
+    "schemaVersion": "prototype-compatible-3.0",
+    "unit": null
+  }
+]

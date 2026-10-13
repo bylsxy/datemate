@@ -1,0 +1,33 @@
+{
+  "status": "passed",
+  "dataVersion": "knowledge-3.0.1",
+  "rulesVersion": "production-3.0.1",
+  "ruleId": "R-photo-consent",
+  "title": "需明确同意的活动确认双方意愿",
+  "warning": "此活动需要双方明确愿意，可随时取消或调整。",
+  "checks": [
+    {
+      "name": "generic_consent_cafe_focus",
+      "status": "passed"
+    },
+    {
+      "name": "generic_consent_photo_pair",
+      "status": "passed"
+    },
+    {
+      "name": "ordinary_activity_does_not_trigger_consent_warning",
+      "status": "passed"
+    },
+    {
+      "name": "real_cafe_focus_plan_has_generic_warning_and_new_versions",
+      "status": "passed"
+    }
+  ],
+  "checkCount": 4,
+  "counts": {
+    "scenes": 38,
+    "activities": 66,
+    "rules": 47,
+    "edges": 544
+  }
+}

@@ -1,0 +1,18 @@
+{
+  "node": "v24.19.0",
+  "platform": "win32",
+  "architecture": "x64",
+  "osType": "Windows_NT",
+  "osRelease": "10.0.26300",
+  "cpuModel": "Intel(R) Core(TM) Ultra 5 125H",
+  "logicalCpuCount": 18,
+  "totalMemoryGiB": 31.47,
+  "benchmarkProtocol": {
+    "warmupRuns": 5,
+    "measuredRuns": 20,
+    "repetitionsPerScenario": 1,
+    "percentileMethod": "nearest_rank",
+    "timingScope": "本机桌面Node同步规划，包括目录编译、搜索、规则、图谱、候选与Pareto；不含浏览器Worker通信和页面渲染。",
+    "interpretation": "20种固定请求各测一次；本批p95不能表示单一输入的长期p95，也不是手机或浏览器测试结果。"
+  }
+}

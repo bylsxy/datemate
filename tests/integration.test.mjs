@@ -1,0 +1,17 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {mkdirSync,writeFileSync} from 'node:fs';
+import {createPlanner} from '../engine.mjs';
+import {catalog,rules,graph,sources,evidence} from '../data/catalog.mjs';
+import {defaultContext} from '../planner.mjs';
+import {queryGraph,forwardChain} from '../reasoning.mjs';
+const planner=createPlanner({...catalog,rules,graph});
+const observations=[];
+function run(label,input,exploration=0,prefix=[]){const started=performance.now();const p=planner.plan({...defaultContext(),...input},exploration,prefix);observations.push({label,elapsedMs:+(performance.now()-started).toFixed(2),status:p.status,scenes:p.stages.map(s=>s.sceneId),activityIds:p.stages.map(s=>s.activityIds),cost:p.totalCost,metrics:p.metrics,search:p.search,digest:p.outputFingerprint});return p;}
+function valid(p){assert.equal(p.ok,true,p.errors?.join(';'));assert.equal(p.search.provedOptimal,false);let total=[0,0];for(const s of p.stages){assert.ok(s.costCents.every(Number.isInteger));total=total.map((v,i)=>v+s.costCents[i]);assert.ok(p.context.windows.some(w=>s.start>=w.startMinute&&s.end<=w.endMinute));}assert.deepEqual(total,p.totalCostCents);}
+test('真实知识库0→90→0确定复现，探索始终满足资源约束',()=>{const a=run('baseline',{}),b=run('exploration90',{},90),c=run('baseline-replayed',{});valid(a);valid(b);valid(c);assert.equal(a.outputFingerprint,c.outputFingerprint);assert.notDeepEqual(a.stages.map(s=>[s.sceneId,s.activityIds]),b.stages.map(s=>[s.sceneId,s.activityIds]));assert.equal(a.stages[0].sceneId,'mall');assert.deepEqual(a.stages[0].activityIds,[]);});
+test('三项商场活动累计负担引出无活动休息，恢复后继续',()=>{const p=run('mall-three',{},0,[{sceneId:'mall',activityIds:['mall_arcade','mall_stores','mall_snacks']}]);valid(p);assert.equal(p.stages[1].sceneId,'rest');assert.deepEqual(p.stages[1].activityIds,[]);assert.ok(p.stages.length>2);assert.ok(p.trace.some(t=>t.ruleId==='R-fatigue-derive'));assert.ok(p.trace.some(t=>t.ruleId==='R-fatigue-rest'));});
+test('雨天穷穷模式全部阶段室内，双人费用上界不超50',()=>{const p=run('rain-budget',{weather:'rain',budget:50});valid(p);assert.ok(p.totalCostCents[1]<=5000);assert.ok(p.stages.every(s=>catalog.scenes.find(x=>x.id===s.sceneId).indoor));});
+test('双方偏好角色交换保持对称，不偏袒固定一方',()=>{const a=run('nature-play',{preferencesA:['nature'],preferencesB:['play']}),b=run('play-nature',{preferencesA:['play'],preferencesB:['nature']});valid(a);valid(b);assert.equal(a.metrics.utilityA,b.metrics.utilityB);assert.equal(a.metrics.utilityB,b.metrics.utilityA);assert.equal(a.metrics.fairness,b.metrics.fairness);});
+test('图谱真实多跳与公开摘要证据闭环，原文始终不输出',()=>{const paths=queryGraph(graph,'mall','tag:play');assert.ok(paths.some(p=>p.edges.length===2));assert.ok(paths.every(p=>p.evidenceIds.length));assert.equal(sources.length,151);assert.ok(sources.every(s=>s.rawTextIncluded===false));assert.ok(evidence.every(e=>!e.originalExcerpt&&e.sourceLocator&&e.summary));const chain=forwardChain({context:{fatigueA:7,fatigueB:2},scene:{id:'rest',kind:'rest'}},rules);assert.ok(chain.trace.some(t=>t.ruleId==='R-fatigue-derive'));assert.ok(chain.trace.some(t=>t.ruleId==='R-fatigue-rest'));});
+test.after(()=>{mkdirSync('tests/reports',{recursive:true});writeFileSync('tests/reports/integration.json',JSON.stringify({environment:{node:process.version,platform:process.platform},dataVersion:catalog.version,counts:{scenes:catalog.scenes.length,activities:catalog.activities.length,rules:rules.length,edges:graph.edges.length,sources:sources.length},observations},null,2));});
