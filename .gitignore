@@ -1,0 +1,13 @@
+# 本地草稿和原始资料不进入公开仓库
+界面设计.txt
+原始约会语料库/
+老师要求与课件/
+.env
+.env.*
+!.env.example
+node_modules/
+.venv/
+__pycache__/
+*.log
+.DS_Store
+Thumbs.db

@@ -1,0 +1,90 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <title>DateMate · 约会策划</title>
+  <link rel="stylesheet" href="./styles.css">
+  <script type="module" src="./app.mjs"></script>
+</head>
+<body>
+  <header class="page-header">
+    <p class="brand">DateMate <span>约会策划</span></p>
+    <h1>把这次见面安排好。</h1>
+    <p>选几个条件，组合一份简单的约会时间线。未选的条件代表不限。</p>
+    <p class="notice"><strong>示例数据</strong> · 活动、场地和费用均为虚构教学示例，尚未接入真实场地资料。</p>
+  </header>
+  <main class="workspace">
+    <section class="panel" aria-labelledby="conditions-title">
+      <h2 id="conditions-title">这次的条件</h2>
+      <p class="hint">条件仅在当前页面使用，不存储、不上传。</p>
+      <form id="planner-form">
+        <fieldset>
+          <legend>1 · 偏好</legend>
+          <div id="preferences"></div>
+          <label class="field-label" for="excluded">不去的地方</label>
+          <input id="excluded" name="excluded" type="text" placeholder="地点关键词，用逗号分隔" aria-describedby="excluded-help">
+          <p id="excluded-help" class="hint">按示例活动名称与地点关键词排除，可留空。</p>
+        </fieldset>
+        <fieldset>
+          <legend>2 · 状态</legend>
+          <div id="state-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>3 · 当前</legend>
+          <div id="current-options"></div>
+        </fieldset>
+        <fieldset>
+          <legend>4 · 时间段</legend>
+          <div id="time-options"></div>
+          <p class="hint">上午、下午、晚上可多选。未选时，当前示例默认安排下午。</p>
+        </fieldset>
+        <fieldset>
+          <legend>5 · 预算上限</legend>
+          <p class="hint">以下费用均为两人合计。</p>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="budgetMode" value="none" checked>无限制</label>
+            <label class="choice"><input type="radio" name="budgetMode" value="limited">自填上限</label>
+            <label class="choice"><input type="radio" name="budgetMode" value="saving">省钱 · ¥50</label>
+          </div>
+          <label class="field-label" for="budget">两人预算上限（元）</label>
+          <input id="budget" name="budget" type="number" min="0" step="any" inputmode="decimal" disabled placeholder="可填写 0">
+        </fieldset>
+        <fieldset>
+          <legend>6 · 活动范围</legend>
+          <div class="choices">
+            <label class="choice"><input type="radio" name="scope" value="campus">仅校内</label>
+            <label class="choice"><input type="radio" name="scope" value="nearby" checked>校内及周边</label>
+          </div>
+        </fieldset>
+        <details>
+          <summary>高级设置</summary>
+          <div class="advanced">
+            <label class="field-label" for="weather">预期天气</label>
+            <select id="weather" name="weather"><option value="any">不限</option><option value="sunny">晴天</option><option value="rain">下雨</option></select>
+            <label class="field-label" for="interaction">互动程度</label>
+            <select id="interaction" name="interaction"><option value="any">不限</option><option value="high">多一些互动</option><option value="low">少一些互动</option></select>
+            <label class="field-label" for="randomness">规划随机性 · <output id="randomness-value" for="randomness">0</output></label>
+            <input id="randomness" name="randomness" type="range" min="0" max="100" value="0" aria-describedby="randomness-help">
+            <p id="randomness-help" class="hint">0 按示例评分排序；100 随机排序。预算与范围约束始终有效。</p>
+            <label class="field-label" for="personality-a">男方人格（后续支持）</label>
+            <select id="personality-a" disabled><option>尚未接入人格规则</option></select>
+            <label class="field-label" for="personality-b">女方人格（后续支持）</label>
+            <select id="personality-b" disabled><option>尚未接入人格规则</option></select>
+          </div>
+        </details>
+        <p id="form-error" class="error" role="alert" hidden></p>
+        <div class="actions"><button type="submit" class="primary">生成方案</button><button type="reset">重置条件</button></div>
+      </form>
+      <noscript><p class="error">请启用 JavaScript 后使用规划工具。</p></noscript>
+    </section>
+    <section class="panel result-panel" aria-labelledby="result-title">
+      <div class="result-heading"><h2 id="result-title" tabindex="-1">你的约会方案</h2><span class="badge">示例数据</span></div>
+      <p id="result-status" class="sr-only" role="status" aria-live="polite"></p>
+      <div id="result"><div class="empty-state"><p>选择条件后，生成你的第一份方案</p><p class="hint">这里会显示两人预算、活动时间线和实际触发的推荐依据。</p></div></div>
+    </section>
+  </main>
+  <footer>知识表示与规则推理示例 · 出发前请确认实际场地、营业时间与费用。</footer>
+</body>
+</html>
