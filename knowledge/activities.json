@@ -156,7 +156,7 @@
     {
       "id": "bakery_share",
       "title": "分一份面包",
-      "description": "核对食材后分享小份烘焙点心。",
+      "description": "在玻璃房西点屋选小份面包或点心，核对食材后分享，作为补充能量的加餐。",
       "cost": [
         8,
         18
@@ -293,7 +293,7 @@
     {
       "id": "breakfast_pack",
       "title": "买好明早早餐",
-      "description": "购买可妥善保存的早餐，携带方式由双方确认。",
+      "description": "离开前在玻璃房西点屋采购明早的面包点心，确认保存条件与携带方式。",
       "cost": [
         10,
         20
@@ -423,23 +423,35 @@
     },
     {
       "id": "canteen_pair",
-      "title": "各选一道菜",
-      "description": "核对明确忌口后，各挑一种想吃的菜。",
+      "title": "各选一道菜并用餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
       "cost": [
-        0,
-        0
+        40,
+        70
       ],
-      "load": 0,
-      "group": "play",
-      "mode": "multi",
-      "novelty": 45,
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
       "tags": [
         "food",
         "daily"
       ],
       "evidenceIds": [
-        "E-P002"
-      ]
+        "E-P002",
+        "E-user-meal-periods"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat"
+      ],
+      "exclusiveKey": "main_meal"
     },
     {
       "id": "craft_card",
@@ -653,7 +665,7 @@
     {
       "id": "glass_burger",
       "title": "汉堡简餐",
-      "description": "根据双方食量选择汉堡与配餐。",
+      "description": "在玻璃房西餐窗口按食量选择汉堡与薯条，菜单和实际供应需确认。",
       "cost": [
         30,
         55
@@ -676,12 +688,16 @@
         "meat",
         "gluten"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ]
     },
     {
       "id": "glass_noodle",
-      "title": "热汤河粉",
-      "description": "核对肉类与食材后选择热汤主食。",
+      "title": "潮汕汤河粉",
+      "description": "在玻璃房汤河粉窗口按偏好选择猪杂、瘦肉或牛肉丸等配料，实际食材与过敏原需确认。",
       "cost": [
         30,
         55
@@ -703,7 +719,11 @@
       "dietaryTags": [
         "meat"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ]
     },
     {
       "id": "ice_practice",
@@ -812,13 +832,13 @@
       "id": "meal_style_c",
       "title": "中式简餐",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
+      "load": -2,
       "group": "meal_style",
       "mode": "single",
-      "description": "仍需现场确认菜品与个人忌口。",
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "novelty": 30,
       "tags": [
         "food",
@@ -827,17 +847,28 @@
       ],
       "evidenceIds": [
         "E-P006"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "dietaryTags": [
+        "meat"
       ]
     },
     {
       "id": "meal_style_raw",
       "title": "生食风格",
-      "description": "双方明确接受生食时再选择，费用包含在简餐设计区间中。",
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
+      "load": -2,
       "group": "meal_style",
       "mode": "single",
       "novelty": 45,
@@ -850,17 +881,25 @@
       ],
       "dietaryTags": [
         "raw"
-      ]
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal"
     },
     {
       "id": "meal_style_spicy",
       "title": "辣味风格",
-      "description": "按双方明确口味选择，限制辣味时此活动会被过滤。",
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
+      "load": -2,
       "group": "meal_style",
       "mode": "single",
       "novelty": 45,
@@ -873,19 +912,27 @@
       ],
       "dietaryTags": [
         "spicy"
-      ]
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal"
     },
     {
       "id": "meal_style_w",
       "title": "西式简餐",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
+      "load": -2,
       "group": "meal_style",
       "mode": "single",
-      "description": "风味选择，不另算一顿饭。",
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "novelty": 30,
       "tags": [
         "food",
@@ -894,6 +941,18 @@
       ],
       "evidenceIds": [
         "E-P006"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "dietaryTags": [
+        "meat",
+        "gluten"
       ]
     },
     {
@@ -1574,6 +1633,165 @@
       "evidenceIds": [
         "E-fiction-paint"
       ]
+    },
+    {
+      "id": "cantonese_meal",
+      "title": "茶点正餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        120,
+        200
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten"
+      ],
+      "evidenceIds": [
+        "E-P003",
+        "E-P010"
+      ],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "western_meal",
+      "title": "意面简餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        80,
+        120
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten",
+        "dairy"
+      ],
+      "evidenceIds": [
+        "E-P004"
+      ],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "breakfast_eat",
+      "title": "吃一份早餐面包",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        10,
+        20
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "evidenceIds": [
+        "E-campus-food",
+        "E-user-meal-periods"
+      ],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "supper_barbecue",
+      "title": "选择辣味肉串并用餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        40,
+        80
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "dietaryTags": [
+        "meat",
+        "spicy"
+      ],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "supper_snacks",
+      "title": "选择熟食主食并用餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        20,
+        50
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten"
+      ],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "exclusiveKey": "main_meal"
     }
   ]
 }

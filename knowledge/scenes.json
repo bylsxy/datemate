@@ -3,6 +3,38 @@
   "schemaVersion": "manual-knowledge-1.0",
   "scenes": [
     {
+      "id": "taishan_supermarket_front",
+      "place": {"name": "泰山超市门口", "kind": "ordinary", "category": "校园露天停留区", "universityId": "scau", "campusArea": "taishan", "verificationStatus": "awaiting_confirmation"},
+      "description": "泰超门口有露天餐饮与停留空间，自述认为氛围较好、食物价格较高；按天气选择短暂停留，座位、消费和可用空间需确认。",
+      "scauOnly": true,
+      "minutes": 30, "cost": [0, 0], "load": 0, "kind": "snack", "area": "campus", "indoor": false, "quiet": false,
+      "tags": ["daily", "outdoor"], "evidenceIds": ["E-campus-taichao"], "activityIds": ["talk_highlight", "talk_next"]
+    },
+    {
+      "id": "teaching4_study",
+      "place": {"name": "教四自习区", "kind": "ordinary", "category": "教学楼自习区", "universityId": "scau", "campusArea": "taishan", "verificationStatus": "awaiting_confirmation"},
+      "description": "教四可作为晚间一起自习的去处，双方安静各读；可进入教室、座位和自习安排需现场确认。",
+      "scauOnly": true,
+      "minutes": 45, "cost": [0, 0], "load": 0, "kind": "culture", "area": "campus", "indoor": true, "quiet": true,
+      "tags": ["learning", "quiet", "indoor"], "evidenceIds": ["E-campus-evening"], "activityIds": ["read_alone"]
+    },
+    {
+      "id": "teaching4_slope",
+      "place": {"name": "教四后坡路", "kind": "ordinary", "category": "校园坡路", "universityId": "scau", "campusArea": "taishan", "verificationStatus": "awaiting_confirmation"},
+      "description": "教四后方坡路是自述中的晚间散步去处，按体力缓慢步行；坡度、照明和通行条件需确认。",
+      "scauOnly": true,
+      "minutes": 30, "cost": [0, 0], "load": 2, "kind": "nature", "area": "campus", "indoor": false, "quiet": false,
+      "tags": ["daily", "outdoor"], "evidenceIds": ["E-campus-evening"], "activityIds": ["campus_watch"]
+    },
+    {
+      "id": "taishan_lab_garden",
+      "place": {"name": "泰山实验楼下花园", "kind": "ordinary", "category": "校园花园", "universityId": "scau", "campusArea": "taishan", "verificationStatus": "awaiting_confirmation"},
+      "description": "泰山实验楼下花园可作晚间短距离散步与景物观察，按天气和体力选择路线；照明、开放与通行条件需确认。",
+      "scauOnly": true,
+      "minutes": 30, "cost": [0, 0], "load": 1, "kind": "nature", "area": "campus", "indoor": false, "quiet": false,
+      "tags": ["nature", "outdoor"], "evidenceIds": ["E-campus-evening"], "activityIds": ["campus_watch"]
+    },
+    {
       "id": "agriculture_museum",
       "description": "挑一个展厅轻量参观，围绕共同感兴趣的展品聊天。",
       "minutes": 60,
@@ -192,7 +224,8 @@
     },
     {
       "id": "bridge_walk",
-      "description": "把桥边作为短路线的折返点，避免为了走远而赶路。",
+      "scauOnly": true,
+      "description": "沿紫荆桥方向步行至综合体育馆后方的桥，可继续往教工宿舍区再返回；路线长度与开放条件需现场确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -223,7 +256,9 @@
       "crowdRisk": "unknown",
       "seated": false,
       "place": {
-        "name": "校园桥边",
+        "name": "综合体育馆后桥",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园桥边",
         "verificationStatus": "awaiting_confirmation"
@@ -278,7 +313,8 @@
     },
     {
       "id": "campus",
-      "description": "校园步道支持短距离步行、景物与植物观察，路线和入校条件需先确认。",
+      "scauOnly": true,
+      "description": "泰山区12栋一列与15栋一列宿舍之间的道路可作散步路线，自述提到情侣常在此步行；人流与通行条件需现场确认。",
       "minutes": 45,
       "cost": [
         0,
@@ -310,10 +346,13 @@
       "evidenceIds": [
         "E-P001",
         "E-campus-nature",
-        "E-fiction-garden"
+        "E-fiction-garden",
+        "E-campus-walk"
       ],
       "place": {
-        "name": "校园步道",
+        "name": "泰山区宿舍间步道",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园步道",
         "verificationStatus": "awaiting_confirmation"
@@ -382,7 +421,8 @@
     },
     {
       "id": "campus_tabletennis",
-      "description": "带好拍子和球，从轻松对打开始，按双方体力决定时长。",
+      "scauOnly": true,
+      "description": "泰山区12栋及15、16栋楼下有乒乓球桌，按双方水平选择轻松对打；需自带球拍和球，桌位可用性需现场确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -411,7 +451,9 @@
       "crowdRisk": "unknown",
       "seated": false,
       "place": {
-        "name": "泰山区乒乓球桌",
+        "name": "泰山区12、15、16栋乒乓球桌",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "泰山区乒乓球桌",
         "verificationStatus": "awaiting_confirmation"
@@ -423,13 +465,14 @@
     },
     {
       "id": "canteen",
-      "description": "认真不等于高消费；错开拥挤时段，并确认支付和进入场地的条件。",
+      "scauOnly": true,
+      "description": "芷园食堂是泰山区饭点用餐去处，自述提到其中有蜜雪冰城饮品与雪糕；各窗口供应、开放饭点及进入条件需确认。",
       "minutes": 45,
       "cost": [
-        40,
-        70
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "campus",
       "indoor": true,
@@ -448,23 +491,30 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "crowdRisk": "unknown",
       "seated": true,
       "evidenceIds": [
-        "E-P002"
+        "E-P002",
+        "E-user-meal-periods",
+        "E-campus-zhiyuan"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
-        "name": "校园食堂",
+        "name": "芷园食堂",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园食堂",
         "verificationStatus": "awaiting_confirmation"
       },
       "activityIds": [
+        "breakfast_eat",
         "canteen_pair"
+      ],
+      "mealRoles": [
+        "breakfast",
+        "lunch",
+        "dinner"
       ]
     },
     {
@@ -472,10 +522,10 @@
       "description": "可以用茶点与用餐衔接交流；菜品、份量和忌口仍需自己确认。",
       "minutes": 60,
       "cost": [
-        120,
-        200
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "near",
       "indoor": true,
@@ -494,23 +544,27 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "crowdRisk": "unknown",
       "seated": true,
       "evidenceIds": [
         "E-P003",
-        "E-P010"
+        "E-P010",
+        "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
         "name": "粤式茶楼",
         "kind": "ordinary",
         "category": "粤式茶楼",
         "verificationStatus": "awaiting_confirmation"
       },
-      "activityIds": []
+      "activityIds": [
+        "cantonese_meal"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ]
     },
     {
       "id": "cinema",
@@ -831,10 +885,10 @@
       "description": "正餐本身也是相处：不用每次都追求大场面，选择双方真正愿意吃的内容。",
       "minutes": 60,
       "cost": [
-        140,
-        140
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "near",
       "indoor": true,
@@ -853,15 +907,13 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "crowdRisk": "unknown",
       "seated": true,
       "evidenceIds": [
-        "E-P006"
+        "E-P006",
+        "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
         "name": "餐馆",
         "kind": "ordinary",
@@ -873,6 +925,10 @@
         "meal_style_c",
         "meal_style_raw",
         "meal_style_spicy"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
       ]
     },
     {
@@ -1179,7 +1235,8 @@
     },
     {
       "id": "supermarket",
-      "description": "超市内支持选零食、水果及采购野餐物资，具体店铺需先确认。",
+      "scauOnly": true,
+      "description": "泰山超市是泰山区的采购去处，自述提到店内销售酒类；所选零食、水果及野餐采购属于设计玩法，实际库存和营业需确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -1187,7 +1244,7 @@
       ],
       "load": 1,
       "kind": "everyday",
-      "area": "near",
+      "area": "campus",
       "indoor": true,
       "fit": 79,
       "novelty": 42,
@@ -1208,10 +1265,13 @@
       "seated": false,
       "evidenceIds": [
         "E-P010",
-        "E-game-e4116c62"
+        "E-game-e4116c62",
+        "E-campus-taichao"
       ],
       "place": {
-        "name": "超市",
+        "name": "泰山超市",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "超市",
         "verificationStatus": "awaiting_confirmation"
@@ -1256,7 +1316,8 @@
     },
     {
       "id": "taishan_glass",
-      "description": "用户本地自述中的泰山十栋玻璃房，可选简餐、烘焙采购；自带桌游需要确认座位与场地许可。",
+      "scauOnly": true,
+      "description": "泰山区10栋玻璃房设有汉堡薯条、潮汕汤河粉和麻辣烫等餐饮选择，西点屋可买面包小吃或采购明早早餐；烘焙用于补充能量，自带桌游需确认座位与场地许可。",
       "minutes": 45,
       "cost": [
         0,
@@ -1288,11 +1349,14 @@
       "seated": true,
       "place": {
         "name": "泰山十栋玻璃房",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园公共餐饮空间",
         "verificationStatus": "awaiting_confirmation"
       },
       "activityIds": [
+        "breakfast_eat",
         "glass_noodle",
         "glass_burger",
         "bakery_share",
@@ -1347,7 +1411,12 @@
           ],
           "description": "只选双方熟悉的规则，输赢不设置额外惩罚。 自带游戏并先确认此处允许玩桌游。"
         }
-      }
+      },
+      "mealRoles": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ]
     },
     {
       "id": "tea",
@@ -1395,7 +1464,8 @@
     },
     {
       "id": "track_walk",
-      "description": "沿平坦外圈走一小段，随时放慢速度或坐下休息。",
+      "scauOnly": true,
+      "description": "东区运动场可沿操场外圈散步，自述也提到草坪拉伸；按体力选择步行与轻量活动，草坪许可和场地开放需确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -1408,7 +1478,8 @@
       "fit": 78,
       "novelty": 45,
       "evidenceIds": [
-        "E-campus-walk"
+        "E-campus-walk",
+        "E-campus-evening"
       ],
       "quiet": true,
       "mental": 1,
@@ -1426,7 +1497,9 @@
       "crowdRisk": "unknown",
       "seated": false,
       "place": {
-        "name": "操场外圈",
+        "name": "东区运动场外圈",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "操场外圈",
         "verificationStatus": "awaiting_confirmation"
@@ -1484,10 +1557,10 @@
       "description": "意面、扒类与焗饭提供另一种正餐选择；不是生理周期决定它是否更好。",
       "minutes": 60,
       "cost": [
-        80,
-        120
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "campus",
       "indoor": true,
@@ -1506,22 +1579,106 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "crowdRisk": "unknown",
       "seated": true,
       "evidenceIds": [
-        "E-P004"
+        "E-P004",
+        "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
         "name": "校内西式餐馆",
         "kind": "ordinary",
         "category": "校内西式餐馆",
         "verificationStatus": "awaiting_confirmation"
       },
-      "activityIds": []
+      "activityIds": [
+        "western_meal"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ]
+    },
+    {
+      "id": "barbecue_stall",
+      "place": {
+        "name": "烧烤摊",
+        "kind": "ordinary",
+        "category": "烧烤摊",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "near",
+      "indoor": false,
+      "quiet": false,
+      "seated": false,
+      "tags": [
+        "food",
+        "daily",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "activityIds": [
+        "supper_barbecue"
+      ]
+    },
+    {
+      "id": "snack_street",
+      "place": {
+        "name": "小吃街",
+        "kind": "ordinary",
+        "category": "小吃街",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "meal",
+      "area": "near",
+      "indoor": false,
+      "quiet": false,
+      "seated": false,
+      "tags": [
+        "food",
+        "daily",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "activityIds": [
+        "supper_snacks"
+      ]
     }
   ]
 }

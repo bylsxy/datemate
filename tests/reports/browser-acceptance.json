@@ -1,32 +1,34 @@
 {
-  "status": "passed_with_recorded_scope",
-  "browser": "Codex in-app Chromium",
-  "knowledge": "knowledge-4.0.0",
-  "engine": "datemate-engine-3.0.4",
-  "score": "planning-fit-3.0.2",
-  "publicUrl": "https://bylsxy.github.io/datemate/",
+  "status": "passed_with_boundaries",
+  "appVersion": "4.1.0",
+  "knowledgeVersion": "knowledge-4.1.0",
+  "engineVersion": "datemate-engine-3.1.1",
   "checks": {
-    "zeroInputPlan": "passed",
-    "minimalHomeAndDefaultClosedConditions": "passed",
-    "technicalEntriesOnlyInsideBottomMenu": "passed",
-    "aboutVersionsHiddenUntilOpened": "passed",
-    "scoreAtCardTopRightWithSharedScale": "passed",
-    "selectedCardKeepsOriginalOrderAndCenters": "passed",
-    "firstAndLastCenterErrorWithinOnePixel": "passed",
-    "edgeCardsScaleDownWithoutChangingSelection": "passed",
-    "immediateHighlightAndSkeletonBeforeWorkerResponse": "passed",
-    "sceneClockUnchangedByActivitySelection": "passed",
-    "activityLabelsHaveNoDurationOrPrice": "passed",
-    "moneyOnlyInFinalBalanceLine": "passed",
-    "plainLanguageReasons": "passed",
-    "threeMallActivitiesStaySelected": "passed",
-    "restHasNoActivitiesAndPlanContinues": "passed",
-    "exportImportReplayFingerprint": "passed",
-    "mobile390x844NoPageHorizontalOverflow": "passed"
+    "defaultAfternoonAndNoDuration": true,
+    "noncontinuousErrorAndHiddenOldPlan": true,
+    "breakfastLunchAndBeforeMeetingChoice": true,
+    "zeroBudgetBeforeMeetingBreakfast": true,
+    "supperAt23AndSkipConnectsActivities": true,
+    "rapidSupperSkipThenHotel": true,
+    "hotelOnlyOvernight": true,
+    "tier1HotelBudget400": true,
+    "tier2HotelBudget300": true,
+    "budgetErrorScrollVisible": true,
+    "menuOpensUpAndItems49px": true,
+    "backButton48pxAndSubviewHeroHidden": true,
+    "defaultRadiosChecked": true,
+    "copyNativeWriteResolved": true,
+    "possibilityBelowLabel": true,
+    "mobileNoOverflow": true,
+    "mobileCardWidth": 228,
+    "mobileInitialCenterError": -0.2265625,
+    "mobileLastCenterError": 0.03907012939453125,
+    "mobileFirstCenterError": -0.1015625
   },
-  "limits": {
-    "directFileProtocol": "not_tested: automation browser URL policy permits only http and https",
-    "wechatSafariRealDevicesAndMobileNetwork": "not_tested"
-  },
-  "scope": "本轮真实浏览器交互；固定场景时长与极简首页。离线和公网在发布前分别验收。"
+  "boundaries": {
+    "clipboardSystemReadback": "not_verified",
+    "browserFileProtocol": "not_tested",
+    "mobileRuntime": "desktop browser viewport only",
+    "longSmoothScroll": "measure after animation settles"
+  }
 }

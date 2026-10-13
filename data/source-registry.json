@@ -3230,7 +3230,10 @@
     "adoptedEvidenceIds": [
       "E-campus-note",
       "E-campus-food",
-      "E-campus-walk"
+      "E-campus-walk",
+      "E-campus-zhiyuan",
+      "E-campus-taichao",
+      "E-campus-evening"
     ],
     "candidateHits": {
       "nature": 9,

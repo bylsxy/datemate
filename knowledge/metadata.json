@@ -1,6 +1,6 @@
 {
   "schemaVersion": "manual-knowledge-1.0",
-  "version": "knowledge-4.0.0",
+  "version": "knowledge-4.1.0",
   "rulesVersion": "production-4.0.0",
   "runtimeSchemaVersion": "place-activity-4.0",
   "rights": "包含原创结构化摘要和设计参数；本地原材料独立保留，公开数据不包含语料原文。",
@@ -195,6 +195,8 @@
     }
   ],
   "defaultContext": {
+    "cityTier": "tier1",
+    "departureChoice": "separate",
     "duration": 180,
     "budget": null,
     "weather": "unknown",

@@ -22,7 +22,7 @@ test('手工源编译与运行时导出一致，规则和图谱挂载完整', as
 });
 
 test('地点是名词，合并的玩法归入原去处并移除旧场景节点', () => {
-  const expected = { mall: '商场', boardgame: '桌游店', taishan_glass: '泰山十栋玻璃房', switch_store: 'Switch店', mystery_store: '剧本杀店', supermarket: '超市', street: '街区', rest: '休息' };
+  const expected = { mall: '商场', boardgame: '桌游店', taishan_glass: '泰山十栋玻璃房', switch_store: 'Switch店', mystery_store: '剧本杀店', supermarket: '泰山超市', street: '街区', rest: '休息' };
   for (const [id, name] of Object.entries(expected)) assert.equal(scene(id).title, name);
   assert.ok(catalog.scenes.every(s => s.title === s.place.name));
   const removed = ['arcade', 'groceries', 'architecture', 'photo_walk', 'campus_botany', 'campus_bakery', 'quiet_talk', 'music_corner'];
@@ -119,12 +119,100 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
   assert.ok(sources.every(s => !s.rawTextIncluded && /^[a-f0-9]{64}$/.test(s.sha256)));
   assert.ok(evidence.every(e => !e.publicExcerptAllowed && !Object.hasOwn(e, 'originalExcerpt')));
   const userEvidence = evidence.filter(e => e.sourceKind === 'user_design');
-  assert.equal(userEvidence.length, 4);
+  assert.equal(userEvidence.length, 6);
   assert.ok(userEvidence.every(e => e.sourceDocumentId === null && e.reviewStatus === 'awaiting_confirmation'));
-  for (const id of ['switch_store', 'mystery_store', 'public_lounge']) {
+  for (const id of ['switch_store', 'mystery_store', 'public_lounge', 'barbecue_stall', 'snack_street']) {
     assert.equal(scene(id).place.verificationStatus, 'awaiting_confirmation');
     assert.equal(scene(id).place.address, undefined); assert.equal(scene(id).place.openingHours, undefined);
   }
+});
+
+test('四餐角色均有实际用餐活动，早餐与宵夜适用语义独立', () => {
+  const expected = { breakfast: ['canteen', 'taishan_glass'], lunch: ['canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], dinner: ['canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'snack_street'] };
+  for (const [role, ids] of Object.entries(expected)) {
+    assert.deepEqual(catalog.scenes.filter(s => s.mealRoles.includes(role)).map(s => s.id).sort(), ids.sort());
+    for (const id of ids) {
+      const s = scene(id), options = s.activities.filter(a => a.mealRoles.includes(role));
+      assert.ok(options.length > 0);
+      assert.ok(options.every(a => a.provides.includes('meal_completed') && s.mealActivityIds.includes(a.id)));
+      assert.ok(!s.provides.includes('meal_completed'));
+      assert.deepEqual(s.cost, [0, 0]);
+    }
+  }
+  assert.ok(activity('breakfast_eat').cost[1] <= 20);
+  assert.deepEqual(activity('breakfast_eat').mealRoles, ['breakfast']);
+  assert.deepEqual(activity('breakfast_pack').provides, ['breakfast_pack']);
+  assert.ok(!scene('taishan_glass').mealActivityIds.includes('breakfast_pack'));
+  for (const id of ['barbecue_stall', 'snack_street']) {
+    assert.equal(scene(id).minutes, 45);
+    assert.deepEqual(scene(id).windows, []);
+    assert.ok(scene(id).activities.every(a => a.cost[1] > 0 && a.dietaryTags.length > 0));
+  }
+  for (const id of ['pre_meeting', 'skip']) assert.equal(scene(id), undefined);
+  for (const s of catalog.scenes) assert.deepEqual(s.mealActivityIds, s.activities.filter(a => a.provides.includes('meal_completed')).map(a => a.id));
+});
+
+test('非法餐次、无用餐活动和空场馆用餐目标在构建前被拒绝', () => {
+  assert.throws(() => compileKnowledge(changed(d => d.scenes.scenes[0].mealRoles = ['midnight'])), /餐次无效/);
+  assert.throws(() => compileKnowledge(changed(d => d.scenes.scenes[0].mealRoles = ['breakfast', 'breakfast'])), /重复 ID/);
+  assert.throws(() => compileKnowledge(changed(d => d.scenes.scenes.find(s => s.id === 'rest').mealRoles = ['breakfast'])), /缺少适用的用餐活动/);
+  assert.throws(() => compileKnowledge(changed(d => d.scenes.scenes.find(s => s.id === 'canteen').provides = ['meal_completed'])), /用餐目标须由所选活动提供/);
+  assert.throws(() => compileKnowledge(changed(d => d.activities.activities.find(a => a.id === 'breakfast_eat').provides = [])), /用餐活动须提供|缺少适用的用餐活动/);
+  assert.throws(() => compileKnowledge(changed(d => d.scenes.scenes.find(s => s.id === 'canteen').mealActivityIds = ['canteen_pair'])), /由构建器生成/);
+  assert.throws(() => compileKnowledge(changed(d => d.activities.activities.find(a => a.id === 'breakfast_eat').mealRoles = ['supper'])), /缺少适用的用餐活动|超出地点适用范围/);
+  assert.throws(() => compileKnowledge(changed(d => d.activities.activities.find(a => a.id === 'breakfast_eat').mealRoles = [])), /须声明适用餐次/);
+});
+
+test('华农自述地点具有校内与泰山区属性，引用本地定位证据', () => {
+  const expected = { canteen: '芷园食堂', campus_tabletennis: '泰山区12、15、16栋乒乓球桌', campus: '泰山区宿舍间步道', bridge_walk: '综合体育馆后桥', track_walk: '东区运动场外圈', supermarket: '泰山超市', taishan_glass: '泰山十栋玻璃房', taishan_supermarket_front: '泰山超市门口', teaching4_study: '教四自习区', teaching4_slope: '教四后坡路', taishan_lab_garden: '泰山实验楼下花园' };
+  for (const [id, name] of Object.entries(expected)) {
+    const s = scene(id);
+    assert.equal(s.title, name); assert.equal(s.scauOnly, true); assert.equal(s.area, 'campus');
+    assert.equal(s.place.universityId, 'scau'); assert.equal(s.place.campusArea, 'taishan');
+    assert.equal(s.place.verificationStatus, 'awaiting_confirmation');
+    assert.ok(s.evidenceIds.some(id => evidence.find(e => e.id === id)?.sourceDocumentId === 'SRC-9d52a0728f3d'));
+  }
+  assert.match(scene('taishan_glass').description, /西点屋/);
+  assert.match(scene('canteen').description, /蜜雪冰城/);
+  assert.match(scene('campus_tabletennis').description, /自带球拍和球/);
+  assert.throws(() => compileKnowledge(changed(d => d.scenes.scenes.find(s => s.id === 'canteen').area = 'near')), /华农泰山区属性/);
+});
+
+test('离开目录独立于地点，默认各自回去且酒店须过夜并明确选择', () => {
+  assert.deepEqual(catalog.departures.map(d => d.id), ['hotel', 'separate', 'walk_together']);
+  assert.equal(catalog.defaultDepartureId, 'separate'); assert.equal(catalog.defaultCityTier, 'tier1');
+  assert.equal(compiled.metadata.defaultContext.departureChoice, 'separate'); assert.equal(compiled.metadata.defaultContext.cityTier, 'tier1');
+  for (const d of catalog.departures) {
+    assert.equal(scene(d.id), undefined); assert.equal(activity(d.id), undefined);
+    assert.equal(d.assertionKind, 'designed'); assert.equal(d.parameterStatus, 'designed_not_measured');
+    assert.ok(d.evidenceIds.every(id => evidence.some(e => e.id === id && e.assertionKind === 'designed')));
+    assert.ok(graph.nodes.some(n => n.id === d.id && n.type === 'departure'));
+    assert.ok(!graph.edges.some(e => e.subject === d.id && e.predicate === 'allows_activity'));
+  }
+  const byId = Object.fromEntries(catalog.departures.map(d => [d.id, d]));
+  assert.equal(byId.separate.minutes, 10); assert.deepEqual(byId.separate.cost, [0, 0]);
+  assert.equal(byId.walk_together.minutes, 20); assert.deepEqual(byId.walk_together.cost, [0, 0]);
+  assert.equal(byId.hotel.minutes, 15); assert.equal(byId.hotel.onlyOvernight, true); assert.equal(byId.hotel.requiresExplicitChoice, true);
+  assert.equal(byId.hotel.costUnit, 'CNY_per_room_for_two_per_night');
+  assert.deepEqual(byId.hotel.costByCityTier, { tier1: [200, 400], tier2: [150, 300], tier3: [100, 250] });
+  assert.match(evidence.find(e => e.id === 'E-user-departures').verificationBoundary, /初版设计参数/);
+  assert.deepEqual(compiled.conditions.find(c => c.key === 'cityTier').allowedValues, ['tier1', 'tier2', 'tier3']);
+});
+
+test('非法离开引用、默认住宿、自动住宿与房费在构建前拒绝', () => {
+  const hotel = d => d.departures.departures.find(x => x.id === 'hotel');
+  assert.throws(() => compileKnowledge(changed(d => d.departures.defaultId = 'hotel')), /defaultId/);
+  assert.throws(() => compileKnowledge(changed(d => hotel(d).onlyOvernight = false)), /仅在过夜/);
+  assert.throws(() => compileKnowledge(changed(d => hotel(d).requiresExplicitChoice = false)), /明确选择/);
+  assert.throws(() => compileKnowledge(changed(d => hotel(d).minutes = 0)), /minutes/);
+  assert.throws(() => compileKnowledge(changed(d => hotel(d).evidenceIds = ['E-missing'])), /不存在的 ID/);
+  assert.throws(() => compileKnowledge(changed(d => hotel(d).evidenceIds = ['E-campus-food'])), /designed 依据/);
+  assert.throws(() => compileKnowledge(changed(d => hotel(d).costByCityTier.tier1 = [-1, 400])), /有效费用区间/);
+  assert.throws(() => compileKnowledge(changed(d => delete hotel(d).costByCityTier.tier2)), /完整列出三档/);
+  assert.throws(() => compileKnowledge(changed(d => hotel(d).activityIds = [])), /独立离开数据/);
+  assert.throws(() => compileKnowledge(changed(d => d.metadata.defaultContext.cityTier = 'tier4')), /cityTier/);
+  assert.throws(() => compileKnowledge(changed(d => d.departures.departures.push(hotel(d)))), /ID 重复/);
+  assert.notEqual(compileKnowledge(changed(d => hotel(d).costByCityTier.tier1 = [210, 410])).catalog.contentRevision, compiled.catalog.contentRevision);
 });
 
 test('图节点与边唯一，证据和端点闭环', () => {

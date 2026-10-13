@@ -20,7 +20,7 @@ async function source(path) {
 
 function resolveModule(importer, specifier) {
   if (!specifier.startsWith('.')) throw Error(`离线打包仅支持项目内静态依赖：${specifier}`);
-  const path = resolve(dirname(importer), specifier);
+  const path = resolve(dirname(importer), specifier.split('?')[0]);
   const rel = relative(project, path);
   if (rel.startsWith('..') || path === project || !path.endsWith('.mjs')) throw Error(`模块越界或格式不支持：${specifier}`);
   return path;
@@ -77,7 +77,7 @@ async function bundle(entry, workerUrl = false) {
       return '';
     });
     if (workerUrl && path === entry) {
-      const workerReference = /new\s+URL\(\s*(['"])\.\/worker\.mjs\1\s*,\s*import\.meta\.url\s*\)/g;
+      const workerReference = /new\s+URL\(\s*(['"])\.\/worker\.mjs(?:\?[^'"]*)?\1\s*,\s*import\.meta\.url\s*\)/g;
       let replacements = 0;
       code = code.replace(workerReference, () => { replacements++; return '__offlineWorkerUrl'; });
       if (replacements !== 1) throw Error(`app Worker入口匹配数量为${replacements}，请核对源码后更新打包规则。`);
@@ -111,7 +111,7 @@ async function main() {
   const htmlSource = await source(htmlPath), css = await source(cssPath);
   if (/@import|url\(/i.test(css)) throw Error('样式仍含外部依赖，需先提供内嵌资源。');
   const stylePattern = /<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']\.\/styles\.css(?:\?[^"']*)?["'][^>]*>/i;
-  const scriptPattern = /<script\b[^>]*type=["']module["'][^>]*src=["']\.\/app\.mjs["'][^>]*>\s*<\/script>/i;
+  const scriptPattern = /<script\b[^>]*type=["']module["'][^>]*src=["']\.\/app\.mjs(?:\?[^"']*)?["'][^>]*>\s*<\/script>/i;
   if (!stylePattern.test(htmlSource) || !scriptPattern.test(htmlSource)) throw Error('入口HTML与打包契约不一致。');
   let html = htmlSource.replace(stylePattern, `<style>\n${css}\n</style>`).replace(scriptPattern, '').replace(/href=["']\.\/["'](?=\s+aria-label=["']DateMate 首页)/, 'href="#main-content"');
   if (html.includes('./favicon.svg')) {

@@ -1,5 +1,5 @@
 {
-  "version": "knowledge-4.0.0",
+  "version": "knowledge-4.1.0",
   "rulesVersion": "production-4.0.0",
   "schemaVersion": "place-activity-4.0",
   "durationPolicy": "scene_only",
@@ -85,6 +85,7 @@
       "title": "农业主题博物馆",
       "typeId": "agriculture_museum",
       "default": [],
+      "mealRoles": [],
       "source": [
         "campus-museum",
         "game-ffa64d6a",
@@ -136,6 +137,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -180,6 +182,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -191,7 +194,8 @@
             "agriculture_museum"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 77,
@@ -237,6 +241,7 @@
       "title": "水族馆",
       "typeId": "aquarium",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P009"
       ],
@@ -290,6 +295,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 60,
             "physicalLoad": 1
@@ -334,6 +340,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -345,7 +352,8 @@
             "aquarium"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -391,6 +399,7 @@
       "title": "校园羽毛球场",
       "typeId": "badminton",
       "default": [],
+      "mealRoles": [],
       "source": [
         "campus-sport"
       ],
@@ -452,6 +461,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 4
@@ -463,6 +473,131 @@
             "badminton"
           ]
         }
+      ],
+      "mealActivityIds": []
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "barbecue_stall",
+      "place": {
+        "name": "烧烤摊",
+        "kind": "ordinary",
+        "category": "烧烤摊",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "near",
+      "indoor": false,
+      "quiet": false,
+      "seated": false,
+      "tags": [
+        "food",
+        "daily",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "title": "烧烤摊",
+      "typeId": "barbecue_stall",
+      "default": [],
+      "source": [
+        "user-meal-periods"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "supper_barbecue",
+          "title": "选择辣味肉串并用餐",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            40,
+            80
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "supper"
+          ],
+          "dietaryTags": [
+            "meat",
+            "spicy"
+          ],
+          "evidenceIds": [
+            "E-user-meal-periods"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "barbecue_stall"
+          ],
+          "allowedSceneTypes": [
+            "barbecue_stall"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "supper_barbecue"
       ]
     },
     {
@@ -510,6 +645,7 @@
       "title": "桌游店",
       "typeId": "boardgame",
       "default": [],
+      "mealRoles": [],
       "source": [
         "shared-game",
         "G001"
@@ -563,6 +699,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -607,6 +744,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -618,7 +756,8 @@
             "boardgame"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -631,7 +770,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "bridge_walk",
-      "description": "把桥边作为短路线的折返点，避免为了走远而赶路。",
+      "scauOnly": true,
+      "description": "沿紫荆桥方向步行至综合体育馆后方的桥，可继续往教工宿舍区再返回；路线长度与开放条件需现场确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -657,14 +797,17 @@
       ],
       "seated": false,
       "place": {
-        "name": "校园桥边",
+        "name": "综合体育馆后桥",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园桥边",
         "verificationStatus": "awaiting_confirmation"
       },
-      "title": "校园桥边",
+      "title": "综合体育馆后桥",
       "typeId": "bridge_walk",
       "default": [],
+      "mealRoles": [],
       "source": [
         "campus-walk"
       ],
@@ -717,6 +860,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -728,7 +872,8 @@
             "bridge_walk"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 76,
@@ -776,6 +921,7 @@
       "title": "咖啡店",
       "typeId": "cafe",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P007",
         "C004"
@@ -831,6 +977,7 @@
           "consumes": [],
           "preparationIds": [],
           "windows": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -875,6 +1022,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -886,7 +1034,8 @@
             "cafe"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 84,
@@ -899,7 +1048,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "campus",
-      "description": "校园步道支持短距离步行、景物与植物观察，路线和入校条件需先确认。",
+      "scauOnly": true,
+      "description": "泰山区12栋一列与15栋一列宿舍之间的道路可作散步路线，自述提到情侣常在此步行；人流与通行条件需现场确认。",
       "minutes": 45,
       "cost": [
         0,
@@ -926,21 +1076,26 @@
       "evidenceIds": [
         "E-P001",
         "E-campus-nature",
-        "E-fiction-garden"
+        "E-fiction-garden",
+        "E-campus-walk"
       ],
       "place": {
-        "name": "校园步道",
+        "name": "泰山区宿舍间步道",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园步道",
         "verificationStatus": "awaiting_confirmation"
       },
-      "title": "校园步道",
+      "title": "泰山区宿舍间步道",
       "typeId": "campus",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P001",
         "campus-nature",
-        "fiction-garden"
+        "fiction-garden",
+        "campus-walk"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -990,6 +1145,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 30,
             "physicalLoad": 1
@@ -1034,6 +1190,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 55,
             "physicalLoad": 1
@@ -1078,6 +1235,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -1130,6 +1288,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -1141,7 +1300,8 @@
             "campus"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -1200,6 +1360,7 @@
       "title": "校园草地",
       "typeId": "campus_picnic",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P001",
         "fiction-picnic"
@@ -1256,6 +1417,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": -1
@@ -1301,6 +1463,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -1312,7 +1475,8 @@
             "campus_picnic"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -1325,7 +1489,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "campus_tabletennis",
-      "description": "带好拍子和球，从轻松对打开始，按双方体力决定时长。",
+      "scauOnly": true,
+      "description": "泰山区12栋及15、16栋楼下有乒乓球桌，按双方水平选择轻松对打；需自带球拍和球，桌位可用性需现场确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -1349,14 +1514,17 @@
       ],
       "seated": false,
       "place": {
-        "name": "泰山区乒乓球桌",
+        "name": "泰山区12、15、16栋乒乓球桌",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "泰山区乒乓球桌",
         "verificationStatus": "awaiting_confirmation"
       },
-      "title": "泰山区乒乓球桌",
+      "title": "泰山区12、15、16栋乒乓球桌",
       "typeId": "campus_tabletennis",
       "default": [],
+      "mealRoles": [],
       "source": [
         "campus-note"
       ],
@@ -1418,6 +1586,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 3
@@ -1471,6 +1640,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 2
@@ -1482,7 +1652,8 @@
             "campus_tabletennis"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 82,
@@ -1495,13 +1666,14 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "canteen",
-      "description": "认真不等于高消费；错开拥挤时段，并确认支付和进入场地的条件。",
+      "scauOnly": true,
+      "description": "芷园食堂是泰山区饭点用餐去处，自述提到其中有蜜雪冰城饮品与雪糕；各窗口供应、开放饭点及进入条件需确认。",
       "minutes": 45,
       "cost": [
-        40,
-        70
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "campus",
       "indoor": true,
@@ -1516,25 +1688,33 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "seated": true,
       "evidenceIds": [
-        "E-P002"
+        "E-P002",
+        "E-user-meal-periods",
+        "E-campus-zhiyuan"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
-        "name": "校园食堂",
+        "name": "芷园食堂",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园食堂",
         "verificationStatus": "awaiting_confirmation"
       },
-      "title": "校园食堂",
+      "mealRoles": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "title": "芷园食堂",
       "typeId": "canteen",
       "default": [],
       "source": [
-        "P002"
+        "P002",
+        "user-meal-periods",
+        "campus-zhiyuan"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -1547,46 +1727,109 @@
         "quiet": 0,
         "indoor": 1,
         "novelty": 20,
-        "physicalLoad": -2,
+        "physicalLoad": 0,
         "mentalLoad": 1
       },
       "activities": [
         {
-          "group": "play",
-          "mode": "multi",
-          "novelty": 45,
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
           "requiresExplicitConsent": false,
           "parameterStatus": "designed_not_measured",
           "publicAllowed": true,
-          "id": "canteen_pair",
-          "title": "各选一道菜",
-          "description": "核对明确忌口后，各挑一种想吃的菜。",
+          "id": "breakfast_eat",
+          "title": "吃一份早餐面包",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
           "cost": [
-            0,
-            0
+            10,
+            20
           ],
-          "load": 0,
+          "load": -2,
           "tags": [
             "food",
             "daily"
           ],
-          "evidenceIds": [
-            "E-P002"
+          "provides": [
+            "meal_completed"
           ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "evidenceIds": [
+            "E-campus-food",
+            "E-user-meal-periods"
+          ],
+          "exclusiveKey": "main_meal",
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
           "predecessorIds": [],
           "requires": [],
           "preconditions": [],
-          "provides": [],
           "consumes": [],
           "preparationIds": [],
           "windows": [],
-          "dietaryTags": [],
           "featureValues": {
-            "novelty": 45,
-            "physicalLoad": 0
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "canteen"
+          ],
+          "allowedSceneTypes": [
+            "canteen"
+          ]
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "canteen_pair",
+          "title": "各选一道菜并用餐",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            40,
+            70
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-P002",
+            "E-user-meal-periods"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "dietaryTags": [
+            "meat"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
           },
           "allowedSceneIds": [
             "canteen"
@@ -1595,6 +1838,10 @@
             "canteen"
           ]
         }
+      ],
+      "mealActivityIds": [
+        "breakfast_eat",
+        "canteen_pair"
       ]
     },
     {
@@ -1611,10 +1858,10 @@
       "description": "可以用茶点与用餐衔接交流；菜品、份量和忌口仍需自己确认。",
       "minutes": 60,
       "cost": [
-        120,
-        200
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "near",
       "indoor": true,
@@ -1629,27 +1876,30 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "seated": true,
       "evidenceIds": [
         "E-P003",
-        "E-P010"
+        "E-P010",
+        "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
         "name": "粤式茶楼",
         "kind": "ordinary",
         "category": "粤式茶楼",
         "verificationStatus": "awaiting_confirmation"
       },
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
       "title": "粤式茶楼",
       "typeId": "cantonese",
       "default": [],
       "source": [
         "P003",
-        "P010"
+        "P010",
+        "user-meal-periods"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -1662,10 +1912,69 @@
         "quiet": 1,
         "indoor": 1,
         "novelty": 30,
-        "physicalLoad": -2,
+        "physicalLoad": 0,
         "mentalLoad": 1
       },
-      "activities": []
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "cantonese_meal",
+          "title": "茶点正餐",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            120,
+            200
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "dietaryTags": [
+            "meat",
+            "gluten"
+          ],
+          "evidenceIds": [
+            "E-P003",
+            "E-P010"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "cantonese"
+          ],
+          "allowedSceneTypes": [
+            "cantonese"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "cantonese_meal"
+      ]
     },
     {
       "fit": 73,
@@ -1721,6 +2030,7 @@
       "title": "电影院",
       "typeId": "cinema",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P006",
         "P010"
@@ -1771,6 +2081,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -1817,6 +2128,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -1828,7 +2140,8 @@
             "cinema"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -1875,6 +2188,7 @@
       "title": "手作店",
       "typeId": "craft",
       "default": [],
+      "mealRoles": [],
       "source": [
         "research-novelty",
         "fiction-living"
@@ -1936,6 +2250,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -1981,6 +2296,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -1992,7 +2308,8 @@
             "craft"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 77,
@@ -2040,6 +2357,7 @@
       "title": "校园甜品店",
       "typeId": "dessert",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P001",
         "C004"
@@ -2096,6 +2414,7 @@
           "consumes": [],
           "preparationIds": [],
           "windows": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -2143,6 +2462,7 @@
           "consumes": [],
           "preparationIds": [],
           "windows": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -2154,7 +2474,8 @@
             "dessert"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 77,
@@ -2203,6 +2524,7 @@
       "title": "展览馆",
       "typeId": "exhibition",
       "default": [],
+      "mealRoles": [],
       "source": [
         "G001",
         "G003",
@@ -2259,6 +2581,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 65,
             "physicalLoad": 1
@@ -2270,7 +2593,8 @@
             "exhibition"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 80,
@@ -2316,6 +2640,7 @@
       "title": "花园",
       "typeId": "garden",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P008"
       ],
@@ -2369,6 +2694,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 55,
             "physicalLoad": 1
@@ -2414,6 +2740,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 97,
             "physicalLoad": 1
@@ -2425,7 +2752,8 @@
             "garden"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 65,
@@ -2471,6 +2799,7 @@
       "title": "滑冰场",
       "typeId": "ice",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P009"
       ],
@@ -2530,6 +2859,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 6
@@ -2581,6 +2911,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 70,
             "physicalLoad": 6
@@ -2592,7 +2923,8 @@
             "ice"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 90,
@@ -2640,6 +2972,7 @@
       "title": "商场",
       "typeId": "mall",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P006",
         "P009",
@@ -2695,6 +3028,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 3
@@ -2741,6 +3075,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 35,
             "physicalLoad": 1
@@ -2784,6 +3119,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -2827,6 +3163,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 60,
             "physicalLoad": 3
@@ -2870,6 +3207,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 82,
             "physicalLoad": 2
@@ -2881,7 +3219,8 @@
             "mall"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -2897,10 +3236,10 @@
       "description": "正餐本身也是相处：不用每次都追求大场面，选择双方真正愿意吃的内容。",
       "minutes": 60,
       "cost": [
-        140,
-        140
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "near",
       "indoor": true,
@@ -2915,25 +3254,28 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "seated": true,
       "evidenceIds": [
-        "E-P006"
+        "E-P006",
+        "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
         "name": "餐馆",
         "kind": "ordinary",
         "category": "餐馆",
         "verificationStatus": "awaiting_confirmation"
       },
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
       "title": "餐馆",
       "typeId": "meal",
       "default": [],
       "source": [
-        "P006"
+        "P006",
+        "user-meal-periods"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -2946,7 +3288,7 @@
         "quiet": 1,
         "indoor": 1,
         "novelty": 15,
-        "physicalLoad": -2,
+        "physicalLoad": 0,
         "mentalLoad": 1
       },
       "activities": [
@@ -2960,11 +3302,11 @@
           "id": "meal_style_w",
           "title": "西式简餐",
           "cost": [
-            0,
-            0
+            140,
+            140
           ],
-          "load": 0,
-          "description": "风味选择，不另算一顿饭。",
+          "load": -2,
+          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
           "tags": [
             "food",
             "indoor",
@@ -2973,20 +3315,30 @@
           "evidenceIds": [
             "E-P006"
           ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "exclusiveKey": "main_meal",
+          "dietaryTags": [
+            "meat",
+            "gluten"
+          ],
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
           "predecessorIds": [],
           "requires": [],
           "preconditions": [],
-          "provides": [],
           "consumes": [],
           "preparationIds": [],
           "windows": [],
-          "dietaryTags": [],
           "featureValues": {
             "novelty": 30,
-            "physicalLoad": 0
+            "physicalLoad": -2
           },
           "allowedSceneIds": [
             "meal"
@@ -3005,11 +3357,11 @@
           "id": "meal_style_c",
           "title": "中式简餐",
           "cost": [
-            0,
-            0
+            140,
+            140
           ],
-          "load": 0,
-          "description": "仍需现场确认菜品与个人忌口。",
+          "load": -2,
+          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
           "tags": [
             "food",
             "indoor",
@@ -3018,20 +3370,29 @@
           "evidenceIds": [
             "E-P006"
           ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "exclusiveKey": "main_meal",
+          "dietaryTags": [
+            "meat"
+          ],
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
           "predecessorIds": [],
           "requires": [],
           "preconditions": [],
-          "provides": [],
           "consumes": [],
           "preparationIds": [],
           "windows": [],
-          "dietaryTags": [],
           "featureValues": {
             "novelty": 30,
-            "physicalLoad": 0
+            "physicalLoad": -2
           },
           "allowedSceneIds": [
             "meal"
@@ -3049,12 +3410,12 @@
           "publicAllowed": true,
           "id": "meal_style_raw",
           "title": "生食风格",
-          "description": "双方明确接受生食时再选择，费用包含在简餐设计区间中。",
+          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
           "cost": [
-            0,
-            0
+            140,
+            140
           ],
-          "load": 0,
+          "load": -2,
           "tags": [
             "food"
           ],
@@ -3065,19 +3426,26 @@
           "dietaryTags": [
             "raw"
           ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "exclusiveKey": "main_meal",
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
           "predecessorIds": [],
           "requires": [],
           "preconditions": [],
-          "provides": [],
           "consumes": [],
           "preparationIds": [],
           "windows": [],
           "featureValues": {
             "novelty": 45,
-            "physicalLoad": 0
+            "physicalLoad": -2
           },
           "allowedSceneIds": [
             "meal"
@@ -3095,12 +3463,12 @@
           "publicAllowed": true,
           "id": "meal_style_spicy",
           "title": "辣味风格",
-          "description": "按双方明确口味选择，限制辣味时此活动会被过滤。",
+          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
           "cost": [
-            0,
-            0
+            140,
+            140
           ],
-          "load": 0,
+          "load": -2,
           "tags": [
             "food"
           ],
@@ -3111,19 +3479,26 @@
           "dietaryTags": [
             "spicy"
           ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "exclusiveKey": "main_meal",
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
           "predecessorIds": [],
           "requires": [],
           "preconditions": [],
-          "provides": [],
           "consumes": [],
           "preparationIds": [],
           "windows": [],
           "featureValues": {
             "novelty": 45,
-            "physicalLoad": 0
+            "physicalLoad": -2
           },
           "allowedSceneIds": [
             "meal"
@@ -3132,6 +3507,12 @@
             "meal"
           ]
         }
+      ],
+      "mealActivityIds": [
+        "meal_style_w",
+        "meal_style_c",
+        "meal_style_raw",
+        "meal_style_spicy"
       ]
     },
     {
@@ -3178,6 +3559,7 @@
         "unknown"
       ],
       "default": [],
+      "mealRoles": [],
       "source": [
         "user-mystery"
       ],
@@ -3236,6 +3618,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 65,
             "physicalLoad": 2
@@ -3247,7 +3630,8 @@
             "mystery_store"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -3300,6 +3684,7 @@
       "title": "照片冲印店",
       "typeId": "photo_printing",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P007",
         "research-novelty"
@@ -3360,6 +3745,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -3371,7 +3757,8 @@
             "photo_printing"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -3421,6 +3808,7 @@
       "title": "公共休息区",
       "typeId": "public_lounge",
       "default": [],
+      "mealRoles": [],
       "source": [
         "user-public-lounge",
         "research-phone",
@@ -3476,6 +3864,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -3520,6 +3909,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -3571,6 +3961,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -3616,6 +4007,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -3627,7 +4019,8 @@
             "public_lounge"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 73,
@@ -3674,6 +4067,7 @@
       "title": "雨林馆",
       "typeId": "rainforest",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P009"
       ],
@@ -3726,6 +4120,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -3737,7 +4132,8 @@
             "rainforest"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -3789,6 +4185,7 @@
       "title": "图书馆",
       "typeId": "reading",
       "default": [],
+      "mealRoles": [],
       "source": [
         "C004",
         "P010",
@@ -3848,6 +4245,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 30,
             "physicalLoad": 0
@@ -3895,6 +4293,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 60,
             "physicalLoad": 0
@@ -3940,6 +4339,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -3951,7 +4351,8 @@
             "reading"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 35,
@@ -3998,6 +4399,7 @@
       "title": "休息",
       "typeId": "rest",
       "default": [],
+      "mealRoles": [],
       "source": [
         "G003",
         "G004"
@@ -4017,7 +4419,132 @@
         "physicalLoad": -6,
         "mentalLoad": 1
       },
-      "activities": []
+      "activities": [],
+      "mealActivityIds": []
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "snack_street",
+      "place": {
+        "name": "小吃街",
+        "kind": "ordinary",
+        "category": "小吃街",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "meal",
+      "area": "near",
+      "indoor": false,
+      "quiet": false,
+      "seated": false,
+      "tags": [
+        "food",
+        "daily",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "title": "小吃街",
+      "typeId": "snack_street",
+      "default": [],
+      "source": [
+        "user-meal-periods"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 1,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "supper_snacks",
+          "title": "选择熟食主食并用餐",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            20,
+            50
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "supper"
+          ],
+          "dietaryTags": [
+            "meat",
+            "gluten"
+          ],
+          "evidenceIds": [
+            "E-user-meal-periods"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "snack_street"
+          ],
+          "allowedSceneTypes": [
+            "snack_street"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "supper_snacks"
+      ]
     },
     {
       "fit": 72,
@@ -4063,6 +4590,7 @@
       "title": "街区",
       "typeId": "street",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P007",
         "citywalk"
@@ -4117,6 +4645,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 60,
             "physicalLoad": 2
@@ -4162,6 +4691,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 100,
             "physicalLoad": 1
@@ -4206,6 +4736,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -4252,6 +4783,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -4296,6 +4828,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -4307,7 +4840,8 @@
             "street"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 79,
@@ -4320,7 +4854,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "supermarket",
-      "description": "超市内支持选零食、水果及采购野餐物资，具体店铺需先确认。",
+      "scauOnly": true,
+      "description": "泰山超市是泰山区的采购去处，自述提到店内销售酒类；所选零食、水果及野餐采购属于设计玩法，实际库存和营业需确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -4328,7 +4863,7 @@
       ],
       "load": 1,
       "kind": "everyday",
-      "area": "near",
+      "area": "campus",
       "indoor": true,
       "quiet": false,
       "tags": [
@@ -4344,20 +4879,25 @@
       "seated": false,
       "evidenceIds": [
         "E-P010",
-        "E-game-e4116c62"
+        "E-game-e4116c62",
+        "E-campus-taichao"
       ],
       "place": {
-        "name": "超市",
+        "name": "泰山超市",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "超市",
         "verificationStatus": "awaiting_confirmation"
       },
-      "title": "超市",
+      "title": "泰山超市",
       "typeId": "supermarket",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P010",
-        "game-e4116c62"
+        "game-e4116c62",
+        "campus-taichao"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -4409,6 +4949,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 40,
             "physicalLoad": 1
@@ -4454,6 +4995,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 30,
             "physicalLoad": 1
@@ -4499,6 +5041,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 95,
             "physicalLoad": 1
@@ -4545,6 +5088,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -4556,7 +5100,8 @@
             "supermarket"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -4602,6 +5147,7 @@
         "unknown"
       ],
       "default": [],
+      "mealRoles": [],
       "source": [
         "user-switch"
       ],
@@ -4653,6 +5199,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 55,
             "physicalLoad": 1
@@ -4696,6 +5243,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 55,
             "physicalLoad": 1
@@ -4707,7 +5255,8 @@
             "switch_store"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -4720,7 +5269,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "taishan_glass",
-      "description": "用户本地自述中的泰山十栋玻璃房，可选简餐、烘焙采购；自带桌游需要确认座位与场地许可。",
+      "scauOnly": true,
+      "description": "泰山区10栋玻璃房设有汉堡薯条、潮汕汤河粉和麻辣烫等餐饮选择，西点屋可买面包小吃或采购明早早餐；烘焙用于补充能量，自带桌游需确认座位与场地许可。",
       "minutes": 45,
       "cost": [
         0,
@@ -4747,10 +5297,17 @@
       "seated": true,
       "place": {
         "name": "泰山十栋玻璃房",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "校园公共餐饮空间",
         "verificationStatus": "awaiting_confirmation"
       },
+      "mealRoles": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
       "title": "泰山十栋玻璃房",
       "typeId": "taishan_glass",
       "default": [],
@@ -4777,13 +5334,66 @@
         {
           "group": "meal_style",
           "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "breakfast_eat",
+          "title": "吃一份早餐面包",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            10,
+            20
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "evidenceIds": [
+            "E-campus-food",
+            "E-user-meal-periods"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "taishan_glass"
+          ],
+          "allowedSceneTypes": [
+            "taishan_glass"
+          ]
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
           "novelty": 45,
           "requiresExplicitConsent": false,
           "parameterStatus": "designed_not_measured",
           "publicAllowed": true,
           "id": "glass_noodle",
-          "title": "热汤河粉",
-          "description": "核对肉类与食材后选择热汤主食。",
+          "title": "潮汕汤河粉",
+          "description": "在玻璃房汤河粉窗口按偏好选择猪杂、瘦肉或牛肉丸等配料，实际食材与过敏原需确认。",
           "cost": [
             30,
             55
@@ -4803,6 +5413,10 @@
             "meat"
           ],
           "exclusiveKey": "main_meal",
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
@@ -4832,7 +5446,7 @@
           "publicAllowed": true,
           "id": "glass_burger",
           "title": "汉堡简餐",
-          "description": "根据双方食量选择汉堡与配餐。",
+          "description": "在玻璃房西餐窗口按食量选择汉堡与薯条，菜单和实际供应需确认。",
           "cost": [
             30,
             55
@@ -4853,6 +5467,10 @@
             "gluten"
           ],
           "exclusiveKey": "main_meal",
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
@@ -4882,7 +5500,7 @@
           "publicAllowed": true,
           "id": "bakery_share",
           "title": "分一份面包",
-          "description": "核对食材后分享小份烘焙点心。",
+          "description": "在玻璃房西点屋选小份面包或点心，核对食材后分享，作为补充能量的加餐。",
           "cost": [
             8,
             18
@@ -4909,6 +5527,7 @@
           "consumes": [],
           "preparationIds": [],
           "windows": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -4929,7 +5548,7 @@
           "publicAllowed": true,
           "id": "breakfast_pack",
           "title": "买好明早早餐",
-          "description": "购买可妥善保存的早餐，携带方式由双方确认。",
+          "description": "离开前在玻璃房西点屋采购明早的面包点心，确认保存条件与携带方式。",
           "cost": [
             10,
             20
@@ -4957,6 +5576,7 @@
           "consumes": [],
           "preparationIds": [],
           "windows": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -5011,6 +5631,7 @@
           ],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -5066,6 +5687,7 @@
           ],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -5078,7 +5700,285 @@
           ],
           "sceneOverride": true
         }
+      ],
+      "mealActivityIds": [
+        "breakfast_eat",
+        "glass_noodle",
+        "glass_burger"
       ]
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "taishan_lab_garden",
+      "place": {
+        "name": "泰山实验楼下花园",
+        "kind": "ordinary",
+        "category": "校园花园",
+        "universityId": "scau",
+        "campusArea": "taishan",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "泰山实验楼下花园可作晚间短距离散步与景物观察，按天气和体力选择路线；照明、开放与通行条件需确认。",
+      "scauOnly": true,
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "tags": [
+        "nature",
+        "outdoor"
+      ],
+      "evidenceIds": [
+        "E-campus-evening"
+      ],
+      "title": "泰山实验楼下花园",
+      "typeId": "taishan_lab_garden",
+      "seated": false,
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "default": [],
+      "mealRoles": [],
+      "source": [
+        "campus-evening"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 1,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_watch",
+          "title": "观察景物",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 1,
+          "description": "把注意力放在共同看到的东西上。",
+          "tags": [
+            "nature",
+            "quiet"
+          ],
+          "evidenceIds": [
+            "E-P001"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": 1
+          },
+          "allowedSceneIds": [
+            "taishan_lab_garden"
+          ],
+          "allowedSceneTypes": [
+            "taishan_lab_garden"
+          ]
+        }
+      ],
+      "mealActivityIds": []
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "taishan_supermarket_front",
+      "place": {
+        "name": "泰山超市门口",
+        "kind": "ordinary",
+        "category": "校园露天停留区",
+        "universityId": "scau",
+        "campusArea": "taishan",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "泰超门口有露天餐饮与停留空间，自述认为氛围较好、食物价格较高；按天气选择短暂停留，座位、消费和可用空间需确认。",
+      "scauOnly": true,
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "snack",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "tags": [
+        "daily",
+        "outdoor"
+      ],
+      "evidenceIds": [
+        "E-campus-taichao"
+      ],
+      "title": "泰山超市门口",
+      "typeId": "taishan_supermarket_front",
+      "seated": true,
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "default": [],
+      "mealRoles": [],
+      "source": [
+        "campus-taichao"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 45,
+          "requiresExplicitConsent": true,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "talk_highlight",
+          "title": "分享今天一个小亮点",
+          "description": "各说一件愿意分享的事情，认真听完再回应。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "tags": [
+            "quiet",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-research-phone"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 45,
+            "physicalLoad": 0
+          },
+          "allowedSceneIds": [
+            "taishan_supermarket_front"
+          ],
+          "allowedSceneTypes": [
+            "taishan_supermarket_front"
+          ]
+        },
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 45,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "talk_next",
+          "title": "各提一个下次想做的事",
+          "description": "把下一次兴趣写成备选，不要求当场承诺。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "tags": [
+            "quiet",
+            "romantic"
+          ],
+          "evidenceIds": [
+            "E-research-novelty"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 45,
+            "physicalLoad": 0
+          },
+          "allowedSceneIds": [
+            "taishan_supermarket_front"
+          ],
+          "allowedSceneTypes": [
+            "taishan_supermarket_front"
+          ]
+        }
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 77,
@@ -5127,6 +6027,7 @@
       "title": "校园茶点店",
       "typeId": "tea",
       "default": [],
+      "mealRoles": [],
       "source": [
         "P004",
         "game-81ef99db"
@@ -5182,6 +6083,7 @@
           "consumes": [],
           "preparationIds": [],
           "windows": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -5193,7 +6095,241 @@
             "tea"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "teaching4_slope",
+      "place": {
+        "name": "教四后坡路",
+        "kind": "ordinary",
+        "category": "校园坡路",
+        "universityId": "scau",
+        "campusArea": "taishan",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "教四后方坡路是自述中的晚间散步去处，按体力缓慢步行；坡度、照明和通行条件需确认。",
+      "scauOnly": true,
+      "minutes": 30,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "tags": [
+        "daily",
+        "outdoor"
+      ],
+      "evidenceIds": [
+        "E-campus-evening"
+      ],
+      "title": "教四后坡路",
+      "typeId": "teaching4_slope",
+      "seated": false,
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "default": [],
+      "mealRoles": [],
+      "source": [
+        "campus-evening"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 2,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_watch",
+          "title": "观察景物",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 1,
+          "description": "把注意力放在共同看到的东西上。",
+          "tags": [
+            "nature",
+            "quiet"
+          ],
+          "evidenceIds": [
+            "E-P001"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": 1
+          },
+          "allowedSceneIds": [
+            "teaching4_slope"
+          ],
+          "allowedSceneTypes": [
+            "teaching4_slope"
+          ]
+        }
+      ],
+      "mealActivityIds": []
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "teaching4_study",
+      "place": {
+        "name": "教四自习区",
+        "kind": "ordinary",
+        "category": "教学楼自习区",
+        "universityId": "scau",
+        "campusArea": "taishan",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "教四可作为晚间一起自习的去处，双方安静各读；可进入教室、座位和自习安排需现场确认。",
+      "scauOnly": true,
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "culture",
+      "area": "campus",
+      "indoor": true,
+      "quiet": true,
+      "tags": [
+        "learning",
+        "quiet",
+        "indoor"
+      ],
+      "evidenceIds": [
+        "E-campus-evening"
+      ],
+      "title": "教四自习区",
+      "typeId": "teaching4_study",
+      "seated": true,
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "default": [],
+      "mealRoles": [],
+      "source": [
+        "campus-evening"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 1,
+        "indoor": 1,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "reading_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "read_alone",
+          "title": "安静各读",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "description": "不强迫交流，也不要求读同一本书。",
+          "tags": [
+            "culture",
+            "learning",
+            "quiet",
+            "indoor"
+          ],
+          "evidenceIds": [
+            "E-C004",
+            "E-P010"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": 0
+          },
+          "allowedSceneIds": [
+            "teaching4_study"
+          ],
+          "allowedSceneTypes": [
+            "teaching4_study"
+          ]
+        }
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -5206,7 +6342,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "track_walk",
-      "description": "沿平坦外圈走一小段，随时放慢速度或坐下休息。",
+      "scauOnly": true,
+      "description": "东区运动场可沿操场外圈散步，自述也提到草坪拉伸；按体力选择步行与轻量活动，草坪许可和场地开放需确认。",
       "minutes": 30,
       "cost": [
         0,
@@ -5217,7 +6354,8 @@
       "area": "campus",
       "indoor": false,
       "evidenceIds": [
-        "E-campus-walk"
+        "E-campus-walk",
+        "E-campus-evening"
       ],
       "quiet": true,
       "tags": [
@@ -5232,16 +6370,20 @@
       ],
       "seated": false,
       "place": {
-        "name": "操场外圈",
+        "name": "东区运动场外圈",
+        "universityId": "scau",
+        "campusArea": "taishan",
         "kind": "ordinary",
         "category": "操场外圈",
         "verificationStatus": "awaiting_confirmation"
       },
-      "title": "操场外圈",
+      "title": "东区运动场外圈",
       "typeId": "track_walk",
       "default": [],
+      "mealRoles": [],
       "source": [
-        "campus-walk"
+        "campus-walk",
+        "campus-evening"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -5292,6 +6434,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 1
@@ -5336,6 +6479,7 @@
           "preparationIds": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -5347,7 +6491,8 @@
             "track_walk"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 78,
@@ -5395,6 +6540,7 @@
       "title": "水边公共步道",
       "typeId": "waterside",
       "default": [],
+      "mealRoles": [],
       "source": [
         "citywalk",
         "fiction-paint"
@@ -5454,6 +6600,7 @@
           "consumes": [],
           "windows": [],
           "dietaryTags": [],
+          "mealRoles": [],
           "featureValues": {
             "novelty": 45,
             "physicalLoad": 0
@@ -5465,7 +6612,8 @@
             "waterside"
           ]
         }
-      ]
+      ],
+      "mealActivityIds": []
     },
     {
       "fit": 79,
@@ -5481,10 +6629,10 @@
       "description": "意面、扒类与焗饭提供另一种正餐选择；不是生理周期决定它是否更好。",
       "minutes": 60,
       "cost": [
-        80,
-        120
+        0,
+        0
       ],
-      "load": -2,
+      "load": 0,
       "kind": "meal",
       "area": "campus",
       "indoor": true,
@@ -5499,25 +6647,28 @@
         "rain",
         "unknown"
       ],
-      "provides": [
-        "meal_completed"
-      ],
+      "provides": [],
       "seated": true,
       "evidenceIds": [
-        "E-P004"
+        "E-P004",
+        "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal",
       "place": {
         "name": "校内西式餐馆",
         "kind": "ordinary",
         "category": "校内西式餐馆",
         "verificationStatus": "awaiting_confirmation"
       },
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
       "title": "校内西式餐馆",
       "typeId": "western",
       "default": [],
       "source": [
-        "P004"
+        "P004",
+        "user-meal-periods"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -5530,10 +6681,69 @@
         "quiet": 1,
         "indoor": 1,
         "novelty": 40,
-        "physicalLoad": -2,
+        "physicalLoad": 0,
         "mentalLoad": 1
       },
-      "activities": []
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "western_meal",
+          "title": "意面简餐",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            80,
+            120
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "dietaryTags": [
+            "meat",
+            "gluten",
+            "dairy"
+          ],
+          "evidenceIds": [
+            "E-P004"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "western"
+          ],
+          "allowedSceneTypes": [
+            "western"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "western_meal"
+      ]
     }
   ],
   "activities": [
@@ -5570,6 +6780,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -5615,6 +6826,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 60,
         "physicalLoad": 1
@@ -5658,6 +6870,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 60,
         "physicalLoad": 3
@@ -5701,6 +6914,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -5744,6 +6958,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 82,
         "physicalLoad": 2
@@ -5788,6 +7003,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -5841,6 +7057,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 4
@@ -5861,7 +7078,7 @@
       "publicAllowed": true,
       "id": "bakery_share",
       "title": "分一份面包",
-      "description": "核对食材后分享小份烘焙点心。",
+      "description": "在玻璃房西点屋选小份面包或点心，核对食材后分享，作为补充能量的加餐。",
       "cost": [
         8,
         18
@@ -5888,6 +7105,7 @@
       "consumes": [],
       "preparationIds": [],
       "windows": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -5932,6 +7150,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -5978,6 +7197,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -6025,6 +7245,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6069,6 +7290,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -6121,6 +7343,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6133,6 +7356,61 @@
       ]
     },
     {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_eat",
+      "title": "吃一份早餐面包",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        10,
+        20
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "evidenceIds": [
+        "E-campus-food",
+        "E-user-meal-periods"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 30,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "canteen",
+        "taishan_glass"
+      ],
+      "allowedSceneTypes": [
+        "canteen",
+        "taishan_glass"
+      ]
+    },
+    {
       "group": "play",
       "mode": "multi",
       "novelty": 45,
@@ -6141,7 +7419,7 @@
       "publicAllowed": true,
       "id": "breakfast_pack",
       "title": "买好明早早餐",
-      "description": "购买可妥善保存的早餐，携带方式由双方确认。",
+      "description": "离开前在玻璃房西点屋采购明早的面包点心，确认保存条件与携带方式。",
       "cost": [
         10,
         20
@@ -6169,6 +7447,7 @@
       "consumes": [],
       "preparationIds": [],
       "windows": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6213,6 +7492,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6257,6 +7537,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6303,6 +7584,7 @@
       "consumes": [],
       "preparationIds": [],
       "windows": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6347,6 +7629,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 55,
         "physicalLoad": 1
@@ -6391,59 +7674,129 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 30,
         "physicalLoad": 1
       },
       "allowedSceneIds": [
-        "campus"
+        "campus",
+        "taishan_lab_garden",
+        "teaching4_slope"
       ],
       "allowedSceneTypes": [
-        "campus"
+        "campus",
+        "taishan_lab_garden",
+        "teaching4_slope"
       ]
     },
     {
-      "group": "play",
-      "mode": "multi",
-      "novelty": 45,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
       "requiresExplicitConsent": false,
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "canteen_pair",
-      "title": "各选一道菜",
-      "description": "核对明确忌口后，各挑一种想吃的菜。",
+      "title": "各选一道菜并用餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
       "cost": [
-        0,
-        0
+        40,
+        70
       ],
-      "load": 0,
+      "load": -2,
       "tags": [
         "food",
         "daily"
       ],
       "evidenceIds": [
-        "E-P002"
+        "E-P002",
+        "E-user-meal-periods"
       ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat"
+      ],
+      "exclusiveKey": "main_meal",
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
       "predecessorIds": [],
       "requires": [],
       "preconditions": [],
-      "provides": [],
       "consumes": [],
       "preparationIds": [],
       "windows": [],
-      "dietaryTags": [],
       "featureValues": {
-        "novelty": 45,
-        "physicalLoad": 0
+        "novelty": 30,
+        "physicalLoad": -2
       },
       "allowedSceneIds": [
         "canteen"
       ],
       "allowedSceneTypes": [
         "canteen"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "cantonese_meal",
+      "title": "茶点正餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        120,
+        200
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten"
+      ],
+      "evidenceIds": [
+        "E-P003",
+        "E-P010"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 30,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "cantonese"
+      ],
+      "allowedSceneTypes": [
+        "cantonese"
       ]
     },
     {
@@ -6487,6 +7840,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -6532,6 +7886,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -6579,6 +7934,7 @@
       "consumes": [],
       "preparationIds": [],
       "windows": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6626,6 +7982,7 @@
       "consumes": [],
       "preparationIds": [],
       "windows": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6672,6 +8029,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 65,
         "physicalLoad": 1
@@ -6718,6 +8076,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6762,6 +8121,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -6807,6 +8167,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 55,
         "physicalLoad": 1
@@ -6852,6 +8213,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 97,
         "physicalLoad": 1
@@ -6872,7 +8234,7 @@
       "publicAllowed": true,
       "id": "glass_burger",
       "title": "汉堡简餐",
-      "description": "根据双方食量选择汉堡与配餐。",
+      "description": "在玻璃房西餐窗口按食量选择汉堡与薯条，菜单和实际供应需确认。",
       "cost": [
         30,
         55
@@ -6893,6 +8255,10 @@
         "gluten"
       ],
       "exclusiveKey": "main_meal",
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
@@ -6921,8 +8287,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "glass_noodle",
-      "title": "热汤河粉",
-      "description": "核对肉类与食材后选择热汤主食。",
+      "title": "潮汕汤河粉",
+      "description": "在玻璃房汤河粉窗口按偏好选择猪杂、瘦肉或牛肉丸等配料，实际食材与过敏原需确认。",
       "cost": [
         30,
         55
@@ -6942,6 +8308,10 @@
         "meat"
       ],
       "exclusiveKey": "main_meal",
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
@@ -7002,6 +8372,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 70,
         "physicalLoad": 6
@@ -7053,6 +8424,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 6
@@ -7099,6 +8471,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 35,
         "physicalLoad": 1
@@ -7144,6 +8517,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 3
@@ -7165,11 +8539,11 @@
       "id": "meal_style_c",
       "title": "中式简餐",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
-      "description": "仍需现场确认菜品与个人忌口。",
+      "load": -2,
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "tags": [
         "food",
         "indoor",
@@ -7178,20 +8552,29 @@
       "evidenceIds": [
         "E-P006"
       ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "dietaryTags": [
+        "meat"
+      ],
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
       "predecessorIds": [],
       "requires": [],
       "preconditions": [],
-      "provides": [],
       "consumes": [],
       "preparationIds": [],
       "windows": [],
-      "dietaryTags": [],
       "featureValues": {
         "novelty": 30,
-        "physicalLoad": 0
+        "physicalLoad": -2
       },
       "allowedSceneIds": [
         "meal"
@@ -7209,12 +8592,12 @@
       "publicAllowed": true,
       "id": "meal_style_raw",
       "title": "生食风格",
-      "description": "双方明确接受生食时再选择，费用包含在简餐设计区间中。",
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
+      "load": -2,
       "tags": [
         "food"
       ],
@@ -7225,19 +8608,26 @@
       "dietaryTags": [
         "raw"
       ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
       "predecessorIds": [],
       "requires": [],
       "preconditions": [],
-      "provides": [],
       "consumes": [],
       "preparationIds": [],
       "windows": [],
       "featureValues": {
         "novelty": 45,
-        "physicalLoad": 0
+        "physicalLoad": -2
       },
       "allowedSceneIds": [
         "meal"
@@ -7255,12 +8645,12 @@
       "publicAllowed": true,
       "id": "meal_style_spicy",
       "title": "辣味风格",
-      "description": "按双方明确口味选择，限制辣味时此活动会被过滤。",
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
+      "load": -2,
       "tags": [
         "food"
       ],
@@ -7271,19 +8661,26 @@
       "dietaryTags": [
         "spicy"
       ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
       "predecessorIds": [],
       "requires": [],
       "preconditions": [],
-      "provides": [],
       "consumes": [],
       "preparationIds": [],
       "windows": [],
       "featureValues": {
         "novelty": 45,
-        "physicalLoad": 0
+        "physicalLoad": -2
       },
       "allowedSceneIds": [
         "meal"
@@ -7302,11 +8699,11 @@
       "id": "meal_style_w",
       "title": "西式简餐",
       "cost": [
-        0,
-        0
+        140,
+        140
       ],
-      "load": 0,
-      "description": "风味选择，不另算一顿饭。",
+      "load": -2,
+      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
       "tags": [
         "food",
         "indoor",
@@ -7315,20 +8712,30 @@
       "evidenceIds": [
         "E-P006"
       ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "dietaryTags": [
+        "meat",
+        "gluten"
+      ],
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
       "predecessorIds": [],
       "requires": [],
       "preconditions": [],
-      "provides": [],
       "consumes": [],
       "preparationIds": [],
       "windows": [],
-      "dietaryTags": [],
       "featureValues": {
         "novelty": 30,
-        "physicalLoad": 0
+        "physicalLoad": -2
       },
       "allowedSceneIds": [
         "meal"
@@ -7370,6 +8777,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -7415,6 +8823,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -7460,6 +8869,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -7511,6 +8921,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -7555,6 +8966,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -7601,6 +9013,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -7654,6 +9067,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -7699,6 +9113,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -7749,6 +9164,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": -1
@@ -7802,6 +9218,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 3
@@ -7855,6 +9272,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 2
@@ -7901,6 +9319,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -7945,6 +9364,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -7992,15 +9412,18 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 30,
         "physicalLoad": 0
       },
       "allowedSceneIds": [
-        "reading"
+        "reading",
+        "teaching4_study"
       ],
       "allowedSceneTypes": [
-        "reading"
+        "reading",
+        "teaching4_study"
       ]
     },
     {
@@ -8039,6 +9462,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 60,
         "physicalLoad": 0
@@ -8089,6 +9513,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 65,
         "physicalLoad": 2
@@ -8134,6 +9559,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 60,
         "physicalLoad": 2
@@ -8179,6 +9605,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 100,
         "physicalLoad": 1
@@ -8224,6 +9651,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 95,
         "physicalLoad": 1
@@ -8269,6 +9697,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 30,
         "physicalLoad": 1
@@ -8314,6 +9743,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 40,
         "physicalLoad": 1
@@ -8323,6 +9753,112 @@
       ],
       "allowedSceneTypes": [
         "supermarket"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "supper_barbecue",
+      "title": "选择辣味肉串并用餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        40,
+        80
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "dietaryTags": [
+        "meat",
+        "spicy"
+      ],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 30,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "barbecue_stall"
+      ],
+      "allowedSceneTypes": [
+        "barbecue_stall"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "supper_snacks",
+      "title": "选择熟食主食并用餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        20,
+        50
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten"
+      ],
+      "evidenceIds": [
+        "E-user-meal-periods"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 30,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "snack_street"
+      ],
+      "allowedSceneTypes": [
+        "snack_street"
       ]
     },
     {
@@ -8357,6 +9893,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 55,
         "physicalLoad": 1
@@ -8400,6 +9937,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 55,
         "physicalLoad": 1
@@ -8444,15 +9982,18 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
       },
       "allowedSceneIds": [
-        "public_lounge"
+        "public_lounge",
+        "taishan_supermarket_front"
       ],
       "allowedSceneTypes": [
-        "public_lounge"
+        "public_lounge",
+        "taishan_supermarket_front"
       ]
     },
     {
@@ -8488,15 +10029,18 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
       },
       "allowedSceneIds": [
-        "public_lounge"
+        "public_lounge",
+        "taishan_supermarket_front"
       ],
       "allowedSceneTypes": [
-        "public_lounge"
+        "public_lounge",
+        "taishan_supermarket_front"
       ]
     },
     {
@@ -8534,6 +10078,7 @@
       "consumes": [],
       "preparationIds": [],
       "windows": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -8578,6 +10123,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -8622,6 +10168,7 @@
       "preparationIds": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 1
@@ -8672,6 +10219,7 @@
       "consumes": [],
       "windows": [],
       "dietaryTags": [],
+      "mealRoles": [],
       "featureValues": {
         "novelty": 45,
         "physicalLoad": 0
@@ -8681,6 +10229,61 @@
       ],
       "allowedSceneTypes": [
         "waterside"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 30,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "western_meal",
+      "title": "意面简餐",
+      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "cost": [
+        80,
+        120
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten",
+        "dairy"
+      ],
+      "evidenceIds": [
+        "E-P004"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 30,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "western"
+      ],
+      "allowedSceneTypes": [
+        "western"
       ]
     }
   ],
@@ -10427,8 +12030,82 @@
       "enabled": true
     }
   ],
+  "departures": [
+    {
+      "id": "hotel",
+      "title": "共同入住酒店",
+      "description": "过夜安排中由用户明确选择，预留15分钟办理入住；费用为双人一间客房一晚的初版设计区间，实际房价、交通、房源及入住条件需确认。",
+      "minutes": 15,
+      "costUnit": "CNY_per_room_for_two_per_night",
+      "costByCityTier": {
+        "tier1": [
+          200,
+          400
+        ],
+        "tier2": [
+          150,
+          300
+        ],
+        "tier3": [
+          100,
+          250
+        ]
+      },
+      "onlyOvernight": true,
+      "requiresExplicitChoice": true,
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "evidenceIds": [
+        "E-user-departures"
+      ]
+    },
+    {
+      "id": "separate",
+      "title": "各自回去",
+      "description": "结束约会后各自返回，预留10分钟告别与离开；交通费用按实际情况另行确认。",
+      "minutes": 10,
+      "cost": [
+        0,
+        0
+      ],
+      "onlyOvernight": false,
+      "requiresExplicitChoice": false,
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "evidenceIds": [
+        "E-user-departures"
+      ]
+    },
+    {
+      "id": "walk_together",
+      "title": "一起走一段",
+      "description": "双方明确选择后一起步行离开，预留20分钟；路线按去向与体力确认。",
+      "minutes": 20,
+      "cost": [
+        0,
+        0
+      ],
+      "onlyOvernight": false,
+      "requiresExplicitChoice": true,
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "evidenceIds": [
+        "E-user-departures"
+      ]
+    }
+  ],
+  "defaultDepartureId": "separate",
+  "cityTiers": [
+    "tier1",
+    "tier2",
+    "tier3"
+  ],
+  "defaultCityTier": "tier1",
   "graph": {
-    "version": "knowledge-4.0.0",
+    "version": "knowledge-4.1.0",
     "nodes": [
       {
         "id": "E-C001",
@@ -10531,6 +12208,11 @@
         "label": "超市采购、书店和茶点形成生活化组合，购买物资可以供后续阶段使用。"
       },
       {
+        "id": "E-campus-evening",
+        "type": "evidence",
+        "label": "本地自述列出教四自习、教四后坡路、泰山实验楼下花园及东区运动场作为晚间去处。"
+      },
+      {
         "id": "E-campus-food",
         "type": "evidence",
         "label": "用户本地自述提及泰山区简餐与烘焙购买，可拆分正餐、补充能量和早餐采购。"
@@ -10556,9 +12238,19 @@
         "label": "背景材料列出校园运动设施；运动活动需要装备和可用场地确认。"
       },
       {
+        "id": "E-campus-taichao",
+        "type": "evidence",
+        "label": "本地自述提到泰超门口的露天餐饮与停留氛围，并提到泰超销售酒类；价格评价属于作者体验。"
+      },
+      {
         "id": "E-campus-walk",
         "type": "evidence",
         "label": "用户本地自述提供运动场外圈与桥边散步线索；路线与负担采用模型设计值。"
+      },
+      {
+        "id": "E-campus-zhiyuan",
+        "type": "evidence",
+        "label": "本地自述将芷园列为饭点用餐去处，并提到其中的蜜雪冰城饮品和雪糕。"
       },
       {
         "id": "E-city-library",
@@ -10671,9 +12363,19 @@
         "label": "公开自述中出现电影后组队游戏的休闲安排，可作为协作游戏灵感；价格不转用到当前目录。"
       },
       {
+        "id": "E-user-departures",
+        "type": "evidence",
+        "label": "行程默认各自回去，告别预留10分钟；明确选择一起走预留20分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。"
+      },
+      {
         "id": "E-user-glass-boardgame",
         "type": "evidence",
         "label": "用户允许泰山十栋玻璃房与桌游店共享桌游玩法；玻璃房自带桌游需确认座位与场地许可。"
+      },
+      {
+        "id": "E-user-meal-periods",
+        "type": "evidence",
+        "label": "用户要求早餐、午餐、晚餐和可跳过宵夜分别选择用餐地点；烧烤摊与小吃街为设计地点类型，具体位置、供应、营业与价格待确认。"
       },
       {
         "id": "E-user-mystery",
@@ -11752,6 +13454,13 @@
         "label": "分一份面包"
       },
       {
+        "id": "barbecue_stall",
+        "type": "scene",
+        "label": "烧烤摊",
+        "placeKind": "ordinary",
+        "category": "烧烤摊"
+      },
+      {
         "id": "boardgame",
         "type": "scene",
         "label": "桌游店",
@@ -11784,6 +13493,11 @@
         "label": "画一片叶子"
       },
       {
+        "id": "breakfast_eat",
+        "type": "activity",
+        "label": "吃一份早餐面包"
+      },
+      {
         "id": "breakfast_pack",
         "type": "activity",
         "label": "买好明早早餐"
@@ -11796,7 +13510,7 @@
       {
         "id": "bridge_walk",
         "type": "scene",
-        "label": "校园桥边",
+        "label": "综合体育馆后桥",
         "placeKind": "ordinary",
         "category": "校园桥边"
       },
@@ -11820,7 +13534,7 @@
       {
         "id": "campus",
         "type": "scene",
-        "label": "校园步道",
+        "label": "泰山区宿舍间步道",
         "placeKind": "ordinary",
         "category": "校园步道"
       },
@@ -11839,7 +13553,7 @@
       {
         "id": "campus_tabletennis",
         "type": "scene",
-        "label": "泰山区乒乓球桌",
+        "label": "泰山区12、15、16栋乒乓球桌",
         "placeKind": "ordinary",
         "category": "泰山区乒乓球桌"
       },
@@ -11851,14 +13565,14 @@
       {
         "id": "canteen",
         "type": "scene",
-        "label": "校园食堂",
+        "label": "芷园食堂",
         "placeKind": "ordinary",
         "category": "校园食堂"
       },
       {
         "id": "canteen_pair",
         "type": "activity",
-        "label": "各选一道菜"
+        "label": "各选一道菜并用餐"
       },
       {
         "id": "cantonese",
@@ -11866,6 +13580,11 @@
         "label": "粤式茶楼",
         "placeKind": "ordinary",
         "category": "粤式茶楼"
+      },
+      {
+        "id": "cantonese_meal",
+        "type": "activity",
+        "label": "茶点正餐"
       },
       {
         "id": "cinema",
@@ -11955,7 +13674,12 @@
       {
         "id": "glass_noodle",
         "type": "activity",
-        "label": "热汤河粉"
+        "label": "潮汕汤河粉"
+      },
+      {
+        "id": "hotel",
+        "type": "departure",
+        "label": "共同入住酒店"
       },
       {
         "id": "ice",
@@ -12251,6 +13975,18 @@
         "label": "共同推理一个剧本"
       },
       {
+        "id": "separate",
+        "type": "departure",
+        "label": "各自回去"
+      },
+      {
+        "id": "snack_street",
+        "type": "scene",
+        "label": "小吃街",
+        "placeKind": "ordinary",
+        "category": "小吃街"
+      },
+      {
         "id": "street",
         "type": "scene",
         "label": "街区",
@@ -12285,9 +14021,19 @@
       {
         "id": "supermarket",
         "type": "scene",
-        "label": "超市",
+        "label": "泰山超市",
         "placeKind": "ordinary",
         "category": "超市"
+      },
+      {
+        "id": "supper_barbecue",
+        "type": "activity",
+        "label": "选择辣味肉串并用餐"
+      },
+      {
+        "id": "supper_snacks",
+        "type": "activity",
+        "label": "选择熟食主食并用餐"
       },
       {
         "id": "switch_coop",
@@ -12384,6 +14130,20 @@
         "category": "校园公共餐饮空间"
       },
       {
+        "id": "taishan_lab_garden",
+        "type": "scene",
+        "label": "泰山实验楼下花园",
+        "placeKind": "ordinary",
+        "category": "校园花园"
+      },
+      {
+        "id": "taishan_supermarket_front",
+        "type": "scene",
+        "label": "泰山超市门口",
+        "placeKind": "ordinary",
+        "category": "校园露天停留区"
+      },
+      {
         "id": "talk_highlight",
         "type": "activity",
         "label": "分享今天一个小亮点"
@@ -12406,6 +14166,20 @@
         "label": "分着尝两样茶点"
       },
       {
+        "id": "teaching4_slope",
+        "type": "scene",
+        "label": "教四后坡路",
+        "placeKind": "ordinary",
+        "category": "校园坡路"
+      },
+      {
+        "id": "teaching4_study",
+        "type": "scene",
+        "label": "教四自习区",
+        "placeKind": "ordinary",
+        "category": "教学楼自习区"
+      },
+      {
         "id": "track_observe",
         "type": "activity",
         "label": "看一会儿校园夜色"
@@ -12418,14 +14192,29 @@
       {
         "id": "track_walk",
         "type": "scene",
-        "label": "操场外圈",
+        "label": "东区运动场外圈",
         "placeKind": "ordinary",
         "category": "操场外圈"
+      },
+      {
+        "id": "user:2026-10-14-departure-design",
+        "type": "user_design",
+        "label": "用户项目设计；现实信息待确认"
+      },
+      {
+        "id": "user:2026-10-14-meal-period-design",
+        "type": "user_design",
+        "label": "用户项目设计；现实信息待确认"
       },
       {
         "id": "user:2026-10-14-project-design",
         "type": "user_design",
         "label": "用户项目设计；现实信息待确认"
+      },
+      {
+        "id": "walk_together",
+        "type": "departure",
+        "label": "一起走一段"
       },
       {
         "id": "waterside",
@@ -12445,9 +14234,24 @@
         "label": "校内西式餐馆",
         "placeKind": "ordinary",
         "category": "校内西式餐馆"
+      },
+      {
+        "id": "western_meal",
+        "type": "activity",
+        "label": "意面简餐"
       }
     ],
     "edges": [
+      {
+        "id": "EDGE-0006bd67d1ee1f",
+        "subject": "teaching4_study",
+        "predicate": "has_feature",
+        "object": "tag:learning",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "designed"
+      },
       {
         "id": "EDGE-00214fb5631664",
         "subject": "E-P002",
@@ -12498,6 +14302,16 @@
         "object": "E-user-switch",
         "evidenceIds": [
           "E-user-switch"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-00fc3f5f898a7e",
+        "subject": "taishan_lab_garden",
+        "predicate": "supported_by",
+        "object": "E-campus-evening",
+        "evidenceIds": [
+          "E-campus-evening"
         ],
         "assertionKind": "designed"
       },
@@ -12662,6 +14476,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-067a2c1155ba6a",
+        "subject": "taishan_supermarket_front",
+        "predicate": "allows_activity",
+        "object": "talk_next",
+        "evidenceIds": [
+          "E-campus-taichao",
+          "E-research-novelty"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-06cb652875a272",
         "subject": "rest",
         "predicate": "has_feature",
@@ -12734,6 +14559,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-0ab31f67e2fe68",
+        "subject": "E-campus-zhiyuan",
+        "predicate": "derived_from",
+        "object": "SRC-9d52a0728f3d",
+        "evidenceIds": [
+          "E-campus-zhiyuan"
+        ],
+        "assertionKind": "observed"
+      },
+      {
         "id": "EDGE-0ac287fe7d2adc",
         "subject": "R-prepare-campus_tabletennis-ball",
         "predicate": "supported_by",
@@ -12755,12 +14590,33 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-0b1a8bc00f1cea",
+        "subject": "breakfast_eat",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-campus-food",
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-0b2af4d2b7360c",
         "subject": "garden_roles",
         "predicate": "has_feature",
         "object": "tag:photo",
         "evidenceIds": [
           "E-P008"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-0ba998be1528ce",
+        "subject": "snack_street",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -12807,6 +14663,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-0ccace7c1f7a50",
+        "subject": "breakfast_eat",
+        "predicate": "supported_by",
+        "object": "E-campus-food",
+        "evidenceIds": [
+          "E-campus-food"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-0d38e7c3e54dfa",
         "subject": "track_observe",
         "predicate": "has_feature",
@@ -12846,6 +14712,17 @@
           "E-campus-food"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-0f1ecedb67c9ad",
+        "subject": "meal_style_raw",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-C002",
+          "E-P007"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-0f332f415950fb",
@@ -12888,17 +14765,6 @@
         "assertionKind": "designed"
       },
       {
-        "id": "EDGE-11821b5a950d10",
-        "subject": "cantonese",
-        "predicate": "provides",
-        "object": "resource:meal_completed",
-        "evidenceIds": [
-          "E-P003",
-          "E-P010"
-        ],
-        "assertionKind": "designed"
-      },
-      {
         "id": "EDGE-1231a9beee9668",
         "subject": "R-diet-spicy",
         "predicate": "supported_by",
@@ -12915,6 +14781,16 @@
         "object": "E-P005",
         "evidenceIds": [
           "E-P005"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-12badeb934a93e",
+        "subject": "western_meal",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-P004"
         ],
         "assertionKind": "designed"
       },
@@ -13005,7 +14881,8 @@
         "predicate": "has_feature",
         "object": "tag:food",
         "evidenceIds": [
-          "E-P006"
+          "E-P006",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -13086,7 +14963,8 @@
         "predicate": "allows_activity",
         "object": "meal_style_w",
         "evidenceIds": [
-          "E-P006"
+          "E-P006",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -13119,6 +14997,16 @@
           "E-campus-museum",
           "E-game-18aca666",
           "E-game-ffa64d6a"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-1ba791fd6a01c6",
+        "subject": "cantonese_meal",
+        "predicate": "supported_by",
+        "object": "E-P010",
+        "evidenceIds": [
+          "E-P010"
         ],
         "assertionKind": "designed"
       },
@@ -13181,6 +15069,17 @@
           "E-game-81ef99db"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-1e2bedb4db36c7",
+        "subject": "cantonese_meal",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-P003",
+          "E-P010"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-1e8e4ac7e87423",
@@ -13279,7 +15178,8 @@
         "predicate": "has_feature",
         "object": "tag:daily",
         "evidenceIds": [
-          "E-P002"
+          "E-P002",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -13292,6 +15192,16 @@
           "E-C001"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-2390106197457f",
+        "subject": "taishan_lab_garden",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-23b6af480d2a88",
@@ -13377,6 +15287,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-25fdfbfb1a7f58",
+        "subject": "teaching4_slope",
+        "predicate": "supported_by",
+        "object": "E-campus-evening",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-26f1779df66c17",
         "subject": "pingpong_teach",
         "predicate": "preparationIds",
@@ -13395,6 +15315,16 @@
           "E-G001",
           "E-campus-food",
           "E-user-glass-boardgame"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-2760e25bb80154",
+        "subject": "cantonese_meal",
+        "predicate": "supported_by",
+        "object": "E-P003",
+        "evidenceIds": [
+          "E-P003"
         ],
         "assertionKind": "designed"
       },
@@ -13426,6 +15356,16 @@
         "evidenceIds": [
           "E-P007",
           "E-citywalk"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-27daf4cc7f85ed",
+        "subject": "taishan_supermarket_front",
+        "predicate": "supported_by",
+        "object": "E-campus-taichao",
+        "evidenceIds": [
+          "E-campus-taichao"
         ],
         "assertionKind": "designed"
       },
@@ -13546,12 +15486,23 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-2e11e851499ab1",
+        "subject": "teaching4_study",
+        "predicate": "has_feature",
+        "object": "tag:quiet",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-2e56ab79b10b86",
         "subject": "western",
         "predicate": "has_feature",
         "object": "tag:indoor",
         "evidenceIds": [
-          "E-P004"
+          "E-P004",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -13572,6 +15523,16 @@
         "object": "E-campus-nature",
         "evidenceIds": [
           "E-campus-nature"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-2ebb1d092068b0",
+        "subject": "supermarket",
+        "predicate": "supported_by",
+        "object": "E-campus-taichao",
+        "evidenceIds": [
+          "E-campus-taichao"
         ],
         "assertionKind": "designed"
       },
@@ -13624,7 +15585,8 @@
         "object": "tag:daily",
         "evidenceIds": [
           "E-P003",
-          "E-P010"
+          "E-P010",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -13676,6 +15638,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -13769,7 +15732,8 @@
         "predicate": "has_feature",
         "object": "tag:daily",
         "evidenceIds": [
-          "E-P006"
+          "E-P006",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -13835,6 +15799,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-36fb92a24f1fd7",
+        "subject": "E-campus-evening",
+        "predicate": "derived_from",
+        "object": "SRC-9d52a0728f3d",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "observed"
+      },
+      {
         "id": "EDGE-37436ff842d1ab",
         "subject": "campus_picnic",
         "predicate": "has_feature",
@@ -13842,6 +15816,16 @@
         "evidenceIds": [
           "E-P001",
           "E-fiction-picnic"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-3762176cdcd0c8",
+        "subject": "taishan_lab_garden",
+        "predicate": "has_feature",
+        "object": "tag:nature",
+        "evidenceIds": [
+          "E-campus-evening"
         ],
         "assertionKind": "designed"
       },
@@ -13906,6 +15890,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-39145094b694a6",
+        "subject": "snack_street",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-3929af0501dd75",
         "subject": "museum_pick",
         "predicate": "has_feature",
@@ -13943,6 +15937,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -13995,6 +15990,16 @@
         "evidenceIds": [
           "E-fiction-living",
           "E-research-novelty"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-3d2074186dccd6",
+        "subject": "barbecue_stall",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -14088,6 +16093,7 @@
         "predicate": "has_feature",
         "object": "tag:daily",
         "evidenceIds": [
+          "E-campus-evening",
           "E-campus-walk"
         ],
         "assertionKind": "designed"
@@ -14202,6 +16208,26 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-45ecfb511cde5d",
+        "subject": "breakfast_eat",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-487cd220997c97",
+        "subject": "supper_snacks",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-48be96e84b2697",
         "subject": "cinema",
         "predicate": "has_feature",
@@ -14270,6 +16296,16 @@
         "object": "resource:court_checked",
         "evidenceIds": [
           "E-campus-sport"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-4b8558c5871f0c",
+        "subject": "meal_style_w",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-P006"
         ],
         "assertionKind": "designed"
       },
@@ -14384,6 +16420,7 @@
         "object": "super_fruit",
         "evidenceIds": [
           "E-P010",
+          "E-campus-taichao",
           "E-game-e4116c62"
         ],
         "assertionKind": "designed"
@@ -14394,7 +16431,9 @@
         "predicate": "has_feature",
         "object": "tag:indoor",
         "evidenceIds": [
-          "E-P002"
+          "E-P002",
+          "E-campus-zhiyuan",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -14455,6 +16494,16 @@
         "object": "tag:culture",
         "evidenceIds": [
           "E-city-library"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-51bb23bbf2e136",
+        "subject": "barbecue_stall",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -14550,16 +16599,6 @@
         "evidenceIds": [
           "E-G001",
           "E-user-glass-boardgame"
-        ],
-        "assertionKind": "designed"
-      },
-      {
-        "id": "EDGE-53ceb3a270e878",
-        "subject": "meal",
-        "predicate": "provides",
-        "object": "resource:meal_completed",
-        "evidenceIds": [
-          "E-P006"
         ],
         "assertionKind": "designed"
       },
@@ -14663,6 +16702,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -14853,6 +16893,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-5f6719dc9c9248",
+        "subject": "barbecue_stall",
+        "predicate": "allows_activity",
+        "object": "supper_barbecue",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-5fc27aa8840a42",
         "subject": "photo_print",
         "predicate": "preconditions",
@@ -14879,6 +16929,7 @@
         "object": "tag:food",
         "evidenceIds": [
           "E-P010",
+          "E-campus-taichao",
           "E-game-e4116c62"
         ],
         "assertionKind": "designed"
@@ -14933,6 +16984,7 @@
         "object": "super_exchange",
         "evidenceIds": [
           "E-P010",
+          "E-campus-taichao",
           "E-game-e4116c62"
         ],
         "assertionKind": "designed"
@@ -15048,6 +17100,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -15084,6 +17137,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-677a4d57a1c215",
+        "subject": "supper_snacks",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-677c2ca121f112",
         "subject": "ice",
         "predicate": "allows_activity",
@@ -15094,12 +17157,12 @@
         "assertionKind": "designed"
       },
       {
-        "id": "EDGE-6815076808aec2",
-        "subject": "canteen",
-        "predicate": "provides",
-        "object": "resource:meal_completed",
+        "id": "EDGE-67e6b89021a2bc",
+        "subject": "walk_together",
+        "predicate": "supported_by",
+        "object": "E-user-departures",
         "evidenceIds": [
-          "E-P002"
+          "E-user-departures"
         ],
         "assertionKind": "designed"
       },
@@ -15174,6 +17237,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-6a422e504824af",
+        "subject": "western",
+        "predicate": "allows_activity",
+        "object": "western_meal",
+        "evidenceIds": [
+          "E-P004",
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-6b69ff467f61a0",
         "subject": "talk_next",
         "predicate": "supported_by",
@@ -15189,6 +17263,7 @@
         "predicate": "has_feature",
         "object": "tag:nature",
         "evidenceIds": [
+          "E-campus-evening",
           "E-campus-walk"
         ],
         "assertionKind": "designed"
@@ -15265,16 +17340,6 @@
         "assertionKind": "observed"
       },
       {
-        "id": "EDGE-70029d5cb97ff2",
-        "subject": "western",
-        "predicate": "provides",
-        "object": "resource:meal_completed",
-        "evidenceIds": [
-          "E-P004"
-        ],
-        "assertionKind": "designed"
-      },
-      {
         "id": "EDGE-7054c5ee58e019",
         "subject": "tea",
         "predicate": "has_feature",
@@ -15336,6 +17401,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-740ba1e6c54716",
+        "subject": "barbecue_stall",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-74648170f4027b",
         "subject": "R-shared-food",
         "predicate": "supported_by",
@@ -15387,6 +17462,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-760fd706278edc",
+        "subject": "teaching4_slope",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-762931f88f6fad",
         "subject": "E-P003",
         "predicate": "derived_from",
@@ -15395,6 +17480,16 @@
           "E-P003"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-7760d2db9babed",
+        "subject": "teaching4_slope",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-785d2bf6f472e0",
@@ -15634,7 +17729,8 @@
         "evidenceIds": [
           "E-C002",
           "E-P006",
-          "E-P007"
+          "E-P007",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -15645,6 +17741,7 @@
         "object": "tag:daily",
         "evidenceIds": [
           "E-P010",
+          "E-campus-taichao",
           "E-game-e4116c62"
         ],
         "assertionKind": "designed"
@@ -15666,6 +17763,7 @@
         "object": "purchase_picnic",
         "evidenceIds": [
           "E-P010",
+          "E-campus-taichao",
           "E-game-e4116c62"
         ],
         "assertionKind": "designed"
@@ -15678,6 +17776,17 @@
         "evidenceIds": [
           "E-G001",
           "E-G003"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-80ae7b154d5c73",
+        "subject": "teaching4_slope",
+        "predicate": "allows_activity",
+        "object": "campus_watch",
+        "evidenceIds": [
+          "E-P001",
+          "E-campus-evening"
         ],
         "assertionKind": "designed"
       },
@@ -15708,6 +17817,19 @@
         "object": "tag:play",
         "evidenceIds": [
           "E-user-switch"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-81df914d96370e",
+        "subject": "canteen",
+        "predicate": "allows_activity",
+        "object": "breakfast_eat",
+        "evidenceIds": [
+          "E-P002",
+          "E-campus-food",
+          "E-campus-zhiyuan",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -15878,6 +18000,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-870dfb9db1d65e",
+        "subject": "breakfast_eat",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-campus-food",
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-8753db1fccbe7b",
         "subject": "meal",
         "predicate": "allows_activity",
@@ -15885,7 +18018,8 @@
         "evidenceIds": [
           "E-C002",
           "E-P005",
-          "E-P006"
+          "E-P006",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -15946,7 +18080,9 @@
         "predicate": "allows_activity",
         "object": "canteen_pair",
         "evidenceIds": [
-          "E-P002"
+          "E-P002",
+          "E-campus-zhiyuan",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -16011,6 +18147,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-8b3097690a5c52",
+        "subject": "supper_barbecue",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-8b8845e47f2798",
         "subject": "R-lowbudget-derive",
         "predicate": "supported_by",
@@ -16057,6 +18203,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-8d24a202c49b8c",
+        "subject": "western_meal",
+        "predicate": "supported_by",
+        "object": "E-P004",
+        "evidenceIds": [
+          "E-P004"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-8db6d91f907d96",
         "subject": "bakery_share",
         "predicate": "has_feature",
@@ -16084,6 +18240,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -16119,6 +18276,16 @@
           "E-P008"
         ],
         "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-8f4600ff7e73f3",
+        "subject": "E-campus-taichao",
+        "predicate": "derived_from",
+        "object": "SRC-9d52a0728f3d",
+        "evidenceIds": [
+          "E-campus-taichao"
+        ],
+        "assertionKind": "observed"
       },
       {
         "id": "EDGE-8f8ed38462f173",
@@ -16318,6 +18485,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-95658ae1b67311",
+        "subject": "supper_snacks",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-9567354724cfd5",
         "subject": "campus_picnic",
         "predicate": "allows_activity",
@@ -16344,6 +18521,7 @@
         "predicate": "has_feature",
         "object": "tag:outdoor",
         "evidenceIds": [
+          "E-campus-evening",
           "E-campus-walk"
         ],
         "assertionKind": "designed"
@@ -16388,6 +18566,28 @@
         "object": "E-P009",
         "evidenceIds": [
           "E-P009"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-96f2860f9a6a4e",
+        "subject": "cantonese",
+        "predicate": "allows_activity",
+        "object": "cantonese_meal",
+        "evidenceIds": [
+          "E-P003",
+          "E-P010",
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-971dd6a4221450",
+        "subject": "snack_street",
+        "predicate": "allows_activity",
+        "object": "supper_snacks",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -16444,12 +18644,32 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-99c5ccd7b1e5a6",
+        "subject": "canteen_pair",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-99f5f586d849fe",
         "subject": "street_style",
         "predicate": "has_feature",
         "object": "tag:photo",
         "evidenceIds": [
           "E-P007"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-9a327da1dbdc56",
+        "subject": "supper_snacks",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -16479,6 +18699,7 @@
         "predicate": "allows_activity",
         "object": "track_observe",
         "evidenceIds": [
+          "E-campus-evening",
           "E-campus-walk"
         ],
         "assertionKind": "designed"
@@ -16490,6 +18711,16 @@
         "object": "E-P008",
         "evidenceIds": [
           "E-P008"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-9ba50c0f2de2f9",
+        "subject": "E-user-departures",
+        "predicate": "derived_from",
+        "object": "user:2026-10-14-departure-design",
+        "evidenceIds": [
+          "E-user-departures"
         ],
         "assertionKind": "designed"
       },
@@ -16510,7 +18741,8 @@
         "predicate": "has_feature",
         "object": "tag:food",
         "evidenceIds": [
-          "E-P002"
+          "E-P002",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -16535,12 +18767,33 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-9e02770371f2c1",
+        "subject": "western_meal",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-P004"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-9e2c8068badf24",
         "subject": "dessert_warm",
         "predicate": "has_feature",
         "object": "tag:daily",
         "evidenceIds": [
           "E-P001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-9e8c199ef9e5be",
+        "subject": "cantonese_meal",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-P003",
+          "E-P010"
         ],
         "assertionKind": "designed"
       },
@@ -16666,7 +18919,18 @@
         "object": "tag:indoor",
         "evidenceIds": [
           "E-P010",
+          "E-campus-taichao",
           "E-game-e4116c62"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-a243afed721305",
+        "subject": "snack_street",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -16748,6 +19012,16 @@
         "object": "tag:quiet",
         "evidenceIds": [
           "E-P001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-a555920e14deca",
+        "subject": "canteen",
+        "predicate": "supported_by",
+        "object": "E-campus-zhiyuan",
+        "evidenceIds": [
+          "E-campus-zhiyuan"
         ],
         "assertionKind": "designed"
       },
@@ -16886,6 +19160,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-ab6dd210d5b606",
+        "subject": "supper_barbecue",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-abd722da5be2a1",
         "subject": "campus_picnic",
         "predicate": "requires",
@@ -16943,6 +19227,16 @@
         "object": "tag:creative",
         "evidenceIds": [
           "E-P007"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-ad02cba0aad658",
+        "subject": "teaching4_study",
+        "predicate": "supported_by",
+        "object": "E-campus-evening",
+        "evidenceIds": [
+          "E-campus-evening"
         ],
         "assertionKind": "designed"
       },
@@ -17023,7 +19317,8 @@
         "predicate": "has_feature",
         "object": "tag:food",
         "evidenceIds": [
-          "E-P004"
+          "E-P004",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -17077,6 +19372,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -17129,7 +19425,8 @@
         "object": "tag:indoor",
         "evidenceIds": [
           "E-P003",
-          "E-P010"
+          "E-P010",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -17141,6 +19438,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -17161,6 +19459,7 @@
         "predicate": "allows_activity",
         "object": "track_stretch",
         "evidenceIds": [
+          "E-campus-evening",
           "E-campus-walk"
         ],
         "assertionKind": "designed"
@@ -17173,6 +19472,18 @@
         "evidenceIds": [
           "E-P001",
           "E-fiction-picnic"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-b42f05ec418bed",
+        "subject": "teaching4_study",
+        "predicate": "allows_activity",
+        "object": "read_alone",
+        "evidenceIds": [
+          "E-C004",
+          "E-P010",
+          "E-campus-evening"
         ],
         "assertionKind": "designed"
       },
@@ -17194,6 +19505,16 @@
         "evidenceIds": [
           "E-shared-game",
           "E-user-glass-boardgame"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-b5265a8502352f",
+        "subject": "track_walk",
+        "predicate": "supported_by",
+        "object": "E-campus-evening",
+        "evidenceIds": [
+          "E-campus-evening"
         ],
         "assertionKind": "designed"
       },
@@ -17251,6 +19572,18 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-b62e164f74ef6f",
+        "subject": "taishan_glass",
+        "predicate": "allows_activity",
+        "object": "breakfast_eat",
+        "evidenceIds": [
+          "E-campus-food",
+          "E-user-glass-boardgame",
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-b6b730caecde9f",
         "subject": "campus_watch",
         "predicate": "has_feature",
@@ -17287,6 +19620,26 @@
         "object": "tag:romantic",
         "evidenceIds": [
           "E-research-novelty"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-b7d8a912ae5b35",
+        "subject": "meal",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-b8214a4e0dc5ce",
+        "subject": "western",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -17343,6 +19696,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-ba7f7cebea3534",
+        "subject": "meal_style_spicy",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-C002",
+          "E-P005"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-ba866174e85e3b",
         "subject": "script_mystery",
         "predicate": "has_feature",
@@ -17359,7 +19723,8 @@
         "object": "tag:food",
         "evidenceIds": [
           "E-P003",
-          "E-P010"
+          "E-P010",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -17623,6 +19988,7 @@
         "predicate": "has_feature",
         "object": "tag:quiet",
         "evidenceIds": [
+          "E-campus-evening",
           "E-campus-walk"
         ],
         "assertionKind": "designed"
@@ -17664,6 +20030,7 @@
         "object": "super_snacks",
         "evidenceIds": [
           "E-P010",
+          "E-campus-taichao",
           "E-game-e4116c62"
         ],
         "assertionKind": "designed"
@@ -17741,6 +20108,16 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-c90d319e2cf549",
+        "subject": "canteen",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-c9151a7ad7f096",
         "subject": "pingpong_rally",
         "predicate": "has_feature",
@@ -17769,6 +20146,16 @@
           "E-game-e4116c62"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-c98a113e6e4488",
+        "subject": "barbecue_stall",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-c9c5fe22110506",
@@ -17929,7 +20316,8 @@
         "predicate": "has_feature",
         "object": "tag:romantic",
         "evidenceIds": [
-          "E-P004"
+          "E-P004",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -17969,7 +20357,8 @@
         "predicate": "allows_activity",
         "object": "meal_style_c",
         "evidenceIds": [
-          "E-P006"
+          "E-P006",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -18032,6 +20421,16 @@
           "E-campus-museum",
           "E-game-18aca666",
           "E-game-ffa64d6a"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-d14938a66e313a",
+        "subject": "hotel",
+        "predicate": "supported_by",
+        "object": "E-user-departures",
+        "evidenceIds": [
+          "E-user-departures"
         ],
         "assertionKind": "designed"
       },
@@ -18116,6 +20515,17 @@
           "E-G001",
           "E-G003",
           "E-game-c73b126a"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-d3cc22db187ef7",
+        "subject": "taishan_lab_garden",
+        "predicate": "allows_activity",
+        "object": "campus_watch",
+        "evidenceIds": [
+          "E-P001",
+          "E-campus-evening"
         ],
         "assertionKind": "designed"
       },
@@ -18263,6 +20673,26 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-da14296eaa93c9",
+        "subject": "separate",
+        "predicate": "supported_by",
+        "object": "E-user-departures",
+        "evidenceIds": [
+          "E-user-departures"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-da3aefde44f40a",
+        "subject": "taishan_supermarket_front",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-campus-taichao"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-dab4b8b1d947a4",
         "subject": "exhibition",
         "predicate": "has_feature",
@@ -18399,12 +20829,24 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-e0a374d2674540",
+        "subject": "teaching4_study",
+        "predicate": "has_feature",
+        "object": "tag:indoor",
+        "evidenceIds": [
+          "E-campus-evening"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-e17f4ccf1efbe9",
         "subject": "canteen",
         "predicate": "has_feature",
         "object": "tag:food",
         "evidenceIds": [
-          "E-P002"
+          "E-P002",
+          "E-campus-zhiyuan",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -18447,6 +20889,16 @@
         "object": "E-P006",
         "evidenceIds": [
           "E-P006"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e25c9546d4c1fc",
+        "subject": "E-user-meal-periods",
+        "predicate": "derived_from",
+        "object": "user:2026-10-14-meal-period-design",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -18498,6 +20950,16 @@
         "object": "garden_photo",
         "evidenceIds": [
           "E-P008"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e33bd37b0ae912",
+        "subject": "supper_barbecue",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -18603,6 +21065,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-e634495cb31743",
+        "subject": "cantonese",
+        "predicate": "supported_by",
+        "object": "E-user-meal-periods",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-e653e2a55ee08a",
         "subject": "E-user-public-lounge",
         "predicate": "derived_from",
@@ -18621,6 +21093,17 @@
           "E-P001",
           "E-fiction-garden",
           "E-fiction-picnic"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e678cc75363beb",
+        "subject": "taishan_supermarket_front",
+        "predicate": "allows_activity",
+        "object": "talk_highlight",
+        "evidenceIds": [
+          "E-campus-taichao",
+          "E-research-phone"
         ],
         "assertionKind": "designed"
       },
@@ -18906,6 +21389,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f0066a15cc4ff3",
+        "subject": "breakfast_eat",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-campus-food",
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-f034e4bae643a4",
         "subject": "arcade_claw",
         "predicate": "has_feature",
@@ -18922,6 +21416,17 @@
         "object": "E-research-novelty",
         "evidenceIds": [
           "E-research-novelty"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f1ad6e80385fcc",
+        "subject": "cantonese_meal",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-P003",
+          "E-P010"
         ],
         "assertionKind": "designed"
       },
@@ -19020,6 +21525,26 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f40ffaee8d3eb5",
+        "subject": "taishan_supermarket_front",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-campus-taichao"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f4ae872c127f75",
+        "subject": "meal_style_c",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-P006"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-f58bf5e7e4a5ee",
         "subject": "dessert",
         "predicate": "allows_activity",
@@ -19037,7 +21562,8 @@
         "predicate": "has_feature",
         "object": "tag:indoor",
         "evidenceIds": [
-          "E-P006"
+          "E-P006",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -19064,6 +21590,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f729c3ca87db34",
+        "subject": "snack_street",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-f748eee2694ede",
         "subject": "rainforest",
         "predicate": "allows_activity",
@@ -19080,6 +21616,17 @@
         "object": "E-P006",
         "evidenceIds": [
           "E-P006"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f7b8512f251b94",
+        "subject": "canteen_pair",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-P002",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -19121,6 +21668,7 @@
         "evidenceIds": [
           "E-P001",
           "E-campus-nature",
+          "E-campus-walk",
           "E-fiction-garden"
         ],
         "assertionKind": "designed"
@@ -19156,12 +21704,32 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f95f36f8b0c9d2",
+        "subject": "supper_barbecue",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-f987d2951c5912",
         "subject": "R-prepare-agriculture_museum-opening_checked",
         "predicate": "supported_by",
         "object": "E-G006",
         "evidenceIds": [
           "E-G006"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-fa1a49138b9bbb",
+        "subject": "western_meal",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-P004"
         ],
         "assertionKind": "designed"
       },
@@ -19203,6 +21771,16 @@
         "object": "E-P001",
         "evidenceIds": [
           "E-P001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-fb7163e9ffbbb0",
+        "subject": "campus",
+        "predicate": "supported_by",
+        "object": "E-campus-walk",
+        "evidenceIds": [
+          "E-campus-walk"
         ],
         "assertionKind": "designed"
       },
@@ -19249,7 +21827,9 @@
         "predicate": "has_feature",
         "object": "tag:daily",
         "evidenceIds": [
-          "E-P002"
+          "E-P002",
+          "E-campus-zhiyuan",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -19338,5 +21918,5 @@
       }
     ]
   },
-  "contentRevision": "73b1f64b36bdc9d7"
+  "contentRevision": "374d68c345225430"
 }

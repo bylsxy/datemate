@@ -6,9 +6,11 @@ import { resolve, relative, isAbsolute, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 
 export const SOURCE_SCHEMA = 'manual-knowledge-1.0';
-export const SOURCE_FILES = ['scenes', 'activities', 'rules', 'metadata', 'evidence', 'source-registry', 'conditions'];
+export const SOURCE_FILES = ['scenes', 'activities', 'rules', 'metadata', 'evidence', 'source-registry', 'conditions', 'departures'];
+const CITY_TIERS = ['tier1', 'tier2', 'tier3'];
 const ARRAY_FIELDS = ['predecessorIds', 'requires', 'preconditions', 'provides', 'consumes', 'preparationIds', 'windows', 'dietaryTags'];
 const ACTIVITY_TIME_FIELDS = ['minutes', 'duration', 'durationMinutes', 'compositionMode', 'durationMode'];
+const MEAL_ROLES = new Set(['breakfast', 'lunch', 'dinner', 'supper']);
 const OPS = new Set(['exists', 'eq', 'equals', '==', 'neq', 'not_equals', '!=', 'gt', '>', 'gte', '>=', 'lt', '<', 'lte', '<=', 'in', 'not_in', 'contains', 'not_contains', 'intersects', 'truthy', 'falsy']);
 const ACTIONS = new Set(['set_fact', 'exclude_scene', 'exclude_activity', 'prefer_scene', 'prefer_activity', 'require_preparation', 'add_warning']);
 const sha = value => createHash('sha256').update(value).digest('hex');
@@ -59,6 +61,7 @@ function normalizeActivity(raw) {
   activity.compositionMode = 'included';
   activity.durationMode = 'within_scene';
   for (const field of ARRAY_FIELDS) activity[field] ??= [];
+  activity.mealRoles ??= [];
   activity.featureValues = { novelty: activity.novelty, physicalLoad: activity.load };
   return activity;
 }
@@ -73,6 +76,7 @@ function normalizeScene(raw) {
   scene.seated ??= scene.load <= 0;
   scene.weather ??= scene.indoor ? ['clear', 'rain', 'unknown'] : ['clear', 'unknown'];
   scene.default = [];
+  scene.mealRoles ??= [];
   scene.source = scene.evidenceIds.map(id => id.replace(/^E-/, ''));
   for (const field of ARRAY_FIELDS) scene[field] ??= [];
   scene.featureValues = { quiet: +scene.quiet, indoor: +scene.indoor, novelty: scene.novelty, physicalLoad: scene.load, mentalLoad: scene.mental };
@@ -92,6 +96,11 @@ function validateEntity(item, evidence, resources, allEntityIds, tags, path) {
   references(item.predecessorIds, allEntityIds, `${path}.predecessorIds`);
   for (const field of ['requires', 'preconditions', 'provides', 'consumes', 'preparationIds']) references(item[field], resources, `${path}.${field}`);
   ids(item.dietaryTags, `${path}.dietaryTags`);
+  ids(item.mealRoles, `${path}.mealRoles`).forEach(role => ensure(MEAL_ROLES.has(role), `${path}.mealRoles 餐次无效：${role}`));
+  if (Object.hasOwn(item, 'compositionMode')) {
+    if (item.mealRoles.length) ensure(item.provides.includes('meal_completed'), `${path} 用餐活动须提供 meal_completed`);
+    if (item.provides.includes('meal_completed')) ensure(item.mealRoles.length > 0, `${path} 用餐活动须声明适用餐次`);
+  }
   list(item.windows, `${path}.windows`).forEach(w => ensure(Number.isInteger(w.startMinute) && Number.isInteger(w.endMinute) && w.startMinute >= 0 && w.startMinute < w.endMinute && w.endMinute <= 1440, `${path}.windows 时间窗无效`));
   if (Object.hasOwn(item, 'compositionMode')) {
     ensure(item.compositionMode === 'included' && item.durationMode === 'within_scene' && item.minutes === 0, `${path} 活动须在场景固定时段内且不增加耗时`);
@@ -129,6 +138,44 @@ function validateRule(rule, sceneIds, activityIds, evidence, resources, tags, co
     if (['prefer_scene', 'prefer_activity'].includes(action.action)) ensure(Number.isFinite(action.amount), `${path} 偏好加分须为有限数值`);
     if (action.action === 'require_preparation') references(action.preparationIds ?? [action.preparationId ?? action.id], resources, `${path}.then.preparationIds`);
   }
+}
+
+// 离开是行程结尾的独立选择，住宿不得进入场景搜索或默认推荐。
+function compileDepartures(doc, evidence, publicIds, metadata, conditions) {
+  const items = index(doc.departures, 'departures');
+  ensure(items.size === 3 && ['separate', 'walk_together', 'hotel'].every(id => items.has(id)), 'departures 须包含 separate、walk_together、hotel 三项');
+  ensure(doc.defaultId === 'separate', 'departures.defaultId 须为 separate');
+  ensure(metadata.defaultContext.departureChoice === doc.defaultId, 'metadata.defaultContext.departureChoice 与离开默认值不一致');
+  ensure(metadata.defaultContext.cityTier === 'tier1', 'metadata.defaultContext.cityTier 须为 tier1');
+  ensure(JSON.stringify(conditions.get('cityTier')?.allowedValues) === JSON.stringify(CITY_TIERS), 'conditions.cityTier 须登记 tier1/tier2/tier3');
+  ensure(JSON.stringify(conditions.get('departureChoice')?.allowedValues) === JSON.stringify(['separate', 'walk_together', 'hotel']), 'conditions.departureChoice 须登记三种离开选择');
+  for (const item of items.values()) {
+    const path = `departures.${item.id}`;
+    ensure(!publicIds.includes(item.id), `${path} ID 与地点、活动或其他公开实体冲突`);
+    ensure(!['place', 'activities', 'activityIds', 'mealRoles'].some(k => Object.hasOwn(item, k)), `${path} 须为独立离开数据`);
+    text(item.title, `${path}.title`); text(item.description, `${path}.description`);
+    ensure(Number.isInteger(item.minutes) && item.minutes > 0, `${path}.minutes 须为正整数`);
+    ensure(item.parameterStatus === 'designed_not_measured' && item.assertionKind === 'designed', `${path} 须明确为设计参数`);
+    ensure(item.publicAllowed === true, `${path}.publicAllowed 须为 true`);
+    ensure(item.evidenceIds?.length > 0, `${path} 须有设计依据`);
+    references(item.evidenceIds, evidence, `${path}.evidenceIds`);
+    ensure(item.evidenceIds.every(id => evidence.get(id).assertionKind === 'designed'), `${path} 费用与时长须引用 designed 依据`);
+    ensure(typeof item.onlyOvernight === 'boolean' && typeof item.requiresExplicitChoice === 'boolean', `${path} 离开限制须为布尔值`);
+    if (item.id === 'hotel') {
+      ensure(item.onlyOvernight === true && item.requiresExplicitChoice === true && item.minutes === 15, `${path} 须仅在过夜且用户明确选择时生效，入住预留15分钟`);
+      ensure(!Object.hasOwn(item, 'cost'), `${path} 房费须按 cityTier 提供`);
+      ensure(item.costUnit === 'CNY_per_room_for_two_per_night', `${path}.costUnit 须说明双人一晚房费`);
+      ensure(item.costByCityTier && Object.keys(item.costByCityTier).length === 3 && CITY_TIERS.every(tier => Object.hasOwn(item.costByCityTier, tier)), `${path}.costByCityTier 须完整列出三档`);
+      for (const tier of CITY_TIERS) {
+        const cost = item.costByCityTier[tier];
+        ensure(Array.isArray(cost) && cost.length === 2 && cost.every(n => Number.isFinite(n) && n >= 0 && Number.isInteger(Number((n * 100).toFixed(8)))) && cost[0] <= cost[1], `${path}.${tier} 须为有效费用区间`);
+      }
+    } else {
+      ensure(item.onlyOvernight === false && item.requiresExplicitChoice === (item.id === 'walk_together'), `${path} 免费离开限制无效`);
+      ensure(JSON.stringify(item.cost) === '[0,0]' && !Object.hasOwn(item, 'costByCityTier'), `${path} 免费离开费用须为 [0,0]`);
+    }
+  }
+  return [...items.values()].map(clone).sort(order);
 }
 
 export function buildGraph(catalog, evidence, sources, resources) {
@@ -174,6 +221,10 @@ export function buildGraph(catalog, evidence, sources, resources) {
         entityEdges({ ...activity, id });
       }
     }
+  }
+  for (const departure of catalog.departures) {
+    node(departure.id, 'departure', departure.title);
+    for (const ev of departure.evidenceIds) edge(departure.id, 'supported_by', ev, [ev], 'designed');
   }
   for (const rule of catalog.rules) { node(rule.id, 'rule', rule.title); for (const ev of rule.evidenceIds) edge(rule.id, 'supported_by', ev, [ev]); }
   const nodeIds = new Set(nodes.keys()), evidenceIds = new Set(evidence.map(e => e.id));
@@ -230,6 +281,7 @@ export function compileKnowledge(input) {
     if (raw.place.kind === '休息') ensure(raw.id === 'rest' && raw.kind === 'rest' && raw.area === 'current' && raw.activityIds.length === 0, `${path} 原地休息须无活动且 area=current`);
     if (raw.id === 'rest' || raw.kind === 'rest') ensure(raw.place.kind === '休息', `${path} 休息语义不一致`);
     references(raw.activityIds, rawActivities, `${path}.activityIds`);
+    ensure(!Object.hasOwn(raw, 'mealActivityIds'), `${path}.mealActivityIds 由构建器生成`);
     ensure(!Object.hasOwn(raw, 'activities') && !Object.hasOwn(raw, 'title'), `${path} 活动引用用 activityIds，地点名称用 place.name`);
     const overrides = raw.activityOverrides ?? {};
     ensure(overrides && typeof overrides === 'object' && !Array.isArray(overrides), `${path}.activityOverrides 须为对象`);
@@ -240,6 +292,10 @@ export function compileKnowledge(input) {
       ensure(!ACTIVITY_TIME_FIELDS.some(field => Object.hasOwn(override, field)), `${path}.${id} override 不允许活动时间字段；请修改地点的 minutes`);
     }
     const scene = normalizeScene(raw);
+    if (Object.hasOwn(raw, 'scauOnly')) {
+      ensure(typeof raw.scauOnly === 'boolean', `${path}.scauOnly 须为布尔值`);
+      if (raw.scauOnly) ensure(raw.area === 'campus' && raw.place.universityId === 'scau' && raw.place.campusArea === 'taishan', `${path} 华农泰山区属性须一致`);
+    }
     ensure(typeof scene.indoor === 'boolean' && typeof scene.quiet === 'boolean', `${path} indoor/quiet 须为布尔值`);
     ensure(['campus', 'near', 'off', 'current'].includes(scene.area), `${path}.area 无效`);
     scene.activities = raw.activityIds.map(id => {
@@ -251,6 +307,13 @@ export function compileKnowledge(input) {
       return activity;
     });
     validateEntity(scene, evidenceMap, resources, entityIds, tags, path);
+    // 餐次卡只能选择实际完成用餐的活动；到场本身不能满足用餐目标。
+    scene.mealActivityIds = scene.activities.filter(a => a.provides.includes('meal_completed')).map(a => a.id);
+    if (scene.mealRoles.length) {
+      ensure(!scene.provides.includes('meal_completed'), `${path} 用餐目标须由所选活动提供`);
+      for (const role of scene.mealRoles) ensure(scene.activities.some(a => a.provides.includes('meal_completed') && a.mealRoles.includes(role)), `${path}.${role} 缺少适用的用餐活动`);
+      for (const activity of scene.activities.filter(a => a.mealRoles.length)) ensure(activity.mealRoles.every(role => scene.mealRoles.includes(role)), `${path}.${activity.id} 活动餐次超出地点适用范围`);
+    }
     return scene;
   }).sort(order);
   for (const activity of activities) {
@@ -263,7 +326,8 @@ export function compileKnowledge(input) {
   rules.forEach(rule => validateRule(rule, rawScenes, rawActivities, evidenceMap, resources, tags, conditionMap));
   const evidence = [...evidenceMap.values()].map(clone).sort(order), sources = [...sourceMap.values()].map(clone).sort(order);
   const conditions = clone(docs.conditions.conditions);
-  const catalog = { version: metadata.version, rulesVersion: metadata.rulesVersion, schemaVersion: metadata.runtimeSchemaVersion, durationPolicy: 'scene_only', rights: metadata.rights, disclaimer: metadata.disclaimer, interestTags: metadata.interestTags, scenes, activities, rules };
+  const departures = compileDepartures(docs.departures, evidenceMap, publicIds, metadata, conditionMap);
+  const catalog = { version: metadata.version, rulesVersion: metadata.rulesVersion, schemaVersion: metadata.runtimeSchemaVersion, durationPolicy: 'scene_only', rights: metadata.rights, disclaimer: metadata.disclaimer, interestTags: metadata.interestTags, scenes, activities, rules, departures, defaultDepartureId: docs.departures.defaultId, cityTiers: CITY_TIERS, defaultCityTier: metadata.defaultContext.cityTier };
   const graph = buildGraph(catalog, evidence, sources, metadata.preparationOptions); catalog.graph = graph;
   // 手改内容自动产生修订指纹，复盘可识别同版本号下的知识变化。
   catalog.contentRevision = sha(JSON.stringify(catalog)).slice(0, 16);

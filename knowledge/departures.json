@@ -1,0 +1,50 @@
+{
+  "schemaVersion": "manual-knowledge-1.0",
+  "defaultId": "separate",
+  "departures": [
+    {
+      "id": "separate",
+      "title": "各自回去",
+      "description": "结束约会后各自返回，预留10分钟告别与离开；交通费用按实际情况另行确认。",
+      "minutes": 10,
+      "cost": [0, 0],
+      "onlyOvernight": false,
+      "requiresExplicitChoice": false,
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "evidenceIds": ["E-user-departures"]
+    },
+    {
+      "id": "walk_together",
+      "title": "一起走一段",
+      "description": "双方明确选择后一起步行离开，预留20分钟；路线按去向与体力确认。",
+      "minutes": 20,
+      "cost": [0, 0],
+      "onlyOvernight": false,
+      "requiresExplicitChoice": true,
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "evidenceIds": ["E-user-departures"]
+    },
+    {
+      "id": "hotel",
+      "title": "共同入住酒店",
+      "description": "过夜安排中由用户明确选择，预留15分钟办理入住；费用为双人一间客房一晚的初版设计区间，实际房价、交通、房源及入住条件需确认。",
+      "minutes": 15,
+      "costUnit": "CNY_per_room_for_two_per_night",
+      "costByCityTier": {
+        "tier1": [200, 400],
+        "tier2": [150, 300],
+        "tier3": [100, 250]
+      },
+      "onlyOvernight": true,
+      "requiresExplicitChoice": true,
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "evidenceIds": ["E-user-departures"]
+    }
+  ]
+}

@@ -1,5 +1,5 @@
-import { createPlanner } from './engine.mjs';
-import { catalog, rules, graph } from './data/catalog.mjs';
+import { createPlanner } from './engine.mjs?v=4.1.0';
+import { catalog, rules, graph } from './data/catalog.mjs?v=4.1.0';
 
 const planner = createPlanner({ ...catalog, rules, graph });
 // 请求序号由界面校验，过期结果不会覆盖用户较新的选择。

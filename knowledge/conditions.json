@@ -2,6 +2,28 @@
   "schemaVersion": "manual-knowledge-1.0",
   "conditions": [
     {
+      "key": "cityTier",
+      "type": "enum",
+      "allowedValues": ["tier1", "tier2", "tier3"],
+      "default": "tier1",
+      "subjectTypes": ["plan"],
+      "sensitive": false,
+      "defaultStrength": "hard",
+      "schemaVersion": "place-activity-4.0",
+      "unit": null
+    },
+    {
+      "key": "departureChoice",
+      "type": "enum",
+      "allowedValues": ["separate", "walk_together", "hotel"],
+      "default": "separate",
+      "subjectTypes": ["plan"],
+      "sensitive": false,
+      "defaultStrength": "hard",
+      "schemaVersion": "place-activity-4.0",
+      "unit": null
+    },
+    {
       "key": "weather",
       "type": "enum",
       "allowedValues": [

@@ -204,7 +204,7 @@ test('低探索无匹配兴趣时允许空组合，低负担不靠休息或无�
   const planner = createPlanner(fullCatalog);
   const input = { duration: 180, windows: [{ id: 'pm', startMinute: 840, endMinute: 1020 }], area: 'near', robust: true, fatigueA: 2, fatigueB: 2 };
   const initial = planner.plan(input, 0);
-  assert.equal(initial.stages[0].sceneId, 'mall');
+  assert.notEqual(catalog.scenes.find(sc => sc.id === initial.stages[0].sceneId).kind, 'rest');
   assert.deepEqual(initial.stages[0].activityIds, []);
   assert.ok(initial.stages.length < 5);
   assert.ok(initial.stages.every(s => catalog.scenes.find(sc => sc.id === s.sceneId).kind !== 'rest'));
@@ -218,7 +218,7 @@ test('低探索无匹配兴趣时允许空组合，低负担不靠休息或无�
   assert.ok(!loaded.stages[2].trace.some(t => t.ruleId === 'R-fatigue-derive'));
   const cleared = planner.plan(input, 0, [{ sceneId: 'mall', activityIds: [] }]);
   assert.deepEqual(cleared.stages[0].activityIds, []);
-  assert.deepEqual(cleared.stages[0].after.fatigue, initial.stages[0].after.fatigue);
+  assert.deepEqual(cleared.stages[0].after.fatigue, [3, 3]);
 });
 
 test('场景与功能重复是软偏好；显式跨窗口重复用餐仍可执行', () => {

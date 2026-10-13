@@ -146,6 +146,7 @@ export function attachCarousel(strip, options = {}) {
       setVariable(strip, '--carousel-edge-start', `${Math.max(8, (viewport - firstWidth) / 2)}px`);
       setVariable(strip, '--carousel-edge-end', `${Math.max(8, (viewport - lastWidth) / 2)}px`);
     }
+    // CSS 决定卡片实际占位（含移动端）；缩放只负责选中与边缘效果。
     // offsetWidth / offsetLeft 不含 transform；滚动帧复用这些坐标，不重复测量布局。
     entries = cards.map(card => ({ card, center: card.offsetLeft + card.offsetWidth / 2 }));
     maxScroll = Math.max(0, strip.scrollWidth - viewport);

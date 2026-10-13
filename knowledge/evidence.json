@@ -3,6 +3,41 @@
   "schemaVersion": "manual-knowledge-1.0",
   "evidence": [
     {
+      "id": "E-campus-zhiyuan", "sourceDocumentId": "SRC-9d52a0728f3d", "sourceLocator": "L7",
+      "anchorSha256": "900c31c7c1d5ce6fdb8b3143004900a9e3ed691b3b7ab9e06e9c8e89713384eb",
+      "sourceKind": "first_person_report", "assertionKind": "observed",
+      "summary": "本地自述将芷园列为饭点用餐去处，并提到其中的蜜雪冰城饮品和雪糕。",
+      "reviewStatus": "verified_in_local_source", "publicExcerptAllowed": false,
+      "rightsStatus": "original_summary_only",
+      "verificationBoundary": "已核对本地自述行号；窗口实际营业、菜单、价格和进入条件尚待现场确认。"
+    },
+    {
+      "id": "E-campus-taichao", "sourceDocumentId": "SRC-9d52a0728f3d", "sourceLocator": "L13",
+      "anchorSha256": "e6452f2a93cba5715e58a924a596c33dfccfdcf771f1e620a00fb933d01c7123",
+      "sourceKind": "first_person_report", "assertionKind": "observed",
+      "summary": "本地自述提到泰超门口的露天餐饮与停留氛围，并提到泰超销售酒类；价格评价属于作者体验。",
+      "reviewStatus": "verified_in_local_source", "publicExcerptAllowed": false,
+      "rightsStatus": "original_summary_only",
+      "verificationBoundary": "已核对本地自述行号；现实营业、库存、座位、遮蔽和实际消费尚待确认。"
+    },
+    {
+      "id": "E-campus-evening", "sourceDocumentId": "SRC-9d52a0728f3d", "sourceLocator": "L15",
+      "anchorSha256": "2da6ed6e3898772b4f8dfbd26dc144acf9ab10460de7a7c38751df7d7736c35b",
+      "sourceKind": "first_person_report", "assertionKind": "observed",
+      "summary": "本地自述列出教四自习、教四后坡路、泰山实验楼下花园及东区运动场作为晚间去处。",
+      "reviewStatus": "verified_in_local_source", "publicExcerptAllowed": false,
+      "rightsStatus": "original_summary_only",
+      "verificationBoundary": "已核对本地自述行号；开放、照明、通行及草坪使用许可尚待现场确认。"
+    },
+    {
+      "id": "E-user-departures", "sourceDocumentId": null, "sourceLocator": "user:2026-10-14-departure-design",
+      "sourceKind": "user_design", "assertionKind": "designed",
+      "summary": "行程默认各自回去，告别预留10分钟；明确选择一起走预留20分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。",
+      "reviewStatus": "awaiting_confirmation", "publicExcerptAllowed": false,
+      "rightsStatus": "original_user_design",
+      "verificationBoundary": "离开时长与酒店房费属于初版设计参数；当前报价、房源、交通和实际入住条件需要另行确认。"
+    },
+    {
       "id": "E-P001",
       "sourceDocumentId": "SRC-cfec13798ef4",
       "sourceLocator": "L7",
@@ -673,6 +708,18 @@
       "publicExcerptAllowed": false,
       "rightsStatus": "original_user_design",
       "verificationBoundary": "用户提供的地点或玩法设计；具体地址、营业、价格及设施许可尚待确认。"
+    },
+    {
+      "id": "E-user-meal-periods",
+      "sourceDocumentId": null,
+      "sourceLocator": "user:2026-10-14-meal-period-design",
+      "sourceKind": "user_design",
+      "assertionKind": "designed",
+      "summary": "用户要求早餐、午餐、晚餐和可跳过宵夜分别选择用餐地点；烧烤摊与小吃街为设计地点类型，具体位置、供应、营业与价格待确认。",
+      "reviewStatus": "awaiting_confirmation",
+      "publicExcerptAllowed": false,
+      "rightsStatus": "original_user_design",
+      "verificationBoundary": "餐次分类与费用为项目设计参数；地点具体位置、现实营业、菜单、过敏原和价格待确认。"
     }
   ]
 }
