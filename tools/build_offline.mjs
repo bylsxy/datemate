@@ -119,7 +119,11 @@ async function main() {
     html = html.replace('./favicon.svg', `data:image/svg+xml,${encodeURIComponent(icon)}`);
   }
   const escapedCode = appCode.replace(/<\/script/gi, '<\\/script');
-  html = html.replace(/<\/body>/i, `<script>\n${escapedCode}\n</script>\n</body>`);
+  // 回调保留脚本中的$$与$&原文，避免replace的替换字符串语义改写标识符。
+  html = html.replace(/<\/body>/i, () => `<script>\n${escapedCode}\n</script>\n</body>`);
+  const embeddedScript = html.match(/<script>\n([\s\S]*)\n<\/script>/i)?.[1];
+  if (!embeddedScript) throw Error('离线HTML缺少内嵌脚本。');
+  new Script(embeddedScript, { filename: 'DateMate_offline.embedded.js' });
   if (/<script\b[^>]*\bsrc=|<link\b[^>]*\brel=["']stylesheet/i.test(html)) throw Error('打包结果仍依赖外部代码或样式。');
   // 写入之前确认整份构建快照未被其他分支并发修改。
   for (const [path, text] of snapshots) if (sha(await readFile(path, 'utf8')) !== sha(text)) throw Error(`构建期间源码变化，请重新运行：${idFor(path)}`);

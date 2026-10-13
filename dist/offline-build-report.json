@@ -2,8 +2,8 @@
   "status": "passed",
   "output": "D:\\AAAWorkSpace\\python project\\约会策划\\datemate\\dist\\DateMate_offline.html",
   "delivery": "D:\\AAAWorkSpace\\python project\\约会策划\\课程交付材料\\离线演示.html",
-  "bytes": 1041610,
-  "sha256": "94ca79ea4e46f0879a1352f59b5de7362317269bf5235a9c879110e42c105b3d",
+  "bytes": 1041621,
+  "sha256": "4308c58fa824f6a2b54e11f8f856d7c723b24a8ee3c28bd099f2059866206a0a",
   "duplicateCopyIdentical": true,
   "appModules": [
     "data/catalog.mjs",

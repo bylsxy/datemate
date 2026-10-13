@@ -1,0 +1,30 @@
+{
+  "status": "passed_with_recorded_scope",
+  "browser": "Codex in-app Chromium",
+  "knowledge": "knowledge-3.0.1",
+  "engine": "datemate-engine-3.0.2",
+  "score": "utility-3.0.1",
+  "publicUrl": "https://bylsxy.github.io/datemate/",
+  "checks": {
+    "zeroInputPlan": "passed",
+    "naturalPhotoPreferencesChangeRoute": "passed",
+    "rainChangesOutdoorToIndoor": "passed",
+    "bothTiredMovesRestToBeginning": "passed",
+    "threeMallActivitiesStaySelected": "passed",
+    "restHasNoActivitiesAndPlanContinues": "passed",
+    "twoHopGraphPathAndForwardChainVisible": "passed",
+    "explicitConsentSelectionAndActivityEvidence": "passed",
+    "explorationZeroNinetyZeroFingerprint": "passed",
+    "exportImportReplayFingerprint": "passed",
+    "differentPreferencesAndParetoComparison": "passed",
+    "longDesktopSidebarControlsReachable": "passed",
+    "keyboardFocusAfterReplanning": "passed",
+    "mobile390x844NoPageHorizontalOverflow": "passed",
+    "singleHtmlRunsWithNoExternalScriptOrStylesheet": "passed",
+    "singleHtmlThreeActivityRestContinuation": "passed"
+  },
+  "limits": {
+    "directFileProtocol": "not_tested: automation browser URL policy permits only http and https",
+    "wechatSafariRealDevicesAndMobileNetwork": "not_tested"
+  }
+}
