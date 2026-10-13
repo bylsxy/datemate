@@ -110,7 +110,7 @@ async function main() {
   const htmlPath = resolve(project, 'index.html'), cssPath = resolve(project, 'styles.css');
   const htmlSource = await source(htmlPath), css = await source(cssPath);
   if (/@import|url\(/i.test(css)) throw Error('样式仍含外部依赖，需先提供内嵌资源。');
-  const stylePattern = /<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']\.\/styles\.css["'][^>]*>/i;
+  const stylePattern = /<link\b[^>]*rel=["']stylesheet["'][^>]*href=["']\.\/styles\.css(?:\?[^"']*)?["'][^>]*>/i;
   const scriptPattern = /<script\b[^>]*type=["']module["'][^>]*src=["']\.\/app\.mjs["'][^>]*>\s*<\/script>/i;
   if (!stylePattern.test(htmlSource) || !scriptPattern.test(htmlSource)) throw Error('入口HTML与打包契约不一致。');
   let html = htmlSource.replace(stylePattern, `<style>\n${css}\n</style>`).replace(scriptPattern, '').replace(/href=["']\.\/["'](?=\s+aria-label=["']DateMate 首页)/, 'href="#main-content"');
