@@ -4,7 +4,7 @@
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 242.82300000000004,
+      "elapsedMs": 332.7451,
       "status": "feasible",
       "stages": [
         {
@@ -37,7 +37,7 @@
     },
     {
       "label": "exploration90",
-      "elapsedMs": 258.5651,
+      "elapsedMs": 309.5394,
       "status": "feasible",
       "stages": [
         {
@@ -79,7 +79,7 @@
     },
     {
       "label": "replayed",
-      "elapsedMs": 172.05489999999998,
+      "elapsedMs": 202.6828999999999,
       "status": "feasible",
       "stages": [
         {
@@ -112,7 +112,7 @@
     },
     {
       "label": "mall-0",
-      "elapsedMs": 226.64909999999998,
+      "elapsedMs": 221.7514,
       "status": "feasible",
       "stages": [
         {
@@ -145,7 +145,7 @@
     },
     {
       "label": "mall-1",
-      "elapsedMs": 192.2985000000001,
+      "elapsedMs": 209.02199999999993,
       "status": "feasible",
       "stages": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "label": "mall-2",
-      "elapsedMs": 281.38290000000006,
+      "elapsedMs": 320.0761,
       "status": "feasible",
       "stages": [
         {
@@ -224,7 +224,7 @@
     },
     {
       "label": "shared-play",
-      "elapsedMs": 200.8200999999999,
+      "elapsedMs": 186.22939999999994,
       "status": "feasible",
       "stages": [
         {
@@ -263,7 +263,7 @@
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 136.35850000000005,
+      "elapsedMs": 163.34410000000025,
       "status": "feasible",
       "stages": [
         {
@@ -303,7 +303,7 @@
     },
     {
       "label": "nature-play",
-      "elapsedMs": 169.3520000000001,
+      "elapsedMs": 154.76229999999987,
       "status": "feasible",
       "stages": [
         {
@@ -338,7 +338,7 @@
     },
     {
       "label": "play-nature",
-      "elapsedMs": 159.22860000000014,
+      "elapsedMs": 154.7213999999999,
       "status": "feasible",
       "stages": [
         {
@@ -373,7 +373,7 @@
     },
     {
       "label": "revision",
-      "elapsedMs": 146.07040000000006,
+      "elapsedMs": 124.64980000000014,
       "status": "feasible",
       "stages": [
         {

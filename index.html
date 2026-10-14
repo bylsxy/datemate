@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#fbf9f6"><meta name="description" content="约会策划"><title>约会策划 · DateMate</title><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=4.1.1"><script type="module" src="./app.mjs?v=4.1.0"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#fbf9f6"><meta name="description" content="约会策划"><title>约会策划 · DateMate</title><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=b2b7f81bafcbcb14"><script type="module" src="./app.mjs?v=b2b7f81bafcbcb14"></script>
 </head>
 <body><div class="page-shell">
 <header class="site-header"><a class="brand" href="./" aria-label="DateMate 首页"><span class="brand-mark" aria-hidden="true">d.</span><span>DateMate</span></a></header>
@@ -10,20 +10,29 @@
 <fieldset class="slot-field"><legend>时段</legend><div class="choices slot-choices"><label class="choice slot-choice"><input name="slots" type="checkbox" value="morning"><span>上午<small>7:30–12:00</small></span></label><label class="choice slot-choice"><input name="slots" type="checkbox" value="afternoon" checked><span>下午<small>14:00–18:00</small></span></label><label class="choice slot-choice"><input name="slots" type="checkbox" value="evening"><span>晚上<small>19:00–23:00</small></span></label><label class="choice slot-choice"><input name="slots" type="checkbox" value="night"><span>夜晚<small>23:00–次日02:00</small></span></label></div></fieldset>
 <p id="condition-error" class="condition-error" role="alert" hidden></p>
 <fieldset><legend>忌口</legend><div class="choices"><label class="choice"><input name="diet" type="checkbox" value="raw">不吃生食</label><label class="choice"><input name="diet" type="checkbox" value="spicy">不吃辣</label><label class="choice"><input name="diet" type="checkbox" value="seafood">避开海鲜</label><label class="choice"><input name="diet" type="checkbox" value="caffeine">避开咖啡因</label></div></fieldset>
-<details class="advanced"><summary>高级选项</summary>
 <fieldset><legend>环境与安排</legend><div class="choices"><label class="choice"><input type="checkbox" id="quiet">安静</label><label class="choice"><input type="checkbox" id="crowd">人少</label><label class="choice"><input type="checkbox" id="indoor">室内</label><label class="choice"><input type="checkbox" id="rain">预计下雨</label><label class="choice"><input type="checkbox" id="quiet-hard">必须安静</label><label class="choice"><input type="checkbox" id="saving">节省一些</label></div></fieldset>
-<fieldset><legend>状态</legend><div class="choices"><label class="choice"><input type="checkbox" id="tired-a">我方疲惫</label><label class="choice"><input type="checkbox" id="tired-b">对方疲惫</label></div></fieldset>
+<details class="advanced"><summary>高级选项</summary>
+<fieldset><legend>状态</legend><div class="choices"><label class="choice" title="勾选后，我方初始疲惫值由 2→6；默认负担上限为 10，体力余量由 8→4。任意一方疲惫值达到 6 时触发恢复需求：休息地点倾向 +30，过滤负担 ≥4 的地点及负担 ≥3 的活动，并影响舒适度与休息评分。"><input type="checkbox" id="tired-a">我方体力余量 −4（8→4）</label><label class="choice" title="勾选后，对方初始疲惫值由 2→6；默认负担上限为 10，体力余量由 8→4。任意一方疲惫值达到 6 时触发恢复需求：休息地点倾向 +30，过滤负担 ≥4 的地点及负担 ≥3 的活动，并影响舒适度与休息评分。"><input type="checkbox" id="tired-b">对方体力余量 −4（8→4）</label></div></fieldset>
 <fieldset><legend>兴趣</legend><p class="person-label">我方</p><div class="choices" id="preferences-a"></div><p class="person-label">对方</p><div class="choices" id="preferences-b"></div></fieldset>
 <fieldset id="theme"><legend>本次倾向</legend><div class="choices"><label class="choice"><input name="theme" type="radio" value="any" checked>顺其自然</label><label class="choice"><input name="theme" type="radio" value="daily">日常陪伴</label><label class="choice"><input name="theme" type="radio" value="romantic">拍照与氛围</label><label class="choice"><input name="theme" type="radio" value="fresh">新体验</label></div></fieldset>
 <fieldset id="area"><legend>活动范围</legend><div class="choices"><label class="choice"><input name="area" type="radio" value="all">不限制</label><label class="choice"><input name="area" type="radio" value="near" checked>华农及周边</label><label class="choice"><input name="area" type="radio" value="campus">华农校内</label></div></fieldset>
 <fieldset id="city-tier"><legend>城市级别</legend><div class="choices"><label class="choice"><input name="cityTier" type="radio" value="tier1" checked>一线</label><label class="choice"><input name="cityTier" type="radio" value="tier2">二线</label><label class="choice"><input name="cityTier" type="radio" value="tier3">三线及以下</label></div></fieldset>
-<fieldset><legend>已准备</legend><div class="choices"><label class="choice"><input name="prepared" type="checkbox" value="picnic_pack">野餐包</label><label class="choice"><input name="prepared" type="checkbox" value="racket">球拍</label><label class="choice"><input name="prepared" type="checkbox" value="ball">球</label><label class="choice"><input name="prepared" type="checkbox" value="reservation">已预约</label></div></fieldset><fieldset id="exclude"><legend>不去</legend><div id="exclude-options" class="choices"><label class="choice"><input name="exclude" type="radio" value="" checked>不排除</label></div></fieldset><fieldset id="anchor"><legend>必去</legend><div id="anchor-options" class="choices"><label class="choice"><input name="anchor" type="radio" value="" checked>不指定</label></div></fieldset><label class="choice robust-choice"><input id="robust" type="checkbox" checked>多留余地</label></details>
-<label class="field budget-field">双人预算<input id="budget" type="number" min="0" max="100000" step="0.01"></label>
+<fieldset class="place-choice"><legend>地点选择</legend>
+  <label class="field">搜索地点<input id="place-search" type="search" autocomplete="off" placeholder="输入地点名称"></label>
+  <label class="field">地点<select id="place-select"><option value="">请选择地点</option></select></label>
+  <div class="place-choice-actions"><button type="button" id="add-exclude">加入不去</button><button type="button" id="add-anchor">加入必去</button></div>
+  <p class="person-label" id="excluded-places-label">不去</p><div id="excluded-places" class="place-chips" aria-labelledby="excluded-places-label"><span class="place-empty">未添加</span></div>
+  <p class="person-label" id="anchored-places-label">必去</p><div id="anchored-places" class="place-chips" aria-labelledby="anchored-places-label"><span class="place-empty">未添加</span></div>
+  <p id="place-choice-error" class="condition-error" role="status"></p>
+</fieldset>
+<label class="choice robust-choice" title="室内地点的规则倾向值 +4（不是契合分直接 +4），并增加不确定性缓冲：优先使用地点自带的预留分钟数；未设置时，天气未知的室外地点每段额外预留 5 分钟，其他不可靠地点每段额外预留 10 分钟，其余为 0；两项默认值不叠加。文化设施还会增加开放与预约确认提示。"><input id="robust" type="checkbox" checked>多留余地（室内倾向 +4；未知天气室外默认 +5 分钟，其他不可靠地点默认 +10 分钟）</label></details>
+<label class="field budget-field">预算<input id="budget" type="number" min="0" max="100000" step="0.01"></label>
 <button class="apply-button" type="submit">规划</button></form></details></aside>
 <main id="main-content">
 <section id="view-plan" class="view">
   <section class="exploration" aria-labelledby="exploration-title"><div class="slider-top"><div class="exploration-label"><h2 id="exploration-title">探索度</h2><p class="slider-note">possibility</p></div><output id="exploration-value" for="exploration">0<small>/ 100</small></output></div><input id="exploration" type="range" min="0" max="100" step="1" value="0" aria-label="探索度"></section>
   <span id="status" class="sr-only" role="status" aria-live="polite"></span>
+  <section id="preparation-summary" class="preparation-summary" aria-labelledby="preparation-title" hidden><h2 id="preparation-title">需要准备</h2><div id="preparation-items"></div></section>
   <div id="stages" aria-busy="true"><section class="skeleton-stage" role="status" aria-label="正在加载"><div class="stage-heading"><span class="skeleton skeleton-time"></span></div><div class="skeleton-cards"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div><div class="skeleton-row"><span class="skeleton skeleton-activity"></span><span class="skeleton skeleton-activity"></span></div></section></div>
   <div id="ending" class="balance-line"></div>
   <details class="explanation"><summary>理由</summary><div id="reason-content"></div></details>

@@ -1,6 +1,6 @@
 {
   "name":"datemate",
-  "version":"4.1.0",
+  "version":"4.3.0",
   "private":true,
   "type":"module",
   "description":"知识图谱与产生式推理驱动的纯前端约会规划",

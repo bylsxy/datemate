@@ -99,7 +99,7 @@ async function main() {
 
   // 在独立 VM 中真正执行打包后的 Worker，验证规划、图谱和规则导入一致。
   const replies = [];
-  const sandbox = { structuredClone, performance, console, self: { postMessage: value => replies.push(value) } };
+  const sandbox = { structuredClone, performance, console, setTimeout, clearTimeout, self: { postMessage: value => replies.push(value) } };
   createContext(sandbox); new Script(workerCode).runInContext(sandbox, { timeout: 10000 });
   sandbox.self.onmessage({ data: { id: 1, state: { context: { duration: 180, budget: null, weather: 'rain', area: 'near', fatigueA: 6, fatigueB: 2, preparedIds: [], dietaryRestrictions: ['raw', 'spicy'], windows: [{ id: 'afternoon', startMinute: 840, endMinute: 1020 }], endAfterStage: 0, searchConfig: { maxStages: 1, beamWidth: 4, maxExpandedNodes: 500 } }, exploration: 0, prefix: [] } } });
   if (replies.length !== 1 || !replies[0].result?.ok) throw Error(`离线 Worker 实际规划失败：${JSON.stringify(replies[0])}`);

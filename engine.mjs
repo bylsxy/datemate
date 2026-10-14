@@ -1,8 +1,8 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=4.1.0';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=4.1.0';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=b2b7f81bafcbcb14';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=b2b7f81bafcbcb14';
 
-export { canonical, digest } from './reasoning.mjs?v=4.1.0';
-export const VERSION = 'datemate-engine-3.1.1';
+export { canonical, digest } from './reasoning.mjs?v=b2b7f81bafcbcb14';
+export const VERSION = 'datemate-engine-3.2.0';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
@@ -46,7 +46,7 @@ export function normalize(input = {}) {
     area: raw.area === 'nearby' ? 'near' : ['campus', 'near', 'all'].includes(raw.area) ? raw.area : 'all',
     fatigueA: clamp(number(raw.fatigueA, 2), 0, 10), fatigueB: clamp(number(raw.fatigueB, 2), 0, 10),
     goals: list(raw.goals), preferences: list(raw.preferences), preferencesA: list(raw.preferencesA), preferencesB: list(raw.preferencesB),
-    bans: list(raw.bans), excludedSceneTypes: list(raw.excludedSceneTypes), excludedActivityTypes: list(raw.excludedActivityTypes),
+    bans: list(raw.bans), requiredSceneIds: list(raw.requiredSceneIds), excludedSceneTypes: list(raw.excludedSceneTypes), excludedActivityTypes: list(raw.excludedActivityTypes),
     quietRequired: raw.quietRequired === true, mentalLow: raw.mentalLow === true, crowdAvoidance: raw.crowdAvoidance === true,
     mealNeed: raw.mealNeed === true || raw.requireMeal === true, requireMeal: raw.mealNeed === true || raw.requireMeal === true,
     theme: ['any', 'daily', 'romantic', 'fresh'].includes(raw.theme) ? raw.theme : 'any',
@@ -435,12 +435,28 @@ function errorResponse(status, errors, ctx, versions, extra = {}) {
 
 /** 有界束搜索；人工固定组合独立精确校验，不受活动枚举Top-K限制。 */
 export function planDate(input = {}, catalog, options = {}) {
+  return finishSearch(searchDate(input, catalog, options));
+}
+
+function finishSearch(iterator) {
+  let step;
+  do { step = iterator.next(); } while (!step.done);
+  return step.value;
+}
+
+/** 同一搜索器分片执行候选的完整后续验证，调用方可在片间优先处理可见卡片。 */
+export function createContinuationSearch(input = {}, catalog, options = {}) {
+  return searchDate(input, catalog, { ...options, continuationOnly: true });
+}
+
+function* searchDate(input = {}, catalog, options = {}) {
   let ctx, compiled, prefix, anchors;
   const versions = { engine: VERSION, rules: catalog?.rulesVersion || REASONING_VERSION, knowledge: catalog?.version || 'unversioned', knowledgeRevision: catalog?.contentRevision || digest({scenes:catalog?.scenes,rules:catalog?.rules,departures:catalog?.departures}), data: catalog?.version || 'unversioned', score: CONFIG.scoreVersion, schema: 'datemate-3.0' };
   const expectedVersions = options.expectedVersions ?? input.expectedVersions;
   if (expectedVersions && Object.entries(expectedVersions).some(([key, value]) => versions[key] !== value)) return errorResponse('invalid_input', [fail('H_VERSION', '复盘的引擎、知识或评分版本与当前版本不一致。')], null, versions);
   try { ctx = normalize(input); } catch (error) { return errorResponse('invalid_input', [error.message], null, versions); }
   try { compiled = compileCatalog(catalog); } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
+  if (ctx.requiredSceneIds.some(id => !compiled.byId.has(id) || ctx.bans.includes(id))) return errorResponse('invalid_input', [fail('H_REQUIRED_SCENE', '必去地点不存在或同时被排除。')], ctx, versions);
   try { ctx.departures = compileDepartures(catalog, ctx); ctx.departure = ctx.departures.find(d => d.id === ctx.departureChoice) ?? null; } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
   try {
     const rawPrefix = options.fixedPrefix ?? input.fixedPrefix ?? input.prefix ?? [];
@@ -462,14 +478,16 @@ export function planDate(input = {}, catalog, options = {}) {
   const config = { method: rawConfig.method === 'exact' ? 'exact' : 'bounded', maxStages: integer(rawConfig.maxStages ?? rawConfig.maxDepth, CONFIG.maxStages, 1, 24), beamWidth: integer(rawConfig.beamWidth, CONFIG.beamWidth, 1, 2048), maxExpandedNodes: integer(rawConfig.maxExpandedNodes, CONFIG.maxExpandedNodes, 1, 1000000), maxCandidateExpandedNodes: integer(rawConfig.maxCandidateExpandedNodes, CONFIG.maxCandidateExpandedNodes, 0, 100000), activitySubsetLimit: integer(rawConfig.activitySubsetLimit, CONFIG.activitySubsetLimit, 1, 4096), candidateLimit: integer(rawConfig.candidateLimit, CONFIG.candidateLimit, 1, 64), tieBreak: 'stable-id' };
   if (ctx.endAfterStage !== null) config.maxStages = Math.min(config.maxStages, ctx.endAfterStage + 1);
   if (prefix.length > config.maxStages) return errorResponse('invalid_input', [fail('H_PREFIX_LENGTH', '固定前缀超过主动结束位置或阶段上限。')], ctx, versions);
+  if (ctx.requiredSceneIds.length > config.maxStages) return errorResponse('invalid_input', [fail('H_REQUIRED_LENGTH', '必去地点数量超过当前阶段上限。')], ctx, versions);
   const stats = { ...config, expandedNodes: 0, candidateExpandedNodes: 0, candidateNodeBudgetReached: false, generatedNodes: 0, feasibleNodes: 0, terminalPlans: 0, constraintRejections: {}, beamPruned: 0, activitySubsetsTruncated: false, nodeBudgetReached: false, maxDepthReached: false, provedOptimal: false, proofScope: '未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。' };
   const subsets = new Map(compiled.scenes.map(s => [s.id, enumerateSubsets(s, config.activitySubsetLimit, stats)]));
   const evaluator = createEvaluator(ctx, compiled, catalog, exploration);
-  let start = initial(ctx);
+  let start = initial(ctx), candidatePrefixUtility = 0;
   const reject = errors => { for (const error of errors) { const code = error.split(':')[0]; stats.constraintRejections[code] = (stats.constraintRejections[code] || 0) + 1; } };
   const choiceEqual = (a, b) => a.sceneId === b.sceneId && (!a.mealRole || !b.mealRole || a.mealRole === b.mealRole) && canonical(list(a.activityIds)) === canonical(list(b.activityIds));
   const matchesAnchor = (choice, anchor) => anchor.sceneOnly ? choice.sceneId === anchor.choice.sceneId && (!anchor.choice.mealRole || !choice.mealRole || choice.mealRole === anchor.choice.mealRole) : choiceEqual(choice, anchor.choice);
   for (let i = 0; i < prefix.length; i++) {
+    if (i === prefix.length - 1) candidatePrefixUtility = objective(start, exploration);
     const pending = anchors[start.anchorIndex];
     const anchored = pending && matchesAnchor(prefix[i], pending) && (pending.index === undefined || pending.index === i) ? pending : null;
     if (pending?.index !== undefined && pending.index <= i && !anchored) return errorResponse('invalid_input', [fail('H_ANCHOR_PREFIX', '固定前缀与预约阶段位置冲突。')], ctx, versions, { failedStage: i, search: stats });
@@ -477,7 +495,8 @@ export function planDate(input = {}, catalog, options = {}) {
     if (checked.errors.length) return errorResponse('invalid_input', checked.errors, ctx, versions, { failedStage: i, prefix, search: stats });
     start = checked.next;
   }
-  const isComplete = st => st.stages.length > 0 && st.anchorIndex === anchors.length && mealsSatisfied(st, ctx) && periodsCovered(st, ctx) && nearEnd(st, ctx) && (!ctx.mealNeed || st.meal || ctx.mealRequirements.some(m => m.choiceMode === 'before_meeting'));
+  const requiredCovered = st => ctx.requiredSceneIds.filter(id => st.visited.includes(id));
+  const isComplete = st => st.stages.length > 0 && st.anchorIndex === anchors.length && requiredCovered(st).length === ctx.requiredSceneIds.length && mealsSatisfied(st, ctx) && periodsCovered(st, ctx) && nearEnd(st, ctx) && (!ctx.mealNeed || st.meal || ctx.mealRequirements.some(m => m.choiceMode === 'before_meeting'));
   const automaticChoices = compiled.scenes.filter(scene => !ctx.periodIds || !dedicatedMealScene(scene)).flatMap(scene => subsets.get(scene.id).filter(ids => !ctx.periodIds || !ids.some(id => scene.activities.find(a => a.id === id).provides.meal_completed > 0)).map(activityIds => ({ choice: { sceneId: scene.id, activityIds }, anchor: null })));
   const mealChoices = new Map(ctx.mealRequirements.map(meal => [meal.mealRole, compiled.scenes.filter(scene => !meal.sceneId || meal.sceneId === scene.id).flatMap(scene => (meal.activityIds !== null ? scene.mealRoles?.includes(meal.mealRole) ? [meal.activityIds] : [] : mealActivityChoices(scene, meal.mealRole, subsets.get(scene.id))).map(activityIds => ({ choice: { sceneId: scene.id, activityIds, mealRole: meal.mealRole }, anchor: null })))]));
   function choicesFor(st, extra) {
@@ -504,9 +523,9 @@ export function planDate(input = {}, catalog, options = {}) {
     return choices;
   }
   // 人工阶段的反事实求解复用同一评估器，每轮调用共用固定节点预算，避免逐卡重跑规划器。
-  function searchFrom(root, nodeLimit, counterfactual = false, extra = null) {
+  function* searchFrom(root, nodeLimit, counterfactual = false, extra = null) {
     const finished = [], history = new Map();
-    let beam = [root], expanded = 0, budgetReached = false;
+    let beam = [root], expanded = 0, budgetReached = false, sliceStarted = performance.now();
     if (isComplete(root)) finished.push(root);
     for (let depth = root.stages.length; depth < config.maxStages && beam.length; depth++) {
       const children = [];
@@ -517,6 +536,10 @@ export function planDate(input = {}, catalog, options = {}) {
           if (expanded >= nodeLimit) { budgetReached = true; break; }
           expanded++;
           const evaluated = evaluator.evaluate(st, item.choice, item.anchor, item.manual === true);
+          if (options.continuationOnly && (expanded % 64 === 0 || performance.now() - sliceStarted >= 8)) {
+            yield { expandedNodes: expanded, terminalPlans: finished.length };
+            sliceStarted = performance.now();
+          }
           if (evaluated.errors.length) { if (!counterfactual) reject(evaluated.errors); continue; }
           if (!counterfactual) { stats.feasibleNodes++; stats.generatedNodes++; }
           transitions.push(evaluated.next); children.push(evaluated.next);
@@ -527,15 +550,15 @@ export function planDate(input = {}, catalog, options = {}) {
       const unique = [...new Map(children.map(s => [stateKey(s), s])).values()].sort((a, b) => orderStates(a, b, exploration));
       const width = config.method === 'exact' && !counterfactual ? unique.length : config.beamWidth;
       if (!counterfactual) stats.beamPruned += Math.max(0, unique.length - width);
-      if (ctx.periodIds && width < unique.length) {
-        // 以饭点、预约和末段覆盖进度分桶，防止局部高分吞掉尚可完成全天的分支。
+      if ((ctx.periodIds || ctx.requiredSceneIds.length) && width < unique.length) {
+        // 以饭点、预约、必去地点与末段覆盖进度分桶，保留仍可完成全部硬要求的分支。
         const groups = new Map();
         for (const child of unique) {
-          const key = `${child.mealRoles.length}:${child.anchorIndex}:${coveredPeriodIds(child, ctx).join(',')}`;
+          const key = `${child.mealRoles.length}:${child.anchorIndex}:${coveredPeriodIds(child, ctx).join(',')}:${requiredCovered(child).join(',')}`;
           if (!groups.has(key)) groups.set(key, []);
           groups.get(key).push(child);
         }
-        const buckets = [...groups.values()].sort((a, b) => b[0].mealRoles.length - a[0].mealRoles.length || b[0].anchorIndex - a[0].anchorIndex || coveredPeriodIds(b[0], ctx).length - coveredPeriodIds(a[0], ctx).length);
+        const buckets = [...groups.values()].sort((a, b) => b[0].mealRoles.length - a[0].mealRoles.length || b[0].anchorIndex - a[0].anchorIndex || requiredCovered(b[0]).length - requiredCovered(a[0]).length || coveredPeriodIds(b[0], ctx).length - coveredPeriodIds(a[0], ctx).length);
         beam = [];
         for (let rank = 0; beam.length < width; rank++) {
           let added = false;
@@ -553,7 +576,7 @@ export function planDate(input = {}, catalog, options = {}) {
     }
     return { finished, history, expanded, budgetReached };
   }
-  const searched = searchFrom(start, config.maxExpandedNodes);
+  const searched = yield* searchFrom(start, config.maxExpandedNodes);
   const { finished, history } = searched;
   stats.expandedNodes = searched.expanded; stats.nodeBudgetReached = searched.budgetReached;
   stats.terminalPlans = finished.length;
@@ -561,6 +584,7 @@ export function planDate(input = {}, catalog, options = {}) {
   if (!finished.length) return errorResponse('no_plan_found', [fail('SEARCH_NO_PLAN', '有界搜索未找到同时满足前缀、锚点和必要目标的完整方案；不据此证明模型无解。')], ctx, versions, { prefix, exploration, search: stats, evaluated: stats.expandedNodes, paretoPlans: [] });
   finished.sort((a, b) => orderStates(a, b, exploration));
   const best = finished[0];
+  if (options.continuationOnly) return { ok: true, status: 'feasible', q: objective(best, exploration), prefixUtility: candidatePrefixUtility, referenceUtility: 80 * (ctx.periodIds ? 0.96 : 0.88) ** Math.max(0, prefix.length - 1), scoreVersion: CONFIG.scoreVersion, stages: best.stages, search: stats };
   function continuationValues(terminals, searchHistory) {
     const values = new Map();
     for (const terminal of terminals) {
@@ -592,7 +616,7 @@ export function planDate(input = {}, catalog, options = {}) {
     if (index < prefix.length) {
       const remaining = config.maxCandidateExpandedNodes - stats.candidateExpandedNodes;
       const budget = Math.floor(remaining / (prefix.length - index));
-      const counterfactual = searchFrom(before, budget, true, { choice: replayChoice, anchor, manual: true });
+      const counterfactual = finishSearch(searchFrom(before, budget, true, { choice: replayChoice, anchor, manual: true }));
       stats.candidateExpandedNodes += counterfactual.expanded;
       stats.candidateNodeBudgetReached ||= counterfactual.budgetReached;
       stageHistory = counterfactual.history;
@@ -611,11 +635,13 @@ export function planDate(input = {}, catalog, options = {}) {
     const byScene = new Map();
     for (const candidateState of transitions) {
       const entry = entryFor(candidateState);
+      if (Number.isFinite(candidateState.stages.at(-1).fixedStartMinute)) entry.fixedStartMinute = candidateState.stages.at(-1).fixedStartMinute;
       const old = byScene.get(entry.sceneId);
       if (!old || Number(entry.continuationFound) > Number(old.continuationFound) || entry.continuationFound === old.continuationFound && ((entry.q ?? entry.localUtility) > (old.q ?? old.localUtility) || (entry.q ?? entry.localUtility) === (old.q ?? old.localUtility) && cmp(canonical(entry.activityIds), canonical(old.activityIds)) < 0)) byScene.set(entry.sceneId, entry);
     }
     // 选中卡仍使用实际活动组合的完整方案效用；人工锁定允许低于其他方案。
     const own = entryFor(ownState, true);
+    if (Number.isFinite(original.fixedStartMinute)) own.fixedStartMinute = original.fixedStartMinute;
     byScene.set(own.sceneId, own);
     const orderEntries = (a, b) => Number(b.continuationFound) - Number(a.continuationFound) || (a.continuationFound ? b.q - a.q : 0) || cmp(a.sceneId, b.sceneId);
     let ordered = [...byScene.values()].sort(orderEntries).slice(0, config.candidateLimit);

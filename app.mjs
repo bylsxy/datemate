@@ -1,17 +1,51 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=4.1.0';
-import {createTimeline} from './timeline.mjs?v=4.1.0';
-import {explainStage} from './explanations.mjs?v=4.1.0';
-import {preparationOptions,dietaryOptions} from './data/activities.mjs?v=4.1.0';
-import * as reasoning from './reasoning.mjs?v=4.1.0';
-import {normalizePeriods} from './time-periods.mjs?v=4.1.0';
-import {formatTime,costLabel,escapeHTML as esc,interestLabels,defaultContext,toggleActivity,validateReplay} from './planner.mjs?v=4.1.0';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=b2b7f81bafcbcb14';
+import {createTimeline} from './timeline.mjs?v=b2b7f81bafcbcb14';
+import {buildCandidateJobs,candidateKey} from './candidate-validation.mjs?v=b2b7f81bafcbcb14';
+import {createReasonView} from './reasons-view.mjs?v=b2b7f81bafcbcb14';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=b2b7f81bafcbcb14';
+import {createPlacePicker} from './place-picker.mjs?v=b2b7f81bafcbcb14';
+import {dietaryOptions} from './data/activities.mjs?v=b2b7f81bafcbcb14';
+import * as reasoning from './reasoning.mjs?v=b2b7f81bafcbcb14';
+import {normalizePeriods} from './time-periods.mjs?v=b2b7f81bafcbcb14';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=b2b7f81bafcbcb14';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
-const sourceById=new Map(sources.map(s=>[s.id,s]));
-let state={context:defaultContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
+const preparationDefaults=defaultPreparationResources(catalog);
+const newContext=()=>({...defaultContext(),...structuredClone(preparationDefaults)});
+let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const worker=new Worker(new URL('./worker.mjs?v=4.1.0',import.meta.url),{type:'module'});
-const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,getIntent:snapshot});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=b2b7f81bafcbcb14',import.meta.url),{type:'module'});
+const worker=createWorker();
+let validationWorker=null,validationGeneration=null,validationJobs=new Map();
+const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,getIntent:snapshot,onCandidateVisible:prioritizeCandidate});
+const placePicker=createPlacePicker({root:$('.place-choice'),scenes:catalog.scenes,onChange:applyConditions});
+const reasonView=createReasonView({container:$('#reason-content'),scenes:catalog.scenes,rules});
+function stopValidation(){validationWorker?.terminate();validationWorker=null;validationGeneration=null;validationJobs.clear();}
+function prioritizeCandidate(choice){
+  const key=candidateKey(choice);
+  if(validationWorker&&validationGeneration===sequence&&validationJobs.has(key))validationWorker.postMessage({type:'prioritize',key});
+}
+function startValidation(){
+  stopValidation();
+  const jobs=buildCandidateJobs(result,state);if(!jobs.length)return;
+  validationGeneration=sequence;validationJobs=new Map(jobs.map(job=>[job.key,job]));
+  const currentWorker=createWorker();validationWorker=currentWorker;
+  currentWorker.onmessage=({data})=>{
+    // 旧线程和旧轮次都不能把评分写入新条件；基准规划输出始终保持不可变。
+    if(currentWorker!==validationWorker||data.type!=='candidate'||data.generation!==sequence||data.generation!==validationGeneration||!validationJobs.has(data.key))return;
+    timeline.updateCandidate(data);validationJobs.delete(data.key);
+    if(!validationJobs.size)stopValidation();
+  };
+  currentWorker.onerror=()=>{
+    if(currentWorker!==validationWorker)return;
+    for(const job of validationJobs.values())timeline.updateCandidate({...job,candidate:{...job.candidate,scoreStatus:'error',fitScore:null,evaluationStatus:'validation_error'}});
+    stopValidation();
+  };
+  currentWorker.postMessage({type:'validate',generation:sequence,jobs});
+  currentWorker.postMessage({type:'pauseValidation',paused:document.hidden||$('#view-plan').hidden});
+}
+document.addEventListener('visibilitychange',()=>validationWorker?.postMessage({type:'pauseValidation',paused:document.hidden||$('#view-plan').hidden}));
+window.addEventListener('pagehide',stopValidation);
 let graphRequest=0;
 function revealError(element){
   if($('#view-plan').hidden)showView('plan');
@@ -22,14 +56,15 @@ function planningError(r,context){
   const errors=(r?.errors||[]).join(' '),departure=catalog.departures?.find(d=>d.id===context.departureChoice);
   const departureHigh=(departure?.costByCityTier?.[context.cityTier]||departure?.cost||[0,0])[1];
   if(errors.includes('H_BUDGET')||(context.budget!==null&&departureHigh>context.budget))return '所选活动和分别方式超出当前预算，可以调整预算、取消活动或改选分别方式。';
-  if(errors.includes('H_PREPARATION'))return '这项玩法还缺准备物品或前面的活动，请先准备好，并在高级选项中确认。';
+  if(errors.includes('H_PREPARATION')||errors.includes('H_PREDECESSOR'))return '这项玩法还缺前序活动产生的物品或成果，请先安排前面的活动。';
+  if(errors.includes('H_REQUIRED'))return '当前条件无法满足全部必去地点，请调整时段或减少必去地点。';
   if(errors.includes('H_FATIGUE'))return '这项玩法接上去会太累，先休息一段或换个轻松的选择。';
   return '当前条件还没有可行安排，请调整条件或用餐选择。';
 }
 function snapshot(){return clone(pending?.next || active?.next || state);}
 function dispatch(job){busy=true;active=job;worker.postMessage({id:job.id,state:job.next});}
 function compute(next,message='安排已更新。横滑找灵感，点击才会选择。',{expectedDigest=null,fromStage=0,choice=null,mealChoice=null,departureChoice=null}={}){
-  const id=++sequence;timeline.pending({fromStage,choice,mealChoice,departureChoice});pendingPanels();$('#export').disabled=true;note('正在考虑后续安排…');
+  const id=++sequence;stopValidation();timeline.pending({fromStage,choice,mealChoice,departureChoice});pendingPanels();$('#export').disabled=true;note('正在考虑后续安排…');
   return new Promise(resolve=>{const job={id,next:clone(next),message,expectedDigest,resolve};if(busy){pending?.resolve(null);pending=job;}else dispatch(job);});
 }
 worker.onmessage=({data})=>{
@@ -49,12 +84,13 @@ worker.onmessage=({data})=>{
     }else job.resolve(null);
   }
   if(pending){const p=pending;pending=null;dispatch(p);}
+  else if(result?.ok&&conditionsValid&&data.id===sequence)startValidation();
 };
 worker.onerror=event=>{note(`计算线程出错：${event.message}。请刷新后重试。`,true);$('#stages').setAttribute('aria-busy','false');active?.resolve(null);pending?.resolve(null);active=pending=null;busy=false;};
 function checked(name){return $$(`input[name="${name}"]:checked`).map(x=>x.value);}
 function selectedValue(name,fallback=''){return $(`input[name="${name}"]:checked`)?.value??fallback;}
 function readContext({strict=true}={}){
-  const c=defaultContext(),ids=checked('slots'),raw=$('#budget').value;let periods;
+  const c=newContext(),ids=checked('slots'),raw=$('#budget').value;let periods;
   try{periods=normalizePeriods(ids);}catch(error){if(strict)throw error;}
   if(strict&&raw!==''&&(!Number.isFinite(Number(raw))||Number(raw)<0))throw Error('请填写0或更大的有效预算。');
   c.periodIds=periods?.periodIds||ids;c.mealChoices=clone(snapshot().context.mealChoices||{});
@@ -65,9 +101,8 @@ function readContext({strict=true}={}){
   c.crowdAvoidance=$('#crowd').checked;c.robust=$('#robust').checked;c.theme=selectedValue('theme','any');c.cityTier=selectedValue('cityTier','tier1');
   c.departureChoice=snapshot().context.departureChoice||'separate';
   if(periods&&periods.endMinute<=1440&&c.departureChoice==='hotel')c.departureChoice='separate';
-  c.preferencesA=checked('preferencesA').filter(Boolean);c.preferencesB=checked('preferencesB').filter(Boolean);c.preparedIds=checked('prepared');c.dietaryRestrictions=checked('diet');
-  const exclude=selectedValue('exclude'),anchor=selectedValue('anchor');c.bans=exclude?[exclude]:[];
-  c.anchors=anchor?[{id:'必去',sceneOnly:true,choice:{sceneId:anchor,activityIds:[]}}]:[];
+  c.preferencesA=checked('preferencesA').filter(Boolean);c.preferencesB=checked('preferencesB').filter(Boolean);c.dietaryRestrictions=checked('diet');
+  Object.assign(c,placePicker.getChoices());
   c.explicitConsentIds=[...(snapshot().context.explicitConsentIds||[])];
   return c;
 }
@@ -77,32 +112,37 @@ function syncControls(){
   $('#rain').checked=c.weather==='rain';$('#tired-a').checked=c.fatigueA>=6;$('#tired-b').checked=c.fatigueB>=6;
   $('#quiet').checked=c.preferences.includes('quiet');$('#indoor').checked=c.preferences.includes('indoor');$('#quiet-hard').checked=c.quietRequired;
   $('#crowd').checked=c.crowdAvoidance;$('#robust').checked=c.robust;
-  for(const [name,values]of [['preferencesA',c.preferencesA?.length?c.preferencesA:['']],['preferencesB',c.preferencesB?.length?c.preferencesB:['']],['prepared',c.preparedIds],['diet',c.dietaryRestrictions],['slots',c.periodIds],['theme',[c.theme]],['area',[c.area]],['cityTier',[c.cityTier||'tier1']],['exclude',[c.bans[0]||'']],['anchor',[c.anchors?.[0]?.choice?.sceneId||'']]])$$(`input[name="${name}"]`).forEach(x=>x.checked=(values||[]).includes(x.value));
+  for(const [name,values]of [['preferencesA',c.preferencesA?.length?c.preferencesA:['']],['preferencesB',c.preferencesB?.length?c.preferencesB:['']],['diet',c.dietaryRestrictions],['slots',c.periodIds],['theme',[c.theme]],['area',[c.area]],['cityTier',[c.cityTier||'tier1']]])$$(`input[name="${name}"]`).forEach(x=>x.checked=(values||[]).includes(x.value));
+  placePicker.setChoices(c);
   $('#exploration').value=state.exploration;$('#exploration-value').innerHTML=`${state.exploration}<small>/ 100</small>`;
 }
 function traceText(t){return t.message||t.text||t.title||rules.find(r=>r.id===t.ruleId)?.title||t.rule||'规则已触发';}
 function traceHTML(t){const ins=t.inputFacts||[],outs=t.outputFacts||[];return `<div class="trace-item"><span class="trace-id">${esc(t.ruleId||t.id||t.rule||'状态更新')}</span><p>${esc(traceText(t))}</p>${ins.length?`<p>输入：${esc(ins.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}${outs.length?`<p>推导：${esc(outs.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}</div>`;}
 function metricsHTML(m={}){return `<div class="metrics">${[['我方偏好',m.utilityA??m.satisfactionA??m.preferenceA],['对方偏好',m.utilityB??m.satisfactionB??m.preferenceB],['公平指标',m.fairness],['新鲜度',m.novelty],['占用分钟',m.totalMinutes],['终段负担',Math.max(...Object.values(m.predictedLoadByPerson||{}))]].filter(([,v])=>Number.isFinite(v)).map(([k,v])=>`<div class="metric"><span>${k}</span><strong>${Math.round(v*100)/100}</strong></div>`).join('')}</div>`;}
 function pendingPanels(){
+  reasonView.pending();
   const placeholder='<div class="skeleton-panel" aria-label="正在重新计算"><span class="skeleton skeleton-line"></span><span class="skeleton skeleton-line"></span></div>';
   for(const id of ['ending','reason-content','rule-trace','comparison','search-details']){
     const el=document.getElementById(id);el.setAttribute('aria-busy','true');el.innerHTML=placeholder;
   }
+  $('#preparation-items').innerHTML=placeholder;$('#preparation-summary').setAttribute('aria-busy','true');
 }
 function render(){
+  const preparations=result.ok?planPreparations(result.stages,catalog):[];
+  $('#preparation-summary').hidden=!preparations.length;
+  $('#preparation-summary').setAttribute('aria-busy','false');
+  $('#preparation-items').innerHTML=preparations.length?`<div class="preparation-list">${preparations.map(item=>`<span class="preparation-item">${esc(item.label.replace(/^已(?:准备)?|^可用|^一份/g,''))}${item.quantity>1?` × ${esc(item.quantity)}`:''}</span>`).join('')}</div>`:'';
   timeline.render(result);
   const r=result;
+  reasonView.setResult(r,state.context);
   if(!r.ok){
-    $('#ending').textContent='';$('#reason-content').textContent='当前条件还没有可行安排。';
+    $('#ending').textContent='';$('#ending').hidden=true;
     $('#replay-id').textContent='';$('#comparison').textContent='';$('#search-details').textContent='';$('#rule-trace').textContent='';
     for(const id of ['ending','reason-content','rule-trace','comparison','search-details'])document.getElementById(id).setAttribute('aria-busy','false');
     return;
   }
-  $('#ending').textContent=`建议余额 ≥ ${Math.ceil(r.totalCost[1])} rmb`;
-  $('#reason-content').innerHTML=r.stages.map(st=>{
-    const place=sceneById.get(st.sceneId),lines=explainStage(st,place,state.context);
-    return `<div class="reason-item"><h3>${esc(place.title)}</h3>${lines.map(line=>`<p>${esc(line)}</p>`).join('')}</div>`;
-  }).join('')+(r.mealRequirements||[]).filter(m=>m.choiceMode!=='together').map(m=>`<div class="reason-item"><h3>${esc(m.label)}</h3><p>${m.choiceMode==='before_meeting'?'你选择了会面前吃早餐，所以早餐不占见面后的时间；见面后直接开始活动。':'你选择了不吃宵夜，去掉这一餐的时间和花费，再把前后的活动接起来。'}</p></div>`).join('')+(r.departure?`<div class="reason-item"><h3>分别</h3><p>${r.departure.id==='hotel'?`你选择了酒店，按${({tier1:'一线',tier2:'二线',tier3:'三线及以下'})[state.context.cityTier||'tier1']}城市的双人房设计区间预留一晚房费，再与其他安排一起检查余额。`:'先为你选的分别方式留好最后一段时间，再安排前面的活动。'}</p></div>`:'');
+  const balance=Math.ceil(r.totalCost[1]);$('#ending').hidden=balance===0;
+  $('#ending').innerHTML=balance?`建议<strong>余额 ≥ ${balance} rmb</strong>`:'';
   $('#replay-id').textContent=`输入 ${r.fingerprint} · 输出 ${r.outputFingerprint}`;
   renderReasoning();renderComparison();
   for(const id of ['ending','reason-content','rule-trace','comparison','search-details'])document.getElementById(id).setAttribute('aria-busy','false');
@@ -157,17 +197,12 @@ function renderComparison(){
   const s=result.search||{};$('#search-details').innerHTML=`<p class="method-details">${esc(result.searchStatus||result.status)} · ${s.expandedNodes??result.evaluated} 个展开节点 · ${s.evaluations??s.checkedCandidates??'已记录'} 次候选校验 · ${Math.round(lastElapsed)} ms 本次后台演算。固定搜索配置与稳定排序保证复盘；性能数值仅代表当前设备本次测量。</p><p class="method-details">${esc(JSON.stringify(s))}</p>`;
 }
 function initializeKnowledge(){
-  const preparedContainer=$('input[name="prepared"]').closest('.choices');
-  preparedContainer.innerHTML=preparationOptions.filter(x=>!['photo_pair','paired_photo','main_meal','meal_done'].includes(x.id)).map(x=>`<label class="choice"><input name="prepared" type="checkbox" value="${esc(x.id)}">${esc(x.label)}</label>`).join('');
   const dietaryContainer=$('input[name="diet"]').closest('.choices');
   dietaryContainer.innerHTML=dietaryOptions.map(x=>`<label class="choice"><input name="diet" type="checkbox" value="${esc(x.id)}">${esc(x.label)}</label>`).join('');
   const interests=[['户外',['nature','exercise','photo']],['体验',['culture','play','creative','learning']],['氛围',['romantic','music','quiet','indoor']],['日常',['food','daily']]];
   for(const p of ['a','b']){
     const name=`preferences${p.toUpperCase()}`;
     $(`#preferences-${p}`).innerHTML=`<label class="choice interest-any"><input type="checkbox" name="${name}" value="" checked>随意</label>`+interests.map(([title,ids])=>`<div class="interest-group"><span class="interest-group-label">${title}</span><div class="choices">${ids.map(id=>`<label class="choice"><input type="checkbox" name="${name}" value="${id}">${interestLabels[id]}</label>`).join('')}</div></div>`).join('');
-  }
-  for(const [id,name,label]of [['exclude-options','exclude','不排除'],['anchor-options','anchor','不指定']]){
-    $(`#${id}`).innerHTML=`<label class="choice"><input type="radio" name="${name}" value="" checked>${label}</label>`+catalog.scenes.filter(s=>s.kind!=='rest').map(s=>`<label class="choice"><input type="radio" name="${name}" value="${s.id}">${esc(s.title)}</label>`).join('');
   }
   const counts=[['场景',catalog.scenes.length],['活动',catalog.activities.length],['规则',rules.length],['图谱边',graph.edges.length]];
 $('#knowledge-summary').innerHTML=counts.map(([l,n])=>`<div class="stat-tile"><strong>${n}</strong><span>${l}</span></div>`).join('');
@@ -182,9 +217,10 @@ $('#conditions-form').addEventListener('submit',ev=>{ev.preventDefault();applyCo
 function conditionsError(message=''){
   conditionsValid=!message;
   const error=$('#condition-error');error.textContent=message;error.hidden=!message;
-  $('#stages').hidden=!!message;$('#ending').hidden=!!message;$('#view-plan .explanation').hidden=!!message;
+  $('#stages').hidden=!!message;$('#ending').hidden=!!message||!result?.ok||result.totalCost?.[1]===0;$('#view-plan .explanation').hidden=!!message;
+  if(message)$('#preparation-summary').hidden=true;
   $('#exploration').disabled=!!message;
-  if(message){++sequence;pending?.resolve(null);pending=null;$('#export').disabled=true;note('');$('#conditions').open=true;revealError(error);}
+  if(message){++sequence;stopValidation();pending?.resolve(null);pending=null;$('#export').disabled=true;note('');$('#conditions').open=true;revealError(error);}
 }
 async function applyConditions(){
   clearTimeout(sliderTimer);clearTimeout(conditionTimer);conditionTimer=null;
@@ -192,6 +228,7 @@ async function applyConditions(){
   catch(e){conditionsError(e.message.replace(/^H_[A-Z_]+:\s*/,''));}
 }
 $('#conditions-form').addEventListener('change',ev=>{
+  if(ev.target.closest('.place-choice'))return;
   if(ev.target.name==='preferencesA'||ev.target.name==='preferencesB'){
     const inputs=$$(`input[name="${ev.target.name}"]`),neutral=inputs.find(x=>x.value==='');
     if(ev.target.value===''&&ev.target.checked)inputs.filter(x=>x!==neutral).forEach(x=>x.checked=false);
@@ -204,8 +241,10 @@ $('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);
 function closeMenu(){ $('#more-menu').hidden=true;$('#more-menu-toggle').setAttribute('aria-expanded','false'); }
 function showView(name){
   closeMenu();$$('.view').forEach(x=>x.hidden=x.id!==`view-${name}`);
+  if(name==='plan')timeline.recenter();
+  validationWorker?.postMessage({type:'pauseValidation',paused:name!=='plan'||document.hidden});
   window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
-  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.1.0</p><p>知识库 · ${esc(catalog.version)}</p>`;
+  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.3.0</p><p>知识库 · ${esc(catalog.version)}</p>`;
 }
 $('#more-menu-toggle').addEventListener('click',()=>{const open=$('#more-menu').hidden;$('#more-menu').hidden=!open;$('#more-menu-toggle').setAttribute('aria-expanded',String(open));});
 $$('[data-view]').forEach(button=>button.addEventListener('click',()=>showView(button.dataset.view)));
