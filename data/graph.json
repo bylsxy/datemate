@@ -79,7 +79,7 @@
     {
       "id": "E-P006",
       "type": "evidence",
-      "label": "商场内可组合电玩、电影和用餐；每项可选活动单独计算时间与负担。"
+      "label": "商场内可组合电玩、电影和用餐；同地点按场景预留停留时间，所选活动分别计算费用与负担。"
     },
     {
       "id": "E-P007",
@@ -257,14 +257,24 @@
       "label": "公开自述中出现电影后组队游戏的休闲安排，可作为协作游戏灵感；价格不转用到当前目录。"
     },
     {
+      "id": "E-user-budget-campus-meals",
+      "type": "evidence",
+      "label": "校园食堂和芷园增加可选平价早餐与饭菜；宿舍楼下吃饭支持从食堂或附近打包后用餐，兼顾安静、避雨和校园范围宵夜。两人早餐6至10元、午晚餐每餐12至16元、简单宵夜6至8元，四餐费用上界50元；保留原有菜肴和费用，宵夜由用户另选。"
+    },
+    {
       "id": "E-user-campus-canteen",
       "type": "evidence",
       "label": "用户要求通用学校范围可安排早餐、午餐和晚餐，新增校园食堂作为不绑定学校或宿舍区的用餐地点类型。场景预留45分钟；早餐两人10至20元、午晚餐两人40至70元沿用项目设计区间，不表示任何真实食堂的实测价格或供应。"
     },
     {
+      "id": "E-user-campus-shelter",
+      "type": "evidence",
+      "label": "宿舍楼下的有盖处可作为免费、低负担的停留备选，靠边避开人流，适用于各学校；泰超门口吧台可避雨，泰山实验楼架空层花园在有顶处停留。"
+    },
+    {
       "id": "E-user-departures",
       "type": "evidence",
-      "label": "行程默认各自回去，告别预留10分钟；明确选择一起走预留20分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。"
+      "label": "行程默认各自回去，告别预留5分钟；明确选择一起走预留30分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。"
     },
     {
       "id": "E-user-glass-boardgame",
@@ -1465,6 +1475,21 @@
       "category": "校园步道"
     },
     {
+      "id": "campus_budget_breakfast",
+      "type": "activity",
+      "label": "吃份平价早餐"
+    },
+    {
+      "id": "campus_budget_meal",
+      "type": "activity",
+      "label": "吃份平价饭菜"
+    },
+    {
+      "id": "campus_budget_supper",
+      "type": "activity",
+      "label": "吃份简单宵夜"
+    },
+    {
       "id": "campus_canteen",
       "type": "scene",
       "label": "校园食堂",
@@ -1559,6 +1584,20 @@
       "id": "dessert_warm",
       "type": "activity",
       "label": "温热甜点"
+    },
+    {
+      "id": "dorm_downstairs_shelter",
+      "type": "scene",
+      "label": "宿舍楼下有盖处",
+      "placeKind": "ordinary",
+      "category": "校园日常停留点"
+    },
+    {
+      "id": "dorm_takeaway_meal",
+      "type": "scene",
+      "label": "宿舍楼下吃饭",
+      "placeKind": "ordinary",
+      "category": "校园打包用餐点"
     },
     {
       "id": "east_lab_stop",
@@ -2102,7 +2141,7 @@
       "type": "scene",
       "label": "泰山超市门口",
       "placeKind": "ordinary",
-      "category": "校园露天停留区"
+      "category": "校园有盖停留区"
     },
     {
       "id": "talk_highlight",
@@ -2138,7 +2177,7 @@
       "type": "scene",
       "label": "教四教室",
       "placeKind": "ordinary",
-      "category": "或许可以自习……"
+      "category": "校园自习教室"
     },
     {
       "id": "track_observe",
@@ -2156,6 +2195,16 @@
       "label": "东区运动场外圈",
       "placeKind": "ordinary",
       "category": "操场外圈"
+    },
+    {
+      "id": "user:2026-10-14-budget-campus-meals",
+      "type": "user_design",
+      "label": "用户项目设计；现实信息待确认"
+    },
+    {
+      "id": "user:2026-10-14-campus-shelter",
+      "type": "user_design",
+      "label": "用户项目设计；现实信息待确认"
     },
     {
       "id": "user:2026-10-14-departure-design",
@@ -2346,6 +2395,17 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-038645c7561f04",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "allows_activity",
+      "object": "campus_budget_meal",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-03feb2d618ac80",
       "subject": "taishan_glass",
       "predicate": "allows_activity",
@@ -2468,7 +2528,8 @@
       "object": "talk_next",
       "evidenceIds": [
         "E-campus-taichao",
-        "E-research-novelty"
+        "E-research-novelty",
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -2852,6 +2913,16 @@
       "assertionKind": "observed"
     },
     {
+      "id": "EDGE-1384ba8adb23bd",
+      "subject": "E-user-budget-campus-meals",
+      "predicate": "derived_from",
+      "object": "user:2026-10-14-budget-campus-meals",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-13fbc8b956f468",
       "subject": "music_swap",
       "predicate": "has_feature",
@@ -2981,6 +3052,17 @@
       "object": "E-campus-food",
       "evidenceIds": [
         "E-campus-food"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-1a0fa920ac2578",
+      "subject": "campus_canteen",
+      "predicate": "allows_activity",
+      "object": "campus_budget_breakfast",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -3417,6 +3499,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-2944d3966cf8ef",
+      "subject": "campus_budget_meal",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-2961c507c9db7d",
       "subject": "camellia_garden",
       "predicate": "supported_by",
@@ -3753,6 +3845,17 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-342f4684738db1",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-349cc2dcd04836",
       "subject": "taishan_glass",
       "predicate": "allows_activity",
@@ -3933,6 +4036,16 @@
       "object": "tag:daily",
       "evidenceIds": [
         "E-user-meal-periods"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-3917dfcb7081ed",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "supported_by",
+      "object": "E-user-campus-shelter",
+      "evidenceIds": [
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -4230,6 +4343,16 @@
         "E-G006"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-43587a11673675",
+      "subject": "campus_budget_breakfast",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-447c2b9d0895c0",
@@ -4692,12 +4815,33 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-541a38be836482",
+      "subject": "taishan_supermarket_front",
+      "predicate": "supported_by",
+      "object": "E-user-campus-shelter",
+      "evidenceIds": [
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-54934305a587b7",
       "subject": "mall_snacks",
       "predicate": "supported_by",
       "object": "E-P010",
       "evidenceIds": [
         "E-P010"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-54d0aa2fe7f4ee",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "allows_activity",
+      "object": "campus_budget_supper",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -4962,6 +5106,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-5e4cf251b685a4",
+      "subject": "campus_budget_breakfast",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-5ed5b7e8630c10",
       "subject": "R-fatigue-activity",
       "predicate": "supported_by",
@@ -5113,6 +5267,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-621c35ddc8268c",
+      "subject": "campus_budget_supper",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-62dcfede0a5bf0",
       "subject": "photo_print",
       "predicate": "supported_by",
@@ -5246,6 +5410,16 @@
       "assertionKind": "observed"
     },
     {
+      "id": "EDGE-6660ceb5e13e55",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-6776b7c73d5247",
       "subject": "campus_picnic",
       "predicate": "preparationIds",
@@ -5283,6 +5457,17 @@
       "object": "E-user-departures",
       "evidenceIds": [
         "E-user-departures"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-68102235733e80",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "allows_activity",
+      "object": "talk_next",
+      "evidenceIds": [
+        "E-research-novelty",
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -5419,6 +5604,17 @@
       "assertionKind": "observed"
     },
     {
+      "id": "EDGE-6d4c07e915b27d",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "allows_activity",
+      "object": "talk_highlight",
+      "evidenceIds": [
+        "E-research-phone",
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-6d879bdf21c803",
       "subject": "picnic_share",
       "predicate": "preconditions",
@@ -5435,6 +5631,16 @@
       "object": "tag:food",
       "evidenceIds": [
         "E-P007"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-6f9d9b2e25b584",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "supported_by",
+      "object": "E-user-budget-campus-meals",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
       ],
       "assertionKind": "designed"
     },
@@ -5458,6 +5664,16 @@
         "E-G002"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-6fec1f349bbf2d",
+      "subject": "campus_budget_breakfast",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-7054c5ee58e019",
@@ -5507,6 +5723,17 @@
       "object": "tag:food",
       "evidenceIds": [
         "E-P010"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-7279fc5e21e9ea",
+      "subject": "campus_canteen",
+      "predicate": "allows_activity",
+      "object": "campus_budget_meal",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -5712,6 +5939,17 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-7b240a3411f022",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "has_feature",
+      "object": "tag:outdoor",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-7b40ea76978de9",
       "subject": "botany_sketch",
       "predicate": "supported_by",
@@ -5751,6 +5989,16 @@
         "E-lab-time",
         "E-research-phone",
         "E-user-public-lounge"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-7c604a1f8c3932",
+      "subject": "campus_budget_supper",
+      "predicate": "supported_by",
+      "object": "E-user-budget-campus-meals",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
       ],
       "assertionKind": "designed"
     },
@@ -6595,6 +6843,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-949743b4194b5d",
+      "subject": "campus_budget_breakfast",
+      "predicate": "supported_by",
+      "object": "E-user-budget-campus-meals",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-949e3975b307c4",
       "subject": "mall",
       "predicate": "supported_by",
@@ -6769,6 +7027,17 @@
       "evidenceIds": [
         "E-P001",
         "E-fiction-picnic"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-97b7f90ed83507",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -7028,6 +7297,16 @@
       "object": "E-citywalk",
       "evidenceIds": [
         "E-citywalk"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-a07dcd05d107bc",
+      "subject": "campus_budget_supper",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
       ],
       "assertionKind": "designed"
     },
@@ -7401,6 +7680,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-ac46f36258b4b8",
+      "subject": "campus_budget_supper",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-acc1cb3926a7c3",
       "subject": "read_share",
       "predicate": "supported_by",
@@ -7631,6 +7920,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-b319acc0de8d22",
+      "subject": "campus_budget_meal",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-b366685530c260",
       "subject": "campus",
       "predicate": "has_feature",
@@ -7705,6 +8004,16 @@
       "evidenceIds": [
         "E-shared-game",
         "E-user-glass-boardgame"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-b52138d34ea8ff",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "supported_by",
+      "object": "E-user-campus-shelter",
+      "evidenceIds": [
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -7935,6 +8244,16 @@
         "E-P003",
         "E-P010",
         "E-user-meal-periods"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-baacfd79459cda",
+      "subject": "E-user-campus-shelter",
+      "predicate": "derived_from",
+      "object": "user:2026-10-14-campus-shelter",
+      "evidenceIds": [
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -8572,6 +8891,16 @@
       "assertionKind": "observed"
     },
     {
+      "id": "EDGE-cdc0f71f958e16",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "has_feature",
+      "object": "tag:outdoor",
+      "evidenceIds": [
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-cdc992b5231311",
       "subject": "western",
       "predicate": "has_feature",
@@ -8990,7 +9319,8 @@
       "predicate": "has_feature",
       "object": "tag:daily",
       "evidenceIds": [
-        "E-campus-taichao"
+        "E-campus-taichao",
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -9013,6 +9343,19 @@
       "object": "E-C001",
       "evidenceIds": [
         "E-C001"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-dc31600f35618f",
+      "subject": "canteen",
+      "predicate": "allows_activity",
+      "object": "campus_budget_meal",
+      "evidenceIds": [
+        "E-P002",
+        "E-campus-zhiyuan",
+        "E-user-budget-campus-meals",
+        "E-user-meal-periods"
       ],
       "assertionKind": "designed"
     },
@@ -9455,7 +9798,8 @@
       "object": "talk_highlight",
       "evidenceIds": [
         "E-campus-taichao",
-        "E-research-phone"
+        "E-research-phone",
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -9517,6 +9861,16 @@
       "object": "E-G001",
       "evidenceIds": [
         "E-G001"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-e8898c021e70b2",
+      "subject": "campus_budget_meal",
+      "predicate": "supported_by",
+      "object": "E-user-budget-campus-meals",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
       ],
       "assertionKind": "designed"
     },
@@ -9943,7 +10297,18 @@
       "predicate": "has_feature",
       "object": "tag:outdoor",
       "evidenceIds": [
-        "E-campus-taichao"
+        "E-campus-taichao",
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-f41192277361d3",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "has_feature",
+      "object": "tag:quiet",
+      "evidenceIds": [
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -9954,6 +10319,17 @@
       "object": "resource:meal_completed",
       "evidenceIds": [
         "E-P006"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-f4e5c7d64464e2",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "allows_activity",
+      "object": "campus_budget_breakfast",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },
@@ -10147,6 +10523,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-f9dde0f71af9c0",
+      "subject": "campus_budget_meal",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-fa1a49138b9bbb",
       "subject": "western_meal",
       "predicate": "has_feature",
@@ -10218,6 +10604,17 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-fb75db43c2a83b",
+      "subject": "dorm_takeaway_meal",
+      "predicate": "has_feature",
+      "object": "tag:quiet",
+      "evidenceIds": [
+        "E-user-budget-campus-meals",
+        "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-fb78f28810b4af",
       "subject": "reading",
       "predicate": "has_feature",
@@ -10240,6 +10637,19 @@
         "E-P006",
         "E-P009",
         "E-P010"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-fbf1176f9d3414",
+      "subject": "canteen",
+      "predicate": "allows_activity",
+      "object": "campus_budget_breakfast",
+      "evidenceIds": [
+        "E-P002",
+        "E-campus-zhiyuan",
+        "E-user-budget-campus-meals",
+        "E-user-meal-periods"
       ],
       "assertionKind": "designed"
     },

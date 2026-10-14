@@ -108,18 +108,17 @@ test('同一餐馆同一合并窗口可吃不同餐次，main_meal不成为全�
 });
 
 test('跳过宵夜可释放跨饭点自动尾段，菜单切换和候选续算均产生合法真实用餐', () => {
-  // 疲劳引导的休息安排让自动尾段跨越宵夜目标，保留菜单回退边界的真实触发条件。
-  const context = { ...input, fatigueA: 5, fatigueB: 5, periodIds: allPeriods, area: 'near', school: 'scau', mealChoices: { breakfast: { mode: 'before_meeting' }, supper: { mode: 'skip' } } };
-  const skipped = planDate(context, catalog);
-  assertMealIntegrity(skipped, catalog);
+  // 90分钟阶段从19:00连续推进，第三段稳定跨越23:00，不依赖真实目录的评分或转场。
+  const source = fixture([scene('walk', { minutes: 90 }), mealScene('food', ['supper'])]);
+  const context = { ...input, periodIds: ['evening', 'night'], mealChoices: { supper: { mode: 'skip' } } };
+  const skipped = planDate(context, source);
+  assertMealIntegrity(skipped, source);
   const supper = skipped.mealRequirements.find(m => m.mealRole === 'supper');
   const boundary = skipped.stages.findIndex(s => s.end > supper.targetMinute);
   assert.equal(supper.insertIndex, boundary);
   assert.ok(supper.insertIndex < skipped.stages.length);
   assert.ok(skipped.stages[supper.insertIndex].start < supper.targetMinute, '原自动阶段确实跨越宵夜目标时间');
   assert.ok(supper.candidates.length > 0);
-  assert.equal(skipped.context.school, 'scau');
-  assert.equal(skipped.context.campusArea, '');
   const state = { context, prefix: [], exploration: 0 };
   const jobs = buildCandidateJobs(skipped, state).filter(job => job.mealRole === 'supper');
   assert.equal(jobs.length, supper.candidates.length);
@@ -128,18 +127,20 @@ test('跳过宵夜可释放跨饭点自动尾段，菜单切换和候选续算�
     assert.equal(candidate.fitScore, null);
     assert.equal(candidate.continuationFound, false);
     const choice = { sceneId: candidate.sceneId, activityIds: candidate.activityIds };
-    const intent = selectMealIntent(state, skipped, 'supper', choice, supper.insertIndex, catalog);
-    const switched = planDate({ ...intent.context, fixedPrefix: intent.prefix }, catalog);
-    assertMealIntegrity(switched, catalog);
+    const intent = selectMealIntent(state, skipped, 'supper', choice, supper.insertIndex, source);
+    assert.deepEqual(intent.prefix.slice(0, -1), skipped.stages.slice(0, boundary).map(s => ({ sceneId: s.sceneId, activityIds: s.activityIds })));
+    assert.deepEqual(intent.prefix.at(-1), { ...choice, mealRole: 'supper' });
+    const switched = planDate({ ...intent.context, fixedPrefix: intent.prefix }, source);
+    assertMealIntegrity(switched, source);
     assert.equal(switched.mealRequirements.find(m => m.mealRole === 'supper').sceneId, candidate.sceneId);
     const job = jobs.find(j => j.sceneId === candidate.sceneId);
-    const continuation = planDate(job.context, catalog, { ...job.search, exploration: job.exploration, fixedPrefix: job.prefix, continuationOnly: true });
+    const continuation = planDate(job.context, source, { ...job.search, exploration: job.exploration, fixedPrefix: job.prefix, continuationOnly: true });
     assert.equal(continuation.ok, true, continuation.errors?.join(';'));
     assert.ok(continuation.stages.some(s => s.mealRole === 'supper' && s.sceneId === candidate.sceneId && s.start >= supper.startMinute && s.end <= supper.endMinute));
   }
   const locked = skipped.stages.map(s => ({ sceneId: s.sceneId, activityIds: s.activityIds, ...(s.mealRole ? { mealRole: s.mealRole } : {}) }));
-  const fixed = planDate({ ...context, fixedPrefix: locked }, catalog);
-  assertMealIntegrity(fixed, catalog);
+  const fixed = planDate({ ...context, fixedPrefix: locked }, source);
+  assertMealIntegrity(fixed, source);
   const fixedSupper = fixed.mealRequirements.find(m => m.mealRole === 'supper');
   assert.equal(fixedSupper.insertIndex, locked.length);
   assert.deepEqual(fixedSupper.candidates, [], '完整固定前缀不能被菜单回退或伪造可行候选');

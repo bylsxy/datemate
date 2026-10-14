@@ -3,9 +3,63 @@
   "schemaVersion": "manual-knowledge-1.0",
   "activities": [
     {
+      "id": "campus_budget_supper",
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "title": "吃份简单宵夜",
+      "description": "从食堂或附近买两份热包子当宵夜，在店里吃或打包带回有盖处。先看看还有没有供应，留意馅料和忌口。",
+      "cost": [6, 8],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 10,
+      "tags": ["food", "daily"],
+      "evidenceIds": ["E-user-budget-campus-meals"],
+      "provides": ["meal_completed"],
+      "mealRoles": ["supper"],
+      "dietaryTags": ["gluten"],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "campus_budget_breakfast",
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "title": "吃份平价早餐",
+      "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，可以打包带回楼下有盖处吃。按胃口选够吃的份量，饮品另外点。",
+      "cost": [6, 10],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 10,
+      "tags": ["food", "daily"],
+      "evidenceIds": ["E-user-budget-campus-meals"],
+      "provides": ["meal_completed"],
+      "mealRoles": ["breakfast"],
+      "dietaryTags": ["gluten"],
+      "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "campus_budget_meal",
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "title": "吃份平价饭菜",
+      "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包带回楼下有盖处吃。先看看价签和忌口，饮品、加菜另算。",
+      "cost": [12, 16],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 10,
+      "tags": ["food", "daily"],
+      "evidenceIds": ["E-user-budget-campus-meals"],
+      "provides": ["meal_completed"],
+      "mealRoles": ["lunch", "dinner"],
+      "dietaryTags": ["meat"],
+      "exclusiveKey": "main_meal"
+    },
+    {
       "id": "aqua_observe",
       "title": "看海洋动物",
-      "description": "看海洋动物。？",
+      "description": "一起看看鱼群和海洋动物，遇到有趣的就停下来多看一会儿。",
       "cost": [
         0,
         0
@@ -32,7 +86,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "在允许拍摄区域进行，不影响其他观众。",
+      "description": "借水族箱的光拍张剪影，轮流给对方取景。避开人流，不开闪光灯。",
       "novelty": 60,
       "tags": [
         "nature",
@@ -54,7 +108,7 @@
       "load": 3,
       "group": "play",
       "mode": "multi",
-      "description": "轻松玩一轮，不把输赢当表现考核。",
+      "description": "轮流投一轮篮，看看谁手感更好，玩累了就停。",
       "novelty": 60,
       "tags": [
         "play"
@@ -73,7 +127,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "设定次数，不为了奖品不断追加花费。",
+      "description": "挑个喜欢的娃娃，试着抓几次。先说好花多少，没抓到也不用追加。",
       "novelty": 45,
       "tags": [
         "play"
@@ -92,7 +146,7 @@
       "load": 2,
       "group": "play",
       "mode": "multi",
-      "description": "可互换操作方式；竞赛规则由双方同意。",
+      "description": "各选一辆车跑一轮，看看谁先到终点，也可以换着玩。",
       "novelty": 82,
       "tags": [
         "play"
@@ -104,7 +158,7 @@
     {
       "id": "architecture_detail",
       "title": "找一处建筑细节",
-      "description": "各选门窗、纹理或颜色中的一个细节。",
+      "description": "各找一处喜欢的门窗、墙面纹理或颜色，指给对方看。",
       "cost": [
         0,
         0
@@ -124,7 +178,7 @@
     {
       "id": "badminton_rally",
       "title": "一起连续回球",
-      "description": "轮流放慢球速，目标是一起多接几个球。",
+      "description": "放慢球速轻松打几轮，争取一起多接几个球。",
       "cost": [
         0,
         30
@@ -156,7 +210,7 @@
     {
       "id": "bakery_share",
       "title": "分一份面包",
-      "description": "在玻璃房西点屋选小份面包或点心，核对食材后分享，作为补充能量的加餐。",
+      "description": "在玻璃房西点屋挑份面包或点心，分着尝尝。留意有没有不吃的食材。",
       "cost": [
         8,
         18
@@ -180,7 +234,7 @@
     {
       "id": "boardgame_cards",
       "title": "玩一轮轻量卡牌",
-      "description": "只选双方熟悉的规则，输赢不设置额外惩罚。",
+      "description": "选一副熟悉的卡牌玩一轮，边玩边聊，输了也不设惩罚。",
       "cost": [
         20,
         50
@@ -200,7 +254,7 @@
     {
       "id": "boardgame_coop",
       "title": "完成一个合作关卡",
-      "description": "共同解决一关，遇到复杂规则可改成简单模式。",
+      "description": "一起商量怎么过关，卡住了就换个简单玩法。",
       "cost": [
         20,
         50
@@ -220,7 +274,7 @@
     {
       "id": "book_recommend",
       "title": "互荐一本书",
-      "description": "各自挑一个想分享的主题，允许跳过长篇介绍。",
+      "description": "各挑一本喜欢的书，说说哪里吸引自己，不用讲得很长。",
       "cost": [
         0,
         0
@@ -241,7 +295,7 @@
     {
       "id": "botany_shapes",
       "title": "寻找三种叶形",
-      "description": "用观察比较叶形，保留植物原貌。",
+      "description": "找三种形状不同的叶子，看看边缘和纹路有什么区别，不摘叶子。",
       "cost": [
         0,
         0
@@ -261,7 +315,7 @@
     {
       "id": "botany_sketch",
       "title": "画一片叶子",
-      "description": "用纸笔各画一个观察细节，作品不必精致。",
+      "description": "各挑一片叶子，用纸笔画出喜欢的形状，画得像不像都没关系。",
       "cost": [
         0,
         0
@@ -293,7 +347,7 @@
     {
       "id": "breakfast_pack",
       "title": "买好明早早餐",
-      "description": "离开前在玻璃房西点屋采购明早的面包点心，确认保存条件与携带方式。",
+      "description": "在玻璃房西点屋买好明早的面包或点心，挑能放到早上的，装好带走。",
       "cost": [
         10,
         20
@@ -319,7 +373,7 @@
     {
       "id": "bridge_view",
       "title": "找一个共同景物",
-      "description": "各自挑一个喜欢的细节，再看看对方选的地方。",
+      "description": "各指一个桥边喜欢的景物，看看对方注意到了什么。",
       "cost": [
         0,
         0
@@ -339,7 +393,7 @@
     {
       "id": "cafe_focus",
       "title": "专注聊十分钟",
-      "description": "双方愿意时暂放手机，谈一个轻松话题。",
+      "description": "把手机先放一会儿，聊聊最近的小事，认真听对方说。",
       "cost": [
         0,
         0
@@ -360,7 +414,7 @@
     {
       "id": "cafe_warm",
       "title": "选一杯温饮",
-      "description": "按双方口味选择，费用已计入咖啡小坐。",
+      "description": "各点一杯喜欢的温饮，捧着慢慢喝。想少喝咖啡因就换个选择。",
       "cost": [
         0,
         0
@@ -390,7 +444,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "双方愿意再拍，不要求完成照片任务。",
+      "description": "轮流给对方拍几张校园里的照片，挑喜欢的角度就好。",
       "novelty": 55,
       "tags": [
         "nature",
@@ -411,7 +465,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "把注意力放在共同看到的东西上。",
+      "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
       "novelty": 30,
       "tags": [
         "nature",
@@ -424,7 +478,7 @@
     {
       "id": "canteen_pair",
       "title": "各选一道菜并用餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "各挑一道想吃的菜，配上主食一起吃。按食量点，看看有没有不吃的食材。",
       "cost": [
         40,
         70
@@ -456,7 +510,7 @@
     {
       "id": "craft_card",
       "title": "制作一张小卡片",
-      "description": "各做一张简单卡片，表达内容由本人选择。",
+      "description": "各做一张小卡片，画点图案或写两句话，做好后送给对方。",
       "cost": [
         30,
         60
@@ -488,7 +542,7 @@
     {
       "id": "craft_clay",
       "title": "捏一个小物件",
-      "description": "使用场地提供的材料，选择各自想做的形状。",
+      "description": "用店里的黏土捏个小动物或小摆件，做好后放在一起看看。",
       "cost": [
         45,
         85
@@ -509,7 +563,7 @@
     {
       "id": "dessert_ice",
       "title": "冰淇淋分享",
-      "description": "双方愿意且未限制冷饮时，选小份冰淇淋。",
+      "description": "挑份喜欢的冰淇淋，分着尝尝口味；不想吃冷的就换温热点心。",
       "cost": [
         0,
         0
@@ -533,7 +587,7 @@
     {
       "id": "dessert_warm",
       "title": "温热甜点",
-      "description": "按明确口味挑一份温热甜点。",
+      "description": "点份温热甜点，慢慢吃，顺便歇歇脚。",
       "cost": [
         0,
         0
@@ -564,7 +618,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "组内设计扩展：对照各自看中的内容。",
+      "description": "各选一件喜欢的展品，说说吸引自己的地方，再看看对方选的那件。",
       "novelty": 65,
       "tags": [
         "culture",
@@ -579,7 +633,7 @@
     {
       "id": "film_exchange",
       "title": "聊一个印象镜头",
-      "description": "离场后各说一个记住的画面，允许意见不同。",
+      "description": "散场后各说一个印象深的镜头，聊聊为什么喜欢，想法不同也没关系。",
       "cost": [
         0,
         0
@@ -602,7 +656,7 @@
     {
       "id": "film_pick",
       "title": "共同选片并观影",
-      "description": "各提一个片型，选择双方接受且已确认场次的一部。票价为两人设计区间。",
+      "description": "各说一个想看的类型，挑一部两个人都愿意看的电影，买票后一起看。",
       "cost": [
         60,
         100
@@ -629,7 +683,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "只保留愿意拍的部分，不必一直取景。",
+      "description": "借花木和灯光拍几张照片，拍够了就收起手机继续走。",
       "novelty": 55,
       "tags": [
         "nature",
@@ -651,7 +705,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "基于拍照活动的创作扩展，不是原作事实。",
+      "description": "轮流当摄影师和模特，试试对方喜欢的角度，拍完一起选照片。",
       "novelty": 97,
       "tags": [
         "nature",
@@ -665,7 +719,7 @@
     {
       "id": "glass_burger",
       "title": "汉堡简餐",
-      "description": "在玻璃房西餐窗口按食量选择汉堡与薯条，菜单和实际供应需确认。",
+      "description": "在玻璃房西餐窗口点汉堡和薯条，找个位置一起吃。先看看当天菜单，按食量点。",
       "cost": [
         30,
         55
@@ -697,7 +751,7 @@
     {
       "id": "glass_noodle",
       "title": "潮汕汤河粉",
-      "description": "在玻璃房汤河粉窗口按偏好选择猪杂、瘦肉或牛肉丸等配料，实际食材与过敏原需确认。",
+      "description": "在玻璃房各点一碗汤河粉，选喜欢的猪杂、瘦肉或牛肉丸配料。留意食材和忌口。",
       "cost": [
         30,
         55
@@ -735,7 +789,7 @@
       "load": 6,
       "group": "pace",
       "mode": "single",
-      "description": "双方均愿意且具备条件时再练习。",
+      "description": "轮流练习滑行和停步，在空一点的区域慢慢来，不会的动作先问工作人员。",
       "novelty": 70,
       "tags": [
         "play",
@@ -765,7 +819,7 @@
       "load": 6,
       "group": "pace",
       "mode": "single",
-      "description": "量力而行，不做危险挑战。",
+      "description": "沿场边慢慢滑几圈，累了就休息。初学时别追速度，留意脚下和周围的人。",
       "novelty": 45,
       "tags": [
         "play",
@@ -795,7 +849,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "一起选少量零食；费用为原型假设。",
+      "description": "各挑一小份想吃的零食，找个允许吃东西的位置分着尝。",
       "novelty": 35,
       "tags": [
         "food",
@@ -817,7 +871,7 @@
       "load": 3,
       "group": "play",
       "mode": "multi",
-      "description": "浏览不等于消费，也不默认适合疲惫状态。",
+      "description": "逛几家感兴趣的店，看看陈列和新东西，喜欢再买。走累了就停。",
       "novelty": 45,
       "tags": [
         "daily"
@@ -838,7 +892,7 @@
       "load": -2,
       "group": "meal_style",
       "mode": "single",
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "点几样喜欢的中式饭菜，配主食一起吃。按食量点，留意忌口。",
       "novelty": 30,
       "tags": [
         "food",
@@ -863,7 +917,7 @@
     {
       "id": "meal_style_raw",
       "title": "生食风格",
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "两个人都想吃生食时，挑家放心的店点一份正餐。留意食材，不能吃生食就换别的。",
       "cost": [
         140,
         140
@@ -894,7 +948,7 @@
     {
       "id": "meal_style_spicy",
       "title": "辣味风格",
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "选些两个人都喜欢的辣味饭菜，配主食吃。按能接受的辣度点，别勉强。",
       "cost": [
         140,
         140
@@ -932,7 +986,7 @@
       "load": -2,
       "group": "meal_style",
       "mode": "single",
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "各点一份喜欢的西式简餐，边吃边聊。看看食材，按胃口选份量。",
       "novelty": 30,
       "tags": [
         "food",
@@ -958,7 +1012,7 @@
     {
       "id": "museum_pick",
       "title": "挑一个最想再看的展品",
-      "description": "每人选一件展品，说明吸引自己的细节。",
+      "description": "各挑一件还想多看的展品，聊聊喜欢的细节。",
       "cost": [
         0,
         0
@@ -978,7 +1032,7 @@
     {
       "id": "museum_tool",
       "title": "猜猜农具的用途",
-      "description": "先说各自猜测，再阅读展签核对。",
+      "description": "看到不熟悉的农具，先猜猜怎么用，再一起看展签找答案。",
       "cost": [
         0,
         0
@@ -999,7 +1053,7 @@
     {
       "id": "music_memory",
       "title": "聊一段音乐记忆",
-      "description": "围绕这首歌聊一个轻松记忆，允许跳过私人话题。",
+      "description": "聊聊这首歌让你想起的事，分享愿意说的部分就好。",
       "cost": [
         0,
         0
@@ -1021,7 +1075,7 @@
     {
       "id": "music_swap",
       "title": "交换一首推荐歌",
-      "description": "每人选一首，听完说一个想分享的理由。",
+      "description": "各选一首想推荐的歌，戴耳机听完，再说说为什么喜欢。",
       "cost": [
         0,
         0
@@ -1051,7 +1105,7 @@
     {
       "id": "photo_color",
       "title": "寻找同一种颜色",
-      "description": "各找一个同色细节，比较画面里的变化。",
+      "description": "选一种颜色，各找几个同色的小细节拍下来，看看照片有什么不同。",
       "cost": [
         0,
         0
@@ -1071,7 +1125,7 @@
     {
       "id": "photo_pair",
       "title": "轮流拍一组照片",
-      "description": "双方同意再拍，照片用途由本人决定。",
+      "description": "轮流给对方拍几张照片，拍完一起挑喜欢的；分享前先问对方。",
       "cost": [
         0,
         0
@@ -1095,7 +1149,7 @@
     {
       "id": "photo_print",
       "title": "冲印一张共同照片",
-      "description": "从已完成拍照活动里选一张，双方确认后冲印。",
+      "description": "从一起拍的照片里挑一张两个人都喜欢的，印成纸质照片带走。",
       "cost": [
         10,
         20
@@ -1129,7 +1183,7 @@
     {
       "id": "picnic_cloud",
       "title": "看云说一个联想",
-      "description": "轮流说一个云朵或景物带来的轻松联想。",
+      "description": "看看云朵像什么，轮流说个有趣的联想，也可以安静看一会儿。",
       "cost": [
         0,
         0
@@ -1150,7 +1204,7 @@
     {
       "id": "picnic_share",
       "title": "分享备好的野餐",
-      "description": "食物来自之前采购或自行准备，食材按双方限制选择。",
+      "description": "把提前买好或备好的食物摆出来，分着吃。带上水，吃完收好垃圾。",
       "cost": [
         0,
         0
@@ -1179,7 +1233,7 @@
     {
       "id": "pingpong_rally",
       "title": "协作连续回球",
-      "description": "以一起接住十个球为目标，失误就重新来。",
+      "description": "一起试着连续接住十个球，失误就重新来。",
       "cost": [
         0,
         0
@@ -1211,7 +1265,7 @@
     {
       "id": "pingpong_teach",
       "title": "轮流练一个动作",
-      "description": "会打的一方示范，另一方可随时换成轻松打球。",
+      "description": "会打的一方示范一个动作，试着练几次，再换成轻松对打。",
       "cost": [
         0,
         0
@@ -1243,7 +1297,7 @@
     {
       "id": "purchase_picnic",
       "title": "采购一份野餐包",
-      "description": "购买可携带的食物与水，本次采购只供一次分享。",
+      "description": "一起挑方便带走的食物和水，买好下一站要吃的一份野餐。",
       "cost": [
         25,
         45
@@ -1266,7 +1320,7 @@
     {
       "id": "rainforest_leaf",
       "title": "比较两种叶形",
-      "description": "找两个看起来不同的叶片，说说各自的观察。",
+      "description": "找两种不一样的叶子，看看大小、形状和纹路，互相说说发现。",
       "cost": [
         0,
         0
@@ -1293,7 +1347,7 @@
       "load": 0,
       "group": "reading_style",
       "mode": "single",
-      "description": "不强迫交流，也不要求读同一本书。",
+      "description": "并排坐着各看喜欢的书，看到有趣的先记下，等离开阅览区再聊。",
       "novelty": 30,
       "tags": [
         "culture",
@@ -1316,7 +1370,7 @@
       "load": 0,
       "group": "reading_style",
       "mode": "single",
-      "description": "仅在允许交谈的区域分享自己的理解。",
+      "description": "在允许交谈的区域，给对方读一小段喜欢的内容，聊聊自己的感受。",
       "novelty": 60,
       "tags": [
         "culture",
@@ -1332,7 +1386,7 @@
     {
       "id": "script_mystery",
       "title": "共同推理一个剧本",
-      "description": "先确认题材、人数、场次与双方接受程度，再参加共同推理。",
+      "description": "一起看线索、交换猜想，试着解开故事里的谜。提前确认题材、人数和场次。",
       "cost": [
         80,
         160
@@ -1367,7 +1421,7 @@
       "load": 2,
       "group": "play",
       "mode": "multi",
-      "description": "不预设消费，也不承诺所有店都能进。",
+      "description": "沿街看看小店，遇到开着又感兴趣的就进去逛逛，不买东西也可以。",
       "novelty": 60,
       "tags": [
         "culture",
@@ -1388,7 +1442,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "组内设计扩展：只选双方愿意尝试的风格，不偷拍、不强买。",
+      "description": "给对方挑一种平时少穿的风格，愿意的话就试试，合适再买。",
       "novelty": 100,
       "tags": [
         "culture",
@@ -1409,7 +1463,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "组内设计扩展：预算内互选，接受拒绝。",
+      "description": "在说好的预算里给对方挑一件小东西，不喜欢就一起换个选择。",
       "novelty": 95,
       "tags": [
         "food",
@@ -1430,7 +1484,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "活动可以不选；不选就是浏览。",
+      "description": "一起挑点喜欢的水果，看看新鲜程度和价格，买够两个人吃的就好。",
       "novelty": 30,
       "tags": [
         "food",
@@ -1451,7 +1505,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "原语料包含共同选购；此处分段是设计拆分。",
+      "description": "各挑一样喜欢的零食，顺便看看对方平时爱吃什么。先看价格，别买太多。",
       "novelty": 40,
       "tags": [
         "food",
@@ -1465,7 +1519,7 @@
     {
       "id": "switch_coop",
       "title": "玩一个合作关卡",
-      "description": "选双方接受的合作游戏，设备和游戏需先确认。",
+      "description": "选个两个人都愿意玩的合作游戏，一起商量怎么过关。先问店里有没有这款。",
       "cost": [
         30,
         60
@@ -1484,7 +1538,7 @@
     {
       "id": "switch_race",
       "title": "玩一轮赛车游戏",
-      "description": "按双方愿意的规则体验一轮，输赢不设置惩罚。",
+      "description": "各选角色跑一轮赛车，熟悉操作后再比一比，输了也不设惩罚。",
       "cost": [
         20,
         40
@@ -1503,7 +1557,7 @@
     {
       "id": "talk_highlight",
       "title": "分享今天一个小亮点",
-      "description": "各说一件愿意分享的事情，认真听完再回应。",
+      "description": "各说一件今天开心或有意思的小事，听听对方的一天。",
       "cost": [
         0,
         0
@@ -1524,7 +1578,7 @@
     {
       "id": "talk_next",
       "title": "各提一个下次想做的事",
-      "description": "把下一次兴趣写成备选，不要求当场承诺。",
+      "description": "各说一件下次想一起做的事，先记下来，有空再约。",
       "cost": [
         0,
         0
@@ -1544,7 +1598,7 @@
     {
       "id": "tea_share",
       "title": "分着尝两样茶点",
-      "description": "先核对食材和双方食量，茶点费用包含在场景中。",
+      "description": "挑两样喜欢的茶点，分着尝尝，聊聊哪样更好吃。留意不吃的食材。",
       "cost": [
         0,
         0
@@ -1567,7 +1621,7 @@
     {
       "id": "track_observe",
       "title": "看一会儿校园夜色",
-      "description": "找不影响运动的人行位置，看天空和周围变化。",
+      "description": "在操场外圈找个不挡路的位置，看看天空和校园灯光。",
       "cost": [
         0,
         0
@@ -1587,7 +1641,7 @@
     {
       "id": "track_stretch",
       "title": "各自轻拉伸",
-      "description": "双方愿意时做熟悉的轻拉伸动作，不安排挑战。",
+      "description": "各做几下熟悉的轻拉伸，放松肩背和腿，拉到舒服就好。",
       "cost": [
         0,
         0
@@ -1608,7 +1662,7 @@
     {
       "id": "waterside_sketch",
       "title": "速写一个画面",
-      "description": "用简单线条记下共同看到的景物。",
+      "description": "用纸笔画下眼前的水面和岸边，几笔简单线条就够了。",
       "cost": [
         0,
         0
@@ -1637,7 +1691,7 @@
     {
       "id": "cantonese_meal",
       "title": "茶点正餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "点几样茶点配主食，边吃边聊。按食量点，留意肉类和面点里的食材。",
       "cost": [
         120,
         200
@@ -1670,7 +1724,7 @@
     {
       "id": "western_meal",
       "title": "意面简餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "各点一份喜欢的意面，坐下来慢慢吃。留意酱汁里的奶制品和其他忌口。",
       "cost": [
         80,
         120
@@ -1703,7 +1757,7 @@
     {
       "id": "breakfast_eat",
       "title": "吃一份早餐面包",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "各买一份喜欢的早餐面包，一起吃完再出发。按胃口选份量，留意馅料。",
       "cost": [
         10,
         20
@@ -1734,7 +1788,7 @@
     {
       "id": "supper_barbecue",
       "title": "选择辣味肉串并用餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "点些喜欢的辣味肉串，坐下来当宵夜吃。先说好辣度，肉串要烤熟。",
       "cost": [
         40,
         80
@@ -1765,7 +1819,7 @@
     {
       "id": "supper_snacks",
       "title": "选择熟食主食并用餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "挑两份热乎的熟食主食当宵夜，找个位置一起吃。看看食材，按食量点。",
       "cost": [
         20,
         50

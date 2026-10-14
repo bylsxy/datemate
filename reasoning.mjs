@@ -133,7 +133,7 @@ export function buildKnowledgeGraph(catalog) {
 }
 
 export const DEFAULT_RULES = [
-  { id: 'CORE_WET_RISK', title: '雨天与无掩蔽室外场景组合产生淋雨风险', priority: 100, strength: 'hard', when: { all: [{ fact: 'context.weather', op: 'eq', value: 'rain' }, { fact: 'scene.indoor', op: 'eq', value: false }] }, then: [{ action: 'set_fact', fact: 'derived.wetRisk', value: true }], assertionKind: 'designed' },
+  { id: 'CORE_WET_RISK', title: '雨天与无掩蔽室外场景组合产生淋雨风险', priority: 100, strength: 'hard', when: { all: [{ fact: 'context.weather', op: 'eq', value: 'rain' }, { fact: 'scene.indoor', op: 'eq', value: false }], any: [{ fact: 'scene.sheltered', op: 'exists', value: false }, { fact: 'scene.sheltered', op: 'neq', value: true }] }, then: [{ action: 'set_fact', fact: 'derived.wetRisk', value: true }], assertionKind: 'designed' },
   { id: 'CORE_EXCLUDE_WET', title: '根据已推导的淋雨风险排除当前场景', priority: 110, strength: 'hard', when: { all: [{ fact: 'derived.wetRisk', op: 'eq', value: true }] }, then: [{ action: 'exclude_scene' }], assertionKind: 'designed' },
   { id: 'CORE_HIGH_LOAD', title: '累计预计负担较高，推导恢复需求', priority: 50, strength: 'soft', when: { all: [{ fact: 'state.maxLoad', op: 'gte', value: 6 }] }, then: [{ action: 'set_fact', fact: 'derived.recoveryNeeded', value: true }], assertionKind: 'designed' },
   { id: 'CORE_REST_PRIORITY', title: '恢复需求提高独立休息场景的相对效用', priority: 60, strength: 'soft', when: { all: [{ fact: 'derived.recoveryNeeded', op: 'eq', value: true }, { fact: 'scene.kind', op: 'eq', value: 'rest' }] }, then: [{ action: 'prefer_scene', amount: 18 }], evidenceIds: ['G003', 'G004'], assertionKind: 'designed' },

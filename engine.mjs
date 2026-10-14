@@ -1,11 +1,11 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=2282fe29fa1beeb7';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=2282fe29fa1beeb7';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=2282fe29fa1beeb7';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=2282fe29fa1beeb7';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=2282fe29fa1beeb7';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=fc6f1dd058ad2673';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=fc6f1dd058ad2673';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=fc6f1dd058ad2673';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=fc6f1dd058ad2673';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=fc6f1dd058ad2673';
 
-export { canonical, digest } from './reasoning.mjs?v=2282fe29fa1beeb7';
-export const VERSION = 'datemate-engine-3.3.3';
+export { canonical, digest } from './reasoning.mjs?v=fc6f1dd058ad2673';
+export const VERSION = 'datemate-engine-3.4.0';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
@@ -112,7 +112,7 @@ function compileCatalog(catalog) {
   if (!catalog || !Array.isArray(catalog.scenes) || !catalog.scenes.length) throw Error(fail('H_DATA', '场景目录为空。'));
   const flat = new Map((catalog.activities || []).map(a => [a.id, a]));
   const scenes = [...catalog.scenes].sort((a, b) => cmp(a.id, b.id)).map(raw => {
-    const scene = { ...raw, area: raw.area === 'nearby' ? 'near' : raw.area || raw.areaClass || 'campus', kind: raw.kind || raw.typeId || 'ordinary', tags: list(raw.tags) };
+    const scene = { ...raw, sheltered: raw.sheltered === true, area: raw.area === 'nearby' ? 'near' : raw.area || raw.areaClass || 'campus', kind: raw.kind || raw.typeId || 'ordinary', tags: list(raw.tags) };
     scene.minutes = range(raw.minutes ?? raw.baseline?.duration)[1];
     validateDailyWindows(scene);
     scene.costCents = raw.costCents ? range(raw.costCents).map(Math.round) : range(raw.cost ?? raw.baseline?.cost).map(cents);
@@ -169,7 +169,7 @@ function compactWitness(st) {
 }
 
 function initial(ctx) {
-  return { periodMode: Boolean(ctx.periodIds), activeMinutes: 0, waitMinutes: 0, time: ctx.windows[0].startMinute, elapsed: 0, usedMinutes: 0, windowIndex: 0, uncertaintyByWindow: {}, uncertaintyTotal: 0, costCents: [0, 0], cost: [0, 0], fatigue: [ctx.fatigueA, ctx.fatigueB], resources: { ...ctx.resources }, completed: [], visited: [], kinds: [], mealWindows: [], mealRoles: [], meal: false, hasRest: false, last: null, lastKind: null, area: ctx.initialArea, anchorIndex: 0, utilities: [0, 0], novelty: 0, variety: 0, ruleUtility: 0, stages: [] };
+  return { periodMode: Boolean(ctx.periodIds), activeMinutes: 0, waitMinutes: 0, time: ctx.windows[0].startMinute, elapsed: 0, usedMinutes: 0, windowIndex: 0, uncertaintyByWindow: {}, uncertaintyTotal: 0, costCents: [0, 0], cost: [0, 0], fatigue: [ctx.fatigueA, ctx.fatigueB], resources: { ...ctx.resources }, completed: [], visited: [], kinds: [], mealWindows: [], mealRoles: [], meal: false, hasRest: false, last: null, lastKind: null, placeId: null, area: ctx.initialArea, anchorIndex: 0, utilities: [0, 0], novelty: 0, variety: 0, ruleUtility: 0, stages: [] };
 }
 const dedicatedMealScene = scene => scene.kind === 'meal';
 const pendingMealFor = (st, ctx) => ctx.mealRequirements.find(m => m.choiceMode === 'together' && !st.mealRoles.includes(m.mealRole));
@@ -189,11 +189,11 @@ function mealActivityChoices(scene, role, subsets) {
   return [...new Map([...minimum, ...subsets].filter(ids => ids.some(id => eating.some(a => a.id === id))).map(ids => [canonical(ids), ids])).values()];
 }
 function stateSnapshot(st, ctx) {
-  return { elapsed: st.elapsed, elapsedMinutes: st.elapsed, absoluteMinute: st.time, usedMinutes: st.usedMinutes, windowIndex: st.windowIndex, uncertaintyByWindow: st.uncertaintyByWindow, uncertaintyMinutes: st.uncertaintyTotal, cost: st.cost, costCents: st.costCents, costLowCents: st.costCents[0], costHighCents: st.costCents[1], fatigue: st.fatigue, predictedLoadByPerson: { A: st.fatigue[0], B: st.fatigue[1] }, resources: st.resources, preparationRemaining: Object.keys(st.resources).filter(k => st.resources[k] > 0).sort(cmp), completedActionIds: st.completed, satisfiedGoalTags: list(st.stages.flatMap(s => s.tags || [])), visited: st.visited, kinds: st.kinds, last: st.last, area: st.area, meal: st.meal, hasRest: st.hasRest, remainingBudgetCents: ctx.budgetHighCents === null ? null : ctx.budgetHighCents - st.costCents[1] - departureCostCents(ctx)[1] };
+  return { elapsed: st.elapsed, elapsedMinutes: st.elapsed, absoluteMinute: st.time, usedMinutes: st.usedMinutes, windowIndex: st.windowIndex, uncertaintyByWindow: st.uncertaintyByWindow, uncertaintyMinutes: st.uncertaintyTotal, cost: st.cost, costCents: st.costCents, costLowCents: st.costCents[0], costHighCents: st.costCents[1], fatigue: st.fatigue, predictedLoadByPerson: { A: st.fatigue[0], B: st.fatigue[1] }, resources: st.resources, preparationRemaining: Object.keys(st.resources).filter(k => st.resources[k] > 0).sort(cmp), completedActionIds: st.completed, satisfiedGoalTags: list(st.stages.flatMap(s => s.tags || [])), visited: st.visited, kinds: st.kinds, last: st.last, placeId: st.placeId, area: st.area, meal: st.meal, hasRest: st.hasRest, remainingBudgetCents: ctx.budgetHighCents === null ? null : ctx.budgetHighCents - st.costCents[1] - departureCostCents(ctx)[1] };
 }
 
 function transfer(st, scene, catalog) {
-  if (scene.kind === 'rest' || scene.area === 'current') return 0;
+  if (scene.kind === 'rest' || scene.area === 'current' || st.placeId === scene.id) return 0;
   const configured = catalog.transfers?.[st.area]?.[scene.area];
   if (configured !== undefined) return integer(configured, 0, 0, 240);
   if (st.last === null) return scene.area === 'campus' ? 10 : scene.area === 'near' ? 20 : 40;
@@ -250,9 +250,12 @@ function resourceCheck(item, resources, completed) {
 function createEvaluator(ctx, compiled, catalog, exploration) {
   const reasoningCache = new Map(), preferenceCache = new Map();
   function infer(st, scene, activity) {
-    const key = canonical([scene.id, activity?.id, st.fatigue, Object.keys(st.resources).filter(k => st.resources[k] > 0)]);
+    const key = canonical([scene.id, st.placeId, activity?.id, st.fatigue, Object.keys(st.resources).filter(k => st.resources[k] > 0)]);
     if (!reasoningCache.has(key)) {
-      const facts = { context: { ...ctx, fatigueA: st.fatigue[0], fatigueB: st.fatigue[1], prepared: Object.keys(st.resources).filter(k => st.resources[k] > 0).sort(cmp) }, scene, ...(activity ? { activity } : {}), state: { maxLoad: Math.max(...st.fatigue), predictedLoadByPerson: { A: st.fatigue[0], B: st.fatigue[1] } } };
+      const place = scene.kind === 'rest' ? compiled.byId.get(st.placeId) : null;
+      // 休息恢复量沿用休息卡；环境属性继承真实地点，不能凭休息卡变成室内或安静场所。
+      const environment = place ? Object.fromEntries(['indoor', 'sheltered', 'quiet', 'crowded', 'uncrowded', 'crowdRisk'].map(key => [key, place[key]])) : {};
+      const facts = { context: { ...ctx, fatigueA: st.fatigue[0], fatigueB: st.fatigue[1], prepared: Object.keys(st.resources).filter(k => st.resources[k] > 0).sort(cmp) }, scene: { ...scene, ...environment }, ...(activity ? { activity } : {}), state: { maxLoad: Math.max(...st.fatigue), predictedLoadByPerson: { A: st.fatigue[0], B: st.fatigue[1] } } };
       reasoningCache.set(key, forwardChain(facts, compiled.rules));
     }
     return reasoningCache.get(key);
@@ -273,6 +276,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const scene = compiled.byId.get(choice.sceneId);
     if (!scene) return { errors: [fail('H_SCENE', '场景不存在。')] };
     const ids = list(choice.activityIds), acts = scene.activities.filter(a => ids.includes(a.id));
+    const place = scene.kind === 'rest' ? compiled.byId.get(st.placeId) ?? scene : scene;
     const errors = [];
     const pendingMeal = pendingMealFor(st, ctx);
     const selectedEating = acts.some(a => a.provides.meal_completed > 0);
@@ -293,12 +297,12 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (scene.publicAllowed === false || scene.reviewStatus === 'rejected' || scene.reviewStatus === 'draft') errors.push(fail('H_REVIEW', '场景未通过公开使用审核。'));
     if (ctx.availability[scene.id] === 'unavailable') errors.push(fail('H_AVAILABILITY', '场景明确不可用。'));
     if (ctx.area === 'campus' && !['campus', 'current'].includes(scene.area) || ctx.area === 'near' && scene.area === 'off') errors.push(fail('H_RANGE', '超出本次地点范围。'));
-    else if (!isSceneInSchoolScope(scene, ctx)) errors.push(fail('H_SCHOOL_SCOPE', '地点不适用于本次学校或校区范围。'));
-    if (ctx.quietRequired && scene.quiet !== true) errors.push(fail('H_QUIET', '与明示安静要求不符。'));
+    else if (!isSceneInSchoolScope(scene, ctx) || !isSceneInSchoolScope(place, ctx)) errors.push(fail('H_SCHOOL_SCOPE', '地点不适用于本次学校或校区范围。'));
+    if (ctx.weather !== 'unknown' && [scene, place].some(item => Array.isArray(item.weather) && item.weather.length && !item.weather.includes(ctx.weather))) errors.push(fail('H_WEATHER', '场景明确适用天气与本次已知天气不符。'));
+    if (ctx.quietRequired && place.quiet !== true) errors.push(fail('H_QUIET', '与明示安静要求不符。'));
     if (ctx.mentalLow && number(scene.mental, 0) >= 4) errors.push(fail('H_MENTAL', '超过本次认知负担上限。'));
-    if (ctx.crowdAvoidance && (scene.crowded === true || scene.uncrowded === false)) errors.push(fail('H_CROWD', '与避开拥挤要求不符。'));
-    if (scene.kind === 'rest' && st.lastKind === 'rest') errors.push(fail('H_REST_LOOP', '不连续安排重复休息。'));
-    if (ctx.periodIds && scene.kind === 'rest' && st.last === null) errors.push(fail('H_REST_PLACE', '原地休息需要先进入一个可停留的地点。'));
+    if (ctx.crowdAvoidance && (place.crowded === true || place.uncrowded === false || place.crowdRisk === 'high')) errors.push(fail('H_CROWD', '与避开拥挤要求不符。'));
+    if (ctx.periodIds && scene.kind === 'rest' && st.placeId === null) errors.push(fail('H_REST_PLACE', '原地休息需要先进入一个可停留的地点。'));
     const dietary = list([...(scene.dietaryTags || []), ...acts.flatMap(a => a.dietaryTags || [])]);
     if (ctx.dietaryRestrictions.some(tag => dietary.includes(tag))) errors.push(fail('H_DIET', '具体食物或活动与明示饮食限制冲突。'));
     const sceneInference = infer(st, scene), inferences = [sceneInference];
@@ -327,7 +331,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const fatigueAfter = st.fatigue.map((f, i) => Math.max(0, f + load[i]));
     if (fatigueAfter.some(f => f > ctx.maxLoad)) return { errors: [fail('H_LOAD', '预计负担超过本次双方上限。')] };
     const transit = transfer(st, scene, catalog);
-    const uncertainty = ctx.robust ? integer(scene.uncertaintyMinutes, scene.indoor === false && ctx.weather === 'unknown' ? 5 : scene.reliable === false ? 10 : 0, 0, 120) : 0;
+    const uncertainty = ctx.robust ? integer(scene.uncertaintyMinutes, place.indoor === false && !place.sheltered && ctx.weather === 'unknown' ? 5 : scene.reliable === false ? 10 : 0, 0, 120) : 0;
     const exactStart = anchor?.startMinute ?? choice.startMinute;
     const isMeal = scene.kind === 'meal' || acts.some(a => a.exclusiveKey === 'main_meal' || a.provides.meal_completed > 0);
     let slot = null, hoursRejected = false;
@@ -338,8 +342,8 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
       const priorUncertainty = st.uncertaintyByWindow[window.id] || 0;
       let sceneWindows = sceneOpenWindows(scene, window, Boolean(ctx.periodIds));
       // 原地休息沿用已进入地点的营业边界，不能在闭馆后继续占用原地。
-      if (ctx.periodIds && scene.kind === 'rest' && st.last !== null) {
-        const placeWindows = sceneOpenWindows(compiled.byId.get(st.last), window, true);
+      if (scene.kind === 'rest' && st.placeId !== null) {
+        const placeWindows = sceneOpenWindows(place, window, Boolean(ctx.periodIds));
         sceneWindows = sceneWindows.flatMap(a => placeWindows.map(b => ({ startMinute: Math.max(a.startMinute, b.startMinute), endMinute: Math.min(a.endMinute, b.endMinute) })).filter(w => w.endMinute > w.startMinute));
       }
       const possibleSlot = windows => windows.map(w => {
@@ -369,7 +373,6 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (ctx.periodIds && TIME_PERIODS.some(p => ctx.periodIds.includes(p.id) && p.endMinute <= slot.start && !st.stages.some(s => s.start < p.endMinute && s.end > p.startMinute))) return { errors: [fail('H_PERIOD_COVERAGE', '不能跳过已选择的时段；每个时段需有实际规划阶段。')] };
     const pendingAnchor = ctx.anchors?.[st.anchorIndex];
     if (!anchor && pendingAnchor?.startMinute !== undefined && slot.end > pendingAnchor.startMinute) return { errors: [fail('H_ANCHOR_TIME', '当前阶段会越过后续固定预约。')] };
-    if (!manual && scene.kind === 'rest' && Math.max(...st.fatigue) < 3) return { errors: [fail('H_REST_USE', '当前预计负担下优先留白，不自动补休息。')] };
     const graph = graphFeatures(scene, acts), tags = list([...scene.tags, ...acts.flatMap(a => a.tags)]);
     const matchA = ctx.preferencesA.filter(p => graph.matches.has(p)).length, matchB = ctx.preferencesB.filter(p => graph.matches.has(p)).length;
     const sharedInterest = ctx.preferencesA.filter(p => ctx.preferencesB.includes(p) && graph.matches.has(p)).length * 8;
@@ -402,6 +405,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (mealRole) { stage.mealRole = mealRole; stage.mealId = mealRole; }
     const next = { ...st, time: slot.end, elapsed: slot.end - ctx.windows[0].startMinute, usedMinutes: st.usedMinutes + slot.used, windowIndex: slot.windowIndex, uncertaintyByWindow: { ...st.uncertaintyByWindow, [slot.windowId]: slot.uncertaintyCarry }, uncertaintyTotal: slot.uncertaintyTotal, costCents: st.costCents.map((n, i) => n + costCents[i]), cost: st.costCents.map((n, i) => money(n + costCents[i])), fatigue: fatigueAfter, resources, completed: list([...completed, scene.id]), visited: [...st.visited, scene.id], kinds: [...st.kinds, scene.kind], mealWindows: isMeal ? [...st.mealWindows, slot.windowId] : st.mealWindows, mealRoles: mealRole ? [...st.mealRoles, mealRole] : st.mealRoles, meal: st.meal || isMeal, hasRest: st.hasRest || scene.kind === 'rest', last: scene.id, lastKind: scene.kind, area: scene.area === 'current' ? st.area : scene.area, anchorIndex: st.anchorIndex + (anchor ? 1 : 0), utilities: st.utilities.map((v, i) => v + values[i] * discounted), novelty: st.novelty + novelty * discounted, variety: st.variety + newKind, ruleUtility: st.ruleUtility + ruleBonus * discounted, stages: [...st.stages, stage] };
     next.activeMinutes = st.activeMinutes + minutes;
+    next.placeId = scene.kind === 'rest' ? st.placeId : scene.id;
     next.waitMinutes = st.waitMinutes + slot.wait;
     if (ctx.periodIds) { features.activeCoverage = minutes * 0.45; features.waitPenalty = -slot.wait * 0.35; }
     stage.localUtility = objective(next, exploration) - objective(st, exploration);
@@ -416,7 +420,7 @@ function objective(st, exploration) {
   return mean * (0.7 - exploration * 0.002) + Math.min(...st.utilities) * 0.3 + st.novelty * exploration / 100 * 0.55 + st.variety * (4 + exploration * 0.06) + st.ruleUtility - (st.periodMode ? 1.5 : 8) * st.stages.length ** 2 + (st.periodMode ? st.activeMinutes * 0.45 - st.waitMinutes * 0.35 : 0);
 }
 function planKey(st) { return st.stages.map(s => `${s.sceneId}[${s.activityIds.join(',')}]@${s.start}`).join('/'); }
-function stateKey(st) { return `${planKey(st)}#${st.anchorIndex}`; }
+function stateKey(st) { return `${planKey(st)}#${st.anchorIndex}#${st.placeId}`; }
 function orderStates(a, b, exploration) { return objective(b, exploration) - objective(a, exploration) || a.costCents[1] - b.costCents[1] || a.usedMinutes - b.usedMinutes || cmp(planKey(a), planKey(b)); }
 function metrics(st, ctx, exploration) {
   const mean = (st.utilities[0] + st.utilities[1]) / 2, high = Math.max(...st.utilities);
@@ -708,7 +712,7 @@ function* searchDate(input = {}, catalog, options = {}) {
       let anchorIndex = 0;
       for (let i = 0; i < terminal.stages.length; i++) {
         if (terminal.stages[i].anchorId !== undefined) anchorIndex++;
-        const key = stateKey({ stages: terminal.stages.slice(0, i + 1), anchorIndex });
+        const key = stateKey({ stages: terminal.stages.slice(0, i + 1), anchorIndex, placeId: terminal.stages[i].after.placeId });
         const evaluated = terminal.stages.length > i + 1 || searchHistory.has(key) || i + 1 === config.maxStages;
         const old = values.get(key);
         // 保留原有完整评选门槛；最高分及其见证始终来自同一个真实终态。

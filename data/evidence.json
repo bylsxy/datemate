@@ -201,7 +201,7 @@
     "anchorSha256": "111267a56462074dae16a3e61c5ade0e4ccec83328aa1816a4d8b9cdd7786608",
     "sourceKind": "secondary",
     "assertionKind": "inferred",
-    "summary": "商场内可组合电玩、电影和用餐；每项可选活动单独计算时间与负担。",
+    "summary": "商场内可组合电玩、电影和用餐；同地点按场景预留停留时间，所选活动分别计算费用与负担。",
     "reviewStatus": "verified_in_local_source",
     "publicExcerptAllowed": false,
     "rightsStatus": "source_rights_not_revalidated; original_summary_only",
@@ -663,6 +663,18 @@
     "verificationBoundary": "核对本地文本位置；现实经营状态、采集真实性和原作品归属尚待回源确认"
   },
   {
+    "id": "E-user-budget-campus-meals",
+    "sourceDocumentId": null,
+    "sourceLocator": "user:2026-10-14-budget-campus-meals",
+    "sourceKind": "user_design",
+    "assertionKind": "designed",
+    "summary": "校园食堂和芷园增加可选平价早餐与饭菜；宿舍楼下吃饭支持从食堂或附近打包后用餐，兼顾安静、避雨和校园范围宵夜。两人早餐6至10元、午晚餐每餐12至16元、简单宵夜6至8元，四餐费用上界50元；保留原有菜肴和费用，宵夜由用户另选。",
+    "reviewStatus": "awaiting_confirmation",
+    "publicExcerptAllowed": false,
+    "rightsStatus": "original_user_design",
+    "verificationBoundary": "费用是本次用户授权的平价方案设计区间，可在编辑器按当地情况调整，不保证每所学校售价；仅在有相应价位、足够份量与可接受食材时选择。不含额外饮品或加菜，打包费用包含在用餐活动中，不把未准备的食物计作零元。全天只描述楼下停留点，实际取餐仍受窗口或店铺供应时段影响。"
+  },
+  {
     "id": "E-user-campus-canteen",
     "sourceDocumentId": null,
     "sourceLocator": "user:2026-10-14-generic-school-scope-design",
@@ -675,12 +687,24 @@
     "verificationBoundary": "校园食堂与用餐活动是原创通用设计；不引用芷园或泰山地点事实，具体进入许可、窗口、饭点、座位、菜单、过敏原与价格均待现实确认。"
   },
   {
+    "id": "E-user-campus-shelter",
+    "sourceDocumentId": null,
+    "sourceLocator": "user:2026-10-14-campus-shelter",
+    "sourceKind": "user_design",
+    "assertionKind": "designed",
+    "summary": "宿舍楼下的有盖处可作为免费、低负担的停留备选，靠边避开人流，适用于各学校；泰超门口吧台可避雨，泰山实验楼架空层花园在有顶处停留。",
+    "reviewStatus": "awaiting_confirmation",
+    "publicExcerptAllowed": false,
+    "rightsStatus": "original_user_design",
+    "verificationBoundary": "宿舍备选只指实际有顶且允许停留的楼下空间，不假定室内大厅、座位或门禁通行；全天为规划时段。泰超吧台遮蔽依据本次用户说明，架空层仅在有顶位置避雨。"
+  },
+  {
     "id": "E-user-departures",
     "sourceDocumentId": null,
     "sourceLocator": "user:2026-10-14-departure-design",
     "sourceKind": "user_design",
     "assertionKind": "designed",
-    "summary": "行程默认各自回去，告别预留10分钟；明确选择一起走预留20分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。",
+    "summary": "行程默认各自回去，告别预留5分钟；明确选择一起走预留30分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。",
     "reviewStatus": "awaiting_confirmation",
     "publicExcerptAllowed": false,
     "rightsStatus": "original_user_design",

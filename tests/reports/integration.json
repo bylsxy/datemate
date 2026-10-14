@@ -1,10 +1,10 @@
 {
   "dataVersion": "knowledge-4.1.0",
-  "contentRevision": "c1756332178a7fc1",
+  "contentRevision": "553ad193a6bacddb",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 350.0972,
+      "elapsedMs": 886.2109,
       "status": "feasible",
       "stages": [
         {
@@ -37,7 +37,7 @@
     },
     {
       "label": "exploration90",
-      "elapsedMs": 383.69499999999994,
+      "elapsedMs": 846.1170999999999,
       "status": "feasible",
       "stages": [
         {
@@ -47,39 +47,32 @@
           ],
           "start": 860,
           "end": 920,
-          "fitScore": 91.25
+          "fitScore": 91.06
         },
         {
           "sceneId": "craft",
           "activityIds": [],
           "start": 930,
           "end": 990,
-          "fitScore": 87.61
+          "fitScore": 87.22
         },
         {
           "sceneId": "public_lounge",
           "activityIds": [],
           "start": 1000,
           "end": 1030,
-          "fitScore": 79.49
-        },
-        {
-          "sceneId": "rest",
-          "activityIds": [],
-          "start": 1030,
-          "end": 1050,
-          "fitScore": 55.92
+          "fitScore": 78.35
         }
       ],
       "cost": [
         10,
         15
       ],
-      "digest": "f258085f"
+      "digest": "0f4d50df"
     },
     {
       "label": "replayed",
-      "elapsedMs": 178.73919999999998,
+      "elapsedMs": 422.77919999999995,
       "status": "feasible",
       "stages": [
         {
@@ -112,7 +105,7 @@
     },
     {
       "label": "mall-0",
-      "elapsedMs": 253.29179999999997,
+      "elapsedMs": 448.02210000000014,
       "status": "feasible",
       "stages": [
         {
@@ -145,7 +138,7 @@
     },
     {
       "label": "mall-1",
-      "elapsedMs": 278.55560000000014,
+      "elapsedMs": 497.9477999999999,
       "status": "feasible",
       "stages": [
         {
@@ -180,7 +173,7 @@
     },
     {
       "label": "mall-2",
-      "elapsedMs": 252.88200000000006,
+      "elapsedMs": 507.5238000000004,
       "status": "feasible",
       "stages": [
         {
@@ -224,7 +217,7 @@
     },
     {
       "label": "shared-play",
-      "elapsedMs": 205.61910000000034,
+      "elapsedMs": 307.6139000000003,
       "status": "feasible",
       "stages": [
         {
@@ -263,7 +256,7 @@
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 144.23660000000018,
+      "elapsedMs": 268.2778999999996,
       "status": "feasible",
       "stages": [
         {
@@ -303,81 +296,81 @@
     },
     {
       "label": "nature-play",
-      "elapsedMs": 197.06950000000006,
+      "elapsedMs": 301.4277999999995,
       "status": "feasible",
       "stages": [
-        {
-          "sceneId": "mall",
-          "activityIds": [
-            "arcade_race"
-          ],
-          "start": 860,
-          "end": 920,
-          "fitScore": 90.08
-        },
         {
           "sceneId": "scau_wandering",
           "activityIds": [
             "bridge_view"
           ],
-          "start": 940,
-          "end": 1000,
-          "fitScore": 86.42
+          "start": 850,
+          "end": 910,
+          "fitScore": 90.07
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_race"
+          ],
+          "start": 930,
+          "end": 990,
+          "fitScore": 86.61
         },
         {
           "sceneId": "rest",
           "activityIds": [],
-          "start": 1000,
-          "end": 1020,
-          "fitScore": 78.61
+          "start": 995,
+          "end": 1015,
+          "fitScore": 78.39
         }
       ],
       "cost": [
         10,
         15
       ],
-      "digest": "6d84b518"
+      "digest": "e8638855"
     },
     {
       "label": "play-nature",
-      "elapsedMs": 195.78250000000025,
+      "elapsedMs": 280.83140000000003,
       "status": "feasible",
       "stages": [
-        {
-          "sceneId": "mall",
-          "activityIds": [
-            "arcade_race"
-          ],
-          "start": 860,
-          "end": 920,
-          "fitScore": 90.08
-        },
         {
           "sceneId": "scau_wandering",
           "activityIds": [
             "bridge_view"
           ],
-          "start": 940,
-          "end": 1000,
-          "fitScore": 86.42
+          "start": 850,
+          "end": 910,
+          "fitScore": 90.07
+        },
+        {
+          "sceneId": "mall",
+          "activityIds": [
+            "arcade_race"
+          ],
+          "start": 930,
+          "end": 990,
+          "fitScore": 86.61
         },
         {
           "sceneId": "rest",
           "activityIds": [],
-          "start": 1000,
-          "end": 1020,
-          "fitScore": 78.61
+          "start": 995,
+          "end": 1015,
+          "fitScore": 78.39
         }
       ],
       "cost": [
         10,
         15
       ],
-      "digest": "0fd49252"
+      "digest": "0dd3754b"
     },
     {
       "label": "revision",
-      "elapsedMs": 124.55450000000019,
+      "elapsedMs": 204.6909999999998,
       "status": "feasible",
       "stages": [
         {

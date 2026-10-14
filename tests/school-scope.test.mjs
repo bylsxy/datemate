@@ -50,9 +50,9 @@ test('通用校园、学校级、泰山区三层权限及活动范围使用同�
   assert.equal(isSceneInSchoolScope(synthetic.scenes.find(s => s.id === 'rest'), { area: 'campus' }), true);
 });
 
-test('全部45个场景显式声明通用学校属性，名称类别描述中的华农地点没有漏标', () => {
-  assert.equal(catalog.scenes.length, 45);
-  assert.equal(catalog.scenes.filter(s => s.place.universityId === '').length, 29);
+test('全部场景显式声明学校属性，名称类别描述中的华农地点没有漏标', () => {
+  assert.equal(catalog.scenes.length, loaded.documents.scenes.scenes.length);
+  assert.ok(catalog.scenes.filter(s => s.place.universityId === '').length >= 29);
   const schoolIds = catalog.scenes.filter(s => s.place.universityId === 'scau').map(s => s.id);
   assert.equal(schoolIds.length, 16);
   assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 5);
@@ -97,11 +97,11 @@ test('校内游荡保留稳定ID并适用于通用校园，院楼顶楼看星星
   }
 });
 
-test('未选华农的真实目录在校内及周边night自动规划包含校内游荡', () => {
+test('未选华农的真实目录在校内及周边night自动规划包含通用校园停留', () => {
   for (const area of ['campus', 'near']) for (const school of ['', 'other']) {
     const result = planDate({ ...context, area, school, campusArea: 'taishan', periodIds: ['night'] }, catalog);
     assert.equal(result.ok, true, `${area}/${school}: ${result.errors.join(';')}`);
-    assert.ok(result.stages.some(s => s.sceneId === 'scau_wandering'), `${area}/${school}`);
+    assert.ok(result.stages.some(s => ['scau_wandering', 'dorm_downstairs_shelter'].includes(s.sceneId)), `${area}/${school}`);
     assert.ok(choices(result).every(id => isSceneInSchoolScope(catalog.scenes.find(s => s.id === id), result.context)));
     assert.ok(!choices(result).includes('faculty_rooftop_stars'));
     assert.equal(result.metrics.periodCoverageSatisfied, true);
@@ -110,12 +110,12 @@ test('未选华农的真实目录在校内及周边night自动规划包含校内
 });
 
 test('构建器拒绝未知学校、未知校区和不一致的专属地点属性', () => {
-  const invalid = mutate => { const copy = structuredClone(loaded); mutate(copy.documents.scenes.scenes); return copy; };
-  assert.throws(() => compileKnowledge(invalid(s => { s[0].place.universityId = 'unknown'; })), /universityId/);
-  assert.throws(() => compileKnowledge(invalid(s => { s[0].place.campusArea = 'unknown'; })), /campusArea/);
-  assert.throws(() => compileKnowledge(invalid(s => { s[0].place.universityId = ''; })), /从属于学校/);
-  assert.throws(() => compileKnowledge(invalid(s => { s[0].area = 'near'; })), /须位于校内/);
-  assert.throws(() => compileKnowledge(invalid(s => { s[0].scauOnly = false; })), /scauOnly 一致/);
+  const invalid = mutate => { const copy = structuredClone(loaded); mutate(copy.documents.scenes.scenes.find(s => s.id === 'taishan_supermarket_front')); return copy; };
+  assert.throws(() => compileKnowledge(invalid(s => { s.place.universityId = 'unknown'; })), /universityId/);
+  assert.throws(() => compileKnowledge(invalid(s => { s.place.campusArea = 'unknown'; })), /campusArea/);
+  assert.throws(() => compileKnowledge(invalid(s => { s.place.universityId = ''; })), /从属于学校/);
+  assert.throws(() => compileKnowledge(invalid(s => { s.area = 'near'; })), /须位于校内/);
+  assert.throws(() => compileKnowledge(invalid(s => { s.scauOnly = false; })), /scauOnly 一致/);
 });
 
 test('探索和普通候选、最终行程均不泄漏未选择的学校或宿舍区专属场景', () => {
@@ -188,7 +188,7 @@ test('未选华农的真实目录在校内及校内周边均可规划早餐、�
       assert.ok(stage.activityIds.some(id => scene.activities.some(a => a.id === id && a.provides.includes('meal_completed') && a.mealRoles.includes(meal.mealRole))));
     }
     const breakfast = result.mealRequirements.find(m => m.mealRole === 'breakfast');
-    assert.equal(breakfast.sceneId, 'campus_canteen');
+    assert.ok(['campus_canteen', 'dorm_takeaway_meal'].includes(breakfast.sceneId));
     assert.ok(choices(result).every(id => isSceneInSchoolScope(catalog.scenes.find(s => s.id === id), result.context)));
     assert.equal(result.metrics.mealSatisfied, true);
     assert.equal(result.metrics.periodCoverageSatisfied, true);

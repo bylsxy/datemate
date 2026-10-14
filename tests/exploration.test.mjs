@@ -118,12 +118,14 @@ test('多seed提高后续顺序与20张之外的场景覆盖，搜索预算和�
 });
 
 test('探索确实穿透beam剪枝发现资源后续，非仅随机排列已有候选', () => {
-  const c = data([...Array.from({ length: 14 }, (_, i) => scene(`a-${i}`, { fit: 90 })), scene('z-prepare', { fit: 70, provides: ['kit'] }), scene('z-value', { fit: 240, requires: ['kit'] })]);
+  // 显式统一转场，避免同地点零转场改变资源路线与普通路线的相对评分。
+  const c = { ...data([...Array.from({ length: 14 }, (_, i) => scene(`a-${i}`, { fit: 90 })), scene('z-prepare', { fit: 70, provides: ['kit'] }), scene('z-value', { fit: 240, requires: ['kit'] })]), transfers: { campus: { campus: 0 } } };
   const options = { maxStages: 2, beamWidth: 4 };
   const low = planDate(context, c, options);
+  assert.equal(low.ok, true, low.errors.join(';'));
   assert.ok(!low.stages.some(s => s.sceneId === 'z-value'));
   assert.equal(low.stages[0].candidates.find(c => c.sceneId === 'z-prepare').fitScore, null);
-  const high = planDate({ ...context, explorationSeed: 'beam-7' }, c, { ...options, exploration: 100 });
+  const high = planDate({ ...context, explorationSeed: 'beam-0' }, c, { ...options, exploration: 100 });
   assert.deepEqual(high.stages.map(s => s.sceneId), ['z-prepare', 'z-value']);
   assert.ok(high.stages[0].candidates.find(c => c.sceneId === 'z-prepare').continuationFound);
   checkRealScores(high);

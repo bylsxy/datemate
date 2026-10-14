@@ -32,7 +32,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "agriculture_museum",
-      "description": "注意似乎只有一周中的几天开放",
+      "description": "一起看看农具和农业展品，挑感兴趣的慢慢逛。馆内只在部分日期开放，出发前先看当天安排。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -123,7 +124,7 @@
           "publicAllowed": true,
           "id": "museum_tool",
           "title": "猜猜农具的用途",
-          "description": "先说各自猜测，再阅读展签核对。",
+          "description": "看到不熟悉的农具，先猜猜怎么用，再一起看展签找答案。",
           "cost": [
             0,
             0
@@ -169,7 +170,7 @@
           "publicAllowed": true,
           "id": "museum_pick",
           "title": "挑一个最想再看的展品",
-          "description": "每人选一件展品，说明吸引自己的细节。",
+          "description": "各挑一件还想多看的展品，聊聊喜欢的细节。",
           "cost": [
             0,
             0
@@ -219,7 +220,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "aquarium",
-      "description": "围绕鱼群和展陈一起观察，不需要持续主动聊天；门票和站立时间不可忽略。",
+      "description": "一起看鱼群和海洋动物，看到有趣的再聊几句。要买门票，也会站着走一阵。",
+      "sheltered": true,
       "minutes": 90,
       "cost": [
         260,
@@ -297,7 +299,7 @@
             0
           ],
           "load": 1,
-          "description": "在允许拍摄区域进行，不影响其他观众。",
+          "description": "借水族箱的光拍张剪影，轮流给对方取景。避开人流，不开闪光灯。",
           "tags": [
             "nature",
             "indoor",
@@ -338,7 +340,7 @@
           "publicAllowed": true,
           "id": "aqua_observe",
           "title": "看海洋动物",
-          "description": "看海洋动物。？",
+          "description": "一起看看鱼群和海洋动物，遇到有趣的就停下来多看一会儿。",
           "cost": [
             0,
             0
@@ -388,7 +390,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "badminton",
-      "description": "先确认场地和装备，采用合作回球而非强度挑战。",
+      "description": "在室内羽毛球场轻松打几轮，争取一起多接几个球。带好球拍和球，先确认有空场地。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         0,
@@ -461,7 +464,7 @@
           "publicAllowed": true,
           "id": "badminton_rally",
           "title": "一起连续回球",
-          "description": "轮流放慢球速，目标是一起多接几个球。",
+          "description": "放慢球速轻松打几轮，争取一起多接几个球。",
           "cost": [
             0,
             30
@@ -528,7 +531,8 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "description": "夜里找个烧烤摊，点些想吃的烤串，边吃边聊。先看看还开不开、有没有座位；下雨时选有盖的店。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -599,7 +603,7 @@
           "publicAllowed": true,
           "id": "supper_barbecue",
           "title": "选择辣味肉串并用餐",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "点些喜欢的辣味肉串，坐下来当宵夜吃。先说好辣度，肉串要烤熟。",
           "cost": [
             40,
             80
@@ -659,7 +663,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "boardgame",
-      "description": "桌游店内可选择合作桌游或轻量卡牌，店铺与游戏可用性需先确认。",
+      "description": "找个桌游店坐下，玩熟悉的卡牌或合作游戏。先问清收费和有没有想玩的游戏。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -734,7 +739,7 @@
           "publicAllowed": true,
           "id": "boardgame_coop",
           "title": "完成一个合作关卡",
-          "description": "共同解决一关，遇到复杂规则可改成简单模式。",
+          "description": "一起商量怎么过关，卡住了就换个简单玩法。",
           "cost": [
             20,
             50
@@ -779,7 +784,7 @@
           "publicAllowed": true,
           "id": "boardgame_cards",
           "title": "玩一轮轻量卡牌",
-          "description": "只选双方熟悉的规则，输赢不设置额外惩罚。",
+          "description": "选一副熟悉的卡牌玩一轮，边玩边聊，输了也不设惩罚。",
           "cost": [
             20,
             50
@@ -830,7 +835,8 @@
       "publicAllowed": true,
       "id": "bridge_walk",
       "scauOnly": true,
-      "description": "沿紫荆桥方向步行至综合体育馆后方的桥，可继续往教工宿舍区再返回；路线长度与开放条件需现场确认。",
+      "description": "沿紫荆桥方向走到综合体育馆后方的桥边，看看景、聊聊天。还有体力的话，可以往教工宿舍区走一段再返回。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -903,7 +909,7 @@
           "publicAllowed": true,
           "id": "bridge_view",
           "title": "找一个共同景物",
-          "description": "各自挑一个喜欢的细节，再看看对方选的地方。",
+          "description": "各指一个桥边喜欢的景物，看看对方注意到了什么。",
           "cost": [
             0,
             0
@@ -953,7 +959,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "cafe",
-      "description": "这里可以聊天，也可以安静待一会儿；仅在双方接受饮品和现场环境时合适。",
+      "description": "点杯喜欢的饮品，坐下聊聊天或安静待一会儿。想轻松相处就挑不太吵的座位。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         80,
@@ -1029,7 +1036,7 @@
           "publicAllowed": true,
           "id": "cafe_warm",
           "title": "选一杯温饮",
-          "description": "按双方口味选择，费用已计入咖啡小坐。",
+          "description": "各点一杯喜欢的温饮，捧着慢慢喝。想少喝咖啡因就换个选择。",
           "cost": [
             0,
             0
@@ -1076,7 +1083,7 @@
           "publicAllowed": true,
           "id": "cafe_focus",
           "title": "专注聊十分钟",
-          "description": "双方愿意时暂放手机，谈一个轻松话题。",
+          "description": "把手机先放一会儿，聊聊最近的小事，认真听对方说。",
           "cost": [
             0,
             0
@@ -1134,7 +1141,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在教三草坪与5号楼校史馆之间，沿茶花园慢慢走，找一处适合停留的位置聊天，夜深后放轻声音。",
+      "description": "在教三草坪与5号楼校史馆之间的茶花园走走，看看花木，找个位置聊一会儿。夜深后放轻声音。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -1204,7 +1212,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -1250,7 +1258,8 @@
       "publicAllowed": true,
       "id": "campus",
       "scauOnly": true,
-      "description": "泰山区12栋一列与15栋一列宿舍之间的道路可作散步路线，自述提到情侣常在此步行；人流与通行条件需现场确认。",
+      "description": "沿泰山区12栋与15栋两列宿舍之间的步道走走，聊聊今天的事。人多时靠边走，别堵住宿舍出入口。",
+      "sheltered": false,
       "minutes": 45,
       "cost": [
         0,
@@ -1335,7 +1344,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -1380,7 +1389,7 @@
             0
           ],
           "load": 1,
-          "description": "双方愿意再拍，不要求完成照片任务。",
+          "description": "轮流给对方拍几张校园里的照片，挑喜欢的角度就好。",
           "tags": [
             "nature",
             "quiet"
@@ -1420,7 +1429,7 @@
           "publicAllowed": true,
           "id": "botany_shapes",
           "title": "寻找三种叶形",
-          "description": "用观察比较叶形，保留植物原貌。",
+          "description": "找三种形状不同的叶子，看看边缘和纹路有什么区别，不摘叶子。",
           "cost": [
             0,
             0
@@ -1465,7 +1474,7 @@
           "publicAllowed": true,
           "id": "botany_sketch",
           "title": "画一片叶子",
-          "description": "用纸笔各画一个观察细节，作品不必精致。",
+          "description": "各挑一片叶子，用纸笔画出喜欢的形状，画得像不像都没关系。",
           "cost": [
             0,
             0
@@ -1524,7 +1533,8 @@
       "publicAllowed": true,
       "id": "campus_canteen",
       "scauOnly": false,
-      "description": "选择所在学校允许进入的校园食堂，核对窗口供应、饭点开放、座位和双方忌口后一起用餐。早餐、午餐和晚餐均为通用规划候选，具体食堂与供应需要现场确认。",
+      "description": "到学校食堂一起吃顿饭，按胃口选菜，也可以选平价套餐。留意窗口饭点和忌口，人多时找个空位再坐。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -1610,7 +1620,7 @@
           "publicAllowed": true,
           "id": "breakfast_eat",
           "title": "吃一份早餐面包",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "各买一份喜欢的早餐面包，一起吃完再出发。按胃口选份量，留意馅料。",
           "cost": [
             10,
             20
@@ -1665,7 +1675,7 @@
           "publicAllowed": true,
           "id": "canteen_pair",
           "title": "各选一道菜并用餐",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "各挑一道想吃的菜，配上主食一起吃。按食量点，看看有没有不吃的食材。",
           "cost": [
             40,
             70
@@ -1711,11 +1721,122 @@
             "campus_canteen"
           ],
           "sceneOverride": true
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 10,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_budget_breakfast",
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "title": "吃份平价早餐",
+          "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，可以打包带回楼下有盖处吃。按胃口选够吃的份量，饮品另外点。",
+          "cost": [
+            6,
+            10
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-budget-campus-meals"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 10,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "campus_canteen"
+          ],
+          "allowedSceneTypes": [
+            "campus_canteen"
+          ]
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 10,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_budget_meal",
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "title": "吃份平价饭菜",
+          "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包带回楼下有盖处吃。先看看价签和忌口，饮品、加菜另算。",
+          "cost": [
+            12,
+            16
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-budget-campus-meals"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "dietaryTags": [
+            "meat"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 10,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "campus_canteen"
+          ],
+          "allowedSceneTypes": [
+            "campus_canteen"
+          ]
         }
       ],
       "mealActivityIds": [
         "breakfast_eat",
-        "canteen_pair"
+        "canteen_pair",
+        "campus_budget_breakfast",
+        "campus_budget_meal"
       ]
     },
     {
@@ -1729,7 +1850,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "campus_picnic",
-      "description": "带好已经准备的食物与铺垫，在允许停留的草地坐一会儿。",
+      "description": "带上备好的食物和野餐垫，在可以坐的草地上分着吃、看看天。下雨或草地湿了就换个地方。",
+      "sheltered": false,
       "minutes": 45,
       "cost": [
         0,
@@ -1813,7 +1935,7 @@
           "publicAllowed": true,
           "id": "picnic_share",
           "title": "分享备好的野餐",
-          "description": "食物来自之前采购或自行准备，食材按双方限制选择。",
+          "description": "把提前买好或备好的食物摆出来，分着吃。带上水，吃完收好垃圾。",
           "cost": [
             0,
             0
@@ -1864,7 +1986,7 @@
           "publicAllowed": true,
           "id": "picnic_cloud",
           "title": "看云说一个联想",
-          "description": "轮流说一个云朵或景物带来的轻松联想。",
+          "description": "看看云朵像什么，轮流说个有趣的联想，也可以安静看一会儿。",
           "cost": [
             0,
             0
@@ -1916,7 +2038,8 @@
       "publicAllowed": true,
       "id": "campus_tabletennis",
       "scauOnly": true,
-      "description": "泰山区12栋及15、16栋楼下有乒乓球桌，按双方水平选择轻松对打；需自带球拍和球，桌位可用性需现场确认。",
+      "description": "在泰山区12、15、16栋楼下的乒乓球桌轻松打几轮。自带球拍和球，有空桌再开始。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -1987,7 +2110,7 @@
           "publicAllowed": true,
           "id": "pingpong_rally",
           "title": "协作连续回球",
-          "description": "以一起接住十个球为目标，失误就重新来。",
+          "description": "一起试着连续接住十个球，失误就重新来。",
           "cost": [
             0,
             0
@@ -2041,7 +2164,7 @@
           "publicAllowed": true,
           "id": "pingpong_teach",
           "title": "轮流练一个动作",
-          "description": "会打的一方示范，另一方可随时换成轻松打球。",
+          "description": "会打的一方示范一个动作，试着练几次，再换成轻松对打。",
           "cost": [
             0,
             0
@@ -2101,7 +2224,8 @@
       "publicAllowed": true,
       "id": "canteen",
       "scauOnly": true,
-      "description": "芷园食堂是泰山区饭点用餐去处，自述提到其中有蜜雪冰城饮品与雪糕；各窗口供应、开放饭点及进入条件需确认。",
+      "description": "在芷园一起吃饭，饭后还可以到蜜雪冰城买饮品或雪糕。各窗口饭点不同，先看看当天有什么。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -2190,7 +2314,7 @@
           "publicAllowed": true,
           "id": "breakfast_eat",
           "title": "吃一份早餐面包",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "各买一份喜欢的早餐面包，一起吃完再出发。按胃口选份量，留意馅料。",
           "cost": [
             10,
             20
@@ -2243,7 +2367,7 @@
           "publicAllowed": true,
           "id": "canteen_pair",
           "title": "各选一道菜并用餐",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "各挑一道想吃的菜，配上主食一起吃。按食量点，看看有没有不吃的食材。",
           "cost": [
             40,
             70
@@ -2287,11 +2411,122 @@
           "allowedSceneTypes": [
             "canteen"
           ]
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 10,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_budget_breakfast",
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "title": "吃份平价早餐",
+          "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，可以打包带回楼下有盖处吃。按胃口选够吃的份量，饮品另外点。",
+          "cost": [
+            6,
+            10
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-budget-campus-meals"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 10,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "canteen"
+          ],
+          "allowedSceneTypes": [
+            "canteen"
+          ]
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 10,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_budget_meal",
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "title": "吃份平价饭菜",
+          "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包带回楼下有盖处吃。先看看价签和忌口，饮品、加菜另算。",
+          "cost": [
+            12,
+            16
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-budget-campus-meals"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "dietaryTags": [
+            "meat"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 10,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "canteen"
+          ],
+          "allowedSceneTypes": [
+            "canteen"
+          ]
         }
       ],
       "mealActivityIds": [
         "breakfast_eat",
-        "canteen_pair"
+        "canteen_pair",
+        "campus_budget_breakfast",
+        "campus_budget_meal"
       ]
     },
     {
@@ -2305,7 +2540,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "cantonese",
-      "description": "可以用茶点与用餐衔接交流；菜品、份量和忌口仍需自己确认。",
+      "description": "点几样茶点或饭菜，边吃边聊。按两个人的食量点，留意食材和忌口。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -2386,7 +2622,7 @@
           "publicAllowed": true,
           "id": "cantonese_meal",
           "title": "茶点正餐",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "点几样茶点配主食，边吃边聊。按食量点，留意肉类和面点里的食材。",
           "cost": [
             120,
             200
@@ -2448,7 +2684,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "cinema",
-      "description": "电影院提供观影场地；开放、预约和场次需要先确认。票价计入所选观影活动。",
+      "description": "挑一部两个人都想看的电影，散场后聊聊喜欢的镜头。先看好场次、买好票。",
+      "sheltered": true,
       "minutes": 120,
       "cost": [
         0,
@@ -2529,7 +2766,7 @@
           "publicAllowed": true,
           "id": "film_pick",
           "title": "共同选片并观影",
-          "description": "各提一个片型，选择双方接受且已确认场次的一部。票价为两人设计区间。",
+          "description": "各说一个想看的类型，挑一部两个人都愿意看的电影，买票后一起看。",
           "cost": [
             60,
             100
@@ -2574,7 +2811,7 @@
           "publicAllowed": true,
           "id": "film_exchange",
           "title": "聊一个印象镜头",
-          "description": "离场后各说一个记住的画面，允许意见不同。",
+          "description": "散场后各说一个印象深的镜头，聊聊为什么喜欢，想法不同也没关系。",
           "cost": [
             0,
             0
@@ -2626,7 +2863,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "craft",
-      "description": "做一个小而明确的作品，预留收尾和清理时间。",
+      "description": "一起做张卡片或捏个小物件，把成品带回去留念。先问材料和收费，留点时间收尾。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -2701,7 +2939,7 @@
           "publicAllowed": true,
           "id": "craft_card",
           "title": "制作一张小卡片",
-          "description": "各做一张简单卡片，表达内容由本人选择。",
+          "description": "各做一张小卡片，画点图案或写两句话，做好后送给对方。",
           "cost": [
             30,
             60
@@ -2754,7 +2992,7 @@
           "publicAllowed": true,
           "id": "craft_clay",
           "title": "捏一个小物件",
-          "description": "使用场地提供的材料，选择各自想做的形状。",
+          "description": "用店里的黏土捏个小动物或小摆件，做好后放在一起看看。",
           "cost": [
             45,
             85
@@ -2805,7 +3043,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "dessert",
-      "description": "酸奶、双皮奶或点心也能成为轻松停顿；饮食以双方真实偏好为准。",
+      "description": "选份酸奶、双皮奶或小点心，坐下来歇歇。想吃冷的还是热的，按两个人的口味来。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         10,
@@ -2881,7 +3120,7 @@
           "publicAllowed": true,
           "id": "dessert_warm",
           "title": "温热甜点",
-          "description": "按明确口味挑一份温热甜点。",
+          "description": "点份温热甜点，慢慢吃，顺便歇歇脚。",
           "cost": [
             0,
             0
@@ -2929,7 +3168,7 @@
           "publicAllowed": true,
           "id": "dessert_ice",
           "title": "冰淇淋分享",
-          "description": "双方愿意且未限制冷饮时，选小份冰淇淋。",
+          "description": "挑份喜欢的冰淇淋，分着尝尝口味；不想吃冷的就换温热点心。",
           "cost": [
             0,
             0
@@ -2974,6 +3213,433 @@
     {
       "fit": 78,
       "novelty": 45,
+      "mental": 0,
+      "bold": false,
+      "crowdRisk": "low",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "dorm_downstairs_shelter",
+      "place": {
+        "name": "宿舍楼下有盖处",
+        "kind": "ordinary",
+        "category": "校园日常停留点",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "在宿舍楼下有顶的位置待一会儿，聊聊今天的事，也可以安静陪着彼此。靠边避开人流，别挡出入口；雨飘进来就换到更里面的有盖处。",
+      "scauOnly": false,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": -1,
+      "kind": "everyday",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": true,
+      "quiet": true,
+      "seated": false,
+      "tags": [
+        "daily",
+        "quiet",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-campus-shelter"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "availabilityNote": "全天都可以安排在楼下开放的有盖处停留；避开门禁内侧，夜深后放轻声音。",
+      "title": "宿舍楼下有盖处",
+      "typeId": "dorm_downstairs_shelter",
+      "default": [],
+      "mealRoles": [],
+      "source": [
+        "user-campus-shelter"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 1,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": -1,
+        "mentalLoad": 0
+      },
+      "activities": [
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 45,
+          "requiresExplicitConsent": true,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "talk_highlight",
+          "title": "分享今天一个小亮点",
+          "description": "各说一件今天开心或有意思的小事，听听对方的一天。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "tags": [
+            "quiet",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-research-phone"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 45,
+            "physicalLoad": 0
+          },
+          "allowedSceneIds": [
+            "dorm_downstairs_shelter"
+          ],
+          "allowedSceneTypes": [
+            "dorm_downstairs_shelter"
+          ]
+        },
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 45,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "talk_next",
+          "title": "各提一个下次想做的事",
+          "description": "各说一件下次想一起做的事，先记下来，有空再约。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "tags": [
+            "quiet",
+            "romantic"
+          ],
+          "evidenceIds": [
+            "E-research-novelty"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 45,
+            "physicalLoad": 0
+          },
+          "allowedSceneIds": [
+            "dorm_downstairs_shelter"
+          ],
+          "allowedSceneTypes": [
+            "dorm_downstairs_shelter"
+          ]
+        }
+      ],
+      "mealActivityIds": []
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 0,
+      "bold": false,
+      "crowdRisk": "low",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "dorm_takeaway_meal",
+      "place": {
+        "name": "宿舍楼下吃饭",
+        "kind": "ordinary",
+        "category": "校园打包用餐点",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "从食堂或附近买好打包饭，带到宿舍楼下有盖、能放稳餐盒的位置一起吃。靠边避开人流，吃完把垃圾带走。",
+      "scauOnly": false,
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": true,
+      "quiet": true,
+      "seated": false,
+      "tags": [
+        "food",
+        "daily",
+        "quiet",
+        "outdoor"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-user-campus-shelter",
+        "E-user-budget-campus-meals"
+      ],
+      "mealRoles": [
+        "breakfast",
+        "lunch",
+        "dinner",
+        "supper"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "availabilityNote": "楼下开放的有盖处全天可作停留点；用餐要选仍在供应的食堂窗口或附近店铺，预留取餐时间。",
+      "title": "宿舍楼下吃饭",
+      "typeId": "dorm_takeaway_meal",
+      "default": [],
+      "source": [
+        "user-campus-shelter",
+        "user-budget-campus-meals"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 1,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 0
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 10,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_budget_breakfast",
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "title": "吃份平价早餐",
+          "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，可以打包带回楼下有盖处吃。按胃口选够吃的份量，饮品另外点。",
+          "cost": [
+            6,
+            10
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-budget-campus-meals"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 10,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "dorm_takeaway_meal"
+          ],
+          "allowedSceneTypes": [
+            "dorm_takeaway_meal"
+          ]
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 10,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_budget_meal",
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "title": "吃份平价饭菜",
+          "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包带回楼下有盖处吃。先看看价签和忌口，饮品、加菜另算。",
+          "cost": [
+            12,
+            16
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-budget-campus-meals"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "dietaryTags": [
+            "meat"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 10,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "dorm_takeaway_meal"
+          ],
+          "allowedSceneTypes": [
+            "dorm_takeaway_meal"
+          ]
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 10,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_budget_supper",
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "title": "吃份简单宵夜",
+          "description": "从食堂或附近买两份热包子当宵夜，在店里吃或打包带回有盖处。先看看还有没有供应，留意馅料和忌口。",
+          "cost": [
+            6,
+            8
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-budget-campus-meals"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "supper"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 10,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "dorm_takeaway_meal"
+          ],
+          "allowedSceneTypes": [
+            "dorm_takeaway_meal"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "campus_budget_breakfast",
+        "campus_budget_meal",
+        "campus_budget_supper"
+      ]
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
       "mental": 1,
       "bold": false,
       "crowdRisk": "unknown",
@@ -2990,7 +3656,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在开放的公共区域找一处能停留的位置，慢慢聊天或安静待一会儿；不进入实验室和办公区域。",
+      "description": "在东区实验楼外的开放公共区域停一会儿，聊聊天、看看周围。别进入实验室和办公区，夜里挑有照明的位置。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -3060,7 +3727,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -3105,7 +3772,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "exhibition",
-      "description": "让展品提供话题，不等于每个人都喜欢深度解说；按当下精力决定看多少。",
+      "description": "逛一小段展览，各挑一件喜欢的展品聊聊。出发前看好开放日期和门票，累了就早点结束。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -3188,7 +3856,7 @@
             0
           ],
           "load": 1,
-          "description": "组内设计扩展：对照各自看中的内容。",
+          "description": "各选一件喜欢的展品，说说吸引自己的地方，再看看对方选的那件。",
           "tags": [
             "culture",
             "learning",
@@ -3264,7 +3932,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在允许进入、有护栏的院楼顶楼一起看看星星、聊聊天；不翻越门禁，不靠近楼顶边缘，遇到下雨或大风就换个地方。",
+      "description": "到允许进入、有护栏的院楼顶楼看星星、聊聊天。别靠近边缘，下雨或大风时换个地方。",
+      "sheltered": false,
       "tags": [
         "nature",
         "outdoor",
@@ -3318,7 +3987,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -3363,7 +4032,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "garden",
-      "description": "灯光和建筑提供共同看的内容；它仍是户外场景，不能因为浪漫就忽略大雨。",
+      "description": "沿花园小路走走，看看灯光、花木和建筑，也可以拍几张照片。这里露天，下雨时换个地方。",
+      "sheltered": false,
       "minutes": 45,
       "cost": [
         0,
@@ -3441,7 +4111,7 @@
             0
           ],
           "load": 1,
-          "description": "只保留愿意拍的部分，不必一直取景。",
+          "description": "借花木和灯光拍几张照片，拍够了就收起手机继续走。",
           "tags": [
             "nature",
             "romantic",
@@ -3487,7 +4157,7 @@
             0
           ],
           "load": 1,
-          "description": "基于拍照活动的创作扩展，不是原作事实。",
+          "description": "轮流当摄影师和模特，试试对方喜欢的角度，拍完一起选照片。",
           "tags": [
             "nature",
             "romantic",
@@ -3533,7 +4203,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "ice",
-      "description": "身体参与较多，也可能摔倒；按个人能力与意愿选，不因关系阶段默认适合。",
+      "description": "在滑冰场慢慢滑几圈，累了就在场边休息。要租鞋或买票，初学时别勉强加速。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -3611,7 +4282,7 @@
             160
           ],
           "load": 6,
-          "description": "量力而行，不做危险挑战。",
+          "description": "沿场边慢慢滑几圈，累了就休息。初学时别追速度，留意脚下和周围的人。",
           "tags": [
             "play",
             "exercise",
@@ -3663,7 +4334,7 @@
             160
           ],
           "load": 6,
-          "description": "双方均愿意且具备条件时再练习。",
+          "description": "轮流练习滑行和停步，在空一点的区域慢慢来，不会的动作先问工作人员。",
           "tags": [
             "play",
             "exercise",
@@ -3715,7 +4386,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "mall",
-      "description": "商场内支持逛店、零食和电玩等活动，具体商场与店铺可用性需先确认。",
+      "description": "在商场逛几家感兴趣的店，想玩就选一两样电玩，累了找地方坐坐。购物和游玩另花钱。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -3797,7 +4469,7 @@
             0
           ],
           "load": 3,
-          "description": "浏览不等于消费，也不默认适合疲惫状态。",
+          "description": "逛几家感兴趣的店，看看陈列和新东西，喜欢再买。走累了就停。",
           "tags": [
             "daily"
           ],
@@ -3843,7 +4515,7 @@
             30
           ],
           "load": 1,
-          "description": "一起选少量零食；费用为原型假设。",
+          "description": "各挑一小份想吃的零食，找个允许吃东西的位置分着尝。",
           "tags": [
             "food",
             "daily"
@@ -3890,7 +4562,7 @@
             10
           ],
           "load": 1,
-          "description": "设定次数，不为了奖品不断追加花费。",
+          "description": "挑个喜欢的娃娃，试着抓几次。先说好花多少，没抓到也不用追加。",
           "tags": [
             "play"
           ],
@@ -3934,7 +4606,7 @@
             15
           ],
           "load": 3,
-          "description": "轻松玩一轮，不把输赢当表现考核。",
+          "description": "轮流投一轮篮，看看谁手感更好，玩累了就停。",
           "tags": [
             "play"
           ],
@@ -3978,7 +4650,7 @@
             15
           ],
           "load": 2,
-          "description": "可互换操作方式；竞赛规则由双方同意。",
+          "description": "各选一辆车跑一轮，看看谁先到终点，也可以换着玩。",
           "tags": [
             "play"
           ],
@@ -4022,7 +4694,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "meal",
-      "description": "正餐本身也是相处：不用每次都追求大场面，选择双方真正愿意吃的内容。",
+      "description": "找家两个人都想吃的餐馆，好好吃顿饭、慢慢聊。先看看菜单、价格和忌口。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -4110,7 +4783,7 @@
             140
           ],
           "load": -2,
-          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+          "description": "各点一份喜欢的西式简餐，边吃边聊。看看食材，按胃口选份量。",
           "tags": [
             "food",
             "indoor",
@@ -4165,7 +4838,7 @@
             140
           ],
           "load": -2,
-          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+          "description": "点几样喜欢的中式饭菜，配主食一起吃。按食量点，留意忌口。",
           "tags": [
             "food",
             "indoor",
@@ -4214,7 +4887,7 @@
           "publicAllowed": true,
           "id": "meal_style_raw",
           "title": "生食风格",
-          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+          "description": "两个人都想吃生食时，挑家放心的店点一份正餐。留意食材，不能吃生食就换别的。",
           "cost": [
             140,
             140
@@ -4267,7 +4940,7 @@
           "publicAllowed": true,
           "id": "meal_style_spicy",
           "title": "辣味风格",
-          "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+          "description": "选些两个人都喜欢的辣味饭菜，配主食吃。按能接受的辣度点，别勉强。",
           "cost": [
             140,
             140
@@ -4338,7 +5011,13 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "剧本杀店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
+      "description": "一起读线索、讨论猜想，玩一个喜欢的剧本。提前确认人数、题材和场次，怕吓就避开恐怖本。",
+      "sheltered": true,
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
       "minutes": 90,
       "cost": [
         0,
@@ -4368,11 +5047,6 @@
       "scauOnly": false,
       "typeId": "mystery_store",
       "seated": true,
-      "weather": [
-        "clear",
-        "rain",
-        "unknown"
-      ],
       "default": [],
       "mealRoles": [],
       "source": [
@@ -4403,7 +5077,7 @@
           "publicAllowed": true,
           "id": "script_mystery",
           "title": "共同推理一个剧本",
-          "description": "先确认题材、人数、场次与双方接受程度，再参加共同推理。",
+          "description": "一起看线索、交换猜想，试着解开故事里的谜。提前确认题材、人数和场次。",
           "cost": [
             80,
             160
@@ -4467,7 +5141,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "看看花木，在开放区域找一处能安静停留的位置聊天，给彼此留出一段不赶路的时间。",
+      "description": "在兰花园看看花木，找个开放的位置停下来聊一会儿。夜里挑有照明的地方，雨天换个去处。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -4537,7 +5212,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -4582,7 +5257,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "photo_printing",
-      "description": "选之前共同拍下的一张照片，确认本人同意后制作纸质纪念。",
+      "description": "挑一张两个人都喜欢的合照，印出来带走留念。先问好尺寸、价格和取件时间。",
+      "sheltered": true,
       "minutes": 15,
       "cost": [
         0,
@@ -4661,7 +5337,7 @@
           "publicAllowed": true,
           "id": "photo_print",
           "title": "冲印一张共同照片",
-          "description": "从已完成拍照活动里选一张，双方确认后冲印。",
+          "description": "从一起拍的照片里挑一张两个人都喜欢的，印成纸质照片带走。",
           "cost": [
             10,
             20
@@ -4720,7 +5396,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "public_lounge",
-      "description": "选择允许停留和轻声交流的公共休息区，具体位置与可用座位需先确认。",
+      "description": "找个允许停留的室内公共休息区，轻声聊聊天或戴耳机听歌。有空位再坐，别影响旁边的人。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         0,
@@ -4800,7 +5477,7 @@
           "publicAllowed": true,
           "id": "talk_highlight",
           "title": "分享今天一个小亮点",
-          "description": "各说一件愿意分享的事情，认真听完再回应。",
+          "description": "各说一件今天开心或有意思的小事，听听对方的一天。",
           "cost": [
             0,
             0
@@ -4845,7 +5522,7 @@
           "publicAllowed": true,
           "id": "talk_next",
           "title": "各提一个下次想做的事",
-          "description": "把下一次兴趣写成备选，不要求当场承诺。",
+          "description": "各说一件下次想一起做的事，先记下来，有空再约。",
           "cost": [
             0,
             0
@@ -4890,7 +5567,7 @@
           "publicAllowed": true,
           "id": "music_swap",
           "title": "交换一首推荐歌",
-          "description": "每人选一首，听完说一个想分享的理由。",
+          "description": "各选一首想推荐的歌，戴耳机听完，再说说为什么喜欢。",
           "cost": [
             0,
             0
@@ -4942,7 +5619,7 @@
           "publicAllowed": true,
           "id": "music_memory",
           "title": "聊一段音乐记忆",
-          "description": "围绕这首歌聊一个轻松记忆，允许跳过私人话题。",
+          "description": "聊聊这首歌让你想起的事，分享愿意说的部分就好。",
           "cost": [
             0,
             0
@@ -4993,7 +5670,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "rainforest",
-      "description": "一起观察植物与空间，把体验留给共同发现；收费与场馆开放需要确认。",
+      "description": "一起看看雨林植物，找找不同的叶子和枝条。要买门票，也会走一阵，先看好开放时间。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         260,
@@ -5067,7 +5745,7 @@
           "publicAllowed": true,
           "id": "rainforest_leaf",
           "title": "比较两种叶形",
-          "description": "找两个看起来不同的叶片，说说各自的观察。",
+          "description": "找两种不一样的叶子，看看大小、形状和纹路，互相说说发现。",
           "cost": [
             0,
             0
@@ -5117,7 +5795,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "reading",
-      "description": "可以各读各的，再分享有兴趣的部分；安静不等于没内容，先确认场所可进入。",
+      "description": "在图书馆并排坐着各读各的，离开阅览区后再分享喜欢的内容。先看看入馆要求，阅读时保持安静。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -5205,7 +5884,7 @@
             0
           ],
           "load": 0,
-          "description": "不强迫交流，也不要求读同一本书。",
+          "description": "并排坐着各看喜欢的书，看到有趣的先记下，等离开阅览区再聊。",
           "tags": [
             "culture",
             "learning",
@@ -5253,7 +5932,7 @@
             0
           ],
           "load": 0,
-          "description": "仅在允许交谈的区域分享自己的理解。",
+          "description": "在允许交谈的区域，给对方读一小段喜欢的内容，聊聊自己的感受。",
           "tags": [
             "culture",
             "learning",
@@ -5296,7 +5975,7 @@
           "publicAllowed": true,
           "id": "book_recommend",
           "title": "互荐一本书",
-          "description": "各自挑一个想分享的主题，允许跳过长篇介绍。",
+          "description": "各挑一本喜欢的书，说说哪里吸引自己，不用讲得很长。",
           "cost": [
             0,
             0
@@ -5347,7 +6026,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "rest",
-      "description": "在当前位置暂停行程并休息，实际停留条件由双方确认。",
+      "description": "先在能安全停留的地方歇一会儿，喝口水，等缓过来再走。当前位置不合适就先找个休息处。",
+      "sheltered": false,
       "minutes": 20,
       "cost": [
         0,
@@ -5456,6 +6136,7 @@
         "verificationStatus": "awaiting_confirmation"
       },
       "description": "不赶着去下一个地方，在学校开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
+      "sheltered": false,
       "tags": [
         "nature",
         "outdoor",
@@ -5505,7 +6186,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -5545,7 +6226,7 @@
           "publicAllowed": true,
           "id": "bridge_view",
           "title": "找一个共同景物",
-          "description": "各自挑一个喜欢的细节，再看看对方选的地方。",
+          "description": "各指一个桥边喜欢的景物，看看对方注意到了什么。",
           "cost": [
             0,
             0
@@ -5590,7 +6271,7 @@
           "publicAllowed": true,
           "id": "photo_pair",
           "title": "轮流拍一组照片",
-          "description": "双方同意再拍，照片用途由本人决定。",
+          "description": "轮流给对方拍几张照片，拍完一起挑喜欢的；分享前先问对方。",
           "cost": [
             0,
             0
@@ -5650,7 +6331,8 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "description": "在小吃街挑两样热食当宵夜，吃完慢慢回去。先看营业和座位，下雨时换个有盖的地方。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -5721,7 +6403,7 @@
           "publicAllowed": true,
           "id": "supper_snacks",
           "title": "选择熟食主食并用餐",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "挑两份热乎的熟食主食当宵夜，找个位置一起吃。看看食材，按食量点。",
           "cost": [
             20,
             50
@@ -5781,7 +6463,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "street",
-      "description": "街区内支持浏览小店、建筑观察和拍照，具体路线与店铺需先确认。",
+      "description": "沿街看看小店和建筑，遇到喜欢的地方就停下拍张照。走累了早点返回，下雨时改去有盖的地方。",
+      "sheltered": false,
       "minutes": 60,
       "cost": [
         0,
@@ -5860,7 +6543,7 @@
             0
           ],
           "load": 2,
-          "description": "不预设消费，也不承诺所有店都能进。",
+          "description": "沿街看看小店，遇到开着又感兴趣的就进去逛逛，不买东西也可以。",
           "tags": [
             "culture",
             "photo",
@@ -5906,7 +6589,7 @@
             0
           ],
           "load": 1,
-          "description": "组内设计扩展：只选双方愿意尝试的风格，不偷拍、不强买。",
+          "description": "给对方挑一种平时少穿的风格，愿意的话就试试，合适再买。",
           "tags": [
             "culture",
             "photo",
@@ -5947,7 +6630,7 @@
           "publicAllowed": true,
           "id": "architecture_detail",
           "title": "找一处建筑细节",
-          "description": "各选门窗、纹理或颜色中的一个细节。",
+          "description": "各找一处喜欢的门窗、墙面纹理或颜色，指给对方看。",
           "cost": [
             0,
             0
@@ -5992,7 +6675,7 @@
           "publicAllowed": true,
           "id": "photo_pair",
           "title": "轮流拍一组照片",
-          "description": "双方同意再拍，照片用途由本人决定。",
+          "description": "轮流给对方拍几张照片，拍完一起挑喜欢的；分享前先问对方。",
           "cost": [
             0,
             0
@@ -6039,7 +6722,7 @@
           "publicAllowed": true,
           "id": "photo_color",
           "title": "寻找同一种颜色",
-          "description": "各找一个同色细节，比较画面里的变化。",
+          "description": "选一种颜色，各找几个同色的小细节拍下来，看看照片有什么不同。",
           "cost": [
             0,
             0
@@ -6090,7 +6773,8 @@
       "publicAllowed": true,
       "id": "supermarket",
       "scauOnly": true,
-      "description": "泰山超市是泰山区的采购去处，自述提到店内销售酒类；所选零食、水果及野餐采购属于设计玩法，实际库存和营业需确认。",
+      "description": "在泰超一起挑零食、水果，或买好下一站的野餐食物。泰超略贵，先看看价签再买。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         0,
@@ -6172,7 +6856,7 @@
             60
           ],
           "load": 1,
-          "description": "原语料包含共同选购；此处分段是设计拆分。",
+          "description": "各挑一样喜欢的零食，顺便看看对方平时爱吃什么。先看价格，别买太多。",
           "tags": [
             "food",
             "indoor",
@@ -6218,7 +6902,7 @@
             20
           ],
           "load": 1,
-          "description": "活动可以不选；不选就是浏览。",
+          "description": "一起挑点喜欢的水果，看看新鲜程度和价格，买够两个人吃的就好。",
           "tags": [
             "food",
             "indoor",
@@ -6264,7 +6948,7 @@
             20
           ],
           "load": 1,
-          "description": "组内设计扩展：预算内互选，接受拒绝。",
+          "description": "在说好的预算里给对方挑一件小东西，不喜欢就一起换个选择。",
           "tags": [
             "food",
             "indoor",
@@ -6305,7 +6989,7 @@
           "publicAllowed": true,
           "id": "purchase_picnic",
           "title": "采购一份野餐包",
-          "description": "购买可携带的食物与水，本次采购只供一次分享。",
+          "description": "一起挑方便带走的食物和水，买好下一站要吃的一份野餐。",
           "cost": [
             25,
             45
@@ -6365,7 +7049,13 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "Switch店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
+      "description": "找家Switch店玩几轮合作或赛车游戏，边玩边笑。提前问好收费、设备和想玩的游戏。",
+      "sheltered": true,
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
       "minutes": 60,
       "cost": [
         0,
@@ -6395,11 +7085,6 @@
       "scauOnly": false,
       "typeId": "switch_store",
       "seated": true,
-      "weather": [
-        "clear",
-        "rain",
-        "unknown"
-      ],
       "default": [],
       "mealRoles": [],
       "source": [
@@ -6430,7 +7115,7 @@
           "publicAllowed": true,
           "id": "switch_coop",
           "title": "玩一个合作关卡",
-          "description": "选双方接受的合作游戏，设备和游戏需先确认。",
+          "description": "选个两个人都愿意玩的合作游戏，一起商量怎么过关。先问店里有没有这款。",
           "cost": [
             30,
             60
@@ -6474,7 +7159,7 @@
           "publicAllowed": true,
           "id": "switch_race",
           "title": "玩一轮赛车游戏",
-          "description": "按双方愿意的规则体验一轮，输赢不设置惩罚。",
+          "description": "各选角色跑一轮赛车，熟悉操作后再比一比，输了也不设惩罚。",
           "cost": [
             20,
             40
@@ -6524,7 +7209,8 @@
       "publicAllowed": true,
       "id": "taishan_glass",
       "scauOnly": true,
-      "description": "泰山区10栋玻璃房设有汉堡薯条、潮汕汤河粉和麻辣烫等餐饮选择，西点屋可买面包小吃或采购明早早餐；烘焙用于补充能量，自带桌游需确认座位与场地许可。",
+      "description": "在十栋玻璃房吃汉堡、汤河粉或麻辣烫，也能到西点屋买面包。想玩桌游就自带一副，先问这里能不能玩。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -6602,7 +7288,7 @@
           "publicAllowed": true,
           "id": "breakfast_eat",
           "title": "吃一份早餐面包",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "各买一份喜欢的早餐面包，一起吃完再出发。按胃口选份量，留意馅料。",
           "cost": [
             10,
             20
@@ -6655,7 +7341,7 @@
           "publicAllowed": true,
           "id": "glass_noodle",
           "title": "潮汕汤河粉",
-          "description": "在玻璃房汤河粉窗口按偏好选择猪杂、瘦肉或牛肉丸等配料，实际食材与过敏原需确认。",
+          "description": "在玻璃房各点一碗汤河粉，选喜欢的猪杂、瘦肉或牛肉丸配料。留意食材和忌口。",
           "cost": [
             30,
             55
@@ -6708,7 +7394,7 @@
           "publicAllowed": true,
           "id": "glass_burger",
           "title": "汉堡简餐",
-          "description": "在玻璃房西餐窗口按食量选择汉堡与薯条，菜单和实际供应需确认。",
+          "description": "在玻璃房西餐窗口点汉堡和薯条，找个位置一起吃。先看看当天菜单，按食量点。",
           "cost": [
             30,
             55
@@ -6762,7 +7448,7 @@
           "publicAllowed": true,
           "id": "bakery_share",
           "title": "分一份面包",
-          "description": "在玻璃房西点屋选小份面包或点心，核对食材后分享，作为补充能量的加餐。",
+          "description": "在玻璃房西点屋挑份面包或点心，分着尝尝。留意有没有不吃的食材。",
           "cost": [
             8,
             18
@@ -6810,7 +7496,7 @@
           "publicAllowed": true,
           "id": "breakfast_pack",
           "title": "买好明早早餐",
-          "description": "离开前在玻璃房西点屋采购明早的面包点心，确认保存条件与携带方式。",
+          "description": "在玻璃房西点屋买好明早的面包或点心，挑能放到早上的，装好带走。",
           "cost": [
             10,
             20
@@ -6859,7 +7545,7 @@
           "publicAllowed": true,
           "id": "boardgame_coop",
           "title": "完成一个合作关卡",
-          "description": "共同解决一关，遇到复杂规则可改成简单模式。 自带游戏并先确认此处允许玩桌游。",
+          "description": "自带一副合作桌游，一起商量怎么过关。先问这里能不能玩，卡住了就换个简单玩法。",
           "cost": [
             0,
             0
@@ -6915,7 +7601,7 @@
           "publicAllowed": true,
           "id": "boardgame_cards",
           "title": "玩一轮轻量卡牌",
-          "description": "只选双方熟悉的规则，输赢不设置额外惩罚。 自带游戏并先确认此处允许玩桌游。",
+          "description": "自带一副熟悉的卡牌，坐下玩一轮。先问这里能不能玩，输了也不设惩罚。",
           "cost": [
             0,
             0
@@ -6988,7 +7674,13 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "情侣幽会场所",
+      "description": "在泰山实验楼架空层的花园边停一会儿，看看花木、聊聊天。有顶的位置可以避雨，别挡住通道。",
+      "sheltered": true,
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -7018,10 +7710,6 @@
       "title": "泰山实验楼架空层花园",
       "typeId": "taishan_lab_garden",
       "seated": false,
-      "weather": [
-        "clear",
-        "unknown"
-      ],
       "default": [],
       "mealRoles": [],
       "source": [
@@ -7057,7 +7745,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -7105,12 +7793,18 @@
       "place": {
         "name": "泰山超市门口",
         "kind": "ordinary",
-        "category": "校园露天停留区",
+        "category": "校园有盖停留区",
         "universityId": "scau",
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "泰超门口露天餐饮与停留空间，氛围较好，但吃泰超略贵。",
+      "description": "在泰超门口的有盖吧台边坐坐、聊聊天，下雨也能避一会儿。吃泰超略贵，只停留不用消费。",
+      "sheltered": true,
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -7127,7 +7821,8 @@
         "outdoor"
       ],
       "evidenceIds": [
-        "E-campus-taichao"
+        "E-campus-taichao",
+        "E-user-campus-shelter"
       ],
       "dailyWindows": [
         {
@@ -7140,14 +7835,11 @@
       "title": "泰山超市门口",
       "typeId": "taishan_supermarket_front",
       "seated": true,
-      "weather": [
-        "clear",
-        "unknown"
-      ],
       "default": [],
       "mealRoles": [],
       "source": [
-        "campus-taichao"
+        "campus-taichao",
+        "user-campus-shelter"
       ],
       "predecessorIds": [],
       "requires": [],
@@ -7174,7 +7866,7 @@
           "publicAllowed": true,
           "id": "talk_highlight",
           "title": "分享今天一个小亮点",
-          "description": "各说一件愿意分享的事情，认真听完再回应。",
+          "description": "各说一件今天开心或有意思的小事，听听对方的一天。",
           "cost": [
             0,
             0
@@ -7219,7 +7911,7 @@
           "publicAllowed": true,
           "id": "talk_next",
           "title": "各提一个下次想做的事",
-          "description": "把下一次兴趣写成备选，不要求当场承诺。",
+          "description": "各说一件下次想一起做的事，先记下来，有空再约。",
           "cost": [
             0,
             0
@@ -7269,7 +7961,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "tea",
-      "description": "坐下吃点心、喝茶，给聊天留一点空间；不是必须在正式餐厅才算认真安排。",
+      "description": "点两样茶点，坐下分着吃、慢慢聊。按食量点，想清静就避开饭点高峰。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         70,
@@ -7346,7 +8039,7 @@
           "publicAllowed": true,
           "id": "tea_share",
           "title": "分着尝两样茶点",
-          "description": "先核对食材和双方食量，茶点费用包含在场景中。",
+          "description": "挑两样喜欢的茶点，分着尝尝，聊聊哪样更好吃。留意不吃的食材。",
           "cost": [
             0,
             0
@@ -7406,7 +8099,8 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "晚间散步去处",
+      "description": "沿教四后面的坡路慢慢走，边走边聊。上坡有点费力，雨天路滑时换个地方。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -7475,7 +8169,7 @@
             0
           ],
           "load": 1,
-          "description": "把注意力放在共同看到的东西上。",
+          "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
           "tags": [
             "nature",
             "quiet"
@@ -7523,12 +8217,18 @@
       "place": {
         "name": "教四教室",
         "kind": "ordinary",
-        "category": "或许可以自习……",
+        "category": "校园自习教室",
         "universityId": "scau",
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "注意谈恋爱不要打扰到别的自习的同学",
+      "description": "并排坐着各自看书或学习，累了再一起离开。教室有课就换个地方，别打扰自习的同学。",
+      "sheltered": true,
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
       "scauOnly": true,
       "minutes": 45,
       "cost": [
@@ -7559,11 +8259,6 @@
       "title": "教四教室",
       "typeId": "teaching4_study",
       "seated": true,
-      "weather": [
-        "clear",
-        "rain",
-        "unknown"
-      ],
       "default": [],
       "mealRoles": [],
       "source": [
@@ -7599,7 +8294,7 @@
             0
           ],
           "load": 0,
-          "description": "不强迫交流，也不要求读同一本书。",
+          "description": "并排坐着各看喜欢的书，看到有趣的先记下，等离开阅览区再聊。",
           "tags": [
             "culture",
             "learning",
@@ -7648,7 +8343,8 @@
       "publicAllowed": true,
       "id": "track_walk",
       "scauOnly": true,
-      "description": "东区运动场可沿操场外圈散步，自述也提到草坪拉伸；按体力选择步行与轻量活动，草坪许可和场地开放需确认。",
+      "description": "沿东区运动场外圈慢慢走，看看夜色，也可以做几下轻拉伸。避开跑道和正在训练的人。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -7723,7 +8419,7 @@
           "publicAllowed": true,
           "id": "track_stretch",
           "title": "各自轻拉伸",
-          "description": "双方愿意时做熟悉的轻拉伸动作，不安排挑战。",
+          "description": "各做几下熟悉的轻拉伸，放松肩背和腿，拉到舒服就好。",
           "cost": [
             0,
             0
@@ -7768,7 +8464,7 @@
           "publicAllowed": true,
           "id": "track_observe",
           "title": "看一会儿校园夜色",
-          "description": "找不影响运动的人行位置，看天空和周围变化。",
+          "description": "在操场外圈找个不挡路的位置，看看天空和校园灯光。",
           "cost": [
             0,
             0
@@ -7818,7 +8514,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "waterside",
-      "description": "在允许停留的公共步道看水面，按天气和体力缩短路线。",
+      "description": "沿水边步道走一小段，看看水面、画个小速写。别靠近湿滑的边缘，累了就返回。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -7894,7 +8591,7 @@
           "publicAllowed": true,
           "id": "waterside_sketch",
           "title": "速写一个画面",
-          "description": "用简单线条记下共同看到的景物。",
+          "description": "用纸笔画下眼前的水面和岸边，几笔简单线条就够了。",
           "cost": [
             0,
             0
@@ -7950,7 +8647,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "western",
-      "description": "意面、扒类与焗饭提供另一种正餐选择；不是生理周期决定它是否更好。",
+      "description": "一起吃份意面、扒类或焗饭，坐下来聊聊天。先看看菜单，按口味和忌口选。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -8033,7 +8731,7 @@
           "publicAllowed": true,
           "id": "western_meal",
           "title": "意面简餐",
-          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "description": "各点一份喜欢的意面，坐下来慢慢吃。留意酱汁里的奶制品和其他忌口。",
           "cost": [
             80,
             120
@@ -8095,7 +8793,7 @@
       "publicAllowed": true,
       "id": "aqua_observe",
       "title": "看海洋动物",
-      "description": "看海洋动物。？",
+      "description": "一起看看鱼群和海洋动物，遇到有趣的就停下来多看一会儿。",
       "cost": [
         0,
         0
@@ -8145,7 +8843,7 @@
         0
       ],
       "load": 1,
-      "description": "在允许拍摄区域进行，不影响其他观众。",
+      "description": "借水族箱的光拍张剪影，轮流给对方取景。避开人流，不开闪光灯。",
       "tags": [
         "nature",
         "indoor",
@@ -8191,7 +8889,7 @@
         15
       ],
       "load": 3,
-      "description": "轻松玩一轮，不把输赢当表现考核。",
+      "description": "轮流投一轮篮，看看谁手感更好，玩累了就停。",
       "tags": [
         "play"
       ],
@@ -8235,7 +8933,7 @@
         10
       ],
       "load": 1,
-      "description": "设定次数，不为了奖品不断追加花费。",
+      "description": "挑个喜欢的娃娃，试着抓几次。先说好花多少，没抓到也不用追加。",
       "tags": [
         "play"
       ],
@@ -8279,7 +8977,7 @@
         15
       ],
       "load": 2,
-      "description": "可互换操作方式；竞赛规则由双方同意。",
+      "description": "各选一辆车跑一轮，看看谁先到终点，也可以换着玩。",
       "tags": [
         "play"
       ],
@@ -8318,7 +9016,7 @@
       "publicAllowed": true,
       "id": "architecture_detail",
       "title": "找一处建筑细节",
-      "description": "各选门窗、纹理或颜色中的一个细节。",
+      "description": "各找一处喜欢的门窗、墙面纹理或颜色，指给对方看。",
       "cost": [
         0,
         0
@@ -8363,7 +9061,7 @@
       "publicAllowed": true,
       "id": "badminton_rally",
       "title": "一起连续回球",
-      "description": "轮流放慢球速，目标是一起多接几个球。",
+      "description": "放慢球速轻松打几轮，争取一起多接几个球。",
       "cost": [
         0,
         30
@@ -8417,7 +9115,7 @@
       "publicAllowed": true,
       "id": "bakery_share",
       "title": "分一份面包",
-      "description": "在玻璃房西点屋选小份面包或点心，核对食材后分享，作为补充能量的加餐。",
+      "description": "在玻璃房西点屋挑份面包或点心，分着尝尝。留意有没有不吃的食材。",
       "cost": [
         8,
         18
@@ -8465,7 +9163,7 @@
       "publicAllowed": true,
       "id": "boardgame_cards",
       "title": "玩一轮轻量卡牌",
-      "description": "只选双方熟悉的规则，输赢不设置额外惩罚。",
+      "description": "选一副熟悉的卡牌玩一轮，边玩边聊，输了也不设惩罚。",
       "cost": [
         20,
         50
@@ -8512,7 +9210,7 @@
       "publicAllowed": true,
       "id": "boardgame_coop",
       "title": "完成一个合作关卡",
-      "description": "共同解决一关，遇到复杂规则可改成简单模式。",
+      "description": "一起商量怎么过关，卡住了就换个简单玩法。",
       "cost": [
         20,
         50
@@ -8559,7 +9257,7 @@
       "publicAllowed": true,
       "id": "book_recommend",
       "title": "互荐一本书",
-      "description": "各自挑一个想分享的主题，允许跳过长篇介绍。",
+      "description": "各挑一本喜欢的书，说说哪里吸引自己，不用讲得很长。",
       "cost": [
         0,
         0
@@ -8605,7 +9303,7 @@
       "publicAllowed": true,
       "id": "botany_shapes",
       "title": "寻找三种叶形",
-      "description": "用观察比较叶形，保留植物原貌。",
+      "description": "找三种形状不同的叶子，看看边缘和纹路有什么区别，不摘叶子。",
       "cost": [
         0,
         0
@@ -8650,7 +9348,7 @@
       "publicAllowed": true,
       "id": "botany_sketch",
       "title": "画一片叶子",
-      "description": "用纸笔各画一个观察细节，作品不必精致。",
+      "description": "各挑一片叶子，用纸笔画出喜欢的形状，画得像不像都没关系。",
       "cost": [
         0,
         0
@@ -8703,7 +9401,7 @@
       "publicAllowed": true,
       "id": "breakfast_eat",
       "title": "吃一份早餐面包",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "各买一份喜欢的早餐面包，一起吃完再出发。按胃口选份量，留意馅料。",
       "cost": [
         10,
         20
@@ -8760,7 +9458,7 @@
       "publicAllowed": true,
       "id": "breakfast_pack",
       "title": "买好明早早餐",
-      "description": "离开前在玻璃房西点屋采购明早的面包点心，确认保存条件与携带方式。",
+      "description": "在玻璃房西点屋买好明早的面包或点心，挑能放到早上的，装好带走。",
       "cost": [
         10,
         20
@@ -8809,7 +9507,7 @@
       "publicAllowed": true,
       "id": "bridge_view",
       "title": "找一个共同景物",
-      "description": "各自挑一个喜欢的细节，再看看对方选的地方。",
+      "description": "各指一个桥边喜欢的景物，看看对方注意到了什么。",
       "cost": [
         0,
         0
@@ -8856,7 +9554,7 @@
       "publicAllowed": true,
       "id": "cafe_focus",
       "title": "专注聊十分钟",
-      "description": "双方愿意时暂放手机，谈一个轻松话题。",
+      "description": "把手机先放一会儿，聊聊最近的小事，认真听对方说。",
       "cost": [
         0,
         0
@@ -8901,7 +9599,7 @@
       "publicAllowed": true,
       "id": "cafe_warm",
       "title": "选一杯温饮",
-      "description": "按双方口味选择，费用已计入咖啡小坐。",
+      "description": "各点一杯喜欢的温饮，捧着慢慢喝。想少喝咖啡因就换个选择。",
       "cost": [
         0,
         0
@@ -8940,6 +9638,177 @@
       ]
     },
     {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 10,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "campus_budget_breakfast",
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "title": "吃份平价早餐",
+      "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，可以打包带回楼下有盖处吃。按胃口选够吃的份量，饮品另外点。",
+      "cost": [
+        6,
+        10
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 10,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "campus_canteen",
+        "canteen",
+        "dorm_takeaway_meal"
+      ],
+      "allowedSceneTypes": [
+        "campus_canteen",
+        "canteen",
+        "dorm_takeaway_meal"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 10,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "campus_budget_meal",
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "title": "吃份平价饭菜",
+      "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包带回楼下有盖处吃。先看看价签和忌口，饮品、加菜另算。",
+      "cost": [
+        12,
+        16
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 10,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "campus_canteen",
+        "canteen",
+        "dorm_takeaway_meal"
+      ],
+      "allowedSceneTypes": [
+        "campus_canteen",
+        "canteen",
+        "dorm_takeaway_meal"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 10,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "campus_budget_supper",
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "title": "吃份简单宵夜",
+      "description": "从食堂或附近买两份热包子当宵夜，在店里吃或打包带回有盖处。先看看还有没有供应，留意馅料和忌口。",
+      "cost": [
+        6,
+        8
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 10,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "dorm_takeaway_meal"
+      ],
+      "allowedSceneTypes": [
+        "dorm_takeaway_meal"
+      ]
+    },
+    {
       "group": "play",
       "mode": "multi",
       "novelty": 55,
@@ -8953,7 +9822,7 @@
         0
       ],
       "load": 1,
-      "description": "双方愿意再拍，不要求完成照片任务。",
+      "description": "轮流给对方拍几张校园里的照片，挑喜欢的角度就好。",
       "tags": [
         "nature",
         "quiet"
@@ -8998,7 +9867,7 @@
         0
       ],
       "load": 1,
-      "description": "把注意力放在共同看到的东西上。",
+      "description": "看看周围的树、灯光或天空，把注意到的小细节指给对方看。",
       "tags": [
         "nature",
         "quiet"
@@ -9052,7 +9921,7 @@
       "publicAllowed": true,
       "id": "canteen_pair",
       "title": "各选一道菜并用餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "各挑一道想吃的菜，配上主食一起吃。按食量点，看看有没有不吃的食材。",
       "cost": [
         40,
         70
@@ -9108,7 +9977,7 @@
       "publicAllowed": true,
       "id": "cantonese_meal",
       "title": "茶点正餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "点几样茶点配主食，边吃边聊。按食量点，留意肉类和面点里的食材。",
       "cost": [
         120,
         200
@@ -9163,7 +10032,7 @@
       "publicAllowed": true,
       "id": "craft_card",
       "title": "制作一张小卡片",
-      "description": "各做一张简单卡片，表达内容由本人选择。",
+      "description": "各做一张小卡片，画点图案或写两句话，做好后送给对方。",
       "cost": [
         30,
         60
@@ -9216,7 +10085,7 @@
       "publicAllowed": true,
       "id": "craft_clay",
       "title": "捏一个小物件",
-      "description": "使用场地提供的材料，选择各自想做的形状。",
+      "description": "用店里的黏土捏个小动物或小摆件，做好后放在一起看看。",
       "cost": [
         45,
         85
@@ -9262,7 +10131,7 @@
       "publicAllowed": true,
       "id": "dessert_ice",
       "title": "冰淇淋分享",
-      "description": "双方愿意且未限制冷饮时，选小份冰淇淋。",
+      "description": "挑份喜欢的冰淇淋，分着尝尝口味；不想吃冷的就换温热点心。",
       "cost": [
         0,
         0
@@ -9310,7 +10179,7 @@
       "publicAllowed": true,
       "id": "dessert_warm",
       "title": "温热甜点",
-      "description": "按明确口味挑一份温热甜点。",
+      "description": "点份温热甜点，慢慢吃，顺便歇歇脚。",
       "cost": [
         0,
         0
@@ -9363,7 +10232,7 @@
         0
       ],
       "load": 1,
-      "description": "组内设计扩展：对照各自看中的内容。",
+      "description": "各选一件喜欢的展品，说说吸引自己的地方，再看看对方选的那件。",
       "tags": [
         "culture",
         "learning",
@@ -9405,7 +10274,7 @@
       "publicAllowed": true,
       "id": "film_exchange",
       "title": "聊一个印象镜头",
-      "description": "离场后各说一个记住的画面，允许意见不同。",
+      "description": "散场后各说一个印象深的镜头，聊聊为什么喜欢，想法不同也没关系。",
       "cost": [
         0,
         0
@@ -9452,7 +10321,7 @@
       "publicAllowed": true,
       "id": "film_pick",
       "title": "共同选片并观影",
-      "description": "各提一个片型，选择双方接受且已确认场次的一部。票价为两人设计区间。",
+      "description": "各说一个想看的类型，挑一部两个人都愿意看的电影，买票后一起看。",
       "cost": [
         60,
         100
@@ -9502,7 +10371,7 @@
         0
       ],
       "load": 1,
-      "description": "只保留愿意拍的部分，不必一直取景。",
+      "description": "借花木和灯光拍几张照片，拍够了就收起手机继续走。",
       "tags": [
         "nature",
         "romantic",
@@ -9548,7 +10417,7 @@
         0
       ],
       "load": 1,
-      "description": "基于拍照活动的创作扩展，不是原作事实。",
+      "description": "轮流当摄影师和模特，试试对方喜欢的角度，拍完一起选照片。",
       "tags": [
         "nature",
         "romantic",
@@ -9589,7 +10458,7 @@
       "publicAllowed": true,
       "id": "glass_burger",
       "title": "汉堡简餐",
-      "description": "在玻璃房西餐窗口按食量选择汉堡与薯条，菜单和实际供应需确认。",
+      "description": "在玻璃房西餐窗口点汉堡和薯条，找个位置一起吃。先看看当天菜单，按食量点。",
       "cost": [
         30,
         55
@@ -9643,7 +10512,7 @@
       "publicAllowed": true,
       "id": "glass_noodle",
       "title": "潮汕汤河粉",
-      "description": "在玻璃房汤河粉窗口按偏好选择猪杂、瘦肉或牛肉丸等配料，实际食材与过敏原需确认。",
+      "description": "在玻璃房各点一碗汤河粉，选喜欢的猪杂、瘦肉或牛肉丸配料。留意食材和忌口。",
       "cost": [
         30,
         55
@@ -9701,7 +10570,7 @@
         160
       ],
       "load": 6,
-      "description": "双方均愿意且具备条件时再练习。",
+      "description": "轮流练习滑行和停步，在空一点的区域慢慢来，不会的动作先问工作人员。",
       "tags": [
         "play",
         "exercise",
@@ -9753,7 +10622,7 @@
         160
       ],
       "load": 6,
-      "description": "量力而行，不做危险挑战。",
+      "description": "沿场边慢慢滑几圈，累了就休息。初学时别追速度，留意脚下和周围的人。",
       "tags": [
         "play",
         "exercise",
@@ -9805,7 +10674,7 @@
         30
       ],
       "load": 1,
-      "description": "一起选少量零食；费用为原型假设。",
+      "description": "各挑一小份想吃的零食，找个允许吃东西的位置分着尝。",
       "tags": [
         "food",
         "daily"
@@ -9852,7 +10721,7 @@
         0
       ],
       "load": 3,
-      "description": "浏览不等于消费，也不默认适合疲惫状态。",
+      "description": "逛几家感兴趣的店，看看陈列和新东西，喜欢再买。走累了就停。",
       "tags": [
         "daily"
       ],
@@ -9898,7 +10767,7 @@
         140
       ],
       "load": -2,
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "点几样喜欢的中式饭菜，配主食一起吃。按食量点，留意忌口。",
       "tags": [
         "food",
         "indoor",
@@ -9947,7 +10816,7 @@
       "publicAllowed": true,
       "id": "meal_style_raw",
       "title": "生食风格",
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "两个人都想吃生食时，挑家放心的店点一份正餐。留意食材，不能吃生食就换别的。",
       "cost": [
         140,
         140
@@ -10000,7 +10869,7 @@
       "publicAllowed": true,
       "id": "meal_style_spicy",
       "title": "辣味风格",
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "选些两个人都喜欢的辣味饭菜，配主食吃。按能接受的辣度点，别勉强。",
       "cost": [
         140,
         140
@@ -10058,7 +10927,7 @@
         140
       ],
       "load": -2,
-      "description": "选择双方接受的食材并实际用餐；具体菜单、份量与过敏原需现场确认，费用为两人设计区间。",
+      "description": "各点一份喜欢的西式简餐，边吃边聊。看看食材，按胃口选份量。",
       "tags": [
         "food",
         "indoor",
@@ -10108,7 +10977,7 @@
       "publicAllowed": true,
       "id": "museum_pick",
       "title": "挑一个最想再看的展品",
-      "description": "每人选一件展品，说明吸引自己的细节。",
+      "description": "各挑一件还想多看的展品，聊聊喜欢的细节。",
       "cost": [
         0,
         0
@@ -10153,7 +11022,7 @@
       "publicAllowed": true,
       "id": "museum_tool",
       "title": "猜猜农具的用途",
-      "description": "先说各自猜测，再阅读展签核对。",
+      "description": "看到不熟悉的农具，先猜猜怎么用，再一起看展签找答案。",
       "cost": [
         0,
         0
@@ -10199,7 +11068,7 @@
       "publicAllowed": true,
       "id": "music_memory",
       "title": "聊一段音乐记忆",
-      "description": "围绕这首歌聊一个轻松记忆，允许跳过私人话题。",
+      "description": "聊聊这首歌让你想起的事，分享愿意说的部分就好。",
       "cost": [
         0,
         0
@@ -10245,7 +11114,7 @@
       "publicAllowed": true,
       "id": "music_swap",
       "title": "交换一首推荐歌",
-      "description": "每人选一首，听完说一个想分享的理由。",
+      "description": "各选一首想推荐的歌，戴耳机听完，再说说为什么喜欢。",
       "cost": [
         0,
         0
@@ -10297,7 +11166,7 @@
       "publicAllowed": true,
       "id": "photo_color",
       "title": "寻找同一种颜色",
-      "description": "各找一个同色细节，比较画面里的变化。",
+      "description": "选一种颜色，各找几个同色的小细节拍下来，看看照片有什么不同。",
       "cost": [
         0,
         0
@@ -10342,7 +11211,7 @@
       "publicAllowed": true,
       "id": "photo_pair",
       "title": "轮流拍一组照片",
-      "description": "双方同意再拍，照片用途由本人决定。",
+      "description": "轮流给对方拍几张照片，拍完一起挑喜欢的；分享前先问对方。",
       "cost": [
         0,
         0
@@ -10391,7 +11260,7 @@
       "publicAllowed": true,
       "id": "photo_print",
       "title": "冲印一张共同照片",
-      "description": "从已完成拍照活动里选一张，双方确认后冲印。",
+      "description": "从一起拍的照片里挑一张两个人都喜欢的，印成纸质照片带走。",
       "cost": [
         10,
         20
@@ -10445,7 +11314,7 @@
       "publicAllowed": true,
       "id": "picnic_cloud",
       "title": "看云说一个联想",
-      "description": "轮流说一个云朵或景物带来的轻松联想。",
+      "description": "看看云朵像什么，轮流说个有趣的联想，也可以安静看一会儿。",
       "cost": [
         0,
         0
@@ -10491,7 +11360,7 @@
       "publicAllowed": true,
       "id": "picnic_share",
       "title": "分享备好的野餐",
-      "description": "食物来自之前采购或自行准备，食材按双方限制选择。",
+      "description": "把提前买好或备好的食物摆出来，分着吃。带上水，吃完收好垃圾。",
       "cost": [
         0,
         0
@@ -10542,7 +11411,7 @@
       "publicAllowed": true,
       "id": "pingpong_rally",
       "title": "协作连续回球",
-      "description": "以一起接住十个球为目标，失误就重新来。",
+      "description": "一起试着连续接住十个球，失误就重新来。",
       "cost": [
         0,
         0
@@ -10596,7 +11465,7 @@
       "publicAllowed": true,
       "id": "pingpong_teach",
       "title": "轮流练一个动作",
-      "description": "会打的一方示范，另一方可随时换成轻松打球。",
+      "description": "会打的一方示范一个动作，试着练几次，再换成轻松对打。",
       "cost": [
         0,
         0
@@ -10650,7 +11519,7 @@
       "publicAllowed": true,
       "id": "purchase_picnic",
       "title": "采购一份野餐包",
-      "description": "购买可携带的食物与水，本次采购只供一次分享。",
+      "description": "一起挑方便带走的食物和水，买好下一站要吃的一份野餐。",
       "cost": [
         25,
         45
@@ -10697,7 +11566,7 @@
       "publicAllowed": true,
       "id": "rainforest_leaf",
       "title": "比较两种叶形",
-      "description": "找两个看起来不同的叶片，说说各自的观察。",
+      "description": "找两种不一样的叶子，看看大小、形状和纹路，互相说说发现。",
       "cost": [
         0,
         0
@@ -10747,7 +11616,7 @@
         0
       ],
       "load": 0,
-      "description": "不强迫交流，也不要求读同一本书。",
+      "description": "并排坐着各看喜欢的书，看到有趣的先记下，等离开阅览区再聊。",
       "tags": [
         "culture",
         "learning",
@@ -10797,7 +11666,7 @@
         0
       ],
       "load": 0,
-      "description": "仅在允许交谈的区域分享自己的理解。",
+      "description": "在允许交谈的区域，给对方读一小段喜欢的内容，聊聊自己的感受。",
       "tags": [
         "culture",
         "learning",
@@ -10840,7 +11709,7 @@
       "publicAllowed": true,
       "id": "script_mystery",
       "title": "共同推理一个剧本",
-      "description": "先确认题材、人数、场次与双方接受程度，再参加共同推理。",
+      "description": "一起看线索、交换猜想，试着解开故事里的谜。提前确认题材、人数和场次。",
       "cost": [
         80,
         160
@@ -10896,7 +11765,7 @@
         0
       ],
       "load": 2,
-      "description": "不预设消费，也不承诺所有店都能进。",
+      "description": "沿街看看小店，遇到开着又感兴趣的就进去逛逛，不买东西也可以。",
       "tags": [
         "culture",
         "photo",
@@ -10942,7 +11811,7 @@
         0
       ],
       "load": 1,
-      "description": "组内设计扩展：只选双方愿意尝试的风格，不偷拍、不强买。",
+      "description": "给对方挑一种平时少穿的风格，愿意的话就试试，合适再买。",
       "tags": [
         "culture",
         "photo",
@@ -10988,7 +11857,7 @@
         20
       ],
       "load": 1,
-      "description": "组内设计扩展：预算内互选，接受拒绝。",
+      "description": "在说好的预算里给对方挑一件小东西，不喜欢就一起换个选择。",
       "tags": [
         "food",
         "indoor",
@@ -11034,7 +11903,7 @@
         20
       ],
       "load": 1,
-      "description": "活动可以不选；不选就是浏览。",
+      "description": "一起挑点喜欢的水果，看看新鲜程度和价格，买够两个人吃的就好。",
       "tags": [
         "food",
         "indoor",
@@ -11080,7 +11949,7 @@
         60
       ],
       "load": 1,
-      "description": "原语料包含共同选购；此处分段是设计拆分。",
+      "description": "各挑一样喜欢的零食，顺便看看对方平时爱吃什么。先看价格，别买太多。",
       "tags": [
         "food",
         "indoor",
@@ -11121,7 +11990,7 @@
       "publicAllowed": true,
       "id": "supper_barbecue",
       "title": "选择辣味肉串并用餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "点些喜欢的辣味肉串，坐下来当宵夜吃。先说好辣度，肉串要烤熟。",
       "cost": [
         40,
         80
@@ -11174,7 +12043,7 @@
       "publicAllowed": true,
       "id": "supper_snacks",
       "title": "选择熟食主食并用餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "挑两份热乎的熟食主食当宵夜，找个位置一起吃。看看食材，按食量点。",
       "cost": [
         20,
         50
@@ -11227,7 +12096,7 @@
       "publicAllowed": true,
       "id": "switch_coop",
       "title": "玩一个合作关卡",
-      "description": "选双方接受的合作游戏，设备和游戏需先确认。",
+      "description": "选个两个人都愿意玩的合作游戏，一起商量怎么过关。先问店里有没有这款。",
       "cost": [
         30,
         60
@@ -11271,7 +12140,7 @@
       "publicAllowed": true,
       "id": "switch_race",
       "title": "玩一轮赛车游戏",
-      "description": "按双方愿意的规则体验一轮，输赢不设置惩罚。",
+      "description": "各选角色跑一轮赛车，熟悉操作后再比一比，输了也不设惩罚。",
       "cost": [
         20,
         40
@@ -11315,7 +12184,7 @@
       "publicAllowed": true,
       "id": "talk_highlight",
       "title": "分享今天一个小亮点",
-      "description": "各说一件愿意分享的事情，认真听完再回应。",
+      "description": "各说一件今天开心或有意思的小事，听听对方的一天。",
       "cost": [
         0,
         0
@@ -11345,10 +12214,12 @@
         "physicalLoad": 0
       },
       "allowedSceneIds": [
+        "dorm_downstairs_shelter",
         "public_lounge",
         "taishan_supermarket_front"
       ],
       "allowedSceneTypes": [
+        "dorm_downstairs_shelter",
         "public_lounge",
         "taishan_supermarket_front"
       ]
@@ -11362,7 +12233,7 @@
       "publicAllowed": true,
       "id": "talk_next",
       "title": "各提一个下次想做的事",
-      "description": "把下一次兴趣写成备选，不要求当场承诺。",
+      "description": "各说一件下次想一起做的事，先记下来，有空再约。",
       "cost": [
         0,
         0
@@ -11392,10 +12263,12 @@
         "physicalLoad": 0
       },
       "allowedSceneIds": [
+        "dorm_downstairs_shelter",
         "public_lounge",
         "taishan_supermarket_front"
       ],
       "allowedSceneTypes": [
+        "dorm_downstairs_shelter",
         "public_lounge",
         "taishan_supermarket_front"
       ]
@@ -11409,7 +12282,7 @@
       "publicAllowed": true,
       "id": "tea_share",
       "title": "分着尝两样茶点",
-      "description": "先核对食材和双方食量，茶点费用包含在场景中。",
+      "description": "挑两样喜欢的茶点，分着尝尝，聊聊哪样更好吃。留意不吃的食材。",
       "cost": [
         0,
         0
@@ -11456,7 +12329,7 @@
       "publicAllowed": true,
       "id": "track_observe",
       "title": "看一会儿校园夜色",
-      "description": "找不影响运动的人行位置，看天空和周围变化。",
+      "description": "在操场外圈找个不挡路的位置，看看天空和校园灯光。",
       "cost": [
         0,
         0
@@ -11501,7 +12374,7 @@
       "publicAllowed": true,
       "id": "track_stretch",
       "title": "各自轻拉伸",
-      "description": "双方愿意时做熟悉的轻拉伸动作，不安排挑战。",
+      "description": "各做几下熟悉的轻拉伸，放松肩背和腿，拉到舒服就好。",
       "cost": [
         0,
         0
@@ -11546,7 +12419,7 @@
       "publicAllowed": true,
       "id": "waterside_sketch",
       "title": "速写一个画面",
-      "description": "用简单线条记下共同看到的景物。",
+      "description": "用纸笔画下眼前的水面和岸边，几笔简单线条就够了。",
       "cost": [
         0,
         0
@@ -11597,7 +12470,7 @@
       "publicAllowed": true,
       "id": "western_meal",
       "title": "意面简餐",
-      "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+      "description": "各点一份喜欢的意面，坐下来慢慢吃。留意酱汁里的奶制品和其他忌口。",
       "cost": [
         80,
         120
@@ -11904,6 +12777,18 @@
             "fact": "scene.indoor",
             "op": "eq",
             "value": false
+          }
+        ],
+        "any": [
+          {
+            "fact": "scene.sheltered",
+            "op": "exists",
+            "value": false
+          },
+          {
+            "fact": "scene.sheltered",
+            "op": "neq",
+            "value": true
           }
         ]
       },
@@ -13542,7 +14427,7 @@
       {
         "id": "E-P006",
         "type": "evidence",
-        "label": "商场内可组合电玩、电影和用餐；每项可选活动单独计算时间与负担。"
+        "label": "商场内可组合电玩、电影和用餐；同地点按场景预留停留时间，所选活动分别计算费用与负担。"
       },
       {
         "id": "E-P007",
@@ -13720,14 +14605,24 @@
         "label": "公开自述中出现电影后组队游戏的休闲安排，可作为协作游戏灵感；价格不转用到当前目录。"
       },
       {
+        "id": "E-user-budget-campus-meals",
+        "type": "evidence",
+        "label": "校园食堂和芷园增加可选平价早餐与饭菜；宿舍楼下吃饭支持从食堂或附近打包后用餐，兼顾安静、避雨和校园范围宵夜。两人早餐6至10元、午晚餐每餐12至16元、简单宵夜6至8元，四餐费用上界50元；保留原有菜肴和费用，宵夜由用户另选。"
+      },
+      {
         "id": "E-user-campus-canteen",
         "type": "evidence",
         "label": "用户要求通用学校范围可安排早餐、午餐和晚餐，新增校园食堂作为不绑定学校或宿舍区的用餐地点类型。场景预留45分钟；早餐两人10至20元、午晚餐两人40至70元沿用项目设计区间，不表示任何真实食堂的实测价格或供应。"
       },
       {
+        "id": "E-user-campus-shelter",
+        "type": "evidence",
+        "label": "宿舍楼下的有盖处可作为免费、低负担的停留备选，靠边避开人流，适用于各学校；泰超门口吧台可避雨，泰山实验楼架空层花园在有顶处停留。"
+      },
+      {
         "id": "E-user-departures",
         "type": "evidence",
-        "label": "行程默认各自回去，告别预留10分钟；明确选择一起走预留20分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。"
+        "label": "行程默认各自回去，告别预留5分钟；明确选择一起走预留30分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。"
       },
       {
         "id": "E-user-glass-boardgame",
@@ -14928,6 +15823,21 @@
         "category": "校园步道"
       },
       {
+        "id": "campus_budget_breakfast",
+        "type": "activity",
+        "label": "吃份平价早餐"
+      },
+      {
+        "id": "campus_budget_meal",
+        "type": "activity",
+        "label": "吃份平价饭菜"
+      },
+      {
+        "id": "campus_budget_supper",
+        "type": "activity",
+        "label": "吃份简单宵夜"
+      },
+      {
         "id": "campus_canteen",
         "type": "scene",
         "label": "校园食堂",
@@ -15022,6 +15932,20 @@
         "id": "dessert_warm",
         "type": "activity",
         "label": "温热甜点"
+      },
+      {
+        "id": "dorm_downstairs_shelter",
+        "type": "scene",
+        "label": "宿舍楼下有盖处",
+        "placeKind": "ordinary",
+        "category": "校园日常停留点"
+      },
+      {
+        "id": "dorm_takeaway_meal",
+        "type": "scene",
+        "label": "宿舍楼下吃饭",
+        "placeKind": "ordinary",
+        "category": "校园打包用餐点"
       },
       {
         "id": "east_lab_stop",
@@ -15565,7 +16489,7 @@
         "type": "scene",
         "label": "泰山超市门口",
         "placeKind": "ordinary",
-        "category": "校园露天停留区"
+        "category": "校园有盖停留区"
       },
       {
         "id": "talk_highlight",
@@ -15601,7 +16525,7 @@
         "type": "scene",
         "label": "教四教室",
         "placeKind": "ordinary",
-        "category": "或许可以自习……"
+        "category": "校园自习教室"
       },
       {
         "id": "track_observe",
@@ -15619,6 +16543,16 @@
         "label": "东区运动场外圈",
         "placeKind": "ordinary",
         "category": "操场外圈"
+      },
+      {
+        "id": "user:2026-10-14-budget-campus-meals",
+        "type": "user_design",
+        "label": "用户项目设计；现实信息待确认"
+      },
+      {
+        "id": "user:2026-10-14-campus-shelter",
+        "type": "user_design",
+        "label": "用户项目设计；现实信息待确认"
       },
       {
         "id": "user:2026-10-14-departure-design",
@@ -15809,6 +16743,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-038645c7561f04",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "allows_activity",
+        "object": "campus_budget_meal",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-03feb2d618ac80",
         "subject": "taishan_glass",
         "predicate": "allows_activity",
@@ -15931,7 +16876,8 @@
         "object": "talk_next",
         "evidenceIds": [
           "E-campus-taichao",
-          "E-research-novelty"
+          "E-research-novelty",
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -16315,6 +17261,16 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-1384ba8adb23bd",
+        "subject": "E-user-budget-campus-meals",
+        "predicate": "derived_from",
+        "object": "user:2026-10-14-budget-campus-meals",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-13fbc8b956f468",
         "subject": "music_swap",
         "predicate": "has_feature",
@@ -16444,6 +17400,17 @@
         "object": "E-campus-food",
         "evidenceIds": [
           "E-campus-food"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-1a0fa920ac2578",
+        "subject": "campus_canteen",
+        "predicate": "allows_activity",
+        "object": "campus_budget_breakfast",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -16880,6 +17847,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-2944d3966cf8ef",
+        "subject": "campus_budget_meal",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-2961c507c9db7d",
         "subject": "camellia_garden",
         "predicate": "supported_by",
@@ -17216,6 +18193,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-342f4684738db1",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-349cc2dcd04836",
         "subject": "taishan_glass",
         "predicate": "allows_activity",
@@ -17396,6 +18384,16 @@
         "object": "tag:daily",
         "evidenceIds": [
           "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-3917dfcb7081ed",
+        "subject": "dorm_downstairs_shelter",
+        "predicate": "supported_by",
+        "object": "E-user-campus-shelter",
+        "evidenceIds": [
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -17693,6 +18691,16 @@
           "E-G006"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-43587a11673675",
+        "subject": "campus_budget_breakfast",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-447c2b9d0895c0",
@@ -18155,12 +19163,33 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-541a38be836482",
+        "subject": "taishan_supermarket_front",
+        "predicate": "supported_by",
+        "object": "E-user-campus-shelter",
+        "evidenceIds": [
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-54934305a587b7",
         "subject": "mall_snacks",
         "predicate": "supported_by",
         "object": "E-P010",
         "evidenceIds": [
           "E-P010"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-54d0aa2fe7f4ee",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "allows_activity",
+        "object": "campus_budget_supper",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -18425,6 +19454,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-5e4cf251b685a4",
+        "subject": "campus_budget_breakfast",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-5ed5b7e8630c10",
         "subject": "R-fatigue-activity",
         "predicate": "supported_by",
@@ -18576,6 +19615,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-621c35ddc8268c",
+        "subject": "campus_budget_supper",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-62dcfede0a5bf0",
         "subject": "photo_print",
         "predicate": "supported_by",
@@ -18709,6 +19758,16 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-6660ceb5e13e55",
+        "subject": "dorm_downstairs_shelter",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-6776b7c73d5247",
         "subject": "campus_picnic",
         "predicate": "preparationIds",
@@ -18746,6 +19805,17 @@
         "object": "E-user-departures",
         "evidenceIds": [
           "E-user-departures"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-68102235733e80",
+        "subject": "dorm_downstairs_shelter",
+        "predicate": "allows_activity",
+        "object": "talk_next",
+        "evidenceIds": [
+          "E-research-novelty",
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -18882,6 +19952,17 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-6d4c07e915b27d",
+        "subject": "dorm_downstairs_shelter",
+        "predicate": "allows_activity",
+        "object": "talk_highlight",
+        "evidenceIds": [
+          "E-research-phone",
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-6d879bdf21c803",
         "subject": "picnic_share",
         "predicate": "preconditions",
@@ -18898,6 +19979,16 @@
         "object": "tag:food",
         "evidenceIds": [
           "E-P007"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-6f9d9b2e25b584",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "supported_by",
+        "object": "E-user-budget-campus-meals",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
         ],
         "assertionKind": "designed"
       },
@@ -18921,6 +20012,16 @@
           "E-G002"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-6fec1f349bbf2d",
+        "subject": "campus_budget_breakfast",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-7054c5ee58e019",
@@ -18970,6 +20071,17 @@
         "object": "tag:food",
         "evidenceIds": [
           "E-P010"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-7279fc5e21e9ea",
+        "subject": "campus_canteen",
+        "predicate": "allows_activity",
+        "object": "campus_budget_meal",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -19175,6 +20287,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-7b240a3411f022",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-7b40ea76978de9",
         "subject": "botany_sketch",
         "predicate": "supported_by",
@@ -19214,6 +20337,16 @@
           "E-lab-time",
           "E-research-phone",
           "E-user-public-lounge"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-7c604a1f8c3932",
+        "subject": "campus_budget_supper",
+        "predicate": "supported_by",
+        "object": "E-user-budget-campus-meals",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
         ],
         "assertionKind": "designed"
       },
@@ -20058,6 +21191,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-949743b4194b5d",
+        "subject": "campus_budget_breakfast",
+        "predicate": "supported_by",
+        "object": "E-user-budget-campus-meals",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-949e3975b307c4",
         "subject": "mall",
         "predicate": "supported_by",
@@ -20232,6 +21375,17 @@
         "evidenceIds": [
           "E-P001",
           "E-fiction-picnic"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-97b7f90ed83507",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -20491,6 +21645,16 @@
         "object": "E-citywalk",
         "evidenceIds": [
           "E-citywalk"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-a07dcd05d107bc",
+        "subject": "campus_budget_supper",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
         ],
         "assertionKind": "designed"
       },
@@ -20864,6 +22028,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-ac46f36258b4b8",
+        "subject": "campus_budget_supper",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-acc1cb3926a7c3",
         "subject": "read_share",
         "predicate": "supported_by",
@@ -21094,6 +22268,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-b319acc0de8d22",
+        "subject": "campus_budget_meal",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-b366685530c260",
         "subject": "campus",
         "predicate": "has_feature",
@@ -21168,6 +22352,16 @@
         "evidenceIds": [
           "E-shared-game",
           "E-user-glass-boardgame"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-b52138d34ea8ff",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "supported_by",
+        "object": "E-user-campus-shelter",
+        "evidenceIds": [
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -21398,6 +22592,16 @@
           "E-P003",
           "E-P010",
           "E-user-meal-periods"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-baacfd79459cda",
+        "subject": "E-user-campus-shelter",
+        "predicate": "derived_from",
+        "object": "user:2026-10-14-campus-shelter",
+        "evidenceIds": [
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -22035,6 +23239,16 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-cdc0f71f958e16",
+        "subject": "dorm_downstairs_shelter",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-cdc992b5231311",
         "subject": "western",
         "predicate": "has_feature",
@@ -22453,7 +23667,8 @@
         "predicate": "has_feature",
         "object": "tag:daily",
         "evidenceIds": [
-          "E-campus-taichao"
+          "E-campus-taichao",
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -22476,6 +23691,19 @@
         "object": "E-C001",
         "evidenceIds": [
           "E-C001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-dc31600f35618f",
+        "subject": "canteen",
+        "predicate": "allows_activity",
+        "object": "campus_budget_meal",
+        "evidenceIds": [
+          "E-P002",
+          "E-campus-zhiyuan",
+          "E-user-budget-campus-meals",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -22918,7 +24146,8 @@
         "object": "talk_highlight",
         "evidenceIds": [
           "E-campus-taichao",
-          "E-research-phone"
+          "E-research-phone",
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -22980,6 +24209,16 @@
         "object": "E-G001",
         "evidenceIds": [
           "E-G001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e8898c021e70b2",
+        "subject": "campus_budget_meal",
+        "predicate": "supported_by",
+        "object": "E-user-budget-campus-meals",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
         ],
         "assertionKind": "designed"
       },
@@ -23406,7 +24645,18 @@
         "predicate": "has_feature",
         "object": "tag:outdoor",
         "evidenceIds": [
-          "E-campus-taichao"
+          "E-campus-taichao",
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f41192277361d3",
+        "subject": "dorm_downstairs_shelter",
+        "predicate": "has_feature",
+        "object": "tag:quiet",
+        "evidenceIds": [
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -23417,6 +24667,17 @@
         "object": "resource:meal_completed",
         "evidenceIds": [
           "E-P006"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f4e5c7d64464e2",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "allows_activity",
+        "object": "campus_budget_breakfast",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-shelter"
         ],
         "assertionKind": "designed"
       },
@@ -23610,6 +24871,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f9dde0f71af9c0",
+        "subject": "campus_budget_meal",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-fa1a49138b9bbb",
         "subject": "western_meal",
         "predicate": "has_feature",
@@ -23681,6 +24952,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-fb75db43c2a83b",
+        "subject": "dorm_takeaway_meal",
+        "predicate": "has_feature",
+        "object": "tag:quiet",
+        "evidenceIds": [
+          "E-user-budget-campus-meals",
+          "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-fb78f28810b4af",
         "subject": "reading",
         "predicate": "has_feature",
@@ -23703,6 +24985,19 @@
           "E-P006",
           "E-P009",
           "E-P010"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-fbf1176f9d3414",
+        "subject": "canteen",
+        "predicate": "allows_activity",
+        "object": "campus_budget_breakfast",
+        "evidenceIds": [
+          "E-P002",
+          "E-campus-zhiyuan",
+          "E-user-budget-campus-meals",
+          "E-user-meal-periods"
         ],
         "assertionKind": "designed"
       },
@@ -23814,5 +25109,5 @@
       }
     ]
   },
-  "contentRevision": "c1756332178a7fc1"
+  "contentRevision": "553ad193a6bacddb"
 }

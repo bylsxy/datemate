@@ -75,7 +75,8 @@ function normalizeScene(raw) {
   scene.typeId ??= scene.id;
   scene.quiet ??= scene.tags.includes('quiet');
   scene.seated ??= scene.load <= 0;
-  scene.weather ??= scene.indoor ? ['clear', 'rain', 'unknown'] : ['clear', 'unknown'];
+  scene.sheltered ??= false;
+  if (!scene.weather || Array.isArray(scene.weather) && !scene.weather.length) scene.weather = scene.indoor || scene.sheltered ? ['clear', 'rain', 'unknown'] : ['clear', 'unknown'];
   scene.default = [];
   scene.mealRoles ??= [];
   scene.source = scene.evidenceIds.map(id => id.replace(/^E-/, ''));
@@ -312,6 +313,8 @@ export function compileKnowledge(input) {
       ensure(raw.scauOnly === (raw.place.universityId === 'scau'), `${path} 华农学校属性须与 scauOnly 一致`);
     }
     ensure(typeof scene.indoor === 'boolean' && typeof scene.quiet === 'boolean', `${path} indoor/quiet 须为布尔值`);
+    ensure(typeof scene.sheltered === 'boolean', `${path}.sheltered 须为布尔值`);
+    ensure(Array.isArray(scene.weather) && scene.weather.every(value => ['clear', 'rain', 'unknown'].includes(value)) && new Set(scene.weather).size === scene.weather.length, `${path}.weather 须为不重复的有效天气选项`);
     ensure(['campus', 'near', 'off', 'current'].includes(scene.area), `${path}.area 无效`);
     scene.activities = raw.activityIds.map(id => {
       attachments.get(id).push(scene.id);

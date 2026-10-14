@@ -1,18 +1,90 @@
 {
-  "_comment": "地点是名词。minutes 是唯一耗时入口：同地点选0个或多个活动时，场景时长固定。编辑 place.name、场地设计参数和 activityIds；场地增量写 activityOverrides。rest 为原地休息且无活动。 dailyWindows 是每日重复的规划允许时段（0..1440，跨午夜拆段），availabilityBasis=planning_default；不是现实营业时间。windows 保留绝对行程时间窗。",
+  "_comment": "地点是名词。minutes 是场景基础时长，活动不另加时；晚间普通停留至少60分钟，宵夜至少30分钟。编辑 place.name、场地参数和 activityIds；活动在该场地的差异写 activityOverrides。rest 为原地休息且无活动。indoor 表示室内，sheltered 表示有遮蔽，可为非室内的有盖处。dailyWindows 是每日重复的规划允许时段（0..1440，跨午夜拆段），availabilityBasis=planning_default；具体营业和通行看当天情况。windows 保留绝对行程时间窗。",
   "schemaVersion": "manual-knowledge-1.0",
   "scenes": [
+    {
+      "id": "dorm_takeaway_meal",
+      "place": {
+        "name": "宿舍楼下吃饭",
+        "kind": "ordinary",
+        "category": "校园打包用餐点",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "从食堂或附近买好打包饭，带到宿舍楼下有盖、能放稳餐盒的位置一起吃。靠边避开人流，吃完把垃圾带走。",
+      "scauOnly": false,
+      "minutes": 45,
+      "cost": [0, 0],
+      "load": 0,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 0,
+      "bold": false,
+      "crowdRisk": "low",
+      "seated": false,
+      "tags": ["food", "daily", "quiet", "outdoor"],
+      "weather": ["clear", "rain", "unknown"],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": ["E-user-campus-shelter", "E-user-budget-campus-meals"],
+      "activityIds": ["campus_budget_breakfast", "campus_budget_meal", "campus_budget_supper"],
+      "mealRoles": ["breakfast", "lunch", "dinner", "supper"],
+      "dailyWindows": [{"startMinute": 0, "endMinute": 1440}],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "availabilityNote": "楼下开放的有盖处全天可作停留点；用餐要选仍在供应的食堂窗口或附近店铺，预留取餐时间。"
+    },
+    {
+      "id": "dorm_downstairs_shelter",
+      "place": {
+        "name": "宿舍楼下有盖处",
+        "kind": "ordinary",
+        "category": "校园日常停留点",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "在宿舍楼下有顶的位置待一会儿，聊聊今天的事，也可以安静陪着彼此。靠边避开人流，别挡出入口；雨飘进来就换到更里面的有盖处。",
+      "scauOnly": false,
+      "minutes": 60,
+      "cost": [0, 0],
+      "load": -1,
+      "kind": "everyday",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 0,
+      "bold": false,
+      "crowdRisk": "low",
+      "seated": false,
+      "tags": ["daily", "quiet", "outdoor"],
+      "weather": ["clear", "rain", "unknown"],
+      "windows": [],
+      "evidenceIds": ["E-user-campus-shelter"],
+      "activityIds": ["talk_highlight", "talk_next"],
+      "dailyWindows": [{"startMinute": 0, "endMinute": 1440}],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "availabilityNote": "全天都可以安排在楼下开放的有盖处停留；避开门禁内侧，夜深后放轻声音。"
+    },
     {
       "id": "taishan_supermarket_front",
       "place": {
         "name": "泰山超市门口",
         "kind": "ordinary",
-        "category": "校园露天停留区",
+        "category": "校园有盖停留区",
         "universityId": "scau",
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "泰超门口露天餐饮与停留空间，氛围较好，但吃泰超略贵。",
+      "description": "在泰超门口的有盖吧台边坐坐、聊聊天，下雨也能避一会儿。吃泰超略贵，只停留不用消费。",
+      "sheltered": true,
+      "weather": ["clear", "rain", "unknown"],
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -29,7 +101,8 @@
         "outdoor"
       ],
       "evidenceIds": [
-        "E-campus-taichao"
+        "E-campus-taichao",
+        "E-user-campus-shelter"
       ],
       "activityIds": [
         "talk_highlight",
@@ -49,12 +122,14 @@
       "place": {
         "name": "教四教室",
         "kind": "ordinary",
-        "category": "或许可以自习……",
+        "category": "校园自习教室",
         "universityId": "scau",
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "注意谈恋爱不要打扰到别的自习的同学",
+      "description": "并排坐着各自看书或学习，累了再一起离开。教室有课就换个地方，别打扰自习的同学。",
+      "sheltered": true,
+      "weather": ["clear", "rain", "unknown"],
       "scauOnly": true,
       "minutes": 45,
       "cost": [
@@ -96,7 +171,8 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "晚间散步去处",
+      "description": "沿教四后面的坡路慢慢走，边走边聊。上坡有点费力，雨天路滑时换个地方。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -137,7 +213,9 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "情侣幽会场所",
+      "description": "在泰山实验楼架空层的花园边停一会儿，看看花木、聊聊天。有顶的位置可以避雨，别挡住通道。",
+      "sheltered": true,
+      "weather": ["clear", "rain", "unknown"],
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -170,7 +248,8 @@
     },
     {
       "id": "agriculture_museum",
-      "description": "注意似乎只有一周中的几天开放",
+      "description": "一起看看农具和农业展品，挑感兴趣的慢慢逛。馆内只在部分日期开放，出发前先看当天安排。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -243,7 +322,8 @@
     },
     {
       "id": "aquarium",
-      "description": "围绕鱼群和展陈一起观察，不需要持续主动聊天；门票和站立时间不可忽略。",
+      "description": "一起看鱼群和海洋动物，看到有趣的再聊几句。要买门票，也会站着走一阵。",
+      "sheltered": true,
       "minutes": 90,
       "cost": [
         260,
@@ -295,7 +375,8 @@
     },
     {
       "id": "badminton",
-      "description": "先确认场地和装备，采用合作回球而非强度挑战。",
+      "description": "在室内羽毛球场轻松打几轮，争取一起多接几个球。带好球拍和球，先确认有空场地。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         0,
@@ -346,7 +427,8 @@
     },
     {
       "id": "boardgame",
-      "description": "桌游店内可选择合作桌游或轻量卡牌，店铺与游戏可用性需先确认。",
+      "description": "找个桌游店坐下，玩熟悉的卡牌或合作游戏。先问清收费和有没有想玩的游戏。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -400,7 +482,8 @@
     {
       "id": "bridge_walk",
       "scauOnly": true,
-      "description": "沿紫荆桥方向步行至综合体育馆后方的桥，可继续往教工宿舍区再返回；路线长度与开放条件需现场确认。",
+      "description": "沿紫荆桥方向走到综合体育馆后方的桥边，看看景、聊聊天。还有体力的话，可以往教工宿舍区走一段再返回。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -452,7 +535,8 @@
     },
     {
       "id": "cafe",
-      "description": "这里可以聊天，也可以安静待一会儿；仅在双方接受饮品和现场环境时合适。",
+      "description": "点杯喜欢的饮品，坐下聊聊天或安静待一会儿。想轻松相处就挑不太吵的座位。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         80,
@@ -507,7 +591,8 @@
     {
       "id": "campus",
       "scauOnly": true,
-      "description": "泰山区12栋一列与15栋一列宿舍之间的道路可作散步路线，自述提到情侣常在此步行；人流与通行条件需现场确认。",
+      "description": "沿泰山区12栋与15栋两列宿舍之间的步道走走，聊聊今天的事。人多时靠边走，别堵住宿舍出入口。",
+      "sheltered": false,
       "minutes": 45,
       "cost": [
         0,
@@ -567,7 +652,8 @@
     },
     {
       "id": "campus_picnic",
-      "description": "带好已经准备的食物与铺垫，在允许停留的草地坐一会儿。",
+      "description": "带上备好的食物和野餐垫，在可以坐的草地上分着吃、看看天。下雨或草地湿了就换个地方。",
+      "sheltered": false,
       "minutes": 45,
       "cost": [
         0,
@@ -633,7 +719,8 @@
     {
       "id": "campus_tabletennis",
       "scauOnly": true,
-      "description": "泰山区12栋及15、16栋楼下有乒乓球桌，按双方水平选择轻松对打；需自带球拍和球，桌位可用性需现场确认。",
+      "description": "在泰山区12、15、16栋楼下的乒乓球桌轻松打几轮。自带球拍和球，有空桌再开始。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -685,7 +772,8 @@
     {
       "id": "campus_canteen",
       "scauOnly": false,
-      "description": "选择所在学校允许进入的校园食堂，核对窗口供应、饭点开放、座位和双方忌口后一起用餐。早餐、午餐和晚餐均为通用规划候选，具体食堂与供应需要现场确认。",
+      "description": "到学校食堂一起吃顿饭，按胃口选菜，也可以选平价套餐。留意窗口饭点和忌口，人多时找个空位再坐。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -729,7 +817,9 @@
       },
       "activityIds": [
         "breakfast_eat",
-        "canteen_pair"
+        "canteen_pair",
+        "campus_budget_breakfast",
+        "campus_budget_meal"
       ],
       "activityOverrides": {
         "breakfast_eat": {
@@ -772,7 +862,8 @@
     {
       "id": "canteen",
       "scauOnly": true,
-      "description": "芷园食堂是泰山区饭点用餐去处，自述提到其中有蜜雪冰城饮品与雪糕；各窗口供应、开放饭点及进入条件需确认。",
+      "description": "在芷园一起吃饭，饭后还可以到蜜雪冰城买饮品或雪糕。各窗口饭点不同，先看看当天有什么。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -815,7 +906,9 @@
       },
       "activityIds": [
         "breakfast_eat",
-        "canteen_pair"
+        "canteen_pair",
+        "campus_budget_breakfast",
+        "campus_budget_meal"
       ],
       "mealRoles": [
         "breakfast",
@@ -841,7 +934,8 @@
     },
     {
       "id": "cantonese",
-      "description": "可以用茶点与用餐衔接交流；菜品、份量和忌口仍需自己确认。",
+      "description": "点几样茶点或饭菜，边吃边聊。按两个人的食量点，留意食材和忌口。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -900,7 +994,8 @@
     },
     {
       "id": "cinema",
-      "description": "电影院提供观影场地；开放、预约和场次需要先确认。票价计入所选观影活动。",
+      "description": "挑一部两个人都想看的电影，散场后聊聊喜欢的镜头。先看好场次、买好票。",
+      "sheltered": true,
       "minutes": 120,
       "cost": [
         0,
@@ -962,7 +1057,8 @@
     },
     {
       "id": "craft",
-      "description": "做一个小而明确的作品，预留收尾和清理时间。",
+      "description": "一起做张卡片或捏个小物件，把成品带回去留念。先问材料和收费，留点时间收尾。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -1015,7 +1111,8 @@
     },
     {
       "id": "dessert",
-      "description": "酸奶、双皮奶或点心也能成为轻松停顿；饮食以双方真实偏好为准。",
+      "description": "选份酸奶、双皮奶或小点心，坐下来歇歇。想吃冷的还是热的，按两个人的口味来。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         10,
@@ -1069,7 +1166,8 @@
     },
     {
       "id": "exhibition",
-      "description": "让展品提供话题，不等于每个人都喜欢深度解说；按当下精力决定看多少。",
+      "description": "逛一小段展览，各挑一件喜欢的展品聊聊。出发前看好开放日期和门票，累了就早点结束。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -1123,7 +1221,8 @@
     },
     {
       "id": "garden",
-      "description": "灯光和建筑提供共同看的内容；它仍是户外场景，不能因为浪漫就忽略大雨。",
+      "description": "沿花园小路走走，看看灯光、花木和建筑，也可以拍几张照片。这里露天，下雨时换个地方。",
+      "sheltered": false,
       "minutes": 45,
       "cost": [
         0,
@@ -1175,7 +1274,8 @@
     },
     {
       "id": "ice",
-      "description": "身体参与较多，也可能摔倒；按个人能力与意愿选，不因关系阶段默认适合。",
+      "description": "在滑冰场慢慢滑几圈，累了就在场边休息。要租鞋或买票，初学时别勉强加速。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -1227,7 +1327,8 @@
     },
     {
       "id": "mall",
-      "description": "商场内支持逛店、零食和电玩等活动，具体商场与店铺可用性需先确认。",
+      "description": "在商场逛几家感兴趣的店，想玩就选一两样电玩，累了找地方坐坐。购物和游玩另花钱。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -1284,7 +1385,8 @@
     },
     {
       "id": "meal",
-      "description": "正餐本身也是相处：不用每次都追求大场面，选择双方真正愿意吃的内容。",
+      "description": "找家两个人都想吃的餐馆，好好吃顿饭、慢慢聊。先看看菜单、价格和忌口。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -1357,7 +1459,9 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "剧本杀店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
+      "description": "一起读线索、讨论猜想，玩一个喜欢的剧本。提前确认人数、题材和场次，怕吓就避开恐怖本。",
+      "sheltered": true,
+      "weather": ["clear", "rain", "unknown"],
       "minutes": 90,
       "cost": [
         0,
@@ -1389,7 +1493,8 @@
     },
     {
       "id": "photo_printing",
-      "description": "选之前共同拍下的一张照片，确认本人同意后制作纸质纪念。",
+      "description": "挑一张两个人都喜欢的合照，印出来带走留念。先问好尺寸、价格和取件时间。",
+      "sheltered": true,
       "minutes": 15,
       "cost": [
         0,
@@ -1447,7 +1552,8 @@
     },
     {
       "id": "public_lounge",
-      "description": "选择允许停留和轻声交流的公共休息区，具体位置与可用座位需先确认。",
+      "description": "找个允许停留的室内公共休息区，轻声聊聊天或戴耳机听歌。有空位再坐，别影响旁边的人。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         0,
@@ -1505,7 +1611,8 @@
     },
     {
       "id": "rainforest",
-      "description": "一起观察植物与空间，把体验留给共同发现；收费与场馆开放需要确认。",
+      "description": "一起看看雨林植物，找找不同的叶子和枝条。要买门票，也会走一阵，先看好开放时间。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         260,
@@ -1557,7 +1664,8 @@
     },
     {
       "id": "reading",
-      "description": "可以各读各的，再分享有兴趣的部分；安静不等于没内容，先确认场所可进入。",
+      "description": "在图书馆并排坐着各读各的，离开阅览区后再分享喜欢的内容。先看看入馆要求，阅读时保持安静。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -1616,7 +1724,8 @@
     },
     {
       "id": "rest",
-      "description": "在当前位置暂停行程并休息，实际停留条件由双方确认。",
+      "description": "先在能安全停留的地方歇一会儿，喝口水，等缓过来再走。当前位置不合适就先找个休息处。",
+      "sheltered": false,
       "minutes": 20,
       "cost": [
         0,
@@ -1666,7 +1775,8 @@
     },
     {
       "id": "street",
-      "description": "街区内支持浏览小店、建筑观察和拍照，具体路线与店铺需先确认。",
+      "description": "沿街看看小店和建筑，遇到喜欢的地方就停下拍张照。走累了早点返回，下雨时改去有盖的地方。",
+      "sheltered": false,
       "minutes": 60,
       "cost": [
         0,
@@ -1722,7 +1832,8 @@
     {
       "id": "supermarket",
       "scauOnly": true,
-      "description": "泰山超市是泰山区的采购去处，自述提到店内销售酒类；所选零食、水果及野餐采购属于设计玩法，实际库存和营业需确认。",
+      "description": "在泰超一起挑零食、水果，或买好下一站的野餐食物。泰超略贵，先看看价签再买。",
+      "sheltered": true,
       "minutes": 30,
       "cost": [
         0,
@@ -1787,7 +1898,9 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "Switch店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
+      "description": "找家Switch店玩几轮合作或赛车游戏，边玩边笑。提前问好收费、设备和想玩的游戏。",
+      "sheltered": true,
+      "weather": ["clear", "rain", "unknown"],
       "minutes": 60,
       "cost": [
         0,
@@ -1821,7 +1934,8 @@
     {
       "id": "taishan_glass",
       "scauOnly": true,
-      "description": "泰山区10栋玻璃房设有汉堡薯条、潮汕汤河粉和麻辣烫等餐饮选择，西点屋可买面包小吃或采购明早早餐；烘焙用于补充能量，自带桌游需确认座位与场地许可。",
+      "description": "在十栋玻璃房吃汉堡、汤河粉或麻辣烫，也能到西点屋买面包。想玩桌游就自带一副，先问这里能不能玩。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         0,
@@ -1890,7 +2004,7 @@
             "E-shared-game",
             "E-user-glass-boardgame"
           ],
-          "description": "共同解决一关，遇到复杂规则可改成简单模式。 自带游戏并先确认此处允许玩桌游。"
+          "description": "自带一副合作桌游，一起商量怎么过关。先问这里能不能玩，卡住了就换个简单玩法。"
         },
         "boardgame_cards": {
           "cost": [
@@ -1913,7 +2027,7 @@
             "E-G001",
             "E-user-glass-boardgame"
           ],
-          "description": "只选双方熟悉的规则，输赢不设置额外惩罚。 自带游戏并先确认此处允许玩桌游。"
+          "description": "自带一副熟悉的卡牌，坐下玩一轮。先问这里能不能玩，输了也不设惩罚。"
         }
       },
       "mealRoles": [
@@ -1932,7 +2046,8 @@
     },
     {
       "id": "tea",
-      "description": "坐下吃点心、喝茶，给聊天留一点空间；不是必须在正式餐厅才算认真安排。",
+      "description": "点两样茶点，坐下分着吃、慢慢聊。按食量点，想清静就避开饭点高峰。",
+      "sheltered": true,
       "minutes": 45,
       "cost": [
         70,
@@ -1987,7 +2102,8 @@
     {
       "id": "track_walk",
       "scauOnly": true,
-      "description": "东区运动场可沿操场外圈散步，自述也提到草坪拉伸；按体力选择步行与轻量活动，草坪许可和场地开放需确认。",
+      "description": "沿东区运动场外圈慢慢走，看看夜色，也可以做几下轻拉伸。避开跑道和正在训练的人。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -2041,7 +2157,8 @@
     },
     {
       "id": "waterside",
-      "description": "在允许停留的公共步道看水面，按天气和体力缩短路线。",
+      "description": "沿水边步道走一小段，看看水面、画个小速写。别靠近湿滑的边缘，累了就返回。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -2094,7 +2211,8 @@
     },
     {
       "id": "western",
-      "description": "意面、扒类与焗饭提供另一种正餐选择；不是生理周期决定它是否更好。",
+      "description": "一起吃份意面、扒类或焗饭，坐下来聊聊天。先看看菜单，按口味和忌口选。",
+      "sheltered": true,
       "minutes": 60,
       "cost": [
         0,
@@ -2164,7 +2282,8 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "description": "夜里找个烧烤摊，点些想吃的烤串，边吃边聊。先看看还开不开、有没有座位；下雨时选有盖的店。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -2218,7 +2337,8 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
+      "description": "在小吃街挑两样热食当宵夜，吃完慢慢回去。先看营业和座位，下雨时换个有盖的地方。",
+      "sheltered": false,
       "minutes": 30,
       "cost": [
         0,
@@ -2272,7 +2392,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在开放的公共区域找一处能停留的位置，慢慢聊天或安静待一会儿；不进入实验室和办公区域。",
+      "description": "在东区实验楼外的开放公共区域停一会儿，聊聊天、看看周围。别进入实验室和办公区，夜里挑有照明的位置。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -2314,7 +2435,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在教三草坪与5号楼校史馆之间，沿茶花园慢慢走，找一处适合停留的位置聊天，夜深后放轻声音。",
+      "description": "在教三草坪与5号楼校史馆之间的茶花园走走，看看花木，找个位置聊一会儿。夜深后放轻声音。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -2356,7 +2478,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "看看花木，在开放区域找一处能安静停留的位置聊天，给彼此留出一段不赶路的时间。",
+      "description": "在兰花园看看花木，找个开放的位置停下来聊一会儿。夜里挑有照明的地方，雨天换个去处。",
+      "sheltered": false,
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -2420,6 +2543,7 @@
         "verificationStatus": "awaiting_confirmation"
       },
       "description": "不赶着去下一个地方，在学校开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
+      "sheltered": false,
       "tags": [
         "nature",
         "outdoor",
@@ -2469,7 +2593,8 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在允许进入、有护栏的院楼顶楼一起看看星星、聊聊天；不翻越门禁，不靠近楼顶边缘，遇到下雨或大风就换个地方。",
+      "description": "到允许进入、有护栏的院楼顶楼看星星、聊聊天。别靠近边缘，下雨或大风时换个地方。",
+      "sheltered": false,
       "tags": [
         "nature",
         "outdoor",

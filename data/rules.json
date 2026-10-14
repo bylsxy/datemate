@@ -259,6 +259,18 @@
           "op": "eq",
           "value": false
         }
+      ],
+      "any": [
+        {
+          "fact": "scene.sheltered",
+          "op": "exists",
+          "value": false
+        },
+        {
+          "fact": "scene.sheltered",
+          "op": "neq",
+          "value": true
+        }
       ]
     },
     "then": [

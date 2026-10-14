@@ -11,7 +11,8 @@ test('食堂仅固定地点的必去锚点联合选择实际早餐，不能空�
   assert.equal(stage.anchorId, 'must-eat');
   assert.equal(stage.sceneId, 'canteen');
   assert.equal(stage.mealRole, 'breakfast');
-  assert.ok(stage.activityIds.includes('breakfast_eat'));
+  const activities = catalog.scenes.find(s => s.id === stage.sceneId).activities;
+  assert.ok(stage.activityIds.some(id => activities.some(a => a.id === id && a.provides?.includes('meal_completed') && a.mealRoles?.includes('breakfast'))), '必须选择实际完成早餐的活动');
   assert.equal(result.mealRequirements[0].satisfied, true);
   assert.equal(result.metrics.anchorsSatisfied, true);
   assert.equal(result.anchors[0].sceneOnly, true);

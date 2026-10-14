@@ -13,6 +13,19 @@ const activity = id => activities.find(a => a.id === id);
 const changed = mutate => { const copy = structuredClone(input); mutate(copy.documents); return copy; };
 const project = fileURLToPath(new URL('../', import.meta.url));
 
+test('有遮蔽的室外场景默认允许雨天，显式适用天气和字段类型仍受校验', () => {
+  const sheltered = changed(docs => {
+    const item = docs.scenes.scenes.find(s => s.id === 'taishan_supermarket_front');
+    item.indoor = false; item.sheltered = true; item.weather = [];
+  });
+  const result = compileKnowledge(sheltered).catalog.scenes.find(s => s.id === 'taishan_supermarket_front');
+  assert.equal(result.indoor, false);
+  assert.equal(result.sheltered, true);
+  assert.ok(result.weather.includes('rain'));
+  assert.throws(() => compileKnowledge(changed(docs => { docs.scenes.scenes[0].sheltered = 'yes'; })), /sheltered/);
+  assert.throws(() => compileKnowledge(changed(docs => { docs.scenes.scenes[0].weather = ['typhoon']; })), /weather/);
+});
+
 test('手工源编译与运行时导出一致，规则和图谱挂载完整', async () => {
   assert.deepEqual(compiled.catalog, catalog);
   assert.deepEqual(activities, catalog.activities);
@@ -119,7 +132,9 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
   assert.ok(sources.every(s => !s.rawTextIncluded && /^[a-f0-9]{64}$/.test(s.sha256)));
   assert.ok(evidence.every(e => !e.publicExcerptAllowed && !Object.hasOwn(e, 'originalExcerpt')));
   const userEvidence = evidence.filter(e => e.sourceKind === 'user_design');
-  assert.equal(userEvidence.length, 9);
+  assert.equal(userEvidence.length, 11);
+  assert.ok(userEvidence.some(e => e.id === 'E-user-campus-shelter'));
+  assert.ok(userEvidence.some(e => e.id === 'E-user-budget-campus-meals'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-scau-wandering-stars'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-scau-night-stops'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-campus-canteen'));
@@ -131,7 +146,7 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
 });
 
 test('四餐角色均有实际用餐活动，早餐与宵夜适用语义独立', () => {
-  const expected = { breakfast: ['campus_canteen', 'canteen', 'taishan_glass'], lunch: ['campus_canteen', 'canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], dinner: ['campus_canteen', 'canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'snack_street'] };
+  const expected = { breakfast: ['campus_canteen', 'canteen', 'dorm_takeaway_meal', 'taishan_glass'], lunch: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], dinner: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'dorm_takeaway_meal', 'snack_street'] };
   for (const [role, ids] of Object.entries(expected)) {
     assert.deepEqual(catalog.scenes.filter(s => s.mealRoles.includes(role)).map(s => s.id).sort(), ids.sort());
     for (const id of ids) {
@@ -234,7 +249,7 @@ test('未知活动、重复ID、悬空override和跨类型冲突在构建前报�
 });
 
 test('未知来源、证据、资源、先行活动和非法规则被拒绝', () => {
-  assert.throws(() => compileKnowledge(changed(d => d.evidence.evidence[0].sourceDocumentId = 'SRC-missing')), /来源不存在/);
+  assert.throws(() => compileKnowledge(changed(d => d.evidence.evidence.find(e => e.sourceDocumentId !== null).sourceDocumentId = 'SRC-missing')), /来源不存在/);
   assert.throws(() => compileKnowledge(changed(d => d.activities.activities[0].evidenceIds = ['E-missing'])), /不存在的 ID/);
   assert.throws(() => compileKnowledge(changed(d => d.activities.activities[0].requires = ['missing_kit'])), /不存在的 ID/);
   assert.throws(() => compileKnowledge(changed(d => d.activities.activities[0].predecessorIds = ['missing_prior'])), /不存在的 ID/);
