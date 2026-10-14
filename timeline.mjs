@@ -1,6 +1,7 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=32c9a437a5c51c9d';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=32c9a437a5c51c9d';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=32c9a437a5c51c9d';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=e91989bafef9c65e';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=e91989bafef9c65e';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=e91989bafef9c65e';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=e91989bafef9c65e';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
@@ -301,7 +302,14 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   }
   function updateCards(view,stage,meal=null,{preserve=false,center=false}={}) {
     const context=getIntent()?.context||{};
-    const allowed=scene=>isSceneInSchoolScope(scene,context);
+    // 冻结候选及失败餐卡也按当前阶段的实际时钟过滤，关门地点不留在横条里。
+    const allowed=scene=>{
+      if(!isSceneInSchoolScope(scene,context))return false;
+      if(!context.periodIds?.length||!scene.dailyWindows)return true;
+      const start=stage.start??stage.startMinute??meal?.targetMinute;
+      if(!Number.isFinite(start))return false;
+      return isSceneOpenDuring(scene,start,start+sceneDurationAt(scene,start,{mealRole:meal?.mealRole??stage.mealRole}));
+    };
     const incoming=new Map((meal?.candidates?.length?meal.candidates:stage.candidates||[]).map(c=>[c.sceneId||c.id,c]));
     // 新一轮候选可能截断；保留视图必须继续展示用户已经刷到的全部卡片。
     const candidates=preserve?new Map([...view.candidates,...incoming]):incoming;

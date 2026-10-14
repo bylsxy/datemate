@@ -78,7 +78,7 @@ test('饭点来自跨度，只有早餐能提前吃、只有宵夜能跳过', ()
 test('所有10种连续选择使用真实目录满足全部饭点和每个时段', () => {
   for (let first = 0; first < TIME_PERIODS.length; first++) for (let last = first; last < TIME_PERIODS.length; last++) {
     const ids = allPeriods.slice(first, last + 1);
-    const result = planDate({ ...input, periodIds: ids, area: 'near' }, catalog);
+    const result = planDate({ ...input, periodIds: ids, area: 'near', school: 'scau' }, catalog);
     assertMealIntegrity(result, catalog);
     assert.ok(result.search.expandedNodes <= result.search.maxExpandedNodes);
     assert.ok(result.stages.every(s => s.start >= result.context.windows[0].startMinute && s.end <= result.context.windows[0].endMinute));
@@ -86,7 +86,7 @@ test('所有10种连续选择使用真实目录满足全部饭点和每个时段
 });
 
 test('早餐和宵夜特殊选择无耗时、无费用阶段，菜单仍能切回实际吃饭', () => {
-  const result = planDate({ ...input, periodIds: allPeriods, mealChoices: { breakfast: { mode: 'before_meeting' }, supper: { mode: 'skip' } }, area: 'near' }, catalog);
+  const result = planDate({ ...input, periodIds: allPeriods, mealChoices: { breakfast: { mode: 'before_meeting' }, supper: { mode: 'skip' } }, area: 'near', school: 'scau' }, catalog);
   assertMealIntegrity(result, catalog);
   for (const role of ['breakfast', 'supper']) {
     const slot = result.mealRequirements.find(m => m.mealRole === role);
@@ -108,7 +108,8 @@ test('同一餐馆同一合并窗口可吃不同餐次，main_meal不成为全�
 });
 
 test('跳过宵夜可释放跨饭点自动尾段，菜单切换和候选续算均产生合法真实用餐', () => {
-  const context = { ...input, periodIds: allPeriods, area: 'near', mealChoices: { breakfast: { mode: 'before_meeting' }, supper: { mode: 'skip' } } };
+  // 疲劳引导的休息安排让自动尾段跨越宵夜目标，保留菜单回退边界的真实触发条件。
+  const context = { ...input, fatigueA: 5, fatigueB: 5, periodIds: allPeriods, area: 'near', school: 'scau', mealChoices: { breakfast: { mode: 'before_meeting' }, supper: { mode: 'skip' } } };
   const skipped = planDate(context, catalog);
   assertMealIntegrity(skipped, catalog);
   const supper = skipped.mealRequirements.find(m => m.mealRole === 'supper');
@@ -117,7 +118,7 @@ test('跳过宵夜可释放跨饭点自动尾段，菜单切换和候选续算�
   assert.ok(supper.insertIndex < skipped.stages.length);
   assert.ok(skipped.stages[supper.insertIndex].start < supper.targetMinute, '原自动阶段确实跨越宵夜目标时间');
   assert.ok(supper.candidates.length > 0);
-  assert.equal(skipped.context.school, '');
+  assert.equal(skipped.context.school, 'scau');
   assert.equal(skipped.context.campusArea, '');
   const state = { context, prefix: [], exploration: 0 };
   const jobs = buildCandidateJobs(skipped, state).filter(job => job.mealRole === 'supper');
@@ -201,9 +202,11 @@ test('人工前缀不能越过未吃饭点，预约不能跨过未覆盖时段',
 
 test('明确夜晚预约可执行到次日02:00，结束缓冲仍按绝对分钟校验', () => {
   const c = fixture([scene('late')]);
-  const exact = { ...input, periodIds: ['night'], anchors: [{ choice: { sceneId: 'late', activityIds: [] }, startMinute: 1515, index: 0 }] };
+  // 60分钟夜间停留后仍恰好留出15分钟分别，1分钟额外缓冲必须失败。
+  const exact = { ...input, periodIds: ['night'], anchors: [{ choice: { sceneId: 'late', activityIds: [] }, startMinute: 1485, index: 0 }] };
   const result = planDate(exact, c, { maxStages: 1 });
   assert.equal(result.ok, true);
+  assert.equal(result.stages[0].minutes, 60);
   assert.equal(result.stages[0].end, 1545);
   assert.equal(result.departure.endMinute, 1560);
   assert.equal(planDate({ ...exact, reserve: 1 }, c, { maxStages: 1 }).status, 'no_plan_found');
@@ -221,7 +224,7 @@ test('长期限节点预算、候选预算、depth限制可控；未完成饭点
 });
 
 test('长跨度0→90→0重规划保持确定性、输入不变、饭点和末段覆盖不可被探索分数抵消', () => {
-  const request = { ...input, periodIds: allPeriods, mealChoices: { supper: { mode: 'skip' } }, area: 'near' };
+  const request = { ...input, periodIds: allPeriods, mealChoices: { supper: { mode: 'skip' } }, area: 'near', school: 'scau' };
   const saved = canonical(request);
   const original = planDate(request, catalog);
   const explored = planDate({ ...request, exploration: 90 }, catalog);

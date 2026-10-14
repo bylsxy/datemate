@@ -119,7 +119,8 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
   assert.ok(sources.every(s => !s.rawTextIncluded && /^[a-f0-9]{64}$/.test(s.sha256)));
   assert.ok(evidence.every(e => !e.publicExcerptAllowed && !Object.hasOwn(e, 'originalExcerpt')));
   const userEvidence = evidence.filter(e => e.sourceKind === 'user_design');
-  assert.equal(userEvidence.length, 7);
+  assert.equal(userEvidence.length, 8);
+  assert.ok(userEvidence.some(e => e.id === 'E-user-scau-night-stops'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-campus-canteen'));
   assert.ok(userEvidence.every(e => e.sourceDocumentId === null && e.reviewStatus === 'awaiting_confirmation'));
   for (const id of ['switch_store', 'mystery_store', 'public_lounge', 'barbecue_stall', 'snack_street']) {
@@ -145,7 +146,7 @@ test('四餐角色均有实际用餐活动，早餐与宵夜适用语义独立',
   assert.deepEqual(activity('breakfast_pack').provides, ['breakfast_pack']);
   assert.ok(!scene('taishan_glass').mealActivityIds.includes('breakfast_pack'));
   for (const id of ['barbecue_stall', 'snack_street']) {
-    assert.equal(scene(id).minutes, 45);
+    assert.equal(scene(id).minutes, 30);
     assert.deepEqual(scene(id).windows, []);
     assert.ok(scene(id).activities.every(a => a.cost[1] > 0 && a.dietaryTags.length > 0));
   }

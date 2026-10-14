@@ -1,4 +1,5 @@
-import {isSceneInSchoolScope,normalizeSchoolScope} from './school-scope.mjs?v=32c9a437a5c51c9d';
+import {isSceneInSchoolScope,normalizeSchoolScope} from './school-scope.mjs?v=e91989bafef9c65e';
+import {isSceneAvailableInContext} from './scene-time.mjs?v=e91989bafef9c65e';
 
 /** 隐藏的父级必须同步清空后代，导入和表单读取共用同一规则。 */
 export function normalizeUIScope(context = {}) {
@@ -38,7 +39,8 @@ export function createSchoolScopeControls(root) {
 
 export function isSceneInUIScope(scene, context) {
   if (!scene) return false;
-  return isSceneInSchoolScope(scene, normalizeUIScope(context));
+  const scope = normalizeUIScope(context);
+  return isSceneInSchoolScope(scene, scope) && isSceneAvailableInContext(scene, scope);
 }
 
 /** 切换学校时解除已不适用的固定餐馆，让新范围可以重新推荐用餐。 */

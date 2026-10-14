@@ -50,10 +50,12 @@ test('通用校园、学校级、泰山区三层权限及活动范围使用同�
   assert.equal(isSceneInSchoolScope(synthetic.scenes.find(s => s.id === 'rest'), { area: 'campus' }), true);
 });
 
-test('全部40个场景显式声明通用学校属性，名称类别描述中的华农地点没有漏标', () => {
-  assert.equal(catalog.scenes.length, 40);
+test('全部43个场景显式声明通用学校属性，名称类别描述中的华农地点没有漏标', () => {
+  assert.equal(catalog.scenes.length, 43);
+  assert.equal(catalog.scenes.filter(s => s.place.universityId === '').length, 28);
   const schoolIds = catalog.scenes.filter(s => s.place.universityId === 'scau').map(s => s.id);
-  assert.equal(schoolIds.length, 12);
+  assert.equal(schoolIds.length, 15);
+  assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 4);
   assert.equal(catalog.scenes.filter(s => s.place.campusArea === 'taishan').length, 11);
   for (const scene of catalog.scenes) {
     assert.ok(['', 'scau'].includes(scene.place.universityId), scene.id);

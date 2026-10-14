@@ -283,6 +283,16 @@ export function compileKnowledge(input) {
     ensure(['ordinary', '休息'].includes(raw.place.kind), `${path}.place.kind 须为 ordinary 或 休息`);
     ensure(['awaiting_confirmation', 'current_location', 'verified'].includes(raw.place.verificationStatus), `${path}.place.verificationStatus 无效`);
     if (raw.place.verificationStatus === 'awaiting_confirmation') ensure(!raw.place.address && !raw.place.openingHours, `${path} 待确认地点不能填入未核实的地址或营业时间`);
+    // 每日规划允许时间独立于绝对行程时间窗，不能当作现实营业承诺。
+    ensure(raw.availabilityBasis === 'planning_default', `${path}.availabilityBasis 须明确为 planning_default`);
+    text(raw.availabilityNote, `${path}.availabilityNote`);
+    ensure(list(raw.dailyWindows, `${path}.dailyWindows`).length > 0, `${path}.dailyWindows 须显式登记每日规划允许时间`);
+    let previousEnd = -1;
+    for (const window of raw.dailyWindows) {
+      ensure(Number.isInteger(window.startMinute) && Number.isInteger(window.endMinute) && window.startMinute >= 0 && window.startMinute < window.endMinute && window.endMinute <= 1440, `${path}.dailyWindows 时间窗须在 0..1440 内；跨午夜拆成两段`);
+      ensure(window.startMinute >= previousEnd, `${path}.dailyWindows 须按开始时间排序且不重叠`);
+      previousEnd = window.endMinute;
+    }
     if (raw.place.kind === '休息') ensure(raw.id === 'rest' && raw.kind === 'rest' && raw.area === 'current' && raw.activityIds.length === 0, `${path} 原地休息须无活动且 area=current`);
     if (raw.id === 'rest' || raw.kind === 'rest') ensure(raw.place.kind === '休息', `${path} 休息语义不一致`);
     references(raw.activityIds, rawActivities, `${path}.activityIds`);

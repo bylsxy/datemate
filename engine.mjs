@@ -1,9 +1,10 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=32c9a437a5c51c9d';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=32c9a437a5c51c9d';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=32c9a437a5c51c9d';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=32c9a437a5c51c9d';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=e91989bafef9c65e';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=e91989bafef9c65e';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=e91989bafef9c65e';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=e91989bafef9c65e';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=e91989bafef9c65e';
 
-export { canonical, digest } from './reasoning.mjs?v=32c9a437a5c51c9d';
+export { canonical, digest } from './reasoning.mjs?v=e91989bafef9c65e';
 export const VERSION = 'datemate-engine-3.3.2';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
@@ -113,6 +114,7 @@ function compileCatalog(catalog) {
   const scenes = [...catalog.scenes].sort((a, b) => cmp(a.id, b.id)).map(raw => {
     const scene = { ...raw, area: raw.area === 'nearby' ? 'near' : raw.area || raw.areaClass || 'campus', kind: raw.kind || raw.typeId || 'ordinary', tags: list(raw.tags) };
     scene.minutes = range(raw.minutes ?? raw.baseline?.duration)[1];
+    validateDailyWindows(scene);
     scene.costCents = raw.costCents ? range(raw.costCents).map(Math.round) : range(raw.cost ?? raw.baseline?.cost).map(cents);
     scene.load = range(raw.load)[1];
     scene.loadByPerson = raw.loadByPerson || raw.loadBySubject || raw.baseline?.loadBySubject;
@@ -232,9 +234,9 @@ function orderActivities(acts, completed) {
   }
   return { ordered };
 }
-function scheduleWithinScene(scene, acts) {
+function scheduleWithinScene(minutes, acts) {
   // 活动只在场景内执行，顺序记录依赖关系；阶段时长仅由场景决定，不分配活动耗时。
-  return acts.map((a, order) => ({ activityId: a.id, order, predecessorIds: a.predecessorIds, startOffset: 0, endOffset: scene.minutes, compositionMode: 'within_scene' }));
+  return acts.map((a, order) => ({ activityId: a.id, order, predecessorIds: a.predecessorIds, startOffset: 0, endOffset: minutes, compositionMode: 'within_scene' }));
 }
 function resourceCheck(item, resources, completed) {
   const required = { ...inventory(item.preparationIds), ...item.requires };
@@ -296,6 +298,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (ctx.mentalLow && number(scene.mental, 0) >= 4) errors.push(fail('H_MENTAL', '超过本次认知负担上限。'));
     if (ctx.crowdAvoidance && (scene.crowded === true || scene.uncrowded === false)) errors.push(fail('H_CROWD', '与避开拥挤要求不符。'));
     if (scene.kind === 'rest' && st.lastKind === 'rest') errors.push(fail('H_REST_LOOP', '不连续安排重复休息。'));
+    if (ctx.periodIds && scene.kind === 'rest' && st.last === null) errors.push(fail('H_REST_PLACE', '原地休息需要先进入一个可停留的地点。'));
     const dietary = list([...(scene.dietaryTags || []), ...acts.flatMap(a => a.dietaryTags || [])]);
     if (ctx.dietaryRestrictions.some(tag => dietary.includes(tag))) errors.push(fail('H_DIET', '具体食物或活动与明示饮食限制冲突。'));
     const sceneInference = infer(st, scene), inferences = [sceneInference];
@@ -309,7 +312,6 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (errors.length) return { errors };
     const ordering = orderActivities(acts, st.completed);
     if (ordering.error) return { errors: [ordering.error] };
-    const schedule = scheduleWithinScene(scene, ordering.ordered);
     const resources = { ...st.resources }, completed = [...st.completed];
     let resourceError = resourceCheck(scene, resources, completed);
     if (resourceError) return { errors: [resourceError] };
@@ -328,32 +330,42 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const uncertainty = ctx.robust ? integer(scene.uncertaintyMinutes, scene.indoor === false && ctx.weather === 'unknown' ? 5 : scene.reliable === false ? 10 : 0, 0, 120) : 0;
     const exactStart = anchor?.startMinute ?? choice.startMinute;
     const isMeal = scene.kind === 'meal' || acts.some(a => a.exclusiveKey === 'main_meal' || a.provides.meal_completed > 0);
-    let slot = null;
+    let slot = null, hoursRejected = false;
     for (let wi = st.windowIndex; wi < ctx.windows.length; wi++) {
       const window = ctx.windows[wi];
       if (anchor?.windowId && window.id !== anchor.windowId) continue;
       const depart = Math.max(st.time, window.startMinute), earliest = depart + transit;
       const priorUncertainty = st.uncertaintyByWindow[window.id] || 0;
-      const openWindows = scene.windows || scene.openWindows;
-      const sceneWindows = Array.isArray(openWindows) && openWindows.length ? [...openWindows].sort((a, b) => (a.startMinute ?? a.start) - (b.startMinute ?? b.start)) : [{ startMinute: window.startMinute, endMinute: window.endMinute }];
-      const possible = sceneWindows.map(w => ({ start: exactStart ?? Math.max(earliest, w.startMinute ?? w.start, mealSlot?.targetMinute ?? 0), openEnd: Math.min(w.endMinute ?? w.end, mealSlot?.endMinute ?? Infinity), openStart: Math.max(w.startMinute ?? w.start, mealSlot?.startMinute ?? 0) })).find(s => s.start >= earliest && (exactStart === undefined || s.start >= earliest + priorUncertainty) && s.start >= s.openStart && s.start + scene.minutes <= s.openEnd && s.start + scene.minutes + ctx.reserve + departureReservedMinutes(ctx) + Math.max(0, priorUncertainty - (s.start - earliest)) + uncertainty <= window.endMinute);
+      let sceneWindows = sceneOpenWindows(scene, window, Boolean(ctx.periodIds));
+      // 原地休息沿用已进入地点的营业边界，不能在闭馆后继续占用原地。
+      if (ctx.periodIds && scene.kind === 'rest' && st.last !== null) {
+        const placeWindows = sceneOpenWindows(compiled.byId.get(st.last), window, true);
+        sceneWindows = sceneWindows.flatMap(a => placeWindows.map(b => ({ startMinute: Math.max(a.startMinute, b.startMinute), endMinute: Math.min(a.endMinute, b.endMinute) })).filter(w => w.endMinute > w.startMinute));
+      }
+      const possibleSlot = windows => windows.map(w => {
+        const start = exactStart ?? Math.max(earliest, w.startMinute, mealSlot?.targetMinute ?? 0);
+        return { start, minutes: sceneStayMinutes(scene, start, mealRole, Boolean(ctx.periodIds)), openEnd: Math.min(w.endMinute, mealSlot?.endMinute ?? Infinity), openStart: Math.max(w.startMinute, mealSlot?.startMinute ?? 0) };
+      }).find(s => s.start >= earliest && (exactStart === undefined || s.start >= earliest + priorUncertainty) && s.start >= s.openStart && s.start + s.minutes <= s.openEnd && s.start + s.minutes + ctx.reserve + departureReservedMinutes(ctx) + Math.max(0, priorUncertainty - (s.start - earliest)) + uncertainty <= window.endMinute);
+      const possible = possibleSlot(sceneWindows);
+      if (ctx.periodIds && scene.dailyWindows !== undefined && !possible && possibleSlot([window])) hoursRejected = true;
       if (!possible) continue;
-      const start = possible.start, end = start + scene.minutes;
+      const start = possible.start, minutes = possible.minutes, end = start + minutes;
       const uncertaintyCarry = Math.max(0, priorUncertainty - (start - earliest)) + uncertainty;
       const uncertaintyTotal = st.uncertaintyTotal - priorUncertainty + uncertaintyCarry;
       const reserve = ctx.reserve + uncertaintyCarry;
       if (acts.some(a => a.windows?.length && !a.windows.some(w => {
-        const scheduled = schedule.find(s => s.activityId === a.id);
-        return start + scheduled.startOffset >= (w.startMinute ?? w.start) && start + scheduled.endOffset <= (w.endMinute ?? w.end);
+        return start >= (w.startMinute ?? w.start) && end <= (w.endMinute ?? w.end);
       }))) continue;
-      const used = start - depart + scene.minutes;
+      const used = start - depart + minutes;
       if (st.usedMinutes + used + ctx.reserve + departureReservedMinutes(ctx) + uncertaintyTotal > ctx.duration) continue;
       if (isMeal && !ctx.periodIds && st.mealWindows.includes(window.id)) continue;
       // 必需饭点的截止时间约束每个普通阶段，预约和人工前缀同样不能绕过。
       if (ctx.periodIds && !mealRole && pendingMeal && end + uncertaintyCarry > pendingMeal.targetMinute) continue;
-      slot = { start, end, windowIndex: wi, windowId: window.id, wait: start - earliest, used, reserve, uncertainty, uncertaintyCarry, uncertaintyTotal }; break;
+      slot = { start, end, minutes, windowIndex: wi, windowId: window.id, wait: start - earliest, used, reserve, uncertainty, uncertaintyCarry, uncertaintyTotal }; break;
     }
-    if (!slot) return { errors: [fail('H_TIME_WINDOW', '阶段、转场、预约时间和必要缓冲无法放入可用时间窗。')] };
+    if (!slot) return { errors: [hoursRejected ? fail('H_SCENE_HOURS', '场景开放时间不能完整容纳本阶段，请选择其他地点或时段。') : fail('H_TIME_WINDOW', '阶段、转场、预约时间和必要缓冲无法放入可用时间窗。')] };
+    const minutes = slot.minutes;
+    const schedule = scheduleWithinScene(minutes, ordering.ordered);
     if (ctx.periodIds && TIME_PERIODS.some(p => ctx.periodIds.includes(p.id) && p.endMinute <= slot.start && !st.stages.some(s => s.start < p.endMinute && s.end > p.startMinute))) return { errors: [fail('H_PERIOD_COVERAGE', '不能跳过已选择的时段；每个时段需有实际规划阶段。')] };
     const pendingAnchor = ctx.anchors?.[st.anchorIndex];
     if (!anchor && pendingAnchor?.startMinute !== undefined && slot.end > pendingAnchor.startMinute) return { errors: [fail('H_ANCHOR_TIME', '当前阶段会越过后续固定预约。')] };
@@ -375,7 +387,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const sharedActivityExperience = ctx.preferencesA.filter(tag => ctx.preferencesB.includes(tag) && activityMatches.has(tag)).length * 8;
     const generalActivityExperience = ctx.preferences.filter(tag => activityMatches.has(tag)).length * 5 + ctx.goals.filter(tag => activityMatches.has(tag)).length * 6;
     const extraActivityPenalty = (2 * acts.length * (acts.length - 1) + acts.reduce((sum, a) => sum + 4 + Math.max(0, a.load) * 2 + a.costCents[1] * 0.003, 0)) * (1 - exploration / 100 * 0.7);
-    const resourcePenalty = costCents[1] * 0.001 + scene.minutes * 0.05;
+    const resourcePenalty = costCents[1] * 0.001 + minutes * 0.05;
     const values = [matchA, matchB].map((matches, i) => Math.max(0, fit + matches * 18 + sharedInterest + generalPreference + goalBonus + themeBonus + activityExperience[i] + sharedActivityExperience + generalActivityExperience - comfortPenalty[i] - transit * 0.12 - extraActivityPenalty - resourcePenalty));
     const novelty = Math.max(scene.novelty, ...acts.map(a => number(a.novelty, 0)));
     const repeatFunctionPenalty = st.kinds.includes(scene.kind) ? 18 : 0;
@@ -386,12 +398,12 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const discounted = (ctx.periodIds ? 0.96 : 0.88) ** st.stages.length;
     const stageComplexityPenalty = (ctx.periodIds ? 1.5 : 8) * (2 * st.stages.length + 1);
     const features = { preferenceA: matchA * 18, preferenceB: matchB * 18, sharedInterest, generalPreference, goalBonus, themeBonus, activityExperienceA: activityExperience[0], activityExperienceB: activityExperience[1], sharedActivityExperience, generalActivityExperience, comfort: fit - (comfortPenalty[0] + comfortPenalty[1]) / 2, transferPenalty: -transit * 0.12, extraActivityPenalty: -extraActivityPenalty, resourcePenalty: -resourcePenalty, repeatFunctionPenalty: -repeatFunctionPenalty, repeatScenePenalty: -repeatScenePenalty, unnecessaryRestPenalty: -unnecessaryRestPenalty, stageComplexityPenalty: -stageComplexityPenalty, novelty: novelty * exploration / 100 * 0.55, variety: newKind * (4 + exploration * 0.06), ruleBonus, fairnessFloor: Math.min(...values) * 0.3 };
-    const stage = { sceneId: scene.id, activityIds: ids, minutes: scene.minutes, transfer: transit, wait: slot.wait, start: slot.start, end: slot.end, startMinute: slot.start, endMinute: slot.end, fixedStartMinute: exactStart ?? null, windowId: slot.windowId, cost: costCents.map(money), costCents, load: Math.max(...load), loadByPerson: { A: load[0], B: load[1] }, schedule: schedule, reserve: slot.reserve, uncertaintyMinutes: uncertainty, tags, featureContributions: features, trace: [...inferences.flatMap(i => i.trace), ...graph.trace, { ruleId: 'RESOURCE_ACCOUNTING', rule: 'RESOURCE_ACCOUNTING', message: '阶段时长固定取场景，活动只改变费用、负担和资源；转场及缓冲照常核算，费用使用整数分', inputFacts: [{ id: 'composition', value: schedule }], outputFacts: [{ id: 'costCents', value: costCents }, { id: 'minutes', value: scene.minutes }], evidenceIds: [], assertionKind: 'designed' }], warnings: list(inferences.flatMap(i => i.warnings)), preparationIds: list([...(scene.preparationIds || []), ...acts.flatMap(a => a.preparationIds)]), manual, ...(anchor ? { anchorId: anchor.id } : {}), realWorldStatus: 'needs_confirmation' };
+    const stage = { sceneId: scene.id, activityIds: ids, minutes, transfer: transit, wait: slot.wait, start: slot.start, end: slot.end, startMinute: slot.start, endMinute: slot.end, fixedStartMinute: exactStart ?? null, windowId: slot.windowId, cost: costCents.map(money), costCents, load: Math.max(...load), loadByPerson: { A: load[0], B: load[1] }, schedule: schedule, reserve: slot.reserve, uncertaintyMinutes: uncertainty, tags, featureContributions: features, trace: [...inferences.flatMap(i => i.trace), ...graph.trace, { ruleId: 'RESOURCE_ACCOUNTING', rule: 'RESOURCE_ACCOUNTING', message: '阶段按场景基础时长及晚间最小停留核算，活动在完整阶段内执行；转场及缓冲照常核算，费用使用整数分', inputFacts: [{ id: 'composition', value: schedule }], outputFacts: [{ id: 'costCents', value: costCents }, { id: 'minutes', value: minutes }], evidenceIds: [], assertionKind: 'designed' }], warnings: list(inferences.flatMap(i => i.warnings)), preparationIds: list([...(scene.preparationIds || []), ...acts.flatMap(a => a.preparationIds)]), manual, ...(anchor ? { anchorId: anchor.id } : {}), realWorldStatus: 'needs_confirmation' };
     if (mealRole) { stage.mealRole = mealRole; stage.mealId = mealRole; }
     const next = { ...st, time: slot.end, elapsed: slot.end - ctx.windows[0].startMinute, usedMinutes: st.usedMinutes + slot.used, windowIndex: slot.windowIndex, uncertaintyByWindow: { ...st.uncertaintyByWindow, [slot.windowId]: slot.uncertaintyCarry }, uncertaintyTotal: slot.uncertaintyTotal, costCents: st.costCents.map((n, i) => n + costCents[i]), cost: st.costCents.map((n, i) => money(n + costCents[i])), fatigue: fatigueAfter, resources, completed: list([...completed, scene.id]), visited: [...st.visited, scene.id], kinds: [...st.kinds, scene.kind], mealWindows: isMeal ? [...st.mealWindows, slot.windowId] : st.mealWindows, mealRoles: mealRole ? [...st.mealRoles, mealRole] : st.mealRoles, meal: st.meal || isMeal, hasRest: st.hasRest || scene.kind === 'rest', last: scene.id, lastKind: scene.kind, area: scene.area === 'current' ? st.area : scene.area, anchorIndex: st.anchorIndex + (anchor ? 1 : 0), utilities: st.utilities.map((v, i) => v + values[i] * discounted), novelty: st.novelty + novelty * discounted, variety: st.variety + newKind, ruleUtility: st.ruleUtility + ruleBonus * discounted, stages: [...st.stages, stage] };
-    next.activeMinutes = st.activeMinutes + scene.minutes;
+    next.activeMinutes = st.activeMinutes + minutes;
     next.waitMinutes = st.waitMinutes + slot.wait;
-    if (ctx.periodIds) { features.activeCoverage = scene.minutes * 0.45; features.waitPenalty = -slot.wait * 0.35; }
+    if (ctx.periodIds) { features.activeCoverage = minutes * 0.45; features.waitPenalty = -slot.wait * 0.35; }
     stage.localUtility = objective(next, exploration) - objective(st, exploration);
     stage.before = stateSnapshot(st, ctx); stage.after = stateSnapshot(next, ctx); stage.stateBefore = stage.before; stage.stateAfter = stage.after;
     return { next, stage, errors: [] };

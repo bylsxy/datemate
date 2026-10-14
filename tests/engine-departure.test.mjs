@@ -9,7 +9,8 @@ const departures = [
 ];
 const scene = (id = 'walk', extra = {}) => ({ id, minutes: 30, cost: [0, 0], load: 0, area: 'campus', kind: 'ordinary', indoor: true, quiet: true, fit: 70, activities: [], ...extra });
 const fixture = (extra = {}) => ({ version: 'departure-test', scenes: [scene()], departures, transfers: { campus: { campus: 0 } }, ...extra });
-const input = { periodIds: ['night'], reserve: 0, robust: false, fatigueA: 0, fatigueB: 0, anchors: [{ choice: { sceneId: 'walk', activityIds: [] }, startMinute: 1515, index: 0 }] };
+// 夜间普通场景至少停留60分钟，提前预约以保持原有分别与缓冲边界。
+const input = { periodIds: ['night'], reserve: 0, robust: false, fatigueA: 0, fatigueB: 0, anchors: [{ choice: { sceneId: 'walk', activityIds: [] }, startMinute: 1485, index: 0 }] };
 const one = { maxStages: 1 };
 
 function assertAccounting(result) {
@@ -35,6 +36,7 @@ test('默认各自回去独立于地点，保留15分钟预留而不伪增目录
   assert.equal(result.departure.id, 'separate');
   assert.equal(result.departure.minutes, 10);
   assert.equal(result.departure.reservedMinutes, 15);
+  assert.equal(result.stages[0].minutes, 60);
   assert.equal(result.departure.endMinute, 1555);
   assert.equal(result.context.cityTier, 'tier1');
   assert.deepEqual(result.departure.costCents, [0, 0]);
@@ -94,7 +96,7 @@ test('固定尾段和鲁棒缓冲必须给分别时间留位置；不能落在�
   assert.ok(noRoom.search.constraintRejections.H_TIME_WINDOW > 0);
   const walkTooLong = planDate({ ...input, departureChoice: 'walk_together' }, fixture(), one);
   assert.equal(walkTooLong.status, 'no_plan_found');
-  const earlier = { ...input, departureChoice: 'walk_together', anchors: [{ ...input.anchors[0], startMinute: 1510 }] };
+  const earlier = { ...input, departureChoice: 'walk_together', anchors: [{ ...input.anchors[0], startMinute: 1480 }] };
   const walked = planDate(earlier, fixture(), one);
   assertAccounting(walked);
   assert.equal(walked.departure.endMinute, 1560);

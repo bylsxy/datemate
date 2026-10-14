@@ -748,6 +748,18 @@
       "publicExcerptAllowed": false,
       "rightsStatus": "original_user_design",
       "verificationBoundary": "餐次分类与费用为项目设计参数；地点具体位置、现实营业、菜单、过敏原和价格待确认。"
+    },
+    {
+      "id": "E-user-scau-night-stops",
+      "sourceDocumentId": null,
+      "sourceLocator": "user:2026-10-14-scau-night-stops",
+      "sourceKind": "user_design",
+      "assertionKind": "designed",
+      "summary": "用户提出东区实验楼、茶花园、兰花园作为华农夜间停留候选，并提供开放线索；规划默认一般夜间停留60分钟、宵夜30分钟。东区实验楼的存在与茶花园的位置有学校资料线索，夜间开放仅依据用户提供信息。",
+      "reviewStatus": "awaiting_confirmation",
+      "publicExcerptAllowed": false,
+      "rightsStatus": "original_user_design",
+      "verificationBoundary": "学校资料线索：https://syxl.scau.edu.cn/syjx_18161/list.htm（东区实验楼）；https://hnxb.scau.edu.cn/index.aspx?conid=6635（茶花园位于教三草坪与5号楼校史馆之间）。资料未证明夜间开放；兰花园位置未独立核实。每日允许时间均为planning_default，夜间开放线索为user-provided，实际开放、照明、通行及室内进入须确认。"
     }
   ]
 }

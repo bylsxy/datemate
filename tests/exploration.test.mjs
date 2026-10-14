@@ -182,7 +182,7 @@ test('高探索仍允许重复，人工前缀不因子集或探索被替换', ()
 
 test('多seed真实目录覆盖餐次、预约前缀和鲁棒结束缓冲，卡片分数与展露rank分离', { timeout: 60000 }, () => {
   for (let i = 0; i < 3; i++) {
-    const result = planDate({ periodIds: ['morning', 'afternoon', 'evening', 'night'], area: 'near', fatigueA: 0, fatigueB: 0, explorationSeed: `period-${i}` }, catalog, { exploration: 100 });
+    const result = planDate({ periodIds: ['morning', 'afternoon', 'evening', 'night'], area: 'near', school: 'scau', fatigueA: 0, fatigueB: 0, explorationSeed: `period-${i}` }, catalog, { exploration: 100 });
     checkRealScores(result);
     assert.equal(result.metrics.mealSatisfied, true);
     assert.equal(result.metrics.periodCoverageSatisfied, true);

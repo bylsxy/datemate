@@ -1,5 +1,5 @@
 {
-  "_comment": "地点是名词。minutes 是唯一耗时入口：同地点选0个或多个活动时，场景时长固定。编辑 place.name、场地设计参数和 activityIds；场地增量写 activityOverrides。rest 为原地休息且无活动。",
+  "_comment": "地点是名词。minutes 是唯一耗时入口：同地点选0个或多个活动时，场景时长固定。编辑 place.name、场地设计参数和 activityIds；场地增量写 activityOverrides。rest 为原地休息且无活动。 dailyWindows 是每日重复的规划允许时段（0..1440，跨午夜拆段），availabilityBasis=planning_default；不是现实营业时间。windows 保留绝对行程时间窗。",
   "schemaVersion": "manual-knowledge-1.0",
   "scenes": [
     {
@@ -34,7 +34,15 @@
       "activityIds": [
         "talk_highlight",
         "talk_next"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 420,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许07:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "teaching4_study",
@@ -68,7 +76,15 @@
       ],
       "activityIds": [
         "read_alone"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "teaching4_slope",
@@ -101,7 +117,15 @@
       ],
       "activityIds": [
         "campus_watch"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 360,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "taishan_lab_garden",
@@ -134,7 +158,15 @@
       ],
       "activityIds": [
         "campus_watch"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 360,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "agriculture_museum",
@@ -199,7 +231,15 @@
         "museum_tool",
         "museum_pick"
       ],
-      "scauOnly": true
+      "scauOnly": true,
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1020
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许09:00–17:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "aquarium",
@@ -243,7 +283,15 @@
       "activityIds": [
         "aqua_photo",
         "aqua_observe"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1080
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许09:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "badminton",
@@ -286,7 +334,15 @@
       },
       "activityIds": [
         "badminton_rally"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 420,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许07:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "boardgame",
@@ -331,7 +387,15 @@
       "activityIds": [
         "boardgame_coop",
         "boardgame_cards"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "bridge_walk",
@@ -376,7 +440,15 @@
       },
       "activityIds": [
         "bridge_view"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 360,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "cafe",
@@ -422,7 +494,15 @@
       "activityIds": [
         "cafe_warm",
         "cafe_focus"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "campus",
@@ -475,7 +555,15 @@
         "campus_photo",
         "botany_shapes",
         "botany_sketch"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 360,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "campus_picnic",
@@ -532,7 +620,15 @@
       "activityIds": [
         "picnic_share",
         "picnic_cloud"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1080
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "campus_tabletennis",
@@ -576,14 +672,25 @@
       "activityIds": [
         "pingpong_rally",
         "pingpong_teach"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 420,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许07:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "campus_canteen",
       "scauOnly": false,
       "description": "选择所在学校允许进入的校园食堂，核对窗口供应、饭点开放、座位和双方忌口后一起用餐。早餐、午餐和晚餐均为通用规划候选，具体食堂与供应需要现场确认。",
       "minutes": 45,
-      "cost": [0, 0],
+      "cost": [
+        0,
+        0
+      ],
       "load": 0,
       "kind": "meal",
       "area": "campus",
@@ -593,15 +700,25 @@
       "quiet": false,
       "mental": 1,
       "bold": false,
-      "tags": ["food", "indoor", "daily"],
-      "weather": ["clear", "rain", "unknown"],
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
       "provides": [],
       "crowdRisk": "unknown",
       "seated": true,
       "assertionKind": "designed",
       "evidenceStatus": "user_design_real_world_unverified",
       "parameterStatus": "designed_not_measured",
-      "evidenceIds": ["E-user-campus-canteen"],
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
       "place": {
         "name": "校园食堂",
         "universityId": "",
@@ -610,12 +727,47 @@
         "category": "校园食堂",
         "verificationStatus": "awaiting_confirmation"
       },
-      "activityIds": ["breakfast_eat", "canteen_pair"],
+      "activityIds": [
+        "breakfast_eat",
+        "canteen_pair"
+      ],
       "activityOverrides": {
-        "breakfast_eat": { "evidenceIds": ["E-user-campus-canteen"], "assertionKind": "designed", "evidenceStatus": "user_design_real_world_unverified" },
-        "canteen_pair": { "evidenceIds": ["E-user-campus-canteen"], "assertionKind": "designed", "evidenceStatus": "user_design_real_world_unverified" }
+        "breakfast_eat": {
+          "evidenceIds": [
+            "E-user-campus-canteen"
+          ],
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified"
+        },
+        "canteen_pair": {
+          "evidenceIds": [
+            "E-user-campus-canteen"
+          ],
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified"
+        }
       },
-      "mealRoles": ["breakfast", "lunch", "dinner"]
+      "mealRoles": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 420,
+          "endMinute": 540
+        },
+        {
+          "startMinute": 660,
+          "endMinute": 840
+        },
+        {
+          "startMinute": 1020,
+          "endMinute": 1200
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许07:00–09:00、11:00–14:00、17:00–20:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "canteen",
@@ -669,7 +821,23 @@
         "breakfast",
         "lunch",
         "dinner"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 420,
+          "endMinute": 540
+        },
+        {
+          "startMinute": 660,
+          "endMinute": 840
+        },
+        {
+          "startMinute": 1020,
+          "endMinute": 1200
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许07:00–09:00、11:00–14:00、17:00–20:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "cantonese",
@@ -720,7 +888,15 @@
       "mealRoles": [
         "lunch",
         "dinner"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "cinema",
@@ -774,7 +950,15 @@
       ],
       "preparationIds": [
         "opening_checked"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "craft",
@@ -819,7 +1003,15 @@
       "activityIds": [
         "craft_card",
         "craft_clay"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "dessert",
@@ -865,7 +1057,15 @@
       "activityIds": [
         "dessert_warm",
         "dessert_ice"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "exhibition",
@@ -911,7 +1111,15 @@
       },
       "activityIds": [
         "exhib_fav"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1020
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许09:00–17:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "garden",
@@ -955,7 +1163,15 @@
       "activityIds": [
         "garden_photo",
         "garden_roles"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1080
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "ice",
@@ -999,7 +1215,15 @@
       "activityIds": [
         "ice_slow",
         "ice_practice"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "mall",
@@ -1048,7 +1272,15 @@
         "arcade_claw",
         "arcade_basket",
         "arcade_race"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "meal",
@@ -1101,7 +1333,19 @@
       "mealRoles": [
         "lunch",
         "dinner"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 840
+        },
+        {
+          "startMinute": 1020,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许11:00–14:00、17:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "mystery_store",
@@ -1133,7 +1377,15 @@
       ],
       "activityIds": [
         "script_mystery"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "photo_printing",
@@ -1183,7 +1435,15 @@
       },
       "activityIds": [
         "photo_print"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许09:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "public_lounge",
@@ -1233,7 +1493,15 @@
         "talk_next",
         "music_swap",
         "music_memory"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "rainforest",
@@ -1277,7 +1545,15 @@
       },
       "activityIds": [
         "rainforest_leaf"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1080
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许09:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "reading",
@@ -1328,7 +1604,15 @@
         "read_alone",
         "read_share",
         "book_recommend"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "rest",
@@ -1370,7 +1654,15 @@
         "universityId": "",
         "campusArea": ""
       },
-      "activityIds": []
+      "activityIds": [],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许00:00–24:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "street",
@@ -1417,7 +1709,15 @@
         "architecture_detail",
         "photo_pair",
         "photo_color"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许09:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "supermarket",
@@ -1467,7 +1767,15 @@
         "super_fruit",
         "super_exchange",
         "purchase_picnic"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "switch_store",
@@ -1500,7 +1808,15 @@
       "activityIds": [
         "switch_coop",
         "switch_race"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "taishan_glass",
@@ -1604,7 +1920,15 @@
         "breakfast",
         "lunch",
         "dinner"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "tea",
@@ -1650,7 +1974,15 @@
       },
       "activityIds": [
         "tea_share"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "track_walk",
@@ -1697,7 +2029,15 @@
       "activityIds": [
         "track_stretch",
         "track_observe"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 360,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "waterside",
@@ -1742,7 +2082,15 @@
       },
       "activityIds": [
         "waterside_sketch"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1200
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许08:00–20:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "western",
@@ -1792,7 +2140,19 @@
       "mealRoles": [
         "lunch",
         "dinner"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 840
+        },
+        {
+          "startMinute": 1020,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许11:00–14:00、17:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "barbecue_stall",
@@ -1805,7 +2165,7 @@
         "campusArea": ""
       },
       "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
-      "minutes": 45,
+      "minutes": 30,
       "cost": [
         0,
         0
@@ -1834,7 +2194,19 @@
       ],
       "activityIds": [
         "supper_barbecue"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 30
+        },
+        {
+          "startMinute": 1140,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许00:00–00:30、19:00–24:00；不是官方营业时间，实际开放、通行与供应须确认。"
     },
     {
       "id": "snack_street",
@@ -1847,7 +2219,7 @@
         "campusArea": ""
       },
       "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
-      "minutes": 45,
+      "minutes": 30,
       "cost": [
         0,
         0
@@ -1876,7 +2248,145 @@
       ],
       "activityIds": [
         "supper_snacks"
-      ]
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 30
+        },
+        {
+          "startMinute": 1140,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许00:00–00:30、19:00–24:00；不是官方营业时间，实际开放、通行与供应须确认。"
+    },
+    {
+      "id": "east_lab_stop",
+      "place": {
+        "name": "东区实验楼",
+        "kind": "ordinary",
+        "category": "校园公共停留地",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "官方教学信息列有东区实验楼；夜间停留线索由用户提供，具体可进入区域及夜间开放未由官方证实。",
+      "scauOnly": true,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "tags": [
+        "nature",
+        "outdoor"
+      ],
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "activityIds": [
+        "campus_watch"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许00:00–24:00，仅用于用户提出的校园停留候选；夜间开放线索为user-provided，不是官方全天开放或室内进入许可。实际通行、照明及开放须确认。",
+      "availabilityClueSource": "user-provided"
+    },
+    {
+      "id": "camellia_garden",
+      "place": {
+        "name": "茶花园",
+        "kind": "ordinary",
+        "category": "校园花园",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "学校报定位为教三草坪与5号楼校史馆之间；夜间停留线索由用户提供，官方资料未证实夜间开放。",
+      "scauOnly": true,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "tags": [
+        "nature",
+        "outdoor"
+      ],
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "activityIds": [
+        "campus_watch"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许00:00–24:00，仅用于用户提出的校园停留候选；夜间开放线索为user-provided，不是官方全天开放或室内进入许可。实际通行、照明及开放须确认。",
+      "availabilityClueSource": "user-provided"
+    },
+    {
+      "id": "orchid_garden",
+      "place": {
+        "name": "兰花园",
+        "kind": "ordinary",
+        "category": "校园花园",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "名称及夜间停留线索由用户提供；具体位置、可进入区域与夜间开放待确认。",
+      "scauOnly": true,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "tags": [
+        "nature",
+        "outdoor"
+      ],
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "activityIds": [
+        "campus_watch"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划默认允许00:00–24:00，仅用于用户提出的校园停留候选；夜间开放线索为user-provided，不是官方全天开放或室内进入许可。实际通行、照明及开放须确认。",
+      "availabilityClueSource": "user-provided"
     }
   ]
 }

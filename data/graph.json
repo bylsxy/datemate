@@ -287,6 +287,11 @@
       "label": "用户允许以公共休息区承载交谈和听歌玩法；具体位置、座位和安静条件待确认。"
     },
     {
+      "id": "E-user-scau-night-stops",
+      "type": "evidence",
+      "label": "用户提出东区实验楼、茶花园、兰花园作为华农夜间停留候选，并提供开放线索；规划默认一般夜间停留60分钟、宵夜30分钟。东区实验楼的存在与茶花园的位置有学校资料线索，夜间开放仅依据用户提供信息。"
+    },
+    {
       "id": "E-user-switch",
       "type": "evidence",
       "label": "用户指定 Switch 店作为地点类型；多人游戏属于可调整的设计候选，店铺和设备可用性待确认。"
@@ -1441,6 +1446,13 @@
       "label": "选一杯温饮"
     },
     {
+      "id": "camellia_garden",
+      "type": "scene",
+      "label": "茶花园",
+      "placeKind": "ordinary",
+      "category": "校园花园"
+    },
+    {
       "id": "campus",
       "type": "scene",
       "label": "泰山区宿舍间步道",
@@ -1542,6 +1554,13 @@
       "id": "dessert_warm",
       "type": "activity",
       "label": "温热甜点"
+    },
+    {
+      "id": "east_lab_stop",
+      "type": "scene",
+      "label": "东区实验楼",
+      "placeKind": "ordinary",
+      "category": "校园公共停留地"
     },
     {
       "id": "exhib_fav",
@@ -1684,6 +1703,13 @@
       "label": "剧本杀店",
       "placeKind": "ordinary",
       "category": "剧本杀店"
+    },
+    {
+      "id": "orchid_garden",
+      "type": "scene",
+      "label": "兰花园",
+      "placeKind": "ordinary",
+      "category": "校园花园"
     },
     {
       "id": "photo_color",
@@ -2129,6 +2155,11 @@
     },
     {
       "id": "user:2026-10-14-project-design",
+      "type": "user_design",
+      "label": "用户项目设计；现实信息待确认"
+    },
+    {
+      "id": "user:2026-10-14-scau-night-stops",
       "type": "user_design",
       "label": "用户项目设计；现实信息待确认"
     },
@@ -3321,6 +3352,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-2961c507c9db7d",
+      "subject": "camellia_garden",
+      "predicate": "supported_by",
+      "object": "E-user-scau-night-stops",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-2967afc73e4f36",
       "subject": "aquarium",
       "predicate": "has_feature",
@@ -4180,6 +4221,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-48f8eb6d87d0c3",
+      "subject": "east_lab_stop",
+      "predicate": "supported_by",
+      "object": "E-user-scau-night-stops",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-495ecd9677d9aa",
       "subject": "rainforest_leaf",
       "predicate": "supported_by",
@@ -4728,6 +4779,17 @@
       "object": "E-P001",
       "evidenceIds": [
         "E-P001"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-5a6bf843ded4ea",
+      "subject": "camellia_garden",
+      "predicate": "allows_activity",
+      "object": "campus_watch",
+      "evidenceIds": [
+        "E-P001",
+        "E-user-scau-night-stops"
       ],
       "assertionKind": "designed"
     },
@@ -5382,6 +5444,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-741b86988088c3",
+      "subject": "orchid_garden",
+      "predicate": "has_feature",
+      "object": "tag:outdoor",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-74648170f4027b",
       "subject": "R-shared-food",
       "predicate": "supported_by",
@@ -5451,6 +5523,16 @@
         "E-P003"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-76f48cf607f9c9",
+      "subject": "camellia_garden",
+      "predicate": "has_feature",
+      "object": "tag:nature",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-7760d2db9babed",
@@ -5978,6 +6060,16 @@
       "evidenceIds": [
         "E-campus-food",
         "E-user-meal-periods"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-87394b95115700",
+      "subject": "orchid_garden",
+      "predicate": "supported_by",
+      "object": "E-user-scau-night-stops",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
       ],
       "assertionKind": "designed"
     },
@@ -6987,6 +7079,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-a4b66e34b1556c",
+      "subject": "camellia_garden",
+      "predicate": "has_feature",
+      "object": "tag:outdoor",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-a4e0844bc05c4e",
       "subject": "rest",
       "predicate": "supported_by",
@@ -7861,6 +7963,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-c0f1569aa80bc1",
+      "subject": "east_lab_stop",
+      "predicate": "has_feature",
+      "object": "tag:outdoor",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-c10122de9ac937",
       "subject": "taishan_glass",
       "predicate": "allows_activity",
@@ -7990,6 +8102,17 @@
       "object": "tag:food",
       "evidenceIds": [
         "E-P010"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-c5846050b7fb0d",
+      "subject": "orchid_garden",
+      "predicate": "allows_activity",
+      "object": "campus_watch",
+      "evidenceIds": [
+        "E-P001",
+        "E-user-scau-night-stops"
       ],
       "assertionKind": "designed"
     },
@@ -8312,6 +8435,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-cd22cb3a173625",
+      "subject": "E-user-scau-night-stops",
+      "predicate": "derived_from",
+      "object": "user:2026-10-14-scau-night-stops",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-cd2d37b12bf57f",
       "subject": "E-design-replan",
       "predicate": "derived_from",
@@ -8370,6 +8503,16 @@
       "evidenceIds": [
         "E-P006",
         "E-user-meal-periods"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-cffafca787ebca",
+      "subject": "east_lab_stop",
+      "predicate": "has_feature",
+      "object": "tag:nature",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
       ],
       "assertionKind": "designed"
     },
@@ -8598,6 +8741,17 @@
       "object": "E-P008",
       "evidenceIds": [
         "E-P008"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-d551e976a1b060",
+      "subject": "east_lab_stop",
+      "predicate": "allows_activity",
+      "object": "campus_watch",
+      "evidenceIds": [
+        "E-P001",
+        "E-user-scau-night-stops"
       ],
       "assertionKind": "designed"
     },
@@ -9031,6 +9185,16 @@
       "object": "resource:court_checked",
       "evidenceIds": [
         "E-campus-sport"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-e44d19993e2de7",
+      "subject": "orchid_garden",
+      "predicate": "has_feature",
+      "object": "tag:nature",
+      "evidenceIds": [
+        "E-user-scau-night-stops"
       ],
       "assertionKind": "designed"
     },
