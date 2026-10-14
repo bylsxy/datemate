@@ -1,6 +1,6 @@
 // 用户意图与求解结果分离：仅投影显式选择，不把自动排程变成预约。
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=3b6419e840a1e140';
-import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from './exploration.mjs?v=3b6419e840a1e140';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=a4420782c4d5e641';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from './exploration.mjs?v=a4420782c4d5e641';
 const clone = value => structuredClone(value);
 const mealRoles = ['breakfast', 'lunch', 'dinner', 'supper'];
 

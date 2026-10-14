@@ -7,15 +7,17 @@ import {isSceneInSchoolScope} from '../school-scope.mjs';
 // 复用只读 DOM fixture，直接执行 timeline 源码，避免引入浏览器或构建依赖。
 let fixtureRound=0;
 async function setup(options={}){
+  const {prepareFixture,...callbacks}=options;
   const fixtureSource=await readFile(new URL('./timeline-order.test.mjs',import.meta.url),'utf8');
   const fixture=new Function('isSceneInSchoolScope',`${fixtureSource.slice(fixtureSource.indexOf('class Element'),fixtureSource.indexOf('const candidate='))};return fixture;`)(isSceneInSchoolScope);
   const f=fixture(),oldDocument=globalThis.document;
+  prepareFixture?.(f);
   globalThis.document=f.doc;
   const key=Symbol.for('datemate.timeline.validation.test');globalThis[key]={...f.deps,isSceneAllowedAtExploration};
   const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
   const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const CAMPING_EXPLORATION_MIN=${CAMPING_EXPLORATION_MIN}; const {isSceneAllowedAtExploration,attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.timeline.validation.test')];\n${source}`).toString('base64')}#${++fixtureRound}`);
   const calls=[];
-  const timeline=createTimeline({...f,onScene:(...args)=>calls.push(['scene',...args]),onActivities:(...args)=>calls.push(['activity',...args]),onMeal:(...args)=>calls.push(['meal',...args]),...options});
+  const timeline=createTimeline({...f,onScene:(...args)=>calls.push(['scene',...args]),onActivities:(...args)=>calls.push(['activity',...args]),onMeal:(...args)=>calls.push(['meal',...args]),...callbacks});
   const plan={ok:true,stages:[{sceneId:'a',activityIds:['a-act'],startMinute:600,endMinute:660,candidates:['a','b'].map(id=>({sceneId:id,activityIds:[`${id}-act`],fitScore:73,q:73,scoreStatus:'evaluated',continuationWitness:{id}}))}]};
   function emit(type,target,key){
     let stopped=false;const event={type,target,key,preventDefault(){this.defaultPrevented=true;},stopImmediatePropagation(){stopped=true;}};
@@ -24,6 +26,108 @@ async function setup(options={}){
   timeline.render(plan);
   return {...f,timeline,plan,calls,emit,cleanup(){timeline.dispose();globalThis.document=oldDocument;delete globalThis[key];}};
 }
+
+const rect=(left,top,width=100,height=100)=>({left,top,right:left+width,bottom:top+height,width,height});
+function visibilityFixture(f){
+  const listeners=new Map(),observers=[];
+  Object.assign(f.doc.defaultView,{
+    addEventListener(type,fn){if(!listeners.has(type))listeners.set(type,new Set());listeners.get(type).add(fn);},
+    removeEventListener(type,fn){listeners.get(type)?.delete(fn);},
+    IntersectionObserver:class{
+      constructor(callback){this.callback=callback;this.targets=[];observers.push(this);}
+      observe(target){this.targets.push(target);}
+      disconnect(){this.targets=[];}
+    }
+  });
+  f.scrollWindow=()=>{for(const fn of listeners.get('scroll')||[])fn();};
+  f.intersect=target=>{for(const observer of observers)if(observer.targets.includes(target))observer.callback([{target,isIntersecting:true,intersectionRect:{width:10,height:10}}]);};
+}
+
+test('每个 viewKey 的 scene/departure 标明当前 selected，activity 保留 toggle 前语义',async()=>{
+  const f=await setup();try{
+    f.catalog.departures=[{id:'bye',title:'分别'},{id:'bye2',title:'另一分别'}];
+    const next={...f.plan,stages:[f.plan.stages[0],{...f.plan.stages[0],sceneId:'b',activityIds:[],startMinute:660,endMinute:720,mealRole:'breakfast'}],departure:{id:'bye2',startMinute:720,endMinute:730,candidates:[{id:'bye'},{id:'bye2'}]}};
+    f.timeline.render(next);
+    const actions=f.timeline.getPendingActions(),primary=actions.filter(a=>['scene','departure'].includes(a.actionType));
+    assert.deepEqual(primary.filter(a=>a.selected).map(a=>[a.viewKey,a.stageIndex,a.sceneId]),[['stage-0',0,'a'],['meal-breakfast',1,'b'],['departure',2,'bye2']]);
+    for(const viewKey of new Set(primary.map(a=>a.viewKey))){
+      const group=primary.filter(a=>a.viewKey===viewKey);
+      assert.equal(group.filter(a=>a.selected===true).length,1);
+      assert.ok(group.filter(a=>!a.selected).every(a=>a.selected===false));
+    }
+    const selectedActivity=actions.find(a=>a.actionType==='activity'&&a.viewKey==='stage-0');
+    assert.equal(selectedActivity.selected,true);assert.deepEqual(selectedActivity.activityIds,[],'已勾选活动的验证目标仍为取消后的组合');
+    const unselectedActivity=actions.find(a=>a.actionType==='activity'&&a.viewKey==='meal-breakfast');
+    assert.equal(unselectedActivity.selected,false);assert.deepEqual(unselectedActivity.activityIds,['b-act']);
+    primary[0].selected=false;
+    assert.equal(f.timeline.getPendingActions().find(a=>a.actionKey===primary[0].actionKey).selected,true,'导出元数据不能修改内部选择');
+    f.timeline.render({...next,stages:[{...next.stages[0],sceneId:'c',activityIds:['c-act']},next.stages[1]],departure:{...next.departure,id:'bye'}},{preserveThrough:2,preserveKey:'departure'});
+    assert.deepEqual(f.timeline.getPendingActions().filter(a=>['scene','departure'].includes(a.actionType)&&a.selected).map(a=>[a.viewKey,a.sceneId]),[['stage-0','c'],['meal-breakfast','b'],['departure','bye']],'保留 DOM 时 selected 仍跟随最新方案');
+  }finally{f.cleanup();}
+});
+
+test('底部分别卡按 actual visual viewport 提优，IO 和滚动扫描均跳过屏幕外及隐藏动作',async()=>{
+  const visible=[],f=await setup({prepareFixture:visibilityFixture,onCandidateVisible:action=>visible.push(action)});try{
+    f.doc.defaultView.visualViewport={offsetLeft:50,offsetTop:80,width:300,height:250,addEventListener(){},removeEventListener(){}};
+    f.catalog.departures=[{id:'bye',title:'分别'},{id:'bye2',title:'另一分别'}];
+    f.timeline.render({...f.plan,departure:{id:'bye',startMinute:660,endMinute:670,candidates:[{id:'bye'},{id:'bye2'}]}});
+    const ordinary=f.root.children[0],departure=f.root.children.at(-1),strip=departure.querySelector('.scene-strip'),[selected,hidden]=strip.children;
+    ordinary.querySelector('.scene-strip').getBoundingClientRect=()=>rect(0,0,500,70);
+    ordinary.querySelector('input[data-activity]').getBoundingClientRect=()=>rect(50,500);
+    let stripRect=rect(0,500,500,100),cardRect=rect(70,510);
+    strip.getBoundingClientRect=()=>stripRect;selected.getBoundingClientRect=()=>cardRect;
+    hidden.getBoundingClientRect=()=>rect(180,300);
+    f.flush();assert.deepEqual(visible,[],'分别在屏幕下方时不能提前提优');
+    f.intersect(selected);assert.deepEqual(visible,[],'IO 可见标记仍须通过实际 viewport 检查');
+    stripRect=rect(0,300,500,100);cardRect=rect(350,310);
+    f.scrollWindow();f.flush();assert.deepEqual(visible,[],'只接触 viewport 右边界不算可见');
+    cardRect=rect(70,310);
+    f.scrollWindow();f.flush();
+    assert.deepEqual(visible.map(a=>[a.viewKey,a.actionType,a.departureId,a.selected]),[['departure','departure','bye',true]]);
+    assert.equal(hidden.hidden,true,'未验证分别动作继续隐藏');
+    assert.equal(hidden.classList.contains('is-unselectable'),true);
+    f.intersect(selected);f.scrollWindow();f.flush();assert.equal(visible.length,1,'普通事件每轮去重');
+    departure.hidden=true;f.timeline.refreshVisibleCandidates();f.flush();assert.equal(visible.length,1);
+    departure.hidden=false;cardRect=rect(70,80,100,20);stripRect=rect(0,70,500,50);
+    f.intersect(selected);assert.equal(visible.length,2,'IO 路径支持上边界内的实际交集');
+    assert.equal(f.timeline.updateActionValidation({...visible[0],validationStatus:'verified',continuationWitness:{bye:true}}),true);
+    f.timeline.refreshVisibleCandidates();f.flush();assert.equal(visible.length,2,'已验证动作不再提优');
+  }finally{f.cleanup();}
+});
+
+test('动作注册后可见消息带新 actionKey，Worker 就绪后 refresh 重发 pending 且排除隐藏页面',async()=>{
+  let workerJobs=null;
+  const early=[],accepted=[],f=await setup({onCandidateVisible:action=>{
+    (workerJobs?accepted:early).push(action);
+    if(workerJobs)assert.ok(workerJobs.has(action.actionKey),'Worker 必须收到当前注册动作的优先 key');
+  }});try{
+    f.flush();assert.ok(early.length>0);assert.ok(early.every(a=>a.actionKey&&a.viewKey));
+    workerJobs=new Map(f.timeline.getPendingActions().map(a=>[a.actionKey,a]));
+    f.timeline.refreshVisibleCandidates();f.flush();
+    assert.deepEqual(accepted.map(a=>a.actionKey),early.map(a=>a.actionKey),'初始化前被丢弃的可见 key 能在初始化后重发');
+    const count=accepted.length;
+    f.timeline.refreshVisibleCandidates();f.doc.hidden=true;f.flush();assert.equal(accepted.length,count);
+    f.doc.hidden=false;f.root.hidden=true;f.timeline.refreshVisibleCandidates();f.flush();assert.equal(accepted.length,count);
+    f.root.hidden=false;f.timeline.refreshVisibleCandidates();f.flush();assert.equal(accepted.length,count*2);
+    f.timeline.pending({fromStage:0,preserveThrough:0});f.timeline.refreshVisibleCandidates();f.flush();assert.equal(accepted.length,count*2,'重算时不重发旧轮动作');
+    f.timeline.render(f.plan);
+    workerJobs=new Map(f.timeline.getPendingActions().map(a=>[a.actionKey,a]));
+    f.flush();assert.ok(accepted.slice(count*2).every(a=>!early.some(old=>old.actionKey===a.actionKey)));
+  }finally{f.cleanup();}
+});
+
+test('活动整卡可见时即使 checkbox 在 viewport 外仍提优，隐藏整卡不通知',async()=>{
+  const visible=[],f=await setup({onCandidateVisible:action=>visible.push(action)});try{
+    const input=f.root.querySelector('input[data-activity]'),label=f.doc.createElement('label');
+    label.className='activity-card';input.parentElement.append(label);label.append(input);
+    label.getBoundingClientRect=()=>rect(20,450,200,100);
+    input.getBoundingClientRect=()=>rect(30,520,14,14);
+    f.flush();assert.ok(visible.some(a=>a.actionType==='activity'&&a.selected===true));
+    const count=visible.filter(a=>a.actionType==='activity').length;
+    label.hidden=true;f.timeline.refreshVisibleCandidates();f.flush();
+    assert.equal(visible.filter(a=>a.actionType==='activity').length,count);
+  }finally{f.cleanup();}
+});
 
 test('每个 scene 和当前活动 toggle 都门控，verified 才传 witness；旧轮结果被拒绝',async()=>{
   const f=await setup();try{

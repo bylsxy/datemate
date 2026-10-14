@@ -27,3 +27,20 @@ test('早段新增消费可释放后段酒店预算；后段选择不能回改�
   const jobs=buildActionJobs({...original,replay:{search:{maxStages:1}}},state,data,[{actionKey:'paid',actionType:'scene',stageIndex:0,sceneId:'paid',activityIds:[]}]);
   assert.equal(jobs[0].search.maxStages,undefined);assert.equal(jobs[0].context.departureChoice,'separate');
 });
+
+test('验证 jobs 透传 viewKey 与 primary selected，已勾选 activity 的目标仍是 toggle 后组合',()=>{
+  const data={scenes:[{id:'walk',activities:[{id:'chat',group:'extra'}]}],departures:[{id:'separate'}]};
+  const state={prefix:[],exploration:0,context:{departureChoice:'separate'}};
+  const result={ok:true,stages:[{sceneId:'walk',activityIds:['chat'],startMinute:600,endMinute:630}],departure:{id:'separate'}};
+  const actions=[
+    {actionKey:'scene',viewKey:'stage-0',actionType:'scene',stageIndex:0,sceneId:'walk',activityIds:['chat'],selected:true},
+    {actionKey:'toggle',viewKey:'stage-0',actionType:'activity',stageIndex:0,sceneId:'walk',activityId:'chat',activityIds:[],selected:true},
+    {actionKey:'departure',viewKey:'departure',actionType:'departure',stageIndex:1,sceneId:'separate',departureId:'separate',activityIds:[],selected:true}
+  ];
+  const jobs=buildActionJobs(result,state,data,actions);
+  assert.deepEqual(jobs.map(job=>[job.key,job.viewKey,job.selected]),[['scene','stage-0',true],['toggle','stage-0',true],['departure','departure',true]]);
+  assert.deepEqual(jobs.filter(job=>['scene','departure'].includes(job.actionType)&&job.selected).map(job=>job.key),['scene','departure'],'调度首轮优先项须按 primary actionType 过滤');
+  assert.deepEqual(jobs[0].prefix[0].activityIds,['chat']);assert.deepEqual(jobs[1].prefix[0].activityIds,[]);
+  assert.deepEqual(jobs[1].knownPlan[0].activityIds,[]);
+  assert.deepEqual(jobs.map(job=>[job.actionFields.viewKey,job.actionFields.selected]),actions.map(action=>[action.viewKey,action.selected]));
+});

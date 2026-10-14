@@ -1,11 +1,11 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=3b6419e840a1e140';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=3b6419e840a1e140';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=3b6419e840a1e140';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=3b6419e840a1e140';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=a4420782c4d5e641';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=a4420782c4d5e641';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=a4420782c4d5e641';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=a4420782c4d5e641';
 
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=3b6419e840a1e140';
-import {mealModeCard,mealOptions} from './meal-options.mjs?v=3b6419e840a1e140';
-import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from './exploration.mjs?v=3b6419e840a1e140';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=a4420782c4d5e641';
+import {mealModeCard,mealOptions} from './meal-options.mjs?v=a4420782c4d5e641';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from './exploration.mjs?v=a4420782c4d5e641';
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));
@@ -93,7 +93,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
         const candidate=view.candidates.get(sceneId),scene=scenes.get(sceneId);
         const activityIds=current?.sceneId===sceneId?ids:candidate?.activityIds||scene?.default||[];
         const actionType=view.departure?'departure':special?.id===sceneId?'meal_mode':'scene';
-        add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType,sceneId,activityIds:[...activityIds],...(actionType==='departure'?{departureId:sceneId}:actionType==='meal_mode'?{choice:{mode:special.mode}}:{}),candidate:candidate?structuredClone(candidate):undefined,continuationWitness:candidate?.continuationWitness??(current?.sceneId===sceneId?current?.continuationWitness:undefined)});
+        // primary 的 selected 表示当前地点/分别选择；activity 的 selected 仍表示 toggle 前的勾选状态。
+        add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType,sceneId,activityIds:[...activityIds],...(['scene','departure'].includes(actionType)?{selected:view.selectedId===sceneId}:{}),...(actionType==='departure'?{departureId:sceneId}:actionType==='meal_mode'?{choice:{mode:special.mode}}:{}),candidate:candidate?structuredClone(candidate):undefined,continuationWitness:candidate?.continuationWitness??(current?.sceneId===sceneId?current?.continuationWitness:undefined)});
       }
       const scene=scenes.get(current?.sceneId);
       for(const choice of view.mealChoices||[])if(view.mealInputs?.has(choice.sceneId))add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'meal_option',sceneId:choice.sceneId,activityIds:[...choice.activityIds],selected:choice.selected,candidate:choice.candidate});
@@ -107,6 +108,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
         if(view.mergeButton&&!view.mergeOption.error){const previous=result.stages[view.index-1];add({viewKey:view.key,stageIndex:view.index-1,actionType:'merge',sceneId:previous.sceneId,activityIds:[...previous.activityIds],durationMinutes:view.mergeOption.minutes});}
       }
     }
+    // 可见回调必须拿到完整的新一轮 actionKey；同一帧内由调用方接续初始化 Worker/jobs。
+    for(const view of views.values())view.visibility?.queue();
   }
   function getPendingActions(){
     return busy?[]:[...actions.values()].filter(action=>action.validationStatus==='pending').map(action=>structuredClone(action));
@@ -153,26 +156,32 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   function watchVisibility(view) {
     // render 已清理旧轮资源；重新接入可见检测不能清掉刚启动的居中滚动等待。
     view.visibility?.dispose();view.visibility=null;
-    if(typeof onCandidateVisible!=='function'||view.departure||result?.ok===false&&!groupedMode(view))return;
+    if(typeof onCandidateVisible!=='function'||result?.ok===false&&!groupedMode(view))return;
     const notified=new Set();let stopped=false,frame=0,observer=null;
-    function visibleBounds() {
-      const bounds=view.strip.getBoundingClientRect(),viewport=window.visualViewport;
+    function viewportBounds() {
+      const viewport=window.visualViewport;
       const left=viewport?.offsetLeft||0,top=viewport?.offsetTop||0;
       const width=viewport?.width??(root.ownerDocument.documentElement.clientWidth||window.innerWidth);
       const height=viewport?.height??(root.ownerDocument.documentElement.clientHeight||window.innerHeight);
-      const clip={left:Math.max(bounds.left,left),right:Math.min(bounds.right,left+width),top:Math.max(bounds.top,top),bottom:Math.min(bounds.bottom,top+height)};
+      return {left,top,right:left+width,bottom:top+height};
+    }
+    function visibleBounds() {
+      const bounds=view.strip.getBoundingClientRect(),viewport=viewportBounds();
+      const clip={left:Math.max(bounds.left,viewport.left),right:Math.min(bounds.right,viewport.right),top:Math.max(bounds.top,viewport.top),bottom:Math.min(bounds.bottom,viewport.bottom)};
       return bounds.width>0&&bounds.height>0&&clip.right>clip.left&&clip.bottom>clip.top?clip:null;
     }
-    function notify(card,clip=visibleBounds()) {
-      const sceneId=card.dataset.scene,action=actions.get(card.dataset.actionKey);
-      if(stopped||card.hidden||card.closest('.activity-card')?.hidden||view.element.classList.contains('is-recomputing')||notified.has(action?.actionKey||sceneId))return;
+    function notify(card,clip=visibleBounds(),action=actions.get(card.dataset.actionKey)) {
+      const sceneId=card.dataset.scene;
+      if(stopped||busy||root.ownerDocument.hidden||view.element.classList.contains('is-recomputing')||notified.has(action?.actionKey||sceneId))return;
       if(action? action.validationStatus!=='pending':card.querySelector('.scene-score')?.hidden||view.candidates.get(sceneId)?.scoreStatus!=='pending')return;
+      // 活动按肉眼可见的整张 label 判断，不能只测可能在屏幕外的 checkbox。
+      const target=action?.actionType==='activity'||action?.actionType==='meal_option'?card.closest('.activity-card')||card:card;
+      for(let element=target;element;element=element.parentElement)if(element.hidden)return;
       if(action?.actionType==='activity'||action?.actionType==='meal_option'){
-        const viewport=window.visualViewport,left=viewport?.offsetLeft||0,top=viewport?.offsetTop||0;
-        clip={left,top,right:left+(viewport?.width??window.innerWidth),bottom:top+(viewport?.height??window.innerHeight)};
+        clip=viewportBounds();
       }
       if(!clip)return;
-      const rect=card.getBoundingClientRect();
+      const rect=target.getBoundingClientRect();
       if(rect.width<=0||rect.height<=0||rect.right<=clip.left||rect.left>=clip.right||rect.bottom<=clip.top||rect.top>=clip.bottom)return;
       // 每轮每张卡只通知一次；先登记，允许回调同步更新评分。
       notified.add(action?.actionKey||sceneId);
@@ -184,9 +193,9 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       for(const card of view.cards.values())notify(card,clip);
       for(const input of view.activities.querySelectorAll('input[data-activity]'))notify(input,clip);
       for(const input of view.mealInputs?.values()||[])notify(input,clip);
-      if(view.durationSelect){
-        const bounds=view.durationSelect.getBoundingClientRect();
-        if(bounds.bottom>0&&bounds.top<window.innerHeight)for(const action of actions.values())if(action.viewKey===view.key&&['duration','split','merge'].includes(action.actionType)&&action.validationStatus==='pending')onCandidateVisible?.(structuredClone(action));
+      if(view.durationSelect)for(const action of actions.values())if(action.viewKey===view.key&&['duration','split','merge'].includes(action.actionType)){
+        const control=action.actionType==='duration'?view.durationSelect:action.actionType==='split'?view.splitButton:view.mergeButton;
+        if(control)notify(control,viewportBounds(),action);
       }
     }
     const queue=()=>{if(!stopped&&!frame)frame=window.requestAnimationFrame(scan);};
@@ -205,8 +214,10 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     window.visualViewport?.addEventListener('scroll',queue,{passive:true});
     window.visualViewport?.addEventListener('resize',queue,{passive:true});
     queue();
-    view.visibility={queue,dispose(){stopped=true;observer?.disconnect();if(frame)window.cancelAnimationFrame(frame);view.strip.removeEventListener('scroll',queue);window.removeEventListener('scroll',queue,true);window.removeEventListener('resize',queue);window.visualViewport?.removeEventListener('scroll',queue);window.visualViewport?.removeEventListener('resize',queue);}};
+    view.visibility={queue,refresh(){notified.clear();queue();},dispose(){stopped=true;observer?.disconnect();if(frame)window.cancelAnimationFrame(frame);view.strip.removeEventListener('scroll',queue);window.removeEventListener('scroll',queue,true);window.removeEventListener('resize',queue);window.visualViewport?.removeEventListener('scroll',queue);window.visualViewport?.removeEventListener('resize',queue);}};
   }
+  // Worker 初始化或重启后显式重发；继续只报告此刻可见且仍待验证的动作。
+  function refreshVisibleCandidates(){for(const view of views.values())view.visibility?.refresh();}
   function deferSortUntilStill(view) {
     if(view.scrollTimer!=null)window.clearTimeout(view.scrollTimer);
     // 每次原生滚动续期；徽标和可见提优继续，只推迟 DOM 重排。
@@ -616,5 +627,5 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     if(view.mealRole){onMeal(view.mealRole,{sceneId:input.dataset.scene,activityIds:[...action.activityIds]},{fromStage:index,knownPlan:action.continuationWitness});return;}
     onActivities(index,input.dataset.scene,[...action.activityIds],{knownPlan:action.continuationWitness});
   });
-  return {render,pending,updateCandidate,getPendingCandidates,getPendingActions,updateActionValidation,recenter:()=>views.forEach(v=>centerSelection(v,false)),dispose:()=>{root.removeEventListener('click',guardActivation,true);root.removeEventListener('keydown',guardActivation,true);actions.clear();views.forEach(v=>v.dispose());}};
+  return {render,pending,updateCandidate,getPendingCandidates,getPendingActions,updateActionValidation,refreshVisibleCandidates,recenter:()=>views.forEach(v=>centerSelection(v,false)),dispose:()=>{root.removeEventListener('click',guardActivation,true);root.removeEventListener('keydown',guardActivation,true);actions.clear();views.forEach(v=>v.dispose());}};
 }

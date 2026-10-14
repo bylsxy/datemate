@@ -55,7 +55,7 @@ const entry = key => ({key, stageIndex:0, sceneId:key, candidate:{sceneId:key, a
 const success = q => ({ok:true, status:'feasible', q, prefixUtility:0, referenceUtility:80, scoreVersion:'test', search:{expandedNodes:5}});
 function scheduler(createSearch) {
   const timer=new FakeTimer(), results=[];
-  const api=createCandidateScheduler({createSearch, onResult:r=>results.push(r), schedule:timer.schedule, cancel:timer.cancel, now:timer.now});
+  const api=createCandidateScheduler({createSearch, onResult:r=>results.push(r), schedule:timer.schedule, cancel:timer.cancel, now:timer.now,maxStepsPerTick:1});
   return {timer, results, api};
 }
 
@@ -230,7 +230,7 @@ test('评分只使用完整q与同阶段参考尺，未找到时清除数值并�
   assert.equal(unresolved.scoreStatus,'unresolved');
 });
 
-test('可见卡取消80ms等待，在低优先迭代器片间抢占而不重复创建搜索', () => {
+test('可见卡取消短片间等待，在低优先迭代器片间抢占而不重复创建搜索', () => {
   const steps=[], created=[];
   const {api,timer,results}=scheduler(job=>{
     created.push(job.key);
@@ -239,9 +239,9 @@ test('可见卡取消80ms等待，在低优先迭代器片间抢占而不重复�
   api.reset('g1',[entry('low'),entry('visible')]);
   timer.next();
   assert.deepEqual(steps,['low:first']);
-  assert.equal(timer.due(),160);
+  assert.equal(timer.due(),8);
   api.prioritize('visible');
-  assert.equal(timer.due(),80,'可见任务应取消尚余80ms的空闲等待');
+  assert.equal(timer.due(),4,'可见任务应立即取消尚余的片间等待');
   assert.equal(timer.cancelled.length,1);
   timer.next();
   assert.deepEqual(steps,['low:first','visible:first']);

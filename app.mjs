@@ -1,23 +1,23 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=3b6419e840a1e140';
-import {createTimeline} from './timeline.mjs?v=3b6419e840a1e140';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=3b6419e840a1e140';
-import {createReasonView} from './reasons-view.mjs?v=3b6419e840a1e140';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=3b6419e840a1e140';
-import {createPlacePicker} from './place-picker.mjs?v=3b6419e840a1e140';
-import {createLibraryView} from './library-view.mjs?v=3b6419e840a1e140';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=3b6419e840a1e140';
-import {dietaryOptions} from './data/activities.mjs?v=3b6419e840a1e140';
-import * as reasoning from './reasoning.mjs?v=3b6419e840a1e140';
-import {normalizePeriods} from './time-periods.mjs?v=3b6419e840a1e140';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=3b6419e840a1e140';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=3b6419e840a1e140';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=a4420782c4d5e641';
+import {createTimeline} from './timeline.mjs?v=a4420782c4d5e641';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=a4420782c4d5e641';
+import {createReasonView} from './reasons-view.mjs?v=a4420782c4d5e641';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=a4420782c4d5e641';
+import {createPlacePicker} from './place-picker.mjs?v=a4420782c4d5e641';
+import {createLibraryView} from './library-view.mjs?v=a4420782c4d5e641';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=a4420782c4d5e641';
+import {dietaryOptions} from './data/activities.mjs?v=a4420782c4d5e641';
+import * as reasoning from './reasoning.mjs?v=a4420782c4d5e641';
+import {normalizePeriods} from './time-periods.mjs?v=a4420782c4d5e641';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=a4420782c4d5e641';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=a4420782c4d5e641';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=3b6419e840a1e140',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=a4420782c4d5e641',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,onMerge:commitMerge,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
@@ -48,8 +48,9 @@ function startValidation(){
   };
   currentWorker.postMessage({type:'validate',generation:sequence,jobs});
   currentWorker.postMessage({type:'pauseValidation',paused:document.hidden||$('#view-plan').hidden});
+  timeline.refreshVisibleCandidates();
 }
-document.addEventListener('visibilitychange',()=>validationWorker?.postMessage({type:'pauseValidation',paused:document.hidden||$('#view-plan').hidden}));
+document.addEventListener('visibilitychange',()=>{validationWorker?.postMessage({type:'pauseValidation',paused:document.hidden||$('#view-plan').hidden});if(!document.hidden)timeline.refreshVisibleCandidates();});
 window.addEventListener('pagehide',stopValidation);
 let graphRequest=0;
 let scopedGraph=graph;
@@ -313,6 +314,7 @@ function showView(name){
   if(name==='library')libraryView.render();
   if(name==='plan')timeline.recenter();
   validationWorker?.postMessage({type:'pauseValidation',paused:name!=='plan'||document.hidden});
+  if(name==='plan')timeline.refreshVisibleCandidates();
   window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
   if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.4.1</p><p>知识库 · ${esc(catalog.version)}</p><h3>小组成员</h3><p>徐阳、廖信同、黎欣欣、周艳雯、殷浚峰</p>`;
 }

@@ -1,19 +1,22 @@
-import { createPlanner, createContinuationSearch, planDate, verifyPlanWitness } from './engine.mjs?v=3b6419e840a1e140';
-import { catalog, rules, graph } from './data/catalog.mjs?v=3b6419e840a1e140';
-import { createCandidateScheduler } from './candidate-validation.mjs?v=3b6419e840a1e140';
+import { createPlanner, createContinuationSearch, planDate, verifyPlanWitness } from './engine.mjs?v=a4420782c4d5e641';
+import { catalog, rules, graph } from './data/catalog.mjs?v=a4420782c4d5e641';
+import { createCandidateScheduler } from './candidate-validation.mjs?v=a4420782c4d5e641';
 
 const knowledge = { ...catalog, rules, graph };
 const planner = createPlanner(knowledge);
-function* validateAction(job, options) {
+function verifyAction(job, options) {
   const settings = {...job.search, ...options, fixedPrefix:job.prefix, exploration:job.exploration};
-  // 先重验已有的完整路径，常规候选无需再展开一棵搜索树。
   if (job.knownPlan?.length) {
     const verified = verifyPlanWitness(job.context, knowledge, {...settings, knownPlan:job.knownPlan});
     if (verified.ok) return verified;
   }
-  return yield* createContinuationSearch(job.context, knowledge, settings);
+  return null;
+}
+function* validateAction(job, options) {
+  return yield* createContinuationSearch(job.context, knowledge, {...job.search,...options,fixedPrefix:job.prefix,exploration:job.exploration});
 }
 const validation = createCandidateScheduler({
+  verifyCandidate: verifyAction,
   createSearch: validateAction,
   onResult: update => self.postMessage({type:'candidate', ...update}),
 });
