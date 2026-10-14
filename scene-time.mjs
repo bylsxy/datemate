@@ -1,4 +1,4 @@
-import { normalizePeriods } from './time-periods.mjs?v=e9569bc880ec2643';
+import { normalizePeriods } from './time-periods.mjs?v=d4f7f2e5b8714a6e';
 
 const DAY = 1440;
 

@@ -1,10 +1,10 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=e9569bc880ec2643';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=e9569bc880ec2643';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=e9569bc880ec2643';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=e9569bc880ec2643';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=d4f7f2e5b8714a6e';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=d4f7f2e5b8714a6e';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=d4f7f2e5b8714a6e';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=d4f7f2e5b8714a6e';
 
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=e9569bc880ec2643';
-import {mealModeCard,mealOptions} from './meal-options.mjs?v=e9569bc880ec2643';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=d4f7f2e5b8714a6e';
+import {mealModeCard,mealOptions} from './meal-options.mjs?v=d4f7f2e5b8714a6e';
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));
@@ -41,7 +41,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     if(action.actionType==='meal_option'){
       const input=view.mealInputs?.get(action.sceneId);if(!input)return;
       input.dataset.actionKey=action.actionKey;input.disabled=!enabled;input.checked=action.selected;
-      const label=input.closest('.activity-card');label.hidden=action.validationStatus==='hard_rejected'&&!action.selected;label.classList.toggle('selected',action.selected);label.classList.toggle('is-unselectable',!enabled);label.title=enabled?'选择这个吃法，后面重新安排':actionStatus(action.validationStatus);
+      const label=input.closest('.activity-card');label.hidden=action.validationStatus!=='verified'&&!action.selected;label.classList.toggle('selected',action.selected);label.classList.toggle('is-unselectable',!enabled);label.title=enabled?'选择这个吃法，后面重新安排':actionStatus(action.validationStatus);
       return;
     }
     if(['duration','split','merge'].includes(action.actionType)){
@@ -58,7 +58,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     if(action.actionType!=='activity'){
       // 不设置 aria-disabled，轮播仍可用方向键浏览未验证卡。
       element.classList.toggle('is-unselectable',!enabled);
-      element.hidden=action.validationStatus==='hard_rejected'&&view.selectedId!==action.sceneId;
+      element.hidden=action.validationStatus!=='verified'&&view.selectedId!==action.sceneId;
       if(element.hidden)element.setAttribute('aria-disabled','true');else element.removeAttribute('aria-disabled');
       const title=element.querySelector('.scene-title').textContent;
       element.setAttribute('aria-label',`${title}，${actionStatus(action.validationStatus)}`);
@@ -73,7 +73,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       element.checked=action.selected;
       element.setAttribute('aria-disabled',String(!enabled));
       const card=element.closest('.activity-card');
-      if(card){card.hidden=action.validationStatus==='hard_rejected'&&!action.selected;card.classList.toggle('is-unselectable',!enabled);card.dataset.validationStatus=action.validationStatus;card.title=actionStatus(action.validationStatus);}
+      if(card){card.hidden=action.validationStatus!=='verified'&&!action.selected;card.classList.toggle('is-unselectable',!enabled);card.dataset.validationStatus=action.validationStatus;card.title=actionStatus(action.validationStatus);}
     }
   }
   function registerActions(){
@@ -98,7 +98,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       for(const choice of view.mealChoices||[])if(view.mealInputs?.has(choice.sceneId))add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'meal_option',sceneId:choice.sceneId,activityIds:[...choice.activityIds],selected:choice.selected,candidate:choice.candidate});
       if(scene)for(const input of view.activities.querySelectorAll('input[data-activity]')){
         const activityId=input.dataset.activity;
-        add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'activity',activityId,sceneId:scene.id,activityIds:toggleActivity(scene,ids,activityId),selected:ids.includes(activityId)});
+        add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'activity',activityId,sceneId:scene.id,activityIds:toggleActivity(scene,ids,activityId,view.mealRole),selected:ids.includes(activityId)});
       }
       if(scene&&current?.durationRange&&!current.virtualMeal){
         for(const minutes of view.durationOptions?.keys()||[])if(minutes!==current.minutes)add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'duration',sceneId:scene.id,activityIds:[...ids],durationMinutes:minutes});
@@ -306,7 +306,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       return `<div class="activity-row">${acts.map(a=>{
         const selected=ids.includes(a.id);
         const description=a.description??'';
-        return `<label class="activity-card${selected?' selected':''}" title="${esc(description)}"><input type="checkbox" data-stage="${view.index}" data-scene="${scene.id}" data-activity="${a.id}" ${selected?'checked':''} aria-label="${esc(a.title)}，${esc(description)}"><span class="activity-content"><span class="activity-title">${esc(a.title)}</span><span class="activity-desc">${esc(description)}</span></span></label>`;
+        const mealSingle=view.mealRole&&scene.mealActivityIds?.includes(a.id)&&(a.mode==='single'||a.compositionMode==='exclusive');
+        return `<label class="activity-card${selected?' selected':''}" title="${esc(description)}"><input type="${mealSingle?'radio':'checkbox'}" ${mealSingle?`name="meal-${view.index}-${esc(a.group)}"`:''} data-stage="${view.index}" data-scene="${scene.id}" data-activity="${a.id}" ${selected?'checked':''} aria-label="${esc(a.title)}，${esc(description)}"><span class="activity-content"><span class="activity-title">${esc(a.title)}</span><span class="activity-desc">${esc(description)}</span></span></label>`;
       }).join('')}</div>`;
     }).join('');
   }
@@ -345,6 +346,15 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     const incoming=new Map((meal?.candidates?.length?meal.candidates:stage.candidates||[]).map(c=>[c.sceneId||c.id,c]));
     // 新一轮候选可能截断；保留视图必须继续展示用户已经刷到的全部卡片。
     const candidates=preserve?new Map([...view.candidates,...incoming]):incoming;
+    // 求解结果只包含当时搜索到的候选，不能把被旧后续挤掉的前段选择永久删掉。
+    // 补齐目录候选后统一验证“此前前缀 + 当前选择 + 全新后续”，验证成功才展示。
+    if(!view.departure)for(const scene of catalog.scenes){
+      if(candidates.has(scene.id)||!allowed(scene))continue;
+      if(view.mealRole?!scene.mealRoles?.includes(view.mealRole):scene.kind==='meal')continue;
+      let activityIds=[...(scene.default||[])];
+      if(view.mealRole){const ids=mealActivityIds(scene,view.mealRole),diet=getIntent()?.context?.dietaryRestrictions||[];const activity=scene.activities.find(a=>ids.includes(a.id)&&!(a.dietaryTags||[]).some(t=>diet.includes(t)));if(!activity)continue;activityIds=[activity.id];}
+      candidates.set(scene.id,{sceneId:scene.id,activityIds,fitScore:null,scoreStatus:'pending'});
+    }
     if(meal&&!result.ok&&!candidates.size){
       for(const scene of catalog.scenes.filter(s=>allowed(s)&&s.mealRoles?.includes(meal.mealRole))){
         const ids=mealActivityIds(scene,meal.mealRole),diet=getIntent()?.context?.dietaryRestrictions||[];

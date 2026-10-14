@@ -1,5 +1,5 @@
 // 界面展示使用统一单位；算法与硬约束由 engine.mjs 负责。
-import {normalizePeriods} from './time-periods.mjs?v=e9569bc880ec2643';
+import {normalizePeriods} from './time-periods.mjs?v=d4f7f2e5b8714a6e';
 export const formatTime = m => {
   const minute=Math.round(m),day=Math.floor(minute/1440),clock=((minute%1440)+1440)%1440;
   return `${day>0?'次日':''}${String(Math.floor(clock/60)).padStart(2,'0')}:${String(clock%60).padStart(2,'0')}`;
@@ -11,10 +11,15 @@ export function defaultContext() {
   const {periodIds,windows,duration}=normalizePeriods(['afternoon']);
   return {periodIds,windows,duration,mealChoices:{},departureChoice:'separate',cityTier:'tier1',budget:null,weather:'unknown',area:'near',school:'',campusArea:'',fatigueA:2,fatigueB:2,preferences:[],quietRequired:false,theme:'any',bans:[],preferencesA:[],preferencesB:[],preparedIds:[],dietaryRestrictions:[],robust:true,mealNeed:false,crowdAvoidance:false,anchors:[]};
 }
-export function toggleActivity(scene, selected, id) {
+export function toggleActivity(scene, selected, id, mealRole = null) {
   const activity = scene.activities.find(a=>a.id===id);
   if (!activity) throw new Error('这个场景不支持所选活动。');
-  if (selected.includes(id)) return selected.filter(x=>x!==id);
+  // 必需餐次里的唯一吃饭活动使用单选语义；点击已选项不会把这顿饭取消。
+  if (selected.includes(id)) {
+    const others = selected.filter(x=>x!==id);
+    if (mealRole && scene.mealActivityIds?.includes(id) && !others.some(x=>scene.mealActivityIds.includes(x))) return [...selected];
+    return others;
+  }
   let ids = [...selected];
   if (activity.mode === 'single' || activity.compositionMode === 'exclusive') ids=ids.filter(x=>scene.activities.find(a=>a.id===x)?.group!==activity.group);
   if (activity.exclusiveKey) ids=ids.filter(x=>scene.activities.find(a=>a.id===x)?.exclusiveKey!==activity.exclusiveKey);

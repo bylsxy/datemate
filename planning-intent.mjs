@@ -1,5 +1,5 @@
 // 用户意图与求解结果分离：仅投影显式选择，不把自动排程变成预约。
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=e9569bc880ec2643';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=d4f7f2e5b8714a6e';
 const clone = value => structuredClone(value);
 const mealRoles = ['breakfast', 'lunch', 'dinner', 'supper'];
 
@@ -56,12 +56,16 @@ function specialMealMode(role, choice) {
   return (role === 'breakfast' && mode === 'before_meeting') || (role === 'supper' && mode === 'skip');
 }
 
-function releaseLaterMeals(next, result, index, currentRole = null) {
+function releaseFollowingChoices(next, result, index, currentRole = null) {
+  // 输出中的结束方式、提前结束和拆分数量属于后续安排，不能反向锁住当前选择。
+  next.context.departureChoice = 'separate';
+  delete next.context.endAfterStage;
+  delete next.context.minimumStageCount;
   const choices = {...next.context.mealChoices};
   const fixedRoles = new Set(next.prefix.map(choice => choice.mealRole).filter(Boolean));
   for (const meal of result.mealRequirements || []) {
     const role = meal.mealRole;
-    if (role === currentRole || fixedRoles.has(role) || specialMealMode(role, choices[role])) continue;
+    if (role === currentRole || fixedRoles.has(role)) continue;
     const position = meal.stageIndex ?? meal.insertIndex;
     // 失败菜单中的多个尚未安排餐次可能共享insertIndex，按饭点顺序区分当前之后。
     const later = Number.isInteger(position) && (position > index ||
@@ -102,7 +106,7 @@ export function selectStageIntent(state, result, index, sceneId, activityIds, ca
   else if (stage.sceneId === sceneId && Number.isFinite(stage.fixedStartMinute)) current.startMinute = stage.fixedStartMinute;
   next.prefix = [...precedingChoices(state, result, index), current];
   if(state.splitStageIndexes)next.splitStageIndexes=state.splitStageIndexes.filter(i=>i<=index+1);
-  releaseLaterMeals(next, result, index, stage.mealRole || null);
+  releaseFollowingChoices(next, result, index, stage.mealRole || null);
   if (stage.mealRole) {
     next.context.mealChoices = {...next.context.mealChoices, [stage.mealRole]: {sceneId, activityIds: [...activityIds]}};
   }
@@ -141,7 +145,7 @@ export function selectMealIntent(state, result, role, choice, fromStage, catalog
     if (Number.isFinite(choice.fixedStartMinute)) current.startMinute = choice.fixedStartMinute;
     next.prefix.push(current);
   }
-  releaseLaterMeals(next, result, fromStage, role);
+  releaseFollowingChoices(next, result, fromStage, role);
   next.context.mealChoices = {...next.context.mealChoices, [role]: special ? {mode: choice.mode} : clone(choice)};
   next.context.explicitConsentIds = consentIds(next.prefix, catalog);
   return next;
@@ -179,10 +183,9 @@ export function mergeStageIntent(state, result, index, catalog) {
   const next=selectStageIntent(state,result,index,stage.sceneId,stage.activityIds,catalog,{durationMinutes:merge.minutes});
   if(state.splitStageIndexes)next.splitStageIndexes=state.splitStageIndexes.filter(i=>i!==index+1).map(i=>i>index+1?i-1:i);
   // 撤销一次拆分的阶段下限，避免求解器立即把刚合并的时间再次拆开。
-  const minimum=Math.max(0,(next.context.minimumStageCount??0)-1);
+  const minimum=Math.max(0,(state.context.minimumStageCount??0)-1);
   if(minimum)next.context.minimumStageCount=minimum;else delete next.context.minimumStageCount;
   if(index+2===result.stages.length)next.context.endAfterStage=index;
-  else if(Number.isInteger(next.context.endAfterStage)&&next.context.endAfterStage>index)next.context.endAfterStage--;
   return next;
 }
 
@@ -221,7 +224,8 @@ export function restartIntent(state, seed) {
   next.prefix=[];next.context.explicitConsentIds=[];
   delete next.splitStageIndexes;
   delete next.context.endAfterStage;delete next.context.minimumStageCount;
-  next.context.mealChoices=Object.fromEntries(Object.entries(next.context.mealChoices||{}).map(([role,choice])=>[role,specialMealMode(role,choice)?clone(choice):{mode:'together'}]));
+  next.context.mealChoices={};
+  next.context.departureChoice='separate';
   return exploreIntent(next,next.exploration,seed);
 }
 

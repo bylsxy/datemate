@@ -26,13 +26,14 @@ async function setup(options={}){
 
 test('每个 scene 和当前活动 toggle 都门控，verified 才传 witness；旧轮结果被拒绝',async()=>{
   const f=await setup();try{
-    const actions=f.timeline.getPendingActions();assert.equal(actions.length,3);
+    const actions=f.timeline.getPendingActions();assert.equal(actions.length,5);
+    assert.deepEqual(actions.filter(a=>a.actionType==='scene').map(a=>a.sceneId),['a','b','c','d'],'未进入旧搜索结果的目录场景仍重新验证');
     const scene=actions.find(a=>a.sceneId==='b'),activity=actions.find(a=>a.actionType==='activity');
     assert.deepEqual(scene.activityIds,['b-act']);assert.deepEqual(scene.continuationWitness,{id:'b'});
     assert.deepEqual(activity.activityIds,[]);
     const card=f.root.querySelector('.scene-strip').children[1],input=f.root.querySelector('input[data-activity]');
     assert.equal(input.checked,true);assert.equal(input.disabled,true);
-    assert.equal(card.getAttribute('aria-disabled'),null);
+    assert.equal(card.getAttribute('aria-disabled'),'true');assert.equal(card.hidden,true);
     f.emit('click',card);assert.equal(f.calls.length,0);
     assert.equal(f.emit('keydown',card,'Enter').defaultPrevented,true);
     assert.equal(f.emit('keydown',card,'ArrowRight').defaultPrevented,undefined);
@@ -101,13 +102,13 @@ test('分别卡验证后携带 witness，pending 不接收证书，失败规划�
   }finally{f.cleanup();}
 });
 
-test('未选中的冲突活动隐藏，有限搜索仍可浏览；重复点击当前场景传已验证 witness',async()=>{
+test('未选中的未验证及冲突活动隐藏；重复点击当前场景传已验证 witness',async()=>{
   const f=await setup();try{
     f.catalog.scenes[0].activities.push({id:'extra',title:'额外活动',description:'说明',group:'玩法'});
     f.timeline.render(f.plan);
     const action=f.timeline.getPendingActions().find(a=>a.activityId==='extra'),input=f.root.querySelector('input[data-activity="extra"]');
     const card=f.doc.createElement('label');card.className='activity-card';input.parentElement.append(card);card.append(input);
-    f.timeline.updateActionValidation({...action,validationStatus:'unresolved'});assert.equal(card.hidden,false);assert.equal(input.disabled,true);assert.match(card.title,/有限搜索/);
+    f.timeline.updateActionValidation({...action,validationStatus:'unresolved'});assert.equal(card.hidden,true);assert.equal(input.disabled,true);
     f.timeline.updateActionValidation({...action,validationStatus:'hard_rejected'});assert.equal(card.hidden,true);assert.equal(input.checked,false);
     const current=f.timeline.getPendingActions().find(a=>a.actionType==='scene'&&a.sceneId==='a');
     f.timeline.updateActionValidation({...current,validationStatus:'verified',continuationWitness:{current:true}});
@@ -124,11 +125,11 @@ test('verified 点击冻结前段顺序；探索排序与评分值保持确定',
     f.timeline.updateActionValidation({...action,validationStatus:'verified',continuationWitness:{full:true}});
     f.emit('click',f.root.querySelector('.scene-strip').children[1]);
     f.timeline.updateCandidate({stageIndex:0,sceneId:'b',candidate:{q:99,fitScore:99}});f.flush();
-    assert.deepEqual(f.root.querySelector('.scene-strip').children.map(c=>c.dataset.scene),['a','b']);
+    assert.deepEqual(f.root.querySelector('.scene-strip').children.map(c=>c.dataset.scene),['a','b','c','d']);
     assert.equal(f.root.querySelector('.scene-strip').children[1].dataset.fitScore,'99');
     const plan={...f.plan,stages:[{...f.plan.stages[0],decisionMode:'seeded_exploration',candidates:f.plan.stages[0].candidates.map((c,index)=>({...c,displayOrderIndex:1-index}))}]};
     f.timeline.render(plan,{preserveThrough:-1});f.timeline.updateCandidate({stageIndex:0,sceneId:'a',candidate:{q:999,fitScore:90,displayOrderIndex:-1}});f.flush();
-    assert.deepEqual(f.root.querySelector('.scene-strip').children.map(c=>c.dataset.scene),['b','a']);
+    assert.deepEqual(f.root.querySelector('.scene-strip').children.map(c=>c.dataset.scene),['b','a','c','d']);
     assert.equal(f.root.querySelector('.scene-strip').children[1].dataset.validationStatus,'pending');
   }finally{f.cleanup();}
 });
@@ -161,10 +162,10 @@ test('utility_best 选择与 seeded_exploration 展示分离，stage/result disp
       const plan={...f.plan,stages:[stage],selectionMode:'utility_best'};
       if(owner==='stage')stage.displayMode='seeded_exploration';else plan.displayMode='seeded_exploration';
       f.timeline.render(plan,{preserveThrough:-1});
-      assert.deepEqual(f.root.querySelector('.scene-strip').children.map(card=>card.dataset.scene),['b','a']);
+      assert.deepEqual(f.root.querySelector('.scene-strip').children.map(card=>card.dataset.scene),['b','a','c','d']);
       const action=f.timeline.getPendingActions().find(action=>action.sceneId==='a'&&action.actionType==='scene');
       f.timeline.updateActionValidation({...action,validationStatus:'verified',continuationWitness:{full:true},candidate:{q:999,fitScore:99,displayOrderIndex:-1,explorationRank:-1}});f.flush();
-      assert.deepEqual(f.root.querySelector('.scene-strip').children.map(card=>card.dataset.scene),['b','a']);
+      assert.deepEqual(f.root.querySelector('.scene-strip').children.map(card=>card.dataset.scene),['b','a','c','d']);
       assert.match(f.root.querySelector('.scene-strip').children[1].querySelector('.scene-score').innerHTML,/<b>99<\/b>/);
     }
   }finally{f.cleanup();}

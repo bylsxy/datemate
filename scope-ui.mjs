@@ -1,5 +1,5 @@
-import {isSceneInSchoolScope,normalizeSchoolScope} from './school-scope.mjs?v=e9569bc880ec2643';
-import {isSceneAvailableInContext} from './scene-time.mjs?v=e9569bc880ec2643';
+import {isSceneInSchoolScope,normalizeSchoolScope} from './school-scope.mjs?v=d4f7f2e5b8714a6e';
+import {isSceneAvailableInContext} from './scene-time.mjs?v=d4f7f2e5b8714a6e';
 
 /** 隐藏的父级必须同步清空后代，导入和表单读取共用同一规则。 */
 export function normalizeUIScope(context = {}) {

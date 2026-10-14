@@ -1,22 +1,22 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=e9569bc880ec2643';
-import {createTimeline} from './timeline.mjs?v=e9569bc880ec2643';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=e9569bc880ec2643';
-import {createReasonView} from './reasons-view.mjs?v=e9569bc880ec2643';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=e9569bc880ec2643';
-import {createPlacePicker} from './place-picker.mjs?v=e9569bc880ec2643';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=e9569bc880ec2643';
-import {dietaryOptions} from './data/activities.mjs?v=e9569bc880ec2643';
-import * as reasoning from './reasoning.mjs?v=e9569bc880ec2643';
-import {normalizePeriods} from './time-periods.mjs?v=e9569bc880ec2643';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=e9569bc880ec2643';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=e9569bc880ec2643';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=d4f7f2e5b8714a6e';
+import {createTimeline} from './timeline.mjs?v=d4f7f2e5b8714a6e';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=d4f7f2e5b8714a6e';
+import {createReasonView} from './reasons-view.mjs?v=d4f7f2e5b8714a6e';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=d4f7f2e5b8714a6e';
+import {createPlacePicker} from './place-picker.mjs?v=d4f7f2e5b8714a6e';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=d4f7f2e5b8714a6e';
+import {dietaryOptions} from './data/activities.mjs?v=d4f7f2e5b8714a6e';
+import * as reasoning from './reasoning.mjs?v=d4f7f2e5b8714a6e';
+import {normalizePeriods} from './time-periods.mjs?v=d4f7f2e5b8714a6e';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=d4f7f2e5b8714a6e';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=d4f7f2e5b8714a6e';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=e9569bc880ec2643',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=d4f7f2e5b8714a6e',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,onMerge:commitMerge,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
@@ -246,7 +246,7 @@ $('#knowledge-summary').innerHTML=counts.map(([l,n])=>`<div class="stat-tile"><s
   const adopted=sources.filter(s=>s.adoptedEvidenceIds?.length);$('#source-audit').innerHTML=`<p class="field-hint">${sources.length}份本地语料登记 · ${adopted.length}份来源形成采用证据 · ${evidence.length}条原创摘要。关键词候选经过局部核对后才能成为证据，模型参数单独标为设计值。</p>`+adopted.map(s=>`<div class="source-item"><strong>${esc(s.title)}</strong><br>${esc(s.category)} · ${s.adoptedEvidenceIds.length}条证据 · SHA-256 ${s.sha256.slice(0,14)}…<br>本地文本已定位；现实信息与作品归属需回源核实。</div>`).join('');
   $('#conditions').open=false;
 }
-$('#conditions-form').addEventListener('submit',ev=>{ev.preventDefault();applyConditions();});
+$('#conditions-form').addEventListener('submit',ev=>{ev.preventDefault();applyConditions({restart:true});});
 function conditionsError(message=''){
   conditionsValid=!message;
   const error=$('#condition-error');error.textContent=message;error.hidden=!message;
@@ -255,9 +255,9 @@ function conditionsError(message=''){
   $('#exploration').disabled=!!message;
   if(message){++sequence;stopValidation();pending?.resolve(null);pending=null;$('#export').disabled=true;note('');$('#conditions').open=true;revealError(error);}
 }
-async function applyConditions(){
+async function applyConditions({restart=false}={}){
   clearTimeout(sliderTimer);clearTimeout(conditionTimer);conditionTimer=null;
-  try{const {next,hardChanged}=updateContextIntent(snapshot(),readContext());conditionsError();await compute(next,hardChanged?'条件已更新。':'偏好已更新，你选好的安排保留。',{preserveThrough:hardChanged?-1:next.prefix.length-1,knownPlan:hardChanged?null:result?.continuationWitness});}
+  try{const updated=updateContextIntent(snapshot(),readContext()),next=restart?restartIntent(updated.next,crypto.getRandomValues(new Uint32Array(1))[0]):updated.next;const reset=restart||updated.hardChanged;conditionsError();await compute(next,restart?'已按当前条件重新择优规划。':updated.hardChanged?'条件已更新。':'偏好已更新，你选好的安排保留。',{preserveThrough:reset?-1:next.prefix.length-1,knownPlan:reset?null:result?.continuationWitness,selectionMode:'utility_best'});}
   catch(e){conditionsError(e.message.replace(/^H_[A-Z_]+:\s*/,''));}
 }
 $('#conditions-form').addEventListener('change',ev=>{
@@ -274,7 +274,7 @@ $('#conditions-form').addEventListener('change',ev=>{
 });
 $('#budget').addEventListener('input',()=>{clearTimeout(conditionTimer);$('#export').disabled=true;conditionTimer=setTimeout(applyConditions,160);});
 $('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);$('#exploration-value').innerHTML=`${e}<small>/ 100</small>`;clearTimeout(sliderTimer);sliderTimer=setTimeout(()=>{const seed=crypto.getRandomValues(new Uint32Array(1))[0];const next=exploreIntent(snapshot(),e,seed);compute(next,'已保留你的选择，为后面换些灵感。',{selectionMode:'seeded_exploration',preserveThrough:next.prefix.length-1});},130);});
-$('#restart-plan').addEventListener('click',()=>{if(!conditionsValid||busy)return;clearTimeout(sliderTimer);const next=restartIntent(snapshot(),crypto.getRandomValues(new Uint32Array(1))[0]);compute(next,'已重新推荐，仍可从上往下慢慢选。',{selectionMode:next.exploration?'seeded_exploration':'utility_best'});});
+$('#restart-plan').addEventListener('click',()=>{if(!conditionsValid||busy)return;clearTimeout(sliderTimer);const next=restartIntent(snapshot(),crypto.getRandomValues(new Uint32Array(1))[0]);compute(next,'已重新推荐，仍可从上往下慢慢选。',{selectionMode:'utility_best'});});
 function closeMenu(){ $('#more-menu').hidden=true;$('#more-menu-toggle').setAttribute('aria-expanded','false'); }
 function showView(name){
   closeMenu();$$('.view').forEach(x=>x.hidden=x.id!==`view-${name}`);

@@ -30,12 +30,12 @@ test('真实stage投影保留餐次和显式预约，自动排程不能转为预
   assert.deepEqual(actual.activityIds, ['meal']);
 });
 
-test('阶段点击固定实际0到current，裁掉后续人工前缀并保留硬上限', () => {
+test('阶段点击固定实际0到current，裁掉后续人工前缀与结束限制', () => {
   const input = state({prefix: [{sceneId: 'a', activityIds: ['walk']}, {sceneId: 'b', activityIds: ['walk']}, {sceneId: 'c', activityIds: ['touch']}]});
   const next = selectStageIntent(input, result, 1, 'b', ['touch'], catalog);
   assert.deepEqual(next.prefix, [{sceneId: 'a', activityIds: ['walk'], startMinute: 40}, {sceneId: 'b', activityIds: ['touch']}]);
   assert.deepEqual(next.context.explicitConsentIds, ['touch']);
-  assert.equal(next.context.endAfterStage, 2);
+  assert.equal(next.context.endAfterStage, undefined);
   assert.equal(next.context.explorationSeed, 7);
 });
 
@@ -118,9 +118,11 @@ test('探索保留已确认选择及相关同意，只释放后续未确认餐�
 test('只有全部重新推荐才清空已选；改变软偏好保留选择，改变硬条件再重排',()=>{
   const input=state({prefix:[{sceneId:'a',activityIds:['touch'],durationMinutes:60}]});
   input.context.explicitConsentIds=['touch'];input.context.minimumStageCount=2;
+  input.context.mealChoices={breakfast:{mode:'before_meeting'},supper:{mode:'skip'}};
   const restarted=restartIntent(input,123);
   assert.deepEqual(restarted.prefix,[]);assert.deepEqual(restarted.context.explicitConsentIds,[]);
   assert.equal(restarted.context.endAfterStage,undefined);assert.equal(restarted.context.minimumStageCount,undefined);
+  assert.deepEqual(restarted.context.mealChoices,{});assert.equal(restarted.context.departureChoice,'separate');
   const soft=updateContextIntent(input,{...input.context,preferencesA:['nature']});
   assert.equal(soft.hardChanged,false);assert.deepEqual(soft.next.prefix,input.prefix);
   const hard=updateContextIntent(input,{...input.context,weather:'rain'});
@@ -133,7 +135,7 @@ test('探索接受零seed，拒绝非uint32和非整数探索度', () => {
   for (const exploration of [-1, 101, 1.5, '97']) assert.throws(() => exploreIntent(state(), exploration, 0), /探索度/);
 });
 
-test('失败餐菜单空stages可恢复，旧失败prefix不带入且保留时间硬上限', () => {
+test('失败餐菜单空stages可恢复，旧失败prefix和结束位置不带入', () => {
   const input = freeze(state({prefix: [{sceneId: 'a', activityIds: ['touch']}]}));
   const failed = freeze({ok: false, stages: []});
   const before = JSON.stringify(input);
@@ -142,7 +144,7 @@ test('失败餐菜单空stages可恢复，旧失败prefix不带入且保留时�
     assert.deepEqual(next.prefix, choice.sceneId ? [{...choice, mealRole: role}] : []);
     assert.deepEqual(next.context.mealChoices[role], choice);
     assert.deepEqual(next.context.explicitConsentIds, []);
-    assert.equal(next.context.endAfterStage, 2);
+    assert.equal(next.context.endAfterStage, undefined);
   }
   assert.equal(JSON.stringify(input), before);
   assert.throws(() => selectStageIntent(input, failed, 0, 'a', [], catalog), RangeError);
@@ -154,7 +156,7 @@ test('未完成餐菜单仅投影已有真实前序，餐卡索引仍严格检�
   const next = selectMealIntent(input, partial, 'lunch', {sceneId: 'food', activityIds: ['meal']}, 1, catalog);
   assert.deepEqual(next.prefix, [{sceneId: 'a', activityIds: ['walk'], startMinute: 40}, {sceneId: 'food', activityIds: ['meal'], mealRole: 'lunch'}]);
   assert.deepEqual(next.context.explicitConsentIds, []);
-  assert.equal(next.context.endAfterStage, 2);
+  assert.equal(next.context.endAfterStage, undefined);
   assert.throws(() => selectStageIntent(input, partial, 0, 'a', [], catalog), RangeError);
   for (const index of [-1, 0.5, 2, NaN]) assert.throws(() => selectMealIntent(input, partial, 'lunch', {sceneId: 'food', activityIds: ['meal']}, index, catalog), RangeError);
   for (const invalid of [null, {}, {ok: false}, {ok: false, stages: {}}]) assert.throws(() => selectMealIntent(input, invalid, 'lunch', {sceneId: 'food', activityIds: ['meal']}, 0, catalog), RangeError);
@@ -233,13 +235,13 @@ test('通过真实求解器验证阶段前缀、明确同意及餐馆替换不�
   const failedMeal = planDate(brokenState.context, data);
   assert.equal(failedMeal.ok, false);
   const recoveredIntent = selectMealIntent(brokenState, failedMeal, 'lunch', {sceneId: 'food', activityIds: ['eat']}, 0, data);
-  assert.equal(recoveredIntent.context.endAfterStage, 18);
+  assert.equal(recoveredIntent.context.endAfterStage, undefined);
   const emptyAttempt = planDate(recoveredIntent.context, data, {fixedPrefix: recoveredIntent.prefix});
   assert.equal(emptyAttempt.ok, false, '空前序午餐固定在第0段仍需满足上午实际覆盖');
   assert.ok(emptyAttempt.errors.some(error => error.includes('H_PERIOD_COVERAGE')));
   const partialFailure = {...failedMeal, stages: originalMeal.stages.slice(0, mealIndex)};
   const withPredecessors = selectMealIntent(brokenState, partialFailure, 'lunch', {sceneId: 'food', activityIds: ['eat']}, mealIndex, data);
-  assert.equal(withPredecessors.context.endAfterStage, 18);
+  assert.equal(withPredecessors.context.endAfterStage, undefined);
   const recovered = planDate(withPredecessors.context, data, {fixedPrefix: withPredecessors.prefix});
   assert.equal(recovered.ok, true, recovered.errors?.join(';'));
   assert.equal(recovered.stages.filter(s => s.mealRole === 'lunch').length, 1);
@@ -252,13 +254,15 @@ test('阶段动作保留之前餐馆和特殊模式，释放之后的场馆与�
   input.context.mealChoices = {breakfast: {sceneId: 'food', activityIds: ['meal']}, lunch: {sceneId: 'food', activityIds: ['meal', 'touch']}, dinner: {activityIds: ['meal']}, supper: 'skip'};
   freeze(input);
   const next = selectStageIntent(input, meals, 1, 'a', ['walk'], catalog);
-  assert.deepEqual(next.context.mealChoices, {breakfast: input.context.mealChoices.breakfast, supper: 'skip'});
+  assert.deepEqual(next.context.mealChoices, {breakfast: input.context.mealChoices.breakfast});
   const expected = structuredClone(input.context);
   expected.mealChoices = next.context.mealChoices;
   expected.explicitConsentIds = [];
+  expected.departureChoice = 'separate';
+  delete expected.endAfterStage;
   assert.deepEqual(next.context, expected);
   const onMeal = selectStageIntent(input, meals, 2, 'other-food', ['meal'], catalog);
-  assert.deepEqual(onMeal.context.mealChoices, {breakfast: input.context.mealChoices.breakfast, lunch: {sceneId: 'other-food', activityIds: ['meal']}, supper: 'skip'});
+  assert.deepEqual(onMeal.context.mealChoices, {breakfast: input.context.mealChoices.breakfast, lunch: {sceneId: 'other-food', activityIds: ['meal']}});
   assert.equal(onMeal.prefix[2].mealRole, 'lunch');
 });
 
@@ -269,7 +273,7 @@ test('当前餐加入prefix保留显式预约，虚拟餐插入不借用普通�
     mealRequirements: [{mealRole: 'breakfast', stageIndex: null, insertIndex: 0}, {mealRole: 'lunch', stageIndex: 1}, {mealRole: 'dinner', stageIndex: 2}, {mealRole: 'supper', stageIndex: null, insertIndex: 3}]};
   const next = selectMealIntent(input, meals, 'lunch', {sceneId: 'other-food', activityIds: ['meal']}, 1, catalog);
   assert.deepEqual(next.prefix[1], {sceneId: 'other-food', activityIds: ['meal'], mealRole: 'lunch', startMinute: 120});
-  assert.deepEqual(next.context.mealChoices, {breakfast: 'before_meeting', lunch: {sceneId: 'other-food', activityIds: ['meal']}, supper: {mode: 'skip'}});
+  assert.deepEqual(next.context.mealChoices, {breakfast: 'before_meeting', lunch: {sceneId: 'other-food', activityIds: ['meal']}});
   const virtual = selectMealIntent(input, result, 'breakfast', {sceneId: 'food', activityIds: ['meal']}, 0, catalog);
   assert.equal(Object.hasOwn(virtual.prefix[0], 'startMinute'), false);
 });
@@ -280,11 +284,11 @@ test('失败菜单同insertIndex仍释放后续餐馆，特殊餐次保持无当
   const failed = {ok: false, stages: [], mealRequirements: ['breakfast', 'lunch', 'dinner', 'supper'].map(mealRole => ({mealRole, stageIndex: null, insertIndex: 0}))};
   const real = selectMealIntent(input, failed, 'lunch', {sceneId: 'other-food', activityIds: ['meal']}, 0, catalog);
   assert.deepEqual(real.prefix, [{sceneId: 'other-food', activityIds: ['meal'], mealRole: 'lunch'}]);
-  assert.deepEqual(real.context.mealChoices, {breakfast: {mode: 'before_meeting'}, lunch: {sceneId: 'other-food', activityIds: ['meal']}, supper: 'skip'});
+  assert.deepEqual(real.context.mealChoices, {breakfast: {mode: 'before_meeting'}, lunch: {sceneId: 'other-food', activityIds: ['meal']}});
   const special = selectMealIntent(input, failed, 'breakfast', {mode: 'before_meeting'}, 0, catalog);
   assert.deepEqual(special.prefix, []);
-  assert.deepEqual(special.context.mealChoices, {breakfast: {mode: 'before_meeting'}, supper: 'skip'});
-  assert.equal(special.context.endAfterStage, 2);
+  assert.deepEqual(special.context.mealChoices, {breakfast: {mode: 'before_meeting'}});
+  assert.equal(special.context.endAfterStage, undefined);
 });
 
 test('分别动作固定所有真实阶段及pending前序，重算同意并保留餐次与时间硬条件', () => {

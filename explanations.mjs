@@ -1,5 +1,5 @@
-import {interestLabels} from './planner.mjs?v=e9569bc880ec2643';
-import {dietaryOptions} from './data/activities.mjs?v=e9569bc880ec2643';
+import {interestLabels} from './planner.mjs?v=d4f7f2e5b8714a6e';
+import {dietaryOptions} from './data/activities.mjs?v=d4f7f2e5b8714a6e';
 
 // 简短理由保留原调用方式；详细决策与原始规则轨迹由 explainDecision 提供。
 export function explainStage(stage,place,context={}) {

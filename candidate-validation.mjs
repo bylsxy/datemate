@@ -1,5 +1,5 @@
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,projectStageChoice,setStageDurationIntent,splitStageIntent,mergeStageIntent} from './planning-intent.mjs?v=e9569bc880ec2643';
-import {splitDuration} from './duration-policy.mjs?v=e9569bc880ec2643';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,projectStageChoice,setStageDurationIntent,splitStageIntent,mergeStageIntent} from './planning-intent.mjs?v=d4f7f2e5b8714a6e';
+import {splitDuration} from './duration-policy.mjs?v=d4f7f2e5b8714a6e';
 // 候选验证与当前安排分开：只补全卡片评分，不改选中地点、时间线或复盘输出。
 export const candidateKey = ({stageIndex, sceneId, mealRole}) => `${mealRole ? `meal-${mealRole}` : `stage-${stageIndex}`}:${sceneId}`;
 
@@ -45,8 +45,8 @@ export function buildActionJobs(result, state, catalog, actions = []) {
     const reference = action.reference ?? (meal?.stageIndex === null ? null : result.stages[stageIndex]?.scoreReference);
     const candidate = {...structuredClone(action.candidate), ...(sceneId !== undefined ? {sceneId} : {}), ...(activityIds !== undefined ? {activityIds:[...activityIds]} : {})};
     const search={...structuredClone(result.replay?.search ?? {}),method:'bounded',maxCandidateExpandedNodes:0};
-    // 结束位置会把复盘的搜索上限压成当前段数；再次拆分时恢复默认上限。
-    if(actionType==='split')delete search.maxStages;
+    // 旧方案的阶段上限可能来自提前结束；新后续必须重新决定容量。
+    if(actionType!=='departure')delete search.maxStages;
     jobs.set(key, {...structuredClone(action), actionFields:structuredClone(action), candidate, key, context:next.context, prefix:next.prefix, exploration:next.exploration, reference, knownPlan:structuredClone(knownPlan), search});
   }
   return [...jobs.values()];

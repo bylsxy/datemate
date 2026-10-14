@@ -47,7 +47,7 @@ test('四类动作复用真实 intent，释放未来条件、固定前序及重�
   });
   assert.equal(jobs[1].context.mealChoices.lunch,undefined);
   assert.equal(jobs[1].context.mealChoices.dinner,undefined);
-  assert.deepEqual(jobs[1].context.mealChoices.supper,{mode:'skip'});
+  assert.equal(jobs[1].context.mealChoices.supper,undefined);
   assert.deepEqual(jobs[0].prefix[0],{sceneId:'walk',activityIds:['consent'],startMinute:20});
   jobs[0].knownPlan[0].activityIds.push('isolated');
   assert.equal(JSON.stringify({state,result,actions}),before);
