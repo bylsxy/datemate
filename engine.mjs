@@ -1,10 +1,10 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=babb8dc4a6cd6ec1';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=babb8dc4a6cd6ec1';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=babb8dc4a6cd6ec1';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=babb8dc4a6cd6ec1';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=32c9a437a5c51c9d';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=32c9a437a5c51c9d';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=32c9a437a5c51c9d';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=32c9a437a5c51c9d';
 
-export { canonical, digest } from './reasoning.mjs?v=babb8dc4a6cd6ec1';
-export const VERSION = 'datemate-engine-3.3.1';
+export { canonical, digest } from './reasoning.mjs?v=32c9a437a5c51c9d';
+export const VERSION = 'datemate-engine-3.3.2';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
@@ -144,11 +144,11 @@ function normalizeChoice(choice, compiled) {
   if (!scene) throw Error(fail('H_SCENE', '固定选择或锚点引用了不存在的场景。'));
   const ids = list(choice.activityIds || []);
   if (ids.some(id => !scene.activities.some(a => a.id === id))) throw Error(fail('H_ACTIVITY', '活动不属于当前场景。'));
-  return { sceneId: scene.id, activityIds: ids, ...(choice.mealRole !== undefined ? { mealRole: choice.mealRole } : {}), ...(choice.startMinute !== undefined ? { startMinute: choice.startMinute } : {}) };
+  return { sceneId: scene.id, activityIds: ids, ...(choice.mealRole !== undefined ? { mealRole: choice.mealRole } : {}), ...(choice.startMinute !== undefined ? { startMinute: choice.startMinute } : {}), ...(choice.anchorId !== undefined ? { anchorId: choice.anchorId } : {}) };
 }
 function normalizeAnchors(raw, compiled, ctx) {
   if (!Array.isArray(raw)) throw Error(fail('H_ANCHOR', '锚点必须为数组。'));
-  return raw.map((a, i) => {
+  const anchors = raw.map((a, i) => {
     const rawChoice = a.choice || a;
     const startMinute = a.startMinute ?? rawChoice.startMinute;
     const anchor = { id: a.id || `anchor-${i}`, choice: normalizeChoice(a.sceneOnly === true ? { ...rawChoice, activityIds: [] } : rawChoice, compiled), ...(a.sceneOnly === true ? { sceneOnly: true } : {}), ...(a.index !== undefined ? { index: a.index } : {}), ...(startMinute !== undefined ? { startMinute } : {}), ...(a.windowId ? { windowId: a.windowId } : {}) };
@@ -157,6 +157,13 @@ function normalizeAnchors(raw, compiled, ctx) {
     if (anchor.windowId && !ctx.windows.some(w => w.id === anchor.windowId)) throw Error(fail('H_ANCHOR', '锚点引用了不存在的时间窗。'));
     return anchor;
   }); // 无位置锚点按输入顺序逐个保留，不悄悄排序用户意图。
+  if (new Set(anchors.map(a => a.id)).size !== anchors.length) throw Error(fail('H_ANCHOR', '预约ID不得重复。'));
+  return anchors;
+}
+
+// 只保留复演所需的选择，不把自动排程时间或旧状态快照变成约束。
+function compactWitness(st) {
+  return st.stages.map(s => ({ sceneId: s.sceneId, activityIds: [...s.activityIds], ...(s.mealRole ? { mealRole: s.mealRole } : {}), ...(Number.isFinite(s.fixedStartMinute) ? { startMinute: s.fixedStartMinute } : {}), ...(s.anchorId !== undefined ? { anchorId: s.anchorId } : {}) }));
 }
 
 function initial(ctx) {
@@ -454,6 +461,14 @@ export function createContinuationSearch(input = {}, catalog, options = {}) {
   return searchDate(input, catalog, { ...options, continuationOnly: true });
 }
 
+/** 快捷重验完整见证；options.knownPlan 为 compact 选择数组，fixedPrefix 为本次候选前缀。
+ * 有效返回重新核算的 q / prefixUtility / referenceUtility / stages / continuationWitness；
+ * 无效返回 errors / failedStage，绝不自动搜索。省略 anchorId 的见证阶段表示普通到访。
+ */
+export function verifyPlanWitness(input = {}, catalog, options = {}) {
+  return planDate(input, catalog, { ...options, continuationOnly: true, verifyKnownPlanOnly: true });
+}
+
 function* searchDate(input = {}, catalog, options = {}) {
   let ctx, compiled, prefix, anchors;
   const versions = { engine: VERSION, rules: catalog?.rulesVersion || REASONING_VERSION, knowledge: catalog?.version || 'unversioned', knowledgeRevision: catalog?.contentRevision || digest({scenes:catalog?.scenes,rules:catalog?.rules,departures:catalog?.departures}), data: catalog?.version || 'unversioned', score: CONFIG.scoreVersion, schema: 'datemate-3.0' };
@@ -494,23 +509,76 @@ function* searchDate(input = {}, catalog, options = {}) {
   if (ctx.requiredSceneIds.length > config.maxStages) return errorResponse('invalid_input', [fail('H_REQUIRED_LENGTH', '必去地点数量超过当前阶段上限。')], ctx, versions);
   const stats = { ...config, explorationVersion: EXPLORATION_VERSION, explorationSeed: ctx.explorationSeed, explorationStrength: explorer.strength, expandedNodes: 0, candidateExpandedNodes: 0, candidateNodeBudgetReached: false, generatedNodes: 0, feasibleNodes: 0, terminalPlans: 0, constraintRejections: {}, beamPruned: 0, activitySubsetsTruncated: false, nodeBudgetReached: false, maxDepthReached: false, provedOptimal: false, proofScope: '未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。' };
   const scopedScenes = compiled.scenes.filter(scene => isSceneInSchoolScope(scene, ctx));
-  const subsets = new Map(scopedScenes.map(s => [s.id, enumerateSubsets(s, config.activitySubsetLimit, stats)]));
   const evaluator = createEvaluator(ctx, compiled, catalog, exploration);
   let start = initial(ctx), candidatePrefixUtility = 0;
   const reject = errors => { for (const error of errors) { const code = error.split(':')[0]; stats.constraintRejections[code] = (stats.constraintRejections[code] || 0) + 1; } };
   const choiceEqual = (a, b) => a.sceneId === b.sceneId && (!a.mealRole || !b.mealRole || a.mealRole === b.mealRole) && canonical(list(a.activityIds)) === canonical(list(b.activityIds));
   const matchesAnchor = (choice, anchor) => anchor.sceneOnly ? choice.sceneId === anchor.choice.sceneId && (!anchor.choice.mealRole || !choice.mealRole || choice.mealRole === anchor.choice.mealRole) : choiceEqual(choice, anchor.choice);
+  const requiredCovered = st => ctx.requiredSceneIds.filter(id => st.visited.includes(id));
+  const completionErrors = st => [
+    ...(!st.stages.length ? [fail('H_KNOWN_PLAN', '完整见证至少需要一个阶段。')] : []),
+    ...(st.anchorIndex !== anchors.length ? [fail('H_ANCHOR', '完整见证未履行全部预约。')] : []),
+    ...(requiredCovered(st).length !== ctx.requiredSceneIds.length ? [fail('H_REQUIRED_SCENE', '完整见证未覆盖全部必去地点。')] : []),
+    ...(!mealsSatisfied(st, ctx) || ctx.mealNeed && !st.meal && !ctx.mealRequirements.some(m => m.choiceMode === 'before_meeting') ? [fail('H_MEAL', '完整见证未满足全部用餐要求。')] : []),
+    ...(!periodsCovered(st, ctx) ? [fail('H_PERIOD_COVERAGE', '完整见证未覆盖全部所选时段。')] : []),
+    ...(!nearEnd(st, ctx) ? [fail('H_END_COVERAGE', '完整见证未覆盖最后时段的结束位置。')] : []),
+  ];
+  const isComplete = st => st.stages.length > 0 && st.anchorIndex === anchors.length && requiredCovered(st).length === ctx.requiredSceneIds.length && mealsSatisfied(st, ctx) && periodsCovered(st, ctx) && nearEnd(st, ctx) && (!ctx.mealNeed || st.meal || ctx.mealRequirements.some(m => m.choiceMode === 'before_meeting'));
+  function resolveAnchor(choice, st, index, explicitIdentity = false) {
+    const pending = anchors[st.anchorIndex];
+    const anchored = choice.anchorId !== undefined
+      ? pending?.id === choice.anchorId && matchesAnchor(choice, pending) && (pending.index === undefined || pending.index === index) ? pending : null
+      : !explicitIdentity && pending && matchesAnchor(choice, pending) && (pending.index === undefined || pending.index === index) ? pending : null;
+    if (choice.anchorId !== undefined && !anchored || pending?.index !== undefined && pending.index <= index && !anchored) return { errors: [fail('H_ANCHOR_PREFIX', '阶段与预约身份、顺序或位置冲突。')] };
+    if (anchored?.startMinute !== undefined && choice.startMinute !== undefined && anchored.startMinute !== choice.startMinute) return { errors: [fail('H_ANCHOR_TIME', '阶段的固定开始时间与当前预约冲突。')] };
+    return { anchor: anchored, errors: [] };
+  }
+  // 见证完全从当前初始状态重演；旧费用、资源、效用和状态快照一概不读取。
+  function checkKnownPlan(raw) {
+    if (!Array.isArray(raw) || !raw.length || raw.length > config.maxStages) return { errors: [fail('H_KNOWN_PLAN', '完整见证需为阶段上限以内的非空数组。')] };
+    let choices;
+    try {
+      choices = raw.map(choice => {
+        if (!choice || !Array.isArray(choice.activityIds) || choice.activityIds.some(id => typeof id !== 'string') || choice.startMinute !== undefined && (!Number.isInteger(choice.startMinute) || choice.startMinute < 0) || choice.anchorId !== undefined && typeof choice.anchorId !== 'string' || choice.mealRole !== undefined && typeof choice.mealRole !== 'string') throw Error(fail('H_KNOWN_PLAN', '见证活动、预约身份、餐角色或固定时间格式无效。'));
+        return normalizeChoice(choice, compiled);
+      });
+    } catch (error) { return { errors: [error.message] }; }
+    if (choices.length < prefix.length || prefix.some((p, i) => !choiceEqual(p, choices[i]) || p.mealRole !== undefined && p.mealRole !== choices[i].mealRole || p.startMinute !== undefined && p.startMinute !== choices[i].startMinute || p.anchorId !== undefined && p.anchorId !== choices[i].anchorId)) return { errors: [fail('H_KNOWN_PREFIX', '完整见证与本次固定前缀不一致。')] };
+    let state = initial(ctx), prefixUtility = 0;
+    for (let i = 0; i < choices.length; i++) {
+      if (i === prefix.length - 1) prefixUtility = objective(state, exploration);
+      const resolved = resolveAnchor(choices[i], state, i, true);
+      if (resolved.errors.length) return { errors: resolved.errors, failedStage: i };
+      const checked = evaluator.evaluate(state, choices[i], resolved.anchor, true);
+      if (checked.errors.length) return { errors: checked.errors, failedStage: i };
+      state = checked.next;
+    }
+    const errors = completionErrors(state);
+    return { state, prefixUtility, errors };
+  }
+  const rawKnownPlan = options.knownPlan ?? input.knownPlan;
+  const suppliedKnownPlan = rawKnownPlan !== undefined;
+  const known = suppliedKnownPlan || options.verifyKnownPlanOnly ? checkKnownPlan(rawKnownPlan) : null;
+  if (known) stats.knownPlan = { status: known.errors.length ? 'ignored' : 'verified', errors: known.errors, ...(known.failedStage !== undefined ? { failedStage: known.failedStage } : {}) };
+  const continuationResult = (best, prefixUtility) => ({ ok: true, status: 'feasible', errors: [], q: objective(best, exploration), prefixUtility, referenceUtility: 80 * (ctx.periodIds ? 0.96 : 0.88) ** Math.max(0, prefix.length - 1), scoreVersion: CONFIG.scoreVersion, explorationSeed: ctx.explorationSeed, choiceMode: 'utility_best', decisionMode: 'utility_best', explorationNoiseEnabled: false, scoringMode: 'best_discovered_true_utility', stages: best.stages, continuationWitness: compactWitness(best), metrics: metrics(best, ctx, exploration), versions, search: stats });
+  if (options.verifyKnownPlanOnly) {
+    stats.reasoningSnapshots = evaluator.reasoningCache.size;
+    if (known.errors.length) return errorResponse('invalid_known_plan', known.errors, ctx, versions, { ...(known.failedStage !== undefined ? { failedStage: known.failedStage } : {}), search: stats });
+    stats.terminalPlans = 1;
+    return { ...continuationResult(known.state, known.prefixUtility), scoringMode: 'verified_plan_true_utility', searchStatus: 'known_plan_verified' };
+  }
   for (let i = 0; i < prefix.length; i++) {
     if (i === prefix.length - 1) candidatePrefixUtility = objective(start, exploration);
-    const pending = anchors[start.anchorIndex];
-    const anchored = pending && matchesAnchor(prefix[i], pending) && (pending.index === undefined || pending.index === i) ? pending : null;
-    if (pending?.index !== undefined && pending.index <= i && !anchored) return errorResponse('invalid_input', [fail('H_ANCHOR_PREFIX', '固定前缀与预约阶段位置冲突。')], ctx, versions, { failedStage: i, search: stats });
+    // 有效见证的真实身份可消除无 index 预约的同地点歧义；无效见证不影响新搜索。
+    const knownStage = known && !known.errors.length ? known.state.stages[i] : null;
+    const resolved = resolveAnchor(knownStage ? { ...prefix[i], ...(knownStage.anchorId !== undefined ? { anchorId: knownStage.anchorId } : {}) } : prefix[i], start, i, Boolean(knownStage));
+    if (resolved.errors.length) return errorResponse('invalid_input', resolved.errors, ctx, versions, { failedStage: i, search: stats });
+    const anchored = resolved.anchor;
     const checked = evaluator.evaluate(start, prefix[i], anchored, true);
     if (checked.errors.length) return errorResponse('invalid_input', checked.errors, ctx, versions, { failedStage: i, prefix, search: stats });
     start = checked.next;
   }
-  const requiredCovered = st => ctx.requiredSceneIds.filter(id => st.visited.includes(id));
-  const isComplete = st => st.stages.length > 0 && st.anchorIndex === anchors.length && requiredCovered(st).length === ctx.requiredSceneIds.length && mealsSatisfied(st, ctx) && periodsCovered(st, ctx) && nearEnd(st, ctx) && (!ctx.mealNeed || st.meal || ctx.mealRequirements.some(m => m.choiceMode === 'before_meeting'));
+  const subsets = new Map(scopedScenes.map(s => [s.id, enumerateSubsets(s, config.activitySubsetLimit, stats)]));
   const automaticChoices = scopedScenes.filter(scene => !ctx.periodIds || !dedicatedMealScene(scene)).flatMap(scene => subsets.get(scene.id).filter(ids => !ctx.periodIds || !ids.some(id => scene.activities.find(a => a.id === id).provides.meal_completed > 0)).map(activityIds => ({ choice: { sceneId: scene.id, activityIds }, anchor: null })));
   const mealChoices = new Map(ctx.mealRequirements.map(meal => [meal.mealRole, scopedScenes.filter(scene => !meal.sceneId || meal.sceneId === scene.id).flatMap(scene => (meal.activityIds !== null ? scene.mealRoles?.includes(meal.mealRole) ? [meal.activityIds] : [] : mealActivityChoices(scene, meal.mealRole, subsets.get(scene.id))).map(activityIds => ({ choice: { sceneId: scene.id, activityIds, mealRole: meal.mealRole }, anchor: null })))]));
   function choicesFor(st, extra) {
@@ -605,6 +673,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   }
   const searched = yield* searchFrom(start, config.maxExpandedNodes);
   const { finished, history } = searched;
+  if (known && !known.errors.length && !finished.some(st => stateKey(st) === stateKey(known.state))) finished.push(known.state);
   stats.expandedNodes = searched.expanded; stats.nodeBudgetReached = searched.budgetReached;
   stats.terminalPlans = finished.length;
   stats.reasoningSnapshots = evaluator.reasoningCache.size;
@@ -614,18 +683,20 @@ function* searchDate(input = {}, catalog, options = {}) {
   // 后续候选评分取发现的最高真实效用，不把探索选择的噪声带入契合分。
   const best = options.continuationOnly ? finished[0] : selection.selected;
   const explorationSelection = { version: EXPLORATION_VERSION, seed: ctx.explorationSeed, strength: explorer.strength, mode: explorer.strength ? 'seeded_exploration' : 'utility_best', label: explorer.strength ? '探索选择' : '效用择优', objective: objective(best, exploration), bestDiscoveredObjective: selection.bestDiscoveredObjective, utilityGap: selection.utilityGap, maxUtilityGap: selection.maxUtilityGap, searchNoise: selection.searchNoise };
-  if (options.continuationOnly) return { ok: true, status: 'feasible', q: objective(best, exploration), prefixUtility: candidatePrefixUtility, referenceUtility: 80 * (ctx.periodIds ? 0.96 : 0.88) ** Math.max(0, prefix.length - 1), scoreVersion: CONFIG.scoreVersion, explorationSeed: ctx.explorationSeed, choiceMode: 'utility_best', decisionMode: 'utility_best', explorationNoiseEnabled: false, scoringMode: 'best_discovered_true_utility', stages: best.stages, search: stats };
+  if (options.continuationOnly) return continuationResult(best, best === known?.state ? known.prefixUtility : candidatePrefixUtility);
   function continuationValues(terminals, searchHistory) {
     const values = new Map();
     for (const terminal of terminals) {
       const value = objective(terminal, exploration);
+      const witness = compactWitness(terminal);
       let anchorIndex = 0;
       for (let i = 0; i < terminal.stages.length; i++) {
-        if (terminal.stages[i].anchorId) anchorIndex++;
+        if (terminal.stages[i].anchorId !== undefined) anchorIndex++;
         const key = stateKey({ stages: terminal.stages.slice(0, i + 1), anchorIndex });
         const evaluated = terminal.stages.length > i + 1 || searchHistory.has(key) || i + 1 === config.maxStages;
         const old = values.get(key);
-        values.set(key, { value: Math.max(old?.value ?? -Infinity, value), evaluated: evaluated || old?.evaluated === true });
+        // 保留原有完整评选门槛；最高分及其见证始终来自同一个真实终态。
+        values.set(key, { value: Math.max(old?.value ?? -Infinity, value), evaluated: evaluated || old?.evaluated === true, witness: !old || value > old.value ? witness : old.witness });
       }
     }
     return values;
@@ -659,9 +730,10 @@ function* searchDate(input = {}, catalog, options = {}) {
       const candidate = candidateState.stages.at(-1), key = stateKey(candidateState), completion = values.get(key);
       const found = knownPlan || completion?.evaluated === true;
       const q = found ? (knownPlan ? objective(best, exploration) : completion.value) : null;
+      const continuationWitness = found ? (knownPlan ? compactWitness(best) : completion.witness) : null;
       const fitScore = found ? scoreForContinuation(q) : null;
       const evaluationStatus = found ? 'complete_continuation_found' : stageHistory.has(key) ? 'bounded_no_continuation_found' : 'continuation_not_evaluated';
-      return { sceneId: candidate.sceneId, activityIds: candidate.activityIds, ...(candidate.mealRole ? { mealRole: candidate.mealRole } : {}), minutes: candidate.minutes, transfer: candidate.transfer, cost: candidate.cost, costCents: candidate.costCents, load: candidate.load, start: candidate.start, end: candidate.end, localUtility: objective(candidateState, exploration) - prefixUtility, rawUtility: q, q, fitScore, score: fitScore, recommendationIndex: fitScore, scoreVersion: CONFIG.scoreVersion, scoreStatus: found ? 'evaluated' : 'pending', evaluationStatus, conditional: true, continuationFound: found, feasibilityStatus: found ? 'feasible_continuation_found' : 'local_feasible_future_not_proved', featureContributions: candidate.featureContributions };
+      return { sceneId: candidate.sceneId, activityIds: candidate.activityIds, ...(candidate.mealRole ? { mealRole: candidate.mealRole } : {}), ...(candidate.anchorId !== undefined ? { anchorId: candidate.anchorId } : {}), ...(continuationWitness ? { continuationWitness } : {}), minutes: candidate.minutes, transfer: candidate.transfer, cost: candidate.cost, costCents: candidate.costCents, load: candidate.load, start: candidate.start, end: candidate.end, localUtility: objective(candidateState, exploration) - prefixUtility, rawUtility: q, q, fitScore, score: fitScore, recommendationIndex: fitScore, scoreVersion: CONFIG.scoreVersion, scoreStatus: found ? 'evaluated' : 'pending', evaluationStatus, conditional: true, continuationFound: found, feasibilityStatus: found ? 'feasible_continuation_found' : 'local_feasible_future_not_proved', featureContributions: candidate.featureContributions };
     }
     const byScene = new Map();
     for (const candidateState of transitions) {
@@ -723,9 +795,9 @@ function* searchDate(input = {}, catalog, options = {}) {
   if (ctx.weather === 'unknown') assumptions.push('天气未提供，保留unknown；鲁棒模式对未知室外天气计入额外时间预留。');
   if (departure?.id === 'hotel') assumptions.push('酒店费用为所选城市等级的一间双人客房设计区间，并非实际房价；房源、交通和入住条件需确认。');
   const warnings = [...new Set(stages.flatMap(s => s.warnings))];
-  const replay = { schema: 'datemate-replay-3.0', versions, context: ctx, exploration, explorationSeed: ctx.explorationSeed, explorationVersion: EXPLORATION_VERSION, prefix, anchors, search: config };
+  const replay = { schema: 'datemate-replay-3.0', versions, context: ctx, exploration, explorationSeed: ctx.explorationSeed, explorationVersion: EXPLORATION_VERSION, prefix, anchors, search: config, ...(known && !known.errors.length ? { knownPlan: compactWitness(known.state) } : {}) };
   const core = { stages: stages.map(s => ({ sceneId: s.sceneId, activityIds: s.activityIds, ...(s.mealRole ? { mealRole: s.mealRole } : {}), start: s.start, end: s.end, costCents: s.costCents, score: s.score })), mealRequirements, ...(departure ? { departure } : {}), metrics: measured };
-  return { ok: true, status: 'feasible', searchStatus: 'heuristic_feasible_not_proved_optimal', context: ctx, exploration, explorationSeed: ctx.explorationSeed, choiceMode: explorationSelection.mode, decisionMode: explorationSelection.mode, explorationSelection, prefix, anchors, stages, mealRequirements, ...(departure ? { departure } : {}), totalCost: measured.totalCost, totalCostCents: measured.totalCostCents, endingBuffer: measured.endingBuffer, metrics: measured, candidates: stages.map(s => s.candidates), paretoPlans: pareto(finished, ctx, exploration), trace: stages.flatMap(s => s.trace), search: stats, evaluated: stats.expandedNodes, versions, assumptions, warnings, errors: [], suggestions: [], replay, fingerprint: digest(replay), inputDigest: digest(replay), outputFingerprint: digest(core), outputDigest: digest(core) };
+  return { ok: true, status: 'feasible', searchStatus: 'heuristic_feasible_not_proved_optimal', context: ctx, exploration, explorationSeed: ctx.explorationSeed, choiceMode: explorationSelection.mode, decisionMode: explorationSelection.mode, explorationSelection, prefix, anchors, stages, continuationWitness: compactWitness(best), mealRequirements, ...(departure ? { departure } : {}), totalCost: measured.totalCost, totalCostCents: measured.totalCostCents, endingBuffer: measured.endingBuffer, metrics: measured, candidates: stages.map(s => s.candidates), paretoPlans: pareto(finished, ctx, exploration), trace: stages.flatMap(s => s.trace), search: stats, evaluated: stats.expandedNodes, versions, assumptions, warnings, errors: [], suggestions: [], replay, fingerprint: digest(replay), inputDigest: digest(replay), outputFingerprint: digest(core), outputDigest: digest(core) };
 }
 
 export function createPlanner(catalog, options = {}) {

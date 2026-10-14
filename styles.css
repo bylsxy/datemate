@@ -28,6 +28,15 @@
   box-shadow:0 7px 20px #b5486912;opacity:1;
 }
 .scene-card:focus-visible{outline-offset:3px}
+.scene-card.is-unselectable{cursor:default}
+.scene-card[hidden]{display:none}
+.activity-card[hidden]{display:none}
+.activity-card.is-unselectable{cursor:default;border-style:dashed}
+.activity-card.is-unselectable:not(.selected){background:#f5f2f3}
+.activity-card[data-validation-status="pending"] .activity-title::after{content:' · 验证中';font-size:10px;color:var(--rose)}
+.activity-card[data-validation-status="unresolved"] .activity-title::after,
+.activity-card[data-validation-status="error"] .activity-title::after,
+.activity-card[data-validation-status="hard_rejected"] .activity-title::after{content:' · 暂不可选';font-size:10px;color:#756b70}
 .scene-strip.is-dragging .scene-card{cursor:grabbing;transition:opacity .12s ease,border-color .14s ease,background .14s ease}
 .scene-title{font-size:15px;font-weight:600;letter-spacing:-.3px;margin:0 0 8px;line-height:1.5;overflow-wrap:anywhere}
 .scene-score{

@@ -1,11 +1,20 @@
-import { createPlanner, createContinuationSearch, planDate } from './engine.mjs?v=babb8dc4a6cd6ec1';
-import { catalog, rules, graph } from './data/catalog.mjs?v=babb8dc4a6cd6ec1';
-import { createCandidateScheduler } from './candidate-validation.mjs?v=babb8dc4a6cd6ec1';
+import { createPlanner, createContinuationSearch, planDate, verifyPlanWitness } from './engine.mjs?v=32c9a437a5c51c9d';
+import { catalog, rules, graph } from './data/catalog.mjs?v=32c9a437a5c51c9d';
+import { createCandidateScheduler } from './candidate-validation.mjs?v=32c9a437a5c51c9d';
 
 const knowledge = { ...catalog, rules, graph };
 const planner = createPlanner(knowledge);
+function* validateAction(job, options) {
+  const settings = {...job.search, ...options, fixedPrefix:job.prefix, exploration:job.exploration};
+  // 先重验已有的完整路径，常规候选无需再展开一棵搜索树。
+  if (job.knownPlan?.length) {
+    const verified = verifyPlanWitness(job.context, knowledge, {...settings, knownPlan:job.knownPlan});
+    if (verified.ok) return verified;
+  }
+  return yield* createContinuationSearch(job.context, knowledge, settings);
+}
 const validation = createCandidateScheduler({
-  createSearch: (job, options) => createContinuationSearch(job.context, knowledge, {...job.search, ...options, fixedPrefix:job.prefix, exploration:job.exploration}),
+  createSearch: validateAction,
   onResult: update => self.postMessage({type:'candidate', ...update}),
 });
 // 请求序号由界面校验，过期结果不会覆盖用户较新的选择。
@@ -16,7 +25,7 @@ self.onmessage = ({ data }) => {
   if (data.type === 'pauseValidation') {validation.pause(data.paused);return;}
   try {
     const started = performance.now();
-    const result = data.search ? planDate(data.state.context, knowledge, {...data.search, exploration:data.state.exploration, fixedPrefix:data.state.prefix}) : planner.plan(data.state.context, data.state.exploration, data.state.prefix);
+    const result = data.search || data.knownPlan ? planDate(data.state.context, knowledge, {...data.search, knownPlan:data.knownPlan??undefined, exploration:data.state.exploration, fixedPrefix:data.state.prefix}) : planner.plan(data.state.context, data.state.exploration, data.state.prefix);
     self.postMessage({ id: data.id, result, elapsed: performance.now() - started });
   } catch (error) {
     self.postMessage({ id: data.id, error: error.message || String(error) });

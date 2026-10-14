@@ -45,7 +45,7 @@ test('别离卡使用目录全文，酒店提醒不截断，更新时不回退�
         const card=cards.find(card=>card.dataset.departure===departure.id);
         assert.equal(card.querySelector('.scene-title').textContent,departure.title);
         assert.equal(card.querySelector('.scene-desc').textContent,departure.description);
-        assert.equal(card.title,departure.description);
+        if(departure.description)assert.equal(card.title.split('\n')[0],departure.description);
       }
     };
     render();check();

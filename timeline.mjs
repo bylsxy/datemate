@@ -1,6 +1,6 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=babb8dc4a6cd6ec1';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=babb8dc4a6cd6ec1';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=babb8dc4a6cd6ec1';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=32c9a437a5c51c9d';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=32c9a437a5c51c9d';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=32c9a437a5c51c9d';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
@@ -27,7 +27,75 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   const root=document.querySelector('#stages');
   const window=root.ownerDocument.defaultView;
   const scenes=new Map(catalog.scenes.map(s=>[s.id,s]));
-  const views=new Map(); let result=null, optimistic=null, pendingPreserveThrough=-1, pendingPreservation=null;
+  const views=new Map(); let result=null, pendingPreserveThrough=-1, pendingPreservation=null, actionRound=0, busy=false;
+  const actions=new Map();
+  const actionStatus=status=>status==='verified'?'完整后续已验证，可以选择':status==='pending'?'完整后续正在验证，仅可浏览':status==='hard_rejected'?'该选择与后续冲突':status==='error'?'验证异常，暂不可选':'本次有限搜索未找到完整后续，暂不可选';
+  function paintAction(action){
+    const view=views.get(action.viewKey);if(!view)return;
+    const enabled=!busy&&action.validationStatus==='verified'&&action.continuationWitness!=null&&result?.ok!==false&&!view.element.classList.contains('is-recomputing');
+    const element=action.actionType!=='activity'?view.cards.get(action.sceneId):[...view.activities.querySelectorAll('input[data-activity]')].find(input=>input.dataset.activity===action.activityId);
+    if(!element)return;
+    element.dataset.actionKey=action.actionKey;element.dataset.validationStatus=action.validationStatus;
+    if(Number.isFinite(action.candidate?.fitScore))element.dataset.fitScore=String(action.candidate.fitScore);else delete element.dataset.fitScore;
+    if(action.actionType!=='activity'){
+      // 不设置 aria-disabled，轮播仍可用方向键浏览未验证卡。
+      element.classList.toggle('is-unselectable',!enabled);
+      element.hidden=action.validationStatus==='hard_rejected'&&view.selectedId!==action.sceneId;
+      if(element.hidden)element.setAttribute('aria-disabled','true');else element.removeAttribute('aria-disabled');
+      const title=element.querySelector('.scene-title').textContent;
+      element.setAttribute('aria-label',`${title}，${actionStatus(action.validationStatus)}`);
+      element.title=[element.querySelector('.scene-desc').textContent,actionStatus(action.validationStatus)].filter(Boolean).join('\n');
+      const score=element.querySelector('.scene-score');
+      score.hidden=false;score.classList.toggle('is-validating',action.validationStatus==='pending');
+      score.innerHTML=scoreMarkup({...action.candidate,scoreStatus:action.validationStatus==='pending'?'pending':action.validationStatus==='verified'?'evaluated':action.validationStatus==='error'?'error':'unresolved'},{planningFailed:result?.ok===false});
+      score.title=actionStatus(action.validationStatus);
+    }else{
+      element.disabled=!enabled;
+      // 校验的是 toggle 的结果；失败不能取消当前已经选中的活动。
+      element.checked=action.selected;
+      element.setAttribute('aria-disabled',String(!enabled));
+      const card=element.closest('.activity-card');
+      if(card){card.hidden=action.validationStatus==='hard_rejected'&&!action.selected;card.classList.toggle('is-unselectable',!enabled);card.dataset.validationStatus=action.validationStatus;card.title=actionStatus(action.validationStatus);}
+    }
+  }
+  function registerActions(){
+    actions.clear();actionRound++;
+    for(const view of views.values()){
+      if(view.element.classList.contains('is-recomputing'))continue;
+      const current=view.entry?.stage,ids=current?.activityIds||[];
+      const add=(action)=>{
+        action.actionKey=JSON.stringify([actionRound,view.key,view.index,view.mealRole,action.actionType,action.sceneId,action.activityId??null,action.activityIds]);
+        action.validationStatus='pending';actions.set(action.actionKey,action);paintAction(action);
+      };
+      for(const [sceneId,card]of view.cards){
+        const special=specialFor(view.mealRole);
+        if(special?.id===sceneId&&result?.ok===false){card.classList.remove('is-unselectable');card.hidden=false;card.removeAttribute('aria-disabled');delete card.dataset.actionKey;card.querySelector('.scene-score').hidden=true;continue;}
+        const candidate=view.candidates.get(sceneId),scene=scenes.get(sceneId);
+        const activityIds=current?.sceneId===sceneId?ids:candidate?.activityIds||scene?.default||[];
+        const actionType=view.departure?'departure':special?.id===sceneId?'meal_mode':'scene';
+        add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType,sceneId,activityIds:[...activityIds],...(actionType==='departure'?{departureId:sceneId}:actionType==='meal_mode'?{choice:{mode:special.mode}}:{}),candidate:candidate?structuredClone(candidate):undefined,continuationWitness:candidate?.continuationWitness??(current?.sceneId===sceneId?current?.continuationWitness:undefined)});
+      }
+      const scene=scenes.get(current?.sceneId);
+      if(scene)for(const input of view.activities.querySelectorAll('input[data-activity]')){
+        const activityId=input.dataset.activity;
+        add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'activity',activityId,sceneId:scene.id,activityIds:toggleActivity(scene,ids,activityId),selected:ids.includes(activityId)});
+      }
+    }
+  }
+  function getPendingActions(){
+    return busy?[]:[...actions.values()].filter(action=>action.validationStatus==='pending').map(action=>structuredClone(action));
+  }
+  function updateActionValidation(update={}){
+    const action=actions.get(update.actionKey),view=action&&views.get(action.viewKey);
+    if(!action||!view||busy||view.element.classList.contains('is-recomputing')||!['verified','unresolved','hard_rejected','error'].includes(update.validationStatus))return false;
+    for(const key of ['viewKey','stageIndex','sceneId','mealRole','actionType','activityId','departureId'])if(update[key]!==undefined&&update[key]!==action[key])return false;
+    if(update.validationStatus==='verified'&&update.continuationWitness==null)return false;
+    action.validationStatus=update.validationStatus;
+    if(update.candidate)action.candidate={...action.candidate,...structuredClone(update.candidate)};
+    if(update.continuationWitness!==undefined)action.continuationWitness=structuredClone(update.continuationWitness);
+    if(action.actionType==='scene'&&update.candidate)updateCandidate({...action,candidate:update.candidate});
+    paintAction(action);syncCarousel(view.strip);view.visibility?.queue();return true;
+  }
   function preservationThrough(preserveThrough,preserveKey){
     const byElement=new Map([...views.values()].map(view=>[view.element,view]));
     const ordered=[...root.children].map(element=>byElement.get(element)).filter(Boolean);
@@ -35,7 +103,6 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     const kept=preserveKey!=null?(boundary<0?[]:ordered.slice(0,boundary+1)):ordered.filter(view=>view.index<=preserveThrough);
     return {keys:kept.map(view=>view.key),key:kept.at(-1)?.key??null};
   }
-  const activeChoice=index=>optimistic?.index===index?optimistic:getIntent()?.prefix?.[index]||result?.stages[index];
   function centerSelection(view,smooth){view.strip.classList.remove('is-preserving-scroll');if(smooth)deferSortUntilStill(view);syncCarousel(view.strip);centerCard(view.strip,view.selectedId,{smooth});}
   function updateScore(view,card,candidate) {
     const score=card.querySelector('.scene-score'),title=card.querySelector('.scene-title').textContent;
@@ -48,6 +115,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     // badge 不接收指针事件；tooltip 同时放在可交互的整张卡片上。
     score.title=failed?'当前条件未生成可行方案，请先调整条件后重新规划。':pending?'正在后台验证该选项的完整后续。':candidate?.scoreStatus==='error'?'后台验证异常，本轮验证已停止；可以点击尝试重新规划。':candidate?.scoreStatus==='unresolved'||candidate?.evaluationStatus==='bounded_no_continuation_found'?'本次有限搜索已结束，未找到完整后续；可以点击尝试重新规划。':Number.isFinite(candidate?.fitScore)?'':'暂无契合分；可以点击尝试重新规划。';
     card.title=[scenes.get(card.dataset.scene)?.description||card.querySelector('.scene-desc').textContent,score.title].filter(Boolean).join('\n');
+    const action=actions.get(card.dataset.actionKey);if(action)paintAction(action);
   }
   function stopVisibility(view) {
     view.visibility?.dispose();view.visibility=null;
@@ -70,26 +138,33 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       return bounds.width>0&&bounds.height>0&&clip.right>clip.left&&clip.bottom>clip.top?clip:null;
     }
     function notify(card,clip=visibleBounds()) {
-      const sceneId=card.dataset.scene;
-      if(stopped||view.element.classList.contains('is-recomputing')||card.querySelector('.scene-score').hidden||view.candidates.get(sceneId)?.scoreStatus!=='pending'||notified.has(sceneId))return;
+      const sceneId=card.dataset.scene,action=actions.get(card.dataset.actionKey);
+      if(stopped||card.hidden||card.closest('.activity-card')?.hidden||view.element.classList.contains('is-recomputing')||notified.has(action?.actionKey||sceneId))return;
+      if(action? action.validationStatus!=='pending':card.querySelector('.scene-score')?.hidden||view.candidates.get(sceneId)?.scoreStatus!=='pending')return;
+      if(action?.actionType==='activity'){
+        const viewport=window.visualViewport,left=viewport?.offsetLeft||0,top=viewport?.offsetTop||0;
+        clip={left,top,right:left+(viewport?.width??window.innerWidth),bottom:top+(viewport?.height??window.innerHeight)};
+      }
       if(!clip)return;
       const rect=card.getBoundingClientRect();
       if(rect.width<=0||rect.height<=0||rect.right<=clip.left||rect.left>=clip.right||rect.bottom<=clip.top||rect.top>=clip.bottom)return;
       // 每轮每张卡只通知一次；先登记，允许回调同步更新评分。
-      notified.add(sceneId);
-      onCandidateVisible({stageIndex:view.index,viewKey:view.key,sceneId,...(view.mealRole?{mealRole:view.mealRole}:{})});
+      notified.add(action?.actionKey||sceneId);
+      onCandidateVisible(action?structuredClone(action):{stageIndex:view.index,viewKey:view.key,sceneId,...(view.mealRole?{mealRole:view.mealRole}:{})});
     }
     function scan() {
       frame=0;if(stopped)return;
-      const clip=visibleBounds();if(!clip)return;
+      const clip=visibleBounds();
       for(const card of view.cards.values())notify(card,clip);
+      for(const input of view.activities.querySelectorAll('input[data-activity]'))notify(input,clip);
     }
     const queue=()=>{if(!stopped&&!frame)frame=window.requestAnimationFrame(scan);};
     if(window.IntersectionObserver){
       observer=new window.IntersectionObserver(entries=>{
         for(const entry of entries)if(entry.isIntersecting&&entry.intersectionRect.width>0&&entry.intersectionRect.height>0)notify(entry.target);
-      },{root:view.strip,threshold:0});
+      },{threshold:0});
       for(const card of view.cards.values())observer.observe(card);
+      for(const input of view.activities.querySelectorAll('input[data-activity]'))observer.observe(input);
     }
     // 显式 root 的 IO 不保证纵向滚入屏幕时再次回调；两条路径都补页面滚动扫描。
     view.strip.addEventListener('scroll',queue,{passive:true});
@@ -167,6 +242,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     // 补分属于同一展示轮次，沿用初始探索排名，不接收续算结果中的其它排名。
     if(isExplorationView(view))for(const key of ['displayOrderIndex','explorationRank'])if(Number.isFinite(previous[key]))next[key]=previous[key];
     view.candidates.set(sceneId,next);
+    const action=actions.get(card.dataset.actionKey);if(action)action.candidate=structuredClone(next);
     card.dataset.validationPriority=String(!!next.validation?.visiblePriority);
     if(next.validation?.computeMs!=null)card.dataset.validationMs=String(next.validation.computeMs);else delete card.dataset.validationMs;
     if(next.validation?.attempts!=null)card.dataset.validationAttempts=String(next.validation.attempts);else delete card.dataset.validationAttempts;
@@ -294,8 +370,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     // 必须在 index 更新前冻结范围；虚拟用餐变为真实阶段时索引可能改变。
     const retention=preserveThrough<0?{keys:[],key:null}:pendingPreservation&&preserveThrough===pendingPreserveThrough&&(preserveKey==null||preserveKey===pendingPreservation.key)?pendingPreservation:preservationThrough(preserveThrough,preserveKey);
     const preserved=new Map(retention.keys.filter(key=>views.has(key)).map(key=>[key,{view:views.get(key),full:key!==retention.key}]));
-    views.forEach(stopVisibility);
-    result=nextResult;optimistic=null;pendingPreserveThrough=-1;pendingPreservation=null;
+    views.forEach(stopVisibility);actions.clear();
+    result=nextResult;busy=false;pendingPreserveThrough=-1;pendingPreservation=null;
     const focus=document.activeElement,focusView=[...views.values()].find(view=>view.element.contains(focus));
     const focusData=focus?.dataset?.activity?{...focus.dataset,viewKey:focusView?.key}:null;
     root.querySelectorAll('.skeleton-stage').forEach(el=>el.remove());
@@ -341,16 +417,18 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       updateCards(view,stage,meal,{preserve:!!retention,center:!retention?.full&&wasSelected!==stage.sceneId});updateStageContent(view,stage);
       watchVisibility(view);
     });
+    registerActions();
     root.setAttribute('aria-busy','false');
     if(focusData?.activity){const el=views.get(focusData.viewKey)?.activities.querySelector(`input[data-scene="${CSS.escape(focusData.scene)}"][data-activity="${CSS.escape(focusData.activity)}"]`);el?.focus({preventScroll:true});}
   }
   function pending({fromStage=0,choice=null,mealChoice=null,departureChoice=null,preserveThrough=choice||mealChoice?fromStage:-1,preserveKey}={}) {
+    busy=true;
+    for(const action of actions.values()){action.validationStatus='pending';delete action.continuationWitness;paintAction(action);}actions.clear();
     const focused=document.activeElement,focusData=focused?.dataset?.activity?{...focused.dataset}:null;
     const focusView=[...views.values()].find(view=>view.element.contains(focused));
     pendingPreserveThrough=preserveThrough;
     pendingPreservation=preserveThrough<0?{keys:[],key:null}:preservationThrough(preserveThrough,preserveKey);
     const preservedKeys=new Set(pendingPreservation.keys);
-    optimistic=choice;
     root.setAttribute('aria-busy','true');
     if(!result){root.innerHTML=[0,1].map(skeletonStage).join('');return;}
     for(const view of views.values()){
@@ -383,31 +461,50 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       view.meta.innerHTML=skeleton('line');
       if(!(departureChoice&&view.departure)&&!(mealChoice&&view.mealRole===mealChoice.role)&&!(choice&&i===choice.index&&!view.mealRole&&!view.departure))view.activities.innerHTML=`<div class="skeleton-row">${skeleton('activity')}${skeleton('activity')}</div>`;
     }
+    registerActions();
     if(focusData){focusView?.activities.querySelector(`input[data-scene="${CSS.escape(focusData.scene)}"][data-activity="${CSS.escape(focusData.activity)}"]`)?.focus({preventScroll:true});}
   }
   function lockThrough(view){for(const key of preservationThrough(view.index,view.key).keys){const previous=views.get(key);previous.orderLocked=true;stopVisibility(previous);}}
+  function enabledAction(element){
+    const action=actions.get(element?.dataset.actionKey),view=action&&views.get(action.viewKey);
+    return !busy&&action?.validationStatus==='verified'&&action.continuationWitness!=null&&result?.ok!==false&&!view?.element.classList.contains('is-recomputing')?action:null;
+  }
+  const recoveryMeal=card=>!busy&&result?.ok===false&&card?.dataset.scene===specialFor(card.dataset.meal)?.id;
+  // 捕获阶段拦截 Enter/Space，避免轮播在冒泡阶段合成 click。
+  function guardActivation(event){
+    if(event.type==='keydown'&&!['Enter',' ','Spacebar'].includes(event.key))return;
+    const card=event.target.closest('.scene-card'),input=event.target.closest('input[data-activity]')||event.target.closest('.activity-card')?.querySelector('input[data-activity]');
+    if(recoveryMeal(card))return;
+    const target=input||card;if(!target||enabledAction(target))return;
+    if(input){const action=actions.get(input.dataset.actionKey);if(action)input.checked=action.selected;}
+    event.preventDefault?.();event.stopImmediatePropagation?.();
+  }
+  root.addEventListener('click',guardActivation,true);
+  root.addEventListener('keydown',guardActivation,true);
   root.addEventListener('click',event=>{
     const card=event.target.closest('.scene-card');if(!card||card.dataset.dragged==='1')return;
     const view=views.get(card.dataset.view);if(!view)return;
+    if(result?.ok!==false&&view.selectedId===card.dataset.scene)return;
+    const action=enabledAction(card);if(!action&&!recoveryMeal(card))return;
     lockThrough(view);
-    const index=view.index,chosen=activeChoice(index),candidate=view.candidates.get(card.dataset.scene);
-    if(view.departure){onDeparture(card.dataset.departure);return;}
+    const index=view.index,candidate=view.candidates.get(card.dataset.scene);
+    if(view.departure){onDeparture(card.dataset.departure,{knownPlan:action.continuationWitness});return;}
     if(view.mealRole){
       const scene=scenes.get(card.dataset.scene);
       const current=getIntent()?.context?.mealChoices?.[view.mealRole]||result.stages.find(s=>s.mealRole===view.mealRole);
       const choice=resolveMealCardChoice(view.mealRole,card.dataset.scene,{scene,current,candidate});
-      onMeal(view.mealRole,choice,{fromStage:index});return;
+      onMeal(view.mealRole,choice,{fromStage:index,knownPlan:action?.continuationWitness});return;
     }
-    onScene(index,card.dataset.scene,chosen?.sceneId===card.dataset.scene?chosen.activityIds:candidate?.activityIds||scenes.get(card.dataset.scene).default||[]);
+    onScene(index,card.dataset.scene,[...action.activityIds],{knownPlan:action.continuationWitness});
   });
   root.addEventListener('change',event=>{
     const input=event.target.closest('input[data-activity]');if(!input)return;
     const view=views.get(input.closest('.stage').querySelector('.scene-card').dataset.view);if(!view)return;
+    const action=enabledAction(input);if(!action){const previous=actions.get(input.dataset.actionKey);if(previous)input.checked=previous.selected;return;}
     lockThrough(view);
     const index=Number(input.dataset.stage);
-    const selected=view.mealRole?getIntent()?.context?.mealChoices?.[view.mealRole]||result.stages[index]:activeChoice(index),ids=selected?.sceneId===input.dataset.scene?selected.activityIds:[];
-    if(view.mealRole){onMeal(view.mealRole,{sceneId:input.dataset.scene,activityIds:toggleActivity(scenes.get(input.dataset.scene),ids,input.dataset.activity)},{fromStage:index});return;}
-    onActivities(index,input.dataset.scene,toggleActivity(scenes.get(input.dataset.scene),ids,input.dataset.activity));
+    if(view.mealRole){onMeal(view.mealRole,{sceneId:input.dataset.scene,activityIds:[...action.activityIds]},{fromStage:index,knownPlan:action.continuationWitness});return;}
+    onActivities(index,input.dataset.scene,[...action.activityIds],{knownPlan:action.continuationWitness});
   });
-  return {render,pending,updateCandidate,getPendingCandidates,recenter:()=>views.forEach(v=>centerSelection(v,false)),dispose:()=>views.forEach(v=>v.dispose())};
+  return {render,pending,updateCandidate,getPendingCandidates,getPendingActions,updateActionValidation,recenter:()=>views.forEach(v=>centerSelection(v,false)),dispose:()=>{root.removeEventListener('click',guardActivation,true);root.removeEventListener('keydown',guardActivation,true);actions.clear();views.forEach(v=>v.dispose());}};
 }

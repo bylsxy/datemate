@@ -56,12 +56,18 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
     const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.timeline.order.test')];\n${source}`).toString('base64')}`);
     timeline=createTimeline({...f,onScene(){},onActivities(){},onMeal(){}});
+    const certify=(predicate,candidate)=>{
+      const action=timeline.getPendingActions().find(predicate);
+      assert.ok(action,'待验证操作必须存在');
+      assert.equal(timeline.updateActionValidation({...action,...(candidate?{candidate}:{}),validationStatus:'verified',continuationWitness:[{sceneId:action.sceneId,activityIds:action.activityIds}]}),true);
+    };
     timeline.render(result([stage('a',0),stage('a',1),stage('a',2)]));
     const [first,current,later]=f.root.children;
     const firstHeading=first.querySelector('.stage-heading').innerHTML;
     const browsed=current.querySelector('.scene-strip').children[2];browsed.focus();
     // 点击就阻止已排队的后台重排，尚未进入 pending 也受保护。
     timeline.updateCandidate({stageIndex:1,sceneId:'c',candidate:{q:100}});
+    certify(action=>action.stageIndex===1&&action.sceneId==='b'&&action.actionType==='scene');
     f.emit('click',current.querySelector('.scene-strip').children[1]);f.flush();
     assert.deepEqual(order(current),['a','b','c']);
     timeline.pending({fromStage:1,choice:{index:1,sceneId:'b',activityIds:['b-act']}});
@@ -78,7 +84,7 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     assert.deepEqual(order(later),['c','b','a']);
     assert.equal(f.doc.activeElement,browsed);
     assert.equal(f.centers.slice(centersBefore).some(([strip])=>strip===current.querySelector('.scene-strip')),false);
-    assert.equal(timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999,fitScore:99}}),true);f.flush();
+    certify(action=>action.stageIndex===1&&action.sceneId==='a'&&action.actionType==='scene',{q:999,fitScore:99});f.flush();
     assert.deepEqual(order(current),['a','b','c']);
     assert.match(current.querySelector('.scene-strip').children[0].querySelector('.scene-score').innerHTML,/99/);
     // 快速连续选择后续阶段时，先前骨架恢复为已有完整内容再保留。
@@ -94,6 +100,7 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999}});f.flush();
     assert.deepEqual(order(current),['a','b']);
     // 活动选择也锁住整条候选顺序；render 未显式传保留范围时沿用 pending。
+    certify(action=>action.stageIndex===1&&action.activityId==='b-act'&&action.actionType==='activity');
     f.emit('change',current.querySelector('input[data-activity="b-act"]'));
     timeline.pending({fromStage:1,preserveThrough:1,preserveKey:'stage-1',choice:{index:1,sceneId:'b',activityIds:[]}});
     f.setIntent({prefix:[{sceneId:'d',activityIds:['d-act']},{sceneId:'b',activityIds:[]}],context:{dietaryRestrictions:[]}});
@@ -129,7 +136,7 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     for(const field of ['decisionMode','choiceMode']){
       timeline.render({...result([stage('d',0,['d']),{...stage('b',1,['a','b']),[field]:'seeded_exploration',candidates:['a','b'].map(ranked)}]),exploration:0},{preserveThrough:-1});
       assert.deepEqual(order(current),['b','a']);
-      timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999,fitScore:99,displayOrderIndex:-1,explorationRank:-1}});f.flush();
+      certify(action=>action.stageIndex===1&&action.sceneId==='a'&&action.actionType==='scene',{q:999,fitScore:99,displayOrderIndex:-1,explorationRank:-1});f.flush();
       assert.deepEqual(order(current),['b','a']);
       assert.match(current.querySelector('.scene-strip').children[1].querySelector('.scene-score').innerHTML,/<b>99<\/b>/);
     }

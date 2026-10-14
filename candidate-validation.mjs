@@ -1,5 +1,47 @@
+import {selectStageIntent, selectMealIntent, selectDepartureIntent, projectStageChoice} from './planning-intent.mjs?v=32c9a437a5c51c9d';
+
 // 候选验证与当前安排分开：只补全卡片评分，不改选中地点、时间线或复盘输出。
 export const candidateKey = ({stageIndex, sceneId, mealRole}) => `${mealRole ? `meal-${mealRole}` : `stage-${stageIndex}`}:${sceneId}`;
+
+/** 验证必须复用点击时的意图投影，不能把旧餐次条件或自动排程时间带入搜索。 */
+export function buildActionJobs(result, state, catalog, actions = []) {
+  if (result?.ok !== true) return [];
+  const jobs = new Map();
+  for (const action of actions) {
+    const {stageIndex, mealRole, actionType, sceneId, activityIds} = action;
+    let next;
+    if (actionType === 'departure') next = selectDepartureIntent(state, result, action.departureId, catalog);
+    else if (actionType === 'meal_mode') next = selectMealIntent(state, result, mealRole, action.choice, stageIndex, catalog);
+    else if (actionType === 'scene' || actionType === 'activity') {
+      next = mealRole
+        ? selectMealIntent(state, result, mealRole, {sceneId, activityIds}, stageIndex, catalog)
+        : selectStageIntent(state, result, stageIndex, sceneId, activityIds, catalog);
+    } else throw new TypeError(`未知验证动作：${actionType}`);
+    const key = action.actionKey ?? JSON.stringify([action.viewKey ?? null, stageIndex ?? null, mealRole ?? null, actionType, sceneId ?? null, activityIds ?? null, action.activityId ?? null, action.departureId ?? null, action.choice ?? null]);
+    let knownPlan = action.continuationWitness ?? action.candidate?.continuationWitness;
+    if (knownPlan == null) {
+      knownPlan = result.stages.map(stage => ({...projectStageChoice(stage), ...(stage.anchorId !== undefined ? {anchorId:stage.anchorId} : {})}));
+      if (actionType === 'scene' || actionType === 'activity') {
+        // 虚拟餐卡插入真实用餐；已有阶段只替换当前目标，其余作为快捷重验的初次尝试。
+        const insertingMeal = mealRole && result.stages[stageIndex]?.mealRole !== mealRole;
+        const anchorId = insertingMeal ? undefined : result.stages[stageIndex]?.anchorId;
+        knownPlan.splice(stageIndex, insertingMeal ? 0 : 1, {...structuredClone(next.prefix.at(-1)), ...(anchorId !== undefined ? {anchorId} : {})});
+      }
+    }
+    const meal = mealRole ? result.mealRequirements?.find(item => item.mealRole === mealRole) : null;
+    const reference = action.reference ?? (meal?.stageIndex === null ? null : result.stages[stageIndex]?.scoreReference);
+    const candidate = {...structuredClone(action.candidate), ...(sceneId !== undefined ? {sceneId} : {}), ...(activityIds !== undefined ? {activityIds:[...activityIds]} : {})};
+    jobs.set(key, {...structuredClone(action), actionFields:structuredClone(action), candidate, key, context:next.context, prefix:next.prefix, exploration:next.exploration, reference, knownPlan:structuredClone(knownPlan), search:{...structuredClone(result.replay?.search ?? {}), method:'bounded', maxCandidateExpandedNodes:0}});
+  }
+  return [...jobs.values()];
+}
+
+function validationStatus(job, result) {
+  if (result?.ok) return !job.actionType || Array.isArray(result.continuationWitness)&&result.continuationWitness.length>0 ? 'verified' : 'unresolved';
+  if (['invalid_data', 'error'].includes(result?.status)) return 'error';
+  if (['invalid_input', 'hard_rejected', 'hard_violation', 'hard_violations'].includes(result?.status)) return 'hard_rejected';
+  return 'unresolved';
+}
 
 export function buildCandidateJobs(result, state, {pendingCandidates = null} = {}) {
   if (!result?.ok) return [];
@@ -35,12 +77,13 @@ export function buildCandidateJobs(result, state, {pendingCandidates = null} = {
 }
 
 export function validatedCandidate(job, result) {
-  if (!result?.ok) return {...job.candidate, fitScore:null, score:null, rawUtility:null, q:null, scoreStatus:'unresolved', evaluationStatus:'bounded_no_continuation_found', continuationFound:false};
+  const status = validationStatus(job, result);
+  if (status !== 'verified') return {...job.candidate, fitScore:null, score:null, recommendationIndex:null, rawUtility:null, q:null, continuationWitness:null, scoreStatus:status, evaluationStatus:status === 'error' ? 'validation_error' : status === 'hard_rejected' ? 'hard_rejected' : 'bounded_no_continuation_found', continuationFound:false, feasibilityStatus:status === 'hard_rejected' ? 'hard_rejected' : 'unresolved'};
   const prefixUtility = job.reference?.prefixUtility ?? result.prefixUtility;
   const referenceUtility = job.reference?.referenceUtility ?? result.referenceUtility;
   const gain = result.q - prefixUtility;
   const fitScore = +(50 + 50 * gain / (Math.abs(gain) + referenceUtility)).toFixed(2);
-  return {...job.candidate, fitScore, score:fitScore, recommendationIndex:fitScore, rawUtility:result.q, q:result.q, scoreVersion:result.scoreVersion, scoreStatus:'evaluated', evaluationStatus:'complete_continuation_found', continuationFound:true, feasibilityStatus:'feasible_continuation_found'};
+  return {...job.candidate, fitScore, score:fitScore, recommendationIndex:fitScore, rawUtility:result.q, q:result.q, scoreVersion:result.scoreVersion, scoreStatus:'evaluated', evaluationStatus:'complete_continuation_found', continuationFound:true, feasibilityStatus:'feasible_continuation_found', ...(result.continuationWitness ? {continuationWitness:result.continuationWitness} : {})};
 }
 
 /** 单个后台线程轮转短片段；可见卡片抢占片间等待，不启动并行的重复搜索。 */
@@ -67,11 +110,12 @@ export function createCandidateScheduler({createSearch, onResult, schedule = set
       job.turn = ++turn;
       if (step.done) {
         job.expanded += step.value?.search?.expandedNodes || 0;
-        const final = step.value?.ok || ['invalid_input','invalid_data'].includes(step.value?.status) || job.attempt === profiles.length-1;
+        const status = validationStatus(job, step.value);
+        const final = step.value?.ok || status === 'hard_rejected' || status === 'error' || job.attempt === profiles.length-1;
         if (final) {
           jobs.delete(job.key);
           const candidate = {...validatedCandidate(job, step.value), validation:{attempts:job.attempt+1, expandedNodes:job.expanded, computeMs:job.elapsed, visiblePriority:job.visible, searchStatus:step.value?.status, errors:step.value?.errors || []}};
-          onResult({generation, key:job.key, stageIndex:job.stageIndex, sceneId:job.sceneId, mealRole:job.mealRole, candidate});
+          onResult({...job.actionFields, generation, key:job.key, stageIndex:job.stageIndex, sceneId:job.sceneId, mealRole:job.mealRole, validationStatus:status, continuationWitness:status === 'verified' ? step.value?.continuationWitness ?? null : null, candidate});
         } else {
           job.attempt++;
           job.iterator = null;
@@ -79,7 +123,8 @@ export function createCandidateScheduler({createSearch, onResult, schedule = set
       }
     } catch (error) {
       jobs.delete(job.key);
-      onResult({generation, key:job.key, stageIndex:job.stageIndex, sceneId:job.sceneId, mealRole:job.mealRole, candidate:{...job.candidate, fitScore:null, scoreStatus:'error', evaluationStatus:'validation_error', continuationFound:false}, error:String(error.message || error)});
+      try { job.iterator?.return(); } catch { /* 原搜索错误优先回包，关闭失败不能阻断其他动作。 */ }
+      onResult({...job.actionFields, generation, key:job.key, stageIndex:job.stageIndex, sceneId:job.sceneId, mealRole:job.mealRole, validationStatus:'error', continuationWitness:null, candidate:{...validatedCandidate(job, null), scoreStatus:'error', evaluationStatus:'validation_error'}, error:String(error.message || error)});
     }
     arm([...jobs.values()].some(j => j.visible) ? visibleDelay : idleDelay);
   }
