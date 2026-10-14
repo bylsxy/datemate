@@ -1,12 +1,12 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=652f0ca749b11d2a';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=652f0ca749b11d2a';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=652f0ca749b11d2a';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=652f0ca749b11d2a';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=652f0ca749b11d2a';
-import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=652f0ca749b11d2a';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=59caee8f5828c6b9';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=59caee8f5828c6b9';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=59caee8f5828c6b9';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=59caee8f5828c6b9';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=59caee8f5828c6b9';
+import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=59caee8f5828c6b9';
 
-export { canonical, digest } from './reasoning.mjs?v=652f0ca749b11d2a';
-import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=652f0ca749b11d2a';
+export { canonical, digest } from './reasoning.mjs?v=59caee8f5828c6b9';
+import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=59caee8f5828c6b9';
 export const VERSION = 'datemate-engine-4.2.1';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-4.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;

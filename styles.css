@@ -108,7 +108,7 @@
 .slot-choice span{display:flex;flex-direction:column;gap:3px;min-width:0}
 .slot-choice small{font-size:10px;line-height:1.4;font-weight:400;color:var(--muted);font-variant-numeric:tabular-nums}
 .condition-error{margin:0 0 12px;color:var(--rose);font-size:11px;line-height:1.6}
-.budget-field{margin-top:4px}
+.budget-field{clear:both;width:100%;margin-top:4px}
 .robust-choice input{flex:none}
 .form>.apply-button{justify-content:center;text-align:center}
 .form>.apply-button::before,.form>.apply-button::after{content:none;display:none}
