@@ -181,7 +181,7 @@
 .scope-child{padding-left:12px;border-left:2px solid var(--line)}
 .scope-hint{font-size:12px;line-height:1.6;color:var(--muted);margin:9px 0 0}
 .more-menu-area{position:fixed;right:24px;bottom:24px;display:flex;flex-direction:column;align-items:flex-end;margin:0;z-index:40}
-.more-menu-toggle{width:52px;height:52px;min-height:52px;padding:0;border-radius:50%;background:var(--rose);font-size:22px;line-height:1;color:#fff;box-shadow:0 7px 22px #b5486936}
+.more-menu-toggle{display:grid;place-items:center;width:52px;height:52px;min-height:52px;padding:0;border-radius:50%;background:var(--rose);font-size:22px;line-height:1;color:#fff;box-shadow:0 7px 22px #b5486936}
 .more-menu-toggle:hover,.more-menu-toggle[aria-expanded=true]{background:#973753;color:#fff}
 .more-menu{position:absolute;right:0;bottom:calc(100% + 12px);display:grid;gap:9px;width:220px;max-height:calc(100dvh - 112px);overflow-y:auto;overscroll-behavior:contain;padding:12px;border:1px solid var(--line);border-radius:15px;background:#fff;box-shadow:0 10px 32px #25273618}
 .more-menu button{min-height:48px;padding:13px 16px;border:1px solid #ece5e8;border-radius:10px;background:#fbf8f9;text-align:left;color:var(--ink);font-size:14px;font-weight:600;line-height:1.5}
@@ -277,7 +277,7 @@
 <noscript><p>请启用 JavaScript。</p></noscript>
 </main></div>
 <div class="more-menu-area">
-  <button id="more-menu-toggle" class="more-menu-toggle" type="button" aria-label="更多" aria-controls="more-menu" aria-expanded="false">三</button>
+  <button id="more-menu-toggle" class="more-menu-toggle" type="button" aria-label="更多" aria-controls="more-menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
   <nav id="more-menu" class="more-menu" aria-label="更多" hidden>
     <button type="button" data-view="knowledge">知识与推理</button><button type="button" data-view="compare">方案对比</button><button type="button" id="import">导入JSON</button><button type="button" id="export">导出JSON</button><button type="button" data-view="diagnostics">输入输出</button><button type="button" data-view="about">关于</button>
   </nav>
@@ -2947,7 +2947,7 @@ function showView(name){
   if(name==='plan')timeline.recenter();
   validationWorker?.postMessage({type:'pauseValidation',paused:name!=='plan'||document.hidden});
   window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
-  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.4.1</p><p>知识库 · ${esc(catalog.version)}</p>`;
+  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.4.1</p><p>知识库 · ${esc(catalog.version)}</p><h3>小组成员</h3><p>徐阳、廖信同、黎欣欣、周艳雯、殷浚峰</p>`;
 }
 $('#more-menu-toggle').addEventListener('click',()=>{const open=$('#more-menu').hidden;$('#more-menu').hidden=!open;$('#more-menu-toggle').setAttribute('aria-expanded',String(open));});
 $$('[data-view]').forEach(button=>button.addEventListener('click',()=>showView(button.dataset.view)));
