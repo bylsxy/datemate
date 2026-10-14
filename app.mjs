@@ -1,28 +1,30 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=26b8b8654cec2646';
-import {createTimeline} from './timeline.mjs?v=26b8b8654cec2646';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=26b8b8654cec2646';
-import {createReasonView} from './reasons-view.mjs?v=26b8b8654cec2646';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=26b8b8654cec2646';
-import {createPlacePicker} from './place-picker.mjs?v=26b8b8654cec2646';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=26b8b8654cec2646';
-import {dietaryOptions} from './data/activities.mjs?v=26b8b8654cec2646';
-import * as reasoning from './reasoning.mjs?v=26b8b8654cec2646';
-import {normalizePeriods} from './time-periods.mjs?v=26b8b8654cec2646';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=26b8b8654cec2646';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=26b8b8654cec2646';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=97b6b88b9e62ea18';
+import {createTimeline} from './timeline.mjs?v=97b6b88b9e62ea18';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=97b6b88b9e62ea18';
+import {createReasonView} from './reasons-view.mjs?v=97b6b88b9e62ea18';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=97b6b88b9e62ea18';
+import {createPlacePicker} from './place-picker.mjs?v=97b6b88b9e62ea18';
+import {createLibraryView} from './library-view.mjs?v=97b6b88b9e62ea18';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=97b6b88b9e62ea18';
+import {dietaryOptions} from './data/activities.mjs?v=97b6b88b9e62ea18';
+import * as reasoning from './reasoning.mjs?v=97b6b88b9e62ea18';
+import {normalizePeriods} from './time-periods.mjs?v=97b6b88b9e62ea18';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=97b6b88b9e62ea18';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=97b6b88b9e62ea18';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=26b8b8654cec2646',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=97b6b88b9e62ea18',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,onMerge:commitMerge,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
 const placePicker=createPlacePicker({root:$('.place-choice'),scenes:catalog.scenes,onChange:applyConditions});
 const scopeControls=createSchoolScopeControls($('#conditions-form'));
 const reasonView=createReasonView({container:$('#reason-content'),scenes:catalog.scenes,rules});
+const libraryView=createLibraryView({container:$('#library-content'),catalog,sources,evidence,rules});
 function stopValidation(){validationWorker?.terminate();validationWorker=null;validationGeneration=null;validationJobs.clear();}
 function prioritizeCandidate(choice){
   const key=choice.actionKey||choice.key||candidateKey(choice);
@@ -305,6 +307,8 @@ $('#restart-plan').addEventListener('click',()=>{if(!conditionsValid||busy)retur
 function closeMenu(){ $('#more-menu').hidden=true;$('#more-menu-toggle').setAttribute('aria-expanded','false'); }
 function showView(name){
   closeMenu();$$('.view').forEach(x=>x.hidden=x.id!==`view-${name}`);
+  $('#menu-home').hidden=name==='plan';$('.sidebar').hidden=name==='library';
+  if(name==='library')libraryView.render();
   if(name==='plan')timeline.recenter();
   validationWorker?.postMessage({type:'pauseValidation',paused:name!=='plan'||document.hidden});
   window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});

@@ -202,3 +202,36 @@
 /* 验证状态仍保持转圈提示，减少动态效果时降低转速，不影响后台验证。 */
 @media(prefers-reduced-motion:reduce){.candidate-spinner{animation:candidate-spin 1.6s linear infinite!important}}
 .page-shell{padding-bottom:96px}
+
+/* 资料库按连续阅读排版，全部条目展开，长文由章节目录和浮动菜单导航。 */
+#library-content{max-width:930px;margin:0 auto 42px;font-size:15px;line-height:1.9;overflow-wrap:anywhere}
+.library-document>h2{font-size:28px;font-weight:600;margin:0 0 16px;letter-spacing:-.6px}
+.library-intro{margin:0 0 20px;color:var(--muted);font-size:14px}
+.library-counts{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0 20px}
+.library-counts span{padding:5px 12px;border:1px solid var(--line);border-radius:8px;background:#fff;font-size:12px;color:var(--muted)}
+.library-toc{display:flex;flex-wrap:wrap;gap:9px;margin:0 0 28px;padding:15px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+.library-toc a{color:var(--rose);text-decoration:none;padding:4px 10px;border-radius:7px;background:var(--wash);font-size:13px}
+.library-toc a:hover{text-decoration:underline;text-underline-offset:3px}
+.library-section{padding:26px 32px;margin:0 0 30px;border:1px solid var(--line);border-radius:18px;background:#fff;scroll-margin-top:24px}
+.library-section>h3,.library-section-heading{font-size:22px;font-weight:600;line-height:1.5;margin:0 0 20px}
+.library-group{margin-top:28px}.library-group>h4{font-size:17px;margin:0 0 12px;color:var(--rose)}
+.library-list{list-style:none;padding:0;margin:0}
+.library-entry{padding:18px 0;border-top:1px solid #eee8e5;break-inside:avoid}
+.library-entry:last-child{padding-bottom:0}
+.library-entry h3,.library-entry h4,.library-entry-heading{font-size:16px;font-weight:600;line-height:1.65;margin:0 0 7px}
+.library-entry p{margin:6px 0}
+.library-entry a{color:var(--rose);text-underline-offset:3px}
+.library-entry-number{color:var(--muted);font-weight:400;font-size:12px;margin-right:9px;font-variant-numeric:tabular-nums}
+.library-description{white-space:pre-wrap}
+.library-meta,.library-original-title,.library-reference{color:var(--muted);font-size:12px;line-height:1.85}
+.library-meta dt{font-weight:600}.library-meta dd{margin:0 0 6px}
+.library-original-title{display:block;margin:4px 0}
+.library-note{margin:14px 0;padding:12px 16px;border-left:3px solid #dcaabc;background:var(--wash);border-radius:6px;color:var(--muted);font-size:12px}
+@media(max-width:680px){
+  #library-content{font-size:14px}
+  .library-section{padding:20px 18px;border-radius:14px;margin-bottom:22px}
+  .library-section>h3,.library-section-heading{font-size:20px}
+  .library-entry{padding:15px 0}
+  .library-entry h3,.library-entry h4,.library-entry-heading{font-size:15px}
+  .library-toc{gap:7px}.library-toc a{padding:4px 8px;font-size:12px}
+}
