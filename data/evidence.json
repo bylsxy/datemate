@@ -663,6 +663,18 @@
     "verificationBoundary": "核对本地文本位置；现实经营状态、采集真实性和原作品归属尚待回源确认"
   },
   {
+    "id": "E-user-breakfast-choices",
+    "sourceDocumentId": null,
+    "sourceLocator": "user:2026-10-14-breakfast-choice-flow",
+    "sourceKind": "user_design",
+    "assertionKind": "designed",
+    "summary": "用户要求先选择是否一起吃早餐，再选择早餐店、麦麦、食堂、超市或自备面包。时长、费用与允许时间为可手动编辑的规划参数。",
+    "reviewStatus": "awaiting_confirmation",
+    "publicExcerptAllowed": false,
+    "rightsStatus": "original_user_design",
+    "verificationBoundary": "具体分店、营业、当日供应和实际价格需在出发前查看；自备早餐仅在用户明确选择已准备后成立。"
+  },
+  {
     "id": "E-user-budget-campus-meals",
     "sourceDocumentId": null,
     "sourceLocator": "user:2026-10-14-budget-campus-meals",

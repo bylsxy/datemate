@@ -257,6 +257,11 @@
       "label": "公开自述中出现电影后组队游戏的休闲安排，可作为协作游戏灵感；价格不转用到当前目录。"
     },
     {
+      "id": "E-user-breakfast-choices",
+      "type": "evidence",
+      "label": "用户要求先选择是否一起吃早餐，再选择早餐店、麦麦、食堂、超市或自备面包。时长、费用与允许时间为可手动编辑的规划参数。"
+    },
+    {
       "id": "E-user-budget-campus-meals",
       "type": "evidence",
       "label": "校园食堂和芷园增加可选平价早餐与饭菜；宿舍楼下吃饭支持从食堂或附近打包后用餐，兼顾安静、避雨和校园范围宵夜。两人早餐6至10元、午晚餐每餐12至16元、简单宵夜6至8元，四餐费用上界50元；保留原有菜肴和费用，宵夜由用户另选。"
@@ -1427,9 +1432,57 @@
       "label": "吃一份早餐面包"
     },
     {
+      "id": "breakfast_mcdonalds",
+      "type": "scene",
+      "label": "麦麦早餐",
+      "placeKind": "ordinary",
+      "category": "早餐去处"
+    },
+    {
+      "id": "breakfast_mcdonalds_eat",
+      "type": "activity",
+      "label": "点两份麦麦早餐"
+    },
+    {
       "id": "breakfast_pack",
       "type": "activity",
       "label": "买好明早早餐"
+    },
+    {
+      "id": "breakfast_prepared",
+      "type": "scene",
+      "label": "自备早餐（已准备）",
+      "placeKind": "ordinary",
+      "category": "早餐去处"
+    },
+    {
+      "id": "breakfast_prepared_eat",
+      "type": "activity",
+      "label": "吃已经准备好的早餐"
+    },
+    {
+      "id": "breakfast_shop",
+      "type": "scene",
+      "label": "早餐店",
+      "placeKind": "ordinary",
+      "category": "早餐去处"
+    },
+    {
+      "id": "breakfast_shop_eat",
+      "type": "activity",
+      "label": "在早餐店吃早点"
+    },
+    {
+      "id": "breakfast_supermarket",
+      "type": "scene",
+      "label": "超市买早餐",
+      "placeKind": "ordinary",
+      "category": "早餐去处"
+    },
+    {
+      "id": "breakfast_supermarket_eat",
+      "type": "activity",
+      "label": "买面包和饮品当早餐"
     },
     {
       "id": "bridge_view",
@@ -2197,6 +2250,11 @@
       "category": "操场外圈"
     },
     {
+      "id": "user:2026-10-14-breakfast-choice-flow",
+      "type": "user_design",
+      "label": "用户项目设计；现实信息待确认"
+    },
+    {
       "id": "user:2026-10-14-budget-campus-meals",
       "type": "user_design",
       "label": "用户项目设计；现实信息待确认"
@@ -2852,6 +2910,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-12bf9aa862f357",
+      "subject": "breakfast_mcdonalds",
+      "predicate": "allows_activity",
+      "object": "breakfast_mcdonalds_eat",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-12f4ce73f41e09",
       "subject": "boardgame",
       "predicate": "allows_activity",
@@ -2919,6 +2987,16 @@
       "object": "user:2026-10-14-budget-campus-meals",
       "evidenceIds": [
         "E-user-budget-campus-meals"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-139418f213cb52",
+      "subject": "breakfast_mcdonalds_eat",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -3170,6 +3248,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-1e7ce6d80140e0",
+      "subject": "breakfast_shop_eat",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-1e8e4ac7e87423",
       "subject": "E-C003",
       "predicate": "derived_from",
@@ -3251,6 +3339,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-2170b14f94bd26",
+      "subject": "breakfast_mcdonalds_eat",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-218c595b1cb9d2",
       "subject": "street_look",
       "predicate": "supported_by",
@@ -3280,6 +3378,16 @@
         "E-C001"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-22f06a60a4ddcd",
+      "subject": "breakfast_prepared_eat",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-2390106197457f",
@@ -3340,6 +3448,16 @@
       "object": "tag:play",
       "evidenceIds": [
         "E-research-novelty"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-24b3ccb33f2006",
+      "subject": "breakfast_prepared_eat",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -3572,6 +3690,16 @@
         "E-P008"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-2c52f2e9f32a12",
+      "subject": "breakfast_supermarket_eat",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-2c72c74a3be8d9",
@@ -3852,6 +3980,16 @@
       "evidenceIds": [
         "E-user-budget-campus-meals",
         "E-user-campus-shelter"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-34959b0f572f57",
+      "subject": "breakfast_prepared_eat",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -4249,6 +4387,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-40889be4927110",
+      "subject": "breakfast_prepared",
+      "predicate": "allows_activity",
+      "object": "breakfast_prepared_eat",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-40f8979268110c",
       "subject": "activity-at:taishan_glass:boardgame_coop",
       "predicate": "supported_by",
@@ -4266,6 +4414,16 @@
       "evidenceIds": [
         "E-campus-evening",
         "E-campus-walk"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-41106f7cf37d27",
+      "subject": "breakfast_shop_eat",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -4446,6 +4604,16 @@
       "object": "E-C004",
       "evidenceIds": [
         "E-C004"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-49ed8cd24c0269",
+      "subject": "breakfast_supermarket_eat",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -5451,6 +5619,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-678f1f7ba0f4a5",
+      "subject": "breakfast_mcdonalds_eat",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-67e6b89021a2bc",
       "subject": "walk_together",
       "predicate": "supported_by",
@@ -5498,6 +5676,16 @@
       "object": "E-C002",
       "evidenceIds": [
         "E-C002"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-68f1f44e3b6768",
+      "subject": "breakfast_supermarket",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -5604,6 +5792,16 @@
       "assertionKind": "observed"
     },
     {
+      "id": "EDGE-6c978281499150",
+      "subject": "breakfast_shop",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-6d4c07e915b27d",
       "subject": "dorm_downstairs_shelter",
       "predicate": "allows_activity",
@@ -5656,6 +5854,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-6fbbf9fd174003",
+      "subject": "E-user-breakfast-choices",
+      "predicate": "derived_from",
+      "object": "user:2026-10-14-breakfast-choice-flow",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-6fd820c0eaae1d",
       "subject": "E-G002",
       "predicate": "derived_from",
@@ -5695,6 +5903,16 @@
         "E-C002"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-7192178df00fb0",
+      "subject": "breakfast_shop_eat",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-719bfe7837dff0",
@@ -6292,6 +6510,16 @@
       "object": "E-campus-note",
       "evidenceIds": [
         "E-campus-note"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-848703f08f5af8",
+      "subject": "breakfast_mcdonalds",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -6944,6 +7172,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-964f16b11ba3bb",
+      "subject": "breakfast_shop",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-9661821a2c4a2f",
       "subject": "track_walk",
       "predicate": "has_feature",
@@ -7099,6 +7337,16 @@
       "object": "tag:photo",
       "evidenceIds": [
         "E-P007"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-9a196b8d3a2db8",
+      "subject": "breakfast_mcdonalds",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -7639,6 +7887,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-aba936aa094e19",
+      "subject": "breakfast_supermarket",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-abd722da5be2a1",
       "subject": "campus_picnic",
       "predicate": "requires",
@@ -7767,6 +8025,16 @@
       "object": "E-G005",
       "evidenceIds": [
         "E-G005"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-ae94ac2409669d",
+      "subject": "breakfast_prepared",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -8389,6 +8657,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-c09fa75d0de9b1",
+      "subject": "breakfast_shop_eat",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-c0f1569aa80bc1",
       "subject": "east_lab_stop",
       "predicate": "has_feature",
@@ -8446,6 +8724,16 @@
       "object": "E-P010",
       "evidenceIds": [
         "E-P010"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-c1d4d0031a759e",
+      "subject": "breakfast_supermarket_eat",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -8570,6 +8858,16 @@
       "object": "E-research-phone",
       "evidenceIds": [
         "E-research-phone"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-c6659181fc11cc",
+      "subject": "breakfast_supermarket",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -8983,6 +9281,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-d0823e80725768",
+      "subject": "breakfast_prepared",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-d0dacc802e11b9",
       "subject": "read_alone",
       "predicate": "supported_by",
@@ -9390,6 +9698,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-dd15179f413a31",
+      "subject": "breakfast_supermarket_eat",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-dd6e487c777c2f",
       "subject": "switch_race",
       "predicate": "supported_by",
@@ -9490,6 +9808,16 @@
       "object": "tag:nature",
       "evidenceIds": [
         "E-user-scau-wandering-stars"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-e15bf38cf0b732",
+      "subject": "breakfast_shop",
+      "predicate": "allows_activity",
+      "object": "breakfast_shop_eat",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -10239,6 +10567,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-f2fc3dc788d085",
+      "subject": "breakfast_shop",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-f2fcefd467cec5",
       "subject": "activity-at:campus_canteen:breakfast_eat",
       "predicate": "has_feature",
@@ -10288,6 +10626,16 @@
       "object": "tag:daily",
       "evidenceIds": [
         "E-P010"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-f4031dc6e2eff8",
+      "subject": "breakfast_mcdonalds_eat",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -10523,6 +10871,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-f9d74158dea8a2",
+      "subject": "breakfast_prepared_eat",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-f9dde0f71af9c0",
       "subject": "campus_budget_meal",
       "predicate": "provides",
@@ -10539,6 +10897,16 @@
       "object": "tag:food",
       "evidenceIds": [
         "E-P004"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-fa3cfd053d4aac",
+      "subject": "breakfast_mcdonalds",
+      "predicate": "supported_by",
+      "object": "E-user-breakfast-choices",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },
@@ -10650,6 +11018,26 @@
         "E-campus-zhiyuan",
         "E-user-budget-campus-meals",
         "E-user-meal-periods"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-fc7365d4c64e7b",
+      "subject": "breakfast_prepared",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-fc7e6d18263dea",
+      "subject": "breakfast_supermarket",
+      "predicate": "allows_activity",
+      "object": "breakfast_supermarket_eat",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
       ],
       "assertionKind": "designed"
     },

@@ -12,7 +12,7 @@ const sceneById = id => {
   return scene;
 };
 const context = { area: 'campus', school: 'scau', reserve: 0, robust: false, fatigueA: 0, fatigueB: 0, exploration: 0 };
-const fixed = (id, startMinute) => ({ sceneId: id, startMinute, activityIds: ['campus_watch'] });
+const fixed = (id, startMinute) => ({ sceneId: id, startMinute, durationMinutes:60, activityIds: ['campus_watch'] });
 
 test('两场景登记60分钟规划停留及各自每日时段', () => {
   const wandering = sceneById(ids[0]);

@@ -83,7 +83,7 @@ test('无强制饭点的下午及雨夜支持疲劳6/安静/避拥挤/零预算�
 // 预算是双人费用上界：独立计算餐次最低上界，证明真正的预算矛盾。
 function mealCostLowerBound(context) {
   return getMealRequirements(context.periodIds, context.mealChoices).filter(m => m.choiceMode === 'together').reduce((sum, meal) => {
-    const prices = catalog.scenes.filter(scene => isSceneInSchoolScope(scene, context) && (!context.quietRequired || scene.quiet === true)).flatMap(scene => scene.activities.filter(activity => activity.provides?.includes('meal_completed') && activity.mealRoles?.includes(meal.mealRole)).map(activity => scene.cost[1] + activity.cost[1]));
+    const prices = catalog.scenes.filter(scene => isSceneInSchoolScope(scene, context) && (!context.quietRequired || scene.quiet === true)).flatMap(scene => scene.activities.filter(activity => activity.provides?.includes('meal_completed') && activity.mealRoles?.includes(meal.mealRole) && (!activity.requiresExplicitConsent || context.explicitConsentIds?.includes(activity.id))).map(activity => scene.cost[1] + activity.cost[1]));
     return sum + Math.min(...prices);
   }, 0);
 }

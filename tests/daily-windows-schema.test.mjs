@@ -8,8 +8,8 @@ const allows = (scene, minute) => scene.dailyWindows.some(w => w.startMinute <= 
 
 test('全部场景显式登记规划默认时段，凌晨仅校园线索地点、宵夜和原地休息', () => {
   assert.ok(scenes.every(s => s.dailyWindows.length && s.availabilityBasis === 'planning_default' && s.availabilityNote));
-  assert.deepEqual(scenes.filter(s => allows(s, 1410)).map(s => s.id).sort(), ['barbecue_stall', 'camellia_garden', 'dorm_downstairs_shelter', 'dorm_takeaway_meal', 'east_lab_stop', 'faculty_rooftop_stars', 'orchid_garden', 'rest', 'scau_wandering', 'snack_street']);
-  assert.deepEqual(scenes.filter(s => allows(s, 60)).map(s => s.id).sort(), ['camellia_garden', 'dorm_downstairs_shelter', 'dorm_takeaway_meal', 'east_lab_stop', 'faculty_rooftop_stars', 'orchid_garden', 'rest', 'scau_wandering']);
+  assert.deepEqual(scenes.filter(s => allows(s, 1410)).map(s => s.id).sort(), ['barbecue_stall', 'breakfast_prepared', 'camellia_garden', 'dorm_downstairs_shelter', 'dorm_takeaway_meal', 'east_lab_stop', 'faculty_rooftop_stars', 'orchid_garden', 'rest', 'scau_wandering', 'snack_street', 'taishan_supermarket_front']);
+  assert.deepEqual(scenes.filter(s => allows(s, 60)).map(s => s.id).sort(), ['breakfast_prepared', 'camellia_garden', 'dorm_downstairs_shelter', 'dorm_takeaway_meal', 'east_lab_stop', 'faculty_rooftop_stars', 'orchid_garden', 'rest', 'scau_wandering', 'taishan_supermarket_front']);
   for (const id of ['barbecue_stall', 'snack_street']) {
     const scene = scenes.find(s => s.id === id);
     assert.equal(scene.minutes, 30);

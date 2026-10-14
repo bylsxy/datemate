@@ -108,8 +108,8 @@ test('观影与滑冰票价放在活动，器材要求随所选玩法生效', ()
   assert.ok(prep.when.all.some(c => c.fact === 'activity.id' && c.value.includes('pingpong_rally')));
 });
 
-test('活动源无耗时入口，运行时活动零耗时且场景时长固定', () => {
-  assert.equal(catalog.durationPolicy, 'scene_only');
+test('活动在场景内进行，建议时长及可调区间由场景统一管理', () => {
+  assert.equal(catalog.durationPolicy, 'flexible_scene');
   const forbidden = ['minutes', 'duration', 'durationMinutes', 'compositionMode', 'durationMode'];
   assert.ok(input.documents.activities.activities.every(a => forbidden.every(field => !Object.hasOwn(a, field))));
   assert.ok(catalog.activities.every(a => a.minutes === 0 && a.compositionMode === 'included' && a.durationMode === 'within_scene'));
@@ -117,6 +117,7 @@ test('活动源无耗时入口，运行时活动零耗时且场景时长固定',
   for (const [id, minutes] of Object.entries({ mall: 60, cinema: 120, ice: 60, switch_store: 60, mystery_store: 90, taishan_glass: 45 })) {
     const s = scene(id);
     assert.equal(s.minutes, minutes);
+    assert.ok(s.durationRange[0]<=s.minutes&&s.durationRange[1]>=s.minutes);
     assert.equal(s.minutes + s.activities.reduce((n, a) => n + a.minutes, 0), s.minutes);
   }
   assert.throws(() => compileKnowledge(changed(d => d.activities.activities[0].minutes = 10)), /不允许活动时间字段/);
@@ -132,7 +133,8 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
   assert.ok(sources.every(s => !s.rawTextIncluded && /^[a-f0-9]{64}$/.test(s.sha256)));
   assert.ok(evidence.every(e => !e.publicExcerptAllowed && !Object.hasOwn(e, 'originalExcerpt')));
   const userEvidence = evidence.filter(e => e.sourceKind === 'user_design');
-  assert.equal(userEvidence.length, 11);
+  assert.equal(userEvidence.length, 12);
+  assert.ok(userEvidence.some(e => e.id === 'E-user-breakfast-choices'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-campus-shelter'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-budget-campus-meals'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-scau-wandering-stars'));
@@ -146,7 +148,7 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
 });
 
 test('四餐角色均有实际用餐活动，早餐与宵夜适用语义独立', () => {
-  const expected = { breakfast: ['campus_canteen', 'canteen', 'dorm_takeaway_meal', 'taishan_glass'], lunch: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], dinner: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'dorm_takeaway_meal', 'snack_street'] };
+  const expected = { breakfast: ['breakfast_mcdonalds','breakfast_prepared','breakfast_shop','breakfast_supermarket','campus_canteen', 'canteen', 'dorm_takeaway_meal', 'taishan_glass'], lunch: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], dinner: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'dorm_takeaway_meal', 'snack_street'] };
   for (const [role, ids] of Object.entries(expected)) {
     assert.deepEqual(catalog.scenes.filter(s => s.mealRoles.includes(role)).map(s => s.id).sort(), ids.sort());
     for (const id of ids) {

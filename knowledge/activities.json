@@ -8,16 +8,30 @@
       "evidenceStatus": "user_design_real_world_unverified",
       "title": "吃份简单宵夜",
       "description": "从食堂或附近买两份热包子当宵夜，在店里吃或打包带回有盖处。先看看还有没有供应，留意馅料和忌口。",
-      "cost": [6, 8],
+      "cost": [
+        6,
+        8
+      ],
       "load": -2,
       "group": "meal_style",
       "mode": "single",
       "novelty": 10,
-      "tags": ["food", "daily"],
-      "evidenceIds": ["E-user-budget-campus-meals"],
-      "provides": ["meal_completed"],
-      "mealRoles": ["supper"],
-      "dietaryTags": ["gluten"],
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "supper"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
       "exclusiveKey": "main_meal"
     },
     {
@@ -26,16 +40,30 @@
       "evidenceStatus": "user_design_real_world_unverified",
       "title": "吃份平价早餐",
       "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，可以打包带回楼下有盖处吃。按胃口选够吃的份量，饮品另外点。",
-      "cost": [6, 10],
+      "cost": [
+        6,
+        10
+      ],
       "load": -2,
       "group": "meal_style",
       "mode": "single",
       "novelty": 10,
-      "tags": ["food", "daily"],
-      "evidenceIds": ["E-user-budget-campus-meals"],
-      "provides": ["meal_completed"],
-      "mealRoles": ["breakfast"],
-      "dietaryTags": ["gluten"],
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
       "exclusiveKey": "main_meal"
     },
     {
@@ -44,16 +72,31 @@
       "evidenceStatus": "user_design_real_world_unverified",
       "title": "吃份平价饭菜",
       "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包带回楼下有盖处吃。先看看价签和忌口，饮品、加菜另算。",
-      "cost": [12, 16],
+      "cost": [
+        12,
+        16
+      ],
       "load": -2,
       "group": "meal_style",
       "mode": "single",
       "novelty": 10,
-      "tags": ["food", "daily"],
-      "evidenceIds": ["E-user-budget-campus-meals"],
-      "provides": ["meal_completed"],
-      "mealRoles": ["lunch", "dinner"],
-      "dietaryTags": ["meat"],
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "evidenceIds": [
+        "E-user-budget-campus-meals"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "dietaryTags": [
+        "meat"
+      ],
       "exclusiveKey": "main_meal"
     },
     {
@@ -1846,6 +1889,138 @@
         "E-user-meal-periods"
       ],
       "exclusiveKey": "main_meal"
+    },
+    {
+      "id": "breakfast_shop_eat",
+      "title": "在早餐店吃早点",
+      "description": "包子、粥、肠粉都可以，按当天胃口点两份。",
+      "cost": [
+        10,
+        24
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "requiresExplicitConsent": false,
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified"
+    },
+    {
+      "id": "breakfast_mcdonalds_eat",
+      "title": "点两份麦麦早餐",
+      "description": "各自挑一份喜欢的早餐，套餐和价格按当天菜单来。",
+      "cost": [
+        20,
+        40
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "requiresExplicitConsent": false,
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified"
+    },
+    {
+      "id": "breakfast_supermarket_eat",
+      "title": "买面包和饮品当早餐",
+      "description": "各选一份够吃的面包和饮品，留意配料、保质期和忌口。",
+      "cost": [
+        10,
+        24
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "requiresExplicitConsent": false,
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified"
+    },
+    {
+      "id": "breakfast_prepared_eat",
+      "title": "吃已经准备好的早餐",
+      "description": "确认两个人的早餐已经备好，带来一起吃。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": -2,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "requiresExplicitConsent": true,
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified"
     }
   ]
 }

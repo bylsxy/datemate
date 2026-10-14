@@ -1,4 +1,4 @@
-import { normalizePeriods } from './time-periods.mjs?v=fc6f1dd058ad2673';
+import { normalizePeriods } from './time-periods.mjs?v=f3e372fb8d68c375';
 
 const DAY = 1440;
 
@@ -74,6 +74,7 @@ export function isSceneAvailableInContext(scene, context = {}) {
     : periods.windows;
   return slots.some(slot => sceneOpenWindows(scene, slot, true).some(w => {
     const start = Math.max(slot.startMinute, w.startMinute);
-    return start + sceneDurationAt(scene, start, { mealRole: slot.mealRole }) <= Math.min(slot.endMinute, w.endMinute);
+    const minimumScene=scene.durationRange?{...scene,minutes:scene.durationRange[0]}:scene;
+    return start + sceneDurationAt(minimumScene, start, { mealRole: slot.mealRole }) <= Math.min(slot.endMinute, w.endMinute);
   }));
 }

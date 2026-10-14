@@ -1,4 +1,5 @@
 // 用户意图与求解结果分离：仅投影显式选择，不把自动排程变成预约。
+import {durationBounds,splitDuration} from './duration-policy.mjs?v=f3e372fb8d68c375';
 const clone = value => structuredClone(value);
 const mealRoles = ['breakfast', 'lunch', 'dinner', 'supper'];
 
@@ -16,6 +17,7 @@ export function projectStageChoice(stage) {
     sceneId: stage.sceneId,
     activityIds: [...stage.activityIds],
     ...(stage.mealRole ? {mealRole: stage.mealRole} : {}),
+    ...(stage.durationRange && Number.isInteger(stage.minutes) ? {durationMinutes:stage.minutes} : {}),
     ...(Number.isFinite(stage.fixedStartMinute) ? {startMinute: stage.fixedStartMinute} : {}),
   };
 }
@@ -38,6 +40,8 @@ function choiceAt(state, stage, index) {
     ...(stage.mealRole ? {mealRole: stage.mealRole} : {}),
   };
   const explicitStart = Number.isFinite(pending.startMinute) ? pending.startMinute : pending.fixedStartMinute;
+  if (Number.isInteger(pending.durationMinutes)) selected.durationMinutes = pending.durationMinutes;
+  else if (pending.sceneId === stage.sceneId && Number.isInteger(actual.durationMinutes)) selected.durationMinutes = actual.durationMinutes;
   if (Number.isFinite(explicitStart)) selected.startMinute = explicitStart;
   else if (pending.sceneId === stage.sceneId && Number.isFinite(actual.startMinute)) selected.startMinute = actual.startMinute;
   return selected;
@@ -85,13 +89,15 @@ function consentIds(choices, catalog) {
   return [...consent];
 }
 
-export function selectStageIntent(state, result, index, sceneId, activityIds, catalog) {
+export function selectStageIntent(state, result, index, sceneId, activityIds, catalog, details={}) {
   validateIndex(result, index);
   validateChoice({sceneId, activityIds});
   const next = clone(state), stage = result.stages[index];
   const current = {sceneId, activityIds: [...activityIds], ...(stage.mealRole ? {mealRole: stage.mealRole} : {})};
+  if(Number.isInteger(details.durationMinutes))current.durationMinutes=details.durationMinutes;
   // 连续修改尚未提交的同场景活动，也沿用该选择的显式预约。
   const previous = choiceAt(state, stage, index);
+  if (current.durationMinutes===undefined && previous.sceneId === sceneId && Number.isInteger(previous.durationMinutes)) current.durationMinutes = previous.durationMinutes;
   if (previous.sceneId === sceneId && Number.isFinite(previous.startMinute)) current.startMinute = previous.startMinute;
   else if (stage.sceneId === sceneId && Number.isFinite(stage.fixedStartMinute)) current.startMinute = stage.fixedStartMinute;
   next.prefix = [...precedingChoices(state, result, index), current];
@@ -121,10 +127,12 @@ export function selectMealIntent(state, result, role, choice, fromStage, catalog
   if (next.prefix.some(stage => stage.mealRole === role)) throw new RangeError('用餐边界位于当前餐次之后。');
   if (!special) {
     const current = {sceneId: choice.sceneId, activityIds: [...choice.activityIds], mealRole: role};
+    if (Number.isInteger(choice.durationMinutes)) current.durationMinutes = choice.durationMinutes;
     const original = result.stages[fromStage];
     // 真实餐固定在当前动作位置；餐次条件与prefix共同约束同一次用餐。
     if (original?.mealRole === role) {
       const pending = result.ok === true ? choiceAt(state, original, fromStage) : projectStageChoice(original);
+      if (current.durationMinutes === undefined && pending.sceneId === choice.sceneId && Number.isInteger(pending.durationMinutes)) current.durationMinutes = pending.durationMinutes;
       if (pending.sceneId === choice.sceneId && Number.isFinite(pending.startMinute)) current.startMinute = pending.startMinute;
       else if (Number.isFinite(original.fixedStartMinute)) current.startMinute = original.fixedStartMinute;
     }
@@ -134,6 +142,28 @@ export function selectMealIntent(state, result, role, choice, fromStage, catalog
   releaseLaterMeals(next, result, fromStage, role);
   next.context.mealChoices = {...next.context.mealChoices, [role]: special ? {mode: choice.mode} : clone(choice)};
   next.context.explicitConsentIds = consentIds(next.prefix, catalog);
+  return next;
+}
+
+export function setStageDurationIntent(state, result, index, minutes, catalog) {
+  validateIndex(result,index);
+  const stage=result.stages[index],scene=catalog.scenes.find(s=>s.id===stage.sceneId);
+  const {min,max}=durationBounds(scene);
+  if(!Number.isInteger(minutes)||minutes<min||minutes>max)throw new RangeError('所选时长超出这个场景允许的范围。');
+  const next=selectStageIntent(state,result,index,stage.sceneId,stage.activityIds,catalog);
+  next.prefix.at(-1).durationMinutes=minutes;
+  if(index===result.stages.length-1)next.context.endAfterStage=index;
+  return next;
+}
+
+export function splitStageIntent(state, result, index, catalog) {
+  validateIndex(result,index);
+  const stage=result.stages[index],scene=catalog.scenes.find(s=>s.id===stage.sceneId);
+  const parts=!stage.mealRole&&scene.kind!=='rest'?splitDuration(scene,stage.minutes):null;
+  if(!parts)throw new RangeError('这段安排太短，暂时不能再拆分。');
+  const next=setStageDurationIntent(state,result,index,parts[0],catalog);
+  next.context.minimumStageCount=next.prefix.length+1;
+  delete next.context.endAfterStage;
   return next;
 }
 
@@ -152,13 +182,33 @@ export function exploreIntent(state, exploration, seed) {
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new RangeError('探索种子必须为uint32。');
   const next = clone(state), mealChoices = state.context.mealChoices || {};
   next.exploration = exploration;
-  next.prefix = [];
+  next.prefix = clone(state.prefix || []);
   next.context.mealChoices = {};
+  const fixedRoles=new Set(next.prefix.map(choice=>choice.mealRole).filter(Boolean));
+  for(const [role,choice] of Object.entries(mealChoices))if(fixedRoles.has(role))next.context.mealChoices[role]=clone(choice);
   for (const [role, mode] of [['breakfast', 'before_meeting'], ['supper', 'skip']]) {
     const choice = mealChoices[role];
     if (specialMealMode(role, choice)) next.context.mealChoices[role] = typeof choice === 'string' ? mode : {mode};
   }
-  next.context.explicitConsentIds = [];
+  const selectedActivities=new Set(next.prefix.flatMap(choice=>choice.activityIds));
+  next.context.explicitConsentIds=(next.context.explicitConsentIds||[]).filter(id=>selectedActivities.has(id));
   next.context.explorationSeed = seed;
   return next;
+}
+
+export function restartIntent(state, seed) {
+  const next=clone(state);
+  next.prefix=[];next.context.explicitConsentIds=[];
+  delete next.context.endAfterStage;delete next.context.minimumStageCount;
+  next.context.mealChoices=Object.fromEntries(Object.entries(next.context.mealChoices||{}).map(([role,choice])=>[role,specialMealMode(role,choice)?clone(choice):{mode:'together'}]));
+  return exploreIntent(next,next.exploration,seed);
+}
+
+export function updateContextIntent(state,context) {
+  const hard=['periodIds','budget','weather','area','school','campusArea','fatigueA','fatigueB','quietRequired','crowdAvoidance','dietaryRestrictions','preparedIds','resources','bans','requiredSceneIds','anchors','robust','mealNeed'];
+  const changed=hard.some(key=>JSON.stringify(state.context[key]??null)!==JSON.stringify(context[key]??null));
+  const next=clone(state);next.context=clone(context);
+  if(changed){next.prefix=[];delete next.context.endAfterStage;delete next.context.minimumStageCount;}
+  else for(const key of ['endAfterStage','minimumStageCount'])if(state.context[key]!==undefined)next.context[key]=state.context[key];
+  return {next,hardChanged:changed};
 }

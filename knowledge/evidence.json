@@ -796,6 +796,18 @@
       "publicExcerptAllowed": false,
       "rightsStatus": "original_user_design",
       "verificationBoundary": "允许时段为用户指定的规划参数；游荡仅限开放校园道路，院楼顶楼具体位置、进入许可、护栏与天气条件待确认，不代表任意楼顶开放。"
+    },
+    {
+      "id": "E-user-breakfast-choices",
+      "sourceDocumentId": null,
+      "sourceLocator": "user:2026-10-14-breakfast-choice-flow",
+      "sourceKind": "user_design",
+      "assertionKind": "designed",
+      "summary": "用户要求先选择是否一起吃早餐，再选择早餐店、麦麦、食堂、超市或自备面包。时长、费用与允许时间为可手动编辑的规划参数。",
+      "reviewStatus": "awaiting_confirmation",
+      "publicExcerptAllowed": false,
+      "rightsStatus": "original_user_design",
+      "verificationBoundary": "具体分店、营业、当日供应和实际价格需在出发前查看；自备早餐仅在用户明确选择已准备后成立。"
     }
   ]
 }

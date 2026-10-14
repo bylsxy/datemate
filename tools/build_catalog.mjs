@@ -4,6 +4,7 @@ import { readFile, mkdir, writeFile } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { resolve, relative, isAbsolute, sep } from 'node:path';
 import { fileURLToPath, pathToFileURL } from 'node:url';
+import {durationBounds} from '../duration-policy.mjs';
 
 export const SOURCE_SCHEMA = 'manual-knowledge-1.0';
 export const SOURCE_FILES = ['scenes', 'activities', 'rules', 'metadata', 'evidence', 'source-registry', 'conditions', 'departures'];
@@ -308,6 +309,7 @@ export function compileKnowledge(input) {
       ensure(!ACTIVITY_TIME_FIELDS.some(field => Object.hasOwn(override, field)), `${path}.${id} override 不允许活动时间字段；请修改地点的 minutes`);
     }
     const scene = normalizeScene(raw);
+    durationBounds(scene);
     if (Object.hasOwn(raw, 'scauOnly')) {
       ensure(typeof raw.scauOnly === 'boolean', `${path}.scauOnly 须为布尔值`);
       ensure(raw.scauOnly === (raw.place.universityId === 'scau'), `${path} 华农学校属性须与 scauOnly 一致`);
@@ -345,7 +347,7 @@ export function compileKnowledge(input) {
   const evidence = [...evidenceMap.values()].map(clone).sort(order), sources = [...sourceMap.values()].map(clone).sort(order);
   const conditions = clone(docs.conditions.conditions);
   const departures = compileDepartures(docs.departures, evidenceMap, publicIds, metadata, conditionMap);
-  const catalog = { version: metadata.version, rulesVersion: metadata.rulesVersion, schemaVersion: metadata.runtimeSchemaVersion, durationPolicy: 'scene_only', rights: metadata.rights, disclaimer: metadata.disclaimer, interestTags: metadata.interestTags, scenes, activities, rules, departures, defaultDepartureId: docs.departures.defaultId, cityTiers: CITY_TIERS, defaultCityTier: metadata.defaultContext.cityTier };
+  const catalog = { version: metadata.version, rulesVersion: metadata.rulesVersion, schemaVersion: metadata.runtimeSchemaVersion, durationPolicy: 'flexible_scene', mealChoiceRoles: ['breakfast', 'supper'], rights: metadata.rights, disclaimer: metadata.disclaimer, interestTags: metadata.interestTags, scenes, activities, rules, departures, defaultDepartureId: docs.departures.defaultId, cityTiers: CITY_TIERS, defaultCityTier: metadata.defaultContext.cityTier };
   const graph = buildGraph(catalog, evidence, sources, metadata.preparationOptions); catalog.graph = graph;
   // 手改内容自动产生修订指纹，复盘可识别同版本号下的知识变化。
   catalog.contentRevision = sha(JSON.stringify(catalog)).slice(0, 16);

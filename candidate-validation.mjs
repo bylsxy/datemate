@@ -1,18 +1,21 @@
-import {selectStageIntent, selectMealIntent, selectDepartureIntent, projectStageChoice} from './planning-intent.mjs?v=fc6f1dd058ad2673';
-
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,projectStageChoice,setStageDurationIntent,splitStageIntent} from './planning-intent.mjs?v=f3e372fb8d68c375';
+import {splitDuration} from './duration-policy.mjs?v=f3e372fb8d68c375';
 // 候选验证与当前安排分开：只补全卡片评分，不改选中地点、时间线或复盘输出。
 export const candidateKey = ({stageIndex, sceneId, mealRole}) => `${mealRole ? `meal-${mealRole}` : `stage-${stageIndex}`}:${sceneId}`;
 
 /** 验证必须复用点击时的意图投影，不能把旧餐次条件或自动排程时间带入搜索。 */
 export function buildActionJobs(result, state, catalog, actions = []) {
-  if (result?.ok !== true) return [];
+  if (!Array.isArray(result?.stages)) return [];
   const jobs = new Map();
   for (const action of actions) {
     const {stageIndex, mealRole, actionType, sceneId, activityIds} = action;
+    if(result.ok!==true&&!['meal_option','meal_mode'].includes(actionType))continue;
     let next;
     if (actionType === 'departure') next = selectDepartureIntent(state, result, action.departureId, catalog);
     else if (actionType === 'meal_mode') next = selectMealIntent(state, result, mealRole, action.choice, stageIndex, catalog);
-    else if (actionType === 'scene' || actionType === 'activity') {
+    else if (actionType === 'duration') next = setStageDurationIntent(state,result,stageIndex,action.durationMinutes,catalog);
+    else if (actionType === 'split') next = splitStageIntent(state,result,stageIndex,catalog);
+    else if (actionType === 'scene' || actionType === 'activity' || actionType === 'meal_option') {
       next = mealRole
         ? selectMealIntent(state, result, mealRole, {sceneId, activityIds}, stageIndex, catalog)
         : selectStageIntent(state, result, stageIndex, sceneId, activityIds, catalog);
@@ -21,11 +24,18 @@ export function buildActionJobs(result, state, catalog, actions = []) {
     let knownPlan = action.continuationWitness ?? action.candidate?.continuationWitness;
     if (knownPlan == null) {
       knownPlan = result.stages.map(stage => ({...projectStageChoice(stage), ...(stage.anchorId !== undefined ? {anchorId:stage.anchorId} : {})}));
-      if (actionType === 'scene' || actionType === 'activity') {
+      if (actionType === 'scene' || actionType === 'activity' || actionType === 'meal_option') {
         // 虚拟餐卡插入真实用餐；已有阶段只替换当前目标，其余作为快捷重验的初次尝试。
         const insertingMeal = mealRole && result.stages[stageIndex]?.mealRole !== mealRole;
         const anchorId = insertingMeal ? undefined : result.stages[stageIndex]?.anchorId;
         knownPlan.splice(stageIndex, insertingMeal ? 0 : 1, {...structuredClone(next.prefix.at(-1)), ...(anchorId !== undefined ? {anchorId} : {})});
+      } else if (actionType === 'duration') {
+        knownPlan[stageIndex]={...knownPlan[stageIndex],durationMinutes:action.durationMinutes};
+      } else if (actionType === 'split') {
+        const stage=result.stages[stageIndex],scene=catalog.scenes.find(s=>s.id===stage.sceneId);
+        const parts=splitDuration(scene,stage.minutes);
+        knownPlan.splice(stageIndex,1,{...knownPlan[stageIndex],durationMinutes:parts[0]},
+          {sceneId:stage.sceneId,activityIds:[],durationMinutes:parts[1]});
       }
     }
     const meal = mealRole ? result.mealRequirements?.find(item => item.mealRole === mealRole) : null;

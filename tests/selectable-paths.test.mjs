@@ -10,6 +10,7 @@ const knowledge={...catalog,rules,graph};
 const contexts=[
   {periodIds:['afternoon'],budget:null},
   {periodIds:['afternoon'],budget:50,requiredSceneIds:['mall']},
+  {periodIds:['afternoon'],budget:0,requiredSceneIds:['mall']},
   {periodIds:['morning'],budget:50,mealChoices:{breakfast:{mode:'before_meeting'}}},
 ];
 

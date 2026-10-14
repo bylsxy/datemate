@@ -1,144 +1,88 @@
 {
   "dataVersion": "knowledge-4.1.0",
-  "contentRevision": "553ad193a6bacddb",
+  "contentRevision": "22a32385a85047d3",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 886.2109,
+      "elapsedMs": 207.98370000000003,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
           "activityIds": [],
           "start": 860,
-          "end": 920,
-          "fitScore": 89.54
-        },
-        {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 85.29
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1000,
-          "end": 1030,
-          "fitScore": 76.49
+          "end": 1040,
+          "fitScore": 89.74
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "4a5f9935"
+      "digest": "5ca19dcd"
     },
     {
       "label": "exploration90",
-      "elapsedMs": 846.1170999999999,
+      "elapsedMs": 397.0209,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "mall",
+          "sceneId": "dorm_downstairs_shelter",
           "activityIds": [
-            "arcade_race"
+            "talk_next"
           ],
-          "start": 860,
-          "end": 920,
-          "fitScore": 91.06
-        },
-        {
-          "sceneId": "craft",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 87.22
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1000,
-          "end": 1030,
-          "fitScore": 78.35
+          "start": 850,
+          "end": 1050,
+          "fitScore": 89.05
         }
       ],
       "cost": [
-        10,
-        15
+        0,
+        0
       ],
-      "digest": "0f4d50df"
+      "digest": "4798e5c7"
     },
     {
       "label": "replayed",
-      "elapsedMs": 422.77919999999995,
+      "elapsedMs": 128.76080000000002,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
           "activityIds": [],
           "start": 860,
-          "end": 920,
-          "fitScore": 89.54
-        },
-        {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 85.29
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1000,
-          "end": 1030,
-          "fitScore": 76.49
+          "end": 1040,
+          "fitScore": 89.74
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "4a5f9935"
+      "digest": "5ca19dcd"
     },
     {
       "label": "mall-0",
-      "elapsedMs": 448.02210000000014,
+      "elapsedMs": 119.78359999999998,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
           "activityIds": [],
           "start": 860,
-          "end": 920,
-          "fitScore": 89.54
-        },
-        {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 85.29
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1000,
-          "end": 1030,
-          "fitScore": 76.49
+          "end": 1040,
+          "fitScore": 89.74
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "4a5f9935"
+      "digest": "5ca19dcd"
     },
     {
       "label": "mall-1",
-      "elapsedMs": 497.9477999999999,
+      "elapsedMs": 122.72750000000008,
       "status": "feasible",
       "stages": [
         {
@@ -147,33 +91,19 @@
             "arcade_claw"
           ],
           "start": 860,
-          "end": 920,
-          "fitScore": 89.26
-        },
-        {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 85.29
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1000,
-          "end": 1030,
-          "fitScore": 76.49
+          "end": 1040,
+          "fitScore": 88.88
         }
       ],
       "cost": [
         5,
         10
       ],
-      "digest": "5044d07c"
+      "digest": "f434d6c1"
     },
     {
       "label": "mall-2",
-      "elapsedMs": 507.5238000000004,
+      "elapsedMs": 159.72580000000016,
       "status": "feasible",
       "stages": [
         {
@@ -184,222 +114,119 @@
             "mall_stores"
           ],
           "start": 860,
-          "end": 920,
-          "fitScore": 90.52
+          "end": 1040,
+          "fitScore": 78.26
         },
         {
           "sceneId": "rest",
           "activityIds": [],
-          "start": 920,
-          "end": 940,
-          "fitScore": 89.83
-        },
-        {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 950,
-          "end": 1010,
-          "fitScore": 85.02
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1020,
+          "start": 1040,
           "end": 1050,
-          "fitScore": 76.08
+          "fitScore": 62.35
         }
       ],
       "cost": [
         20,
         40
       ],
-      "digest": "3563228d"
+      "digest": "8cd6dbe9"
     },
     {
       "label": "shared-play",
-      "elapsedMs": 307.6139000000003,
+      "elapsedMs": 204.61239999999998,
       "status": "feasible",
       "stages": [
-        {
-          "sceneId": "dessert",
-          "activityIds": [
-            "dessert_ice"
-          ],
-          "start": 850,
-          "end": 880,
-          "fitScore": 91.93
-        },
         {
           "sceneId": "mall",
           "activityIds": [
             "arcade_race"
           ],
-          "start": 900,
-          "end": 960,
-          "fitScore": 89.07
-        },
-        {
-          "sceneId": "switch_store",
-          "activityIds": [
-            "switch_race"
-          ],
-          "start": 970,
-          "end": 1030,
-          "fitScore": 81.42
+          "start": 860,
+          "end": 1040,
+          "fitScore": 92.15
         }
       ],
       "cost": [
-        40,
-        90
+        10,
+        15
       ],
-      "digest": "38a67a02"
+      "digest": "5b07d649"
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 268.2778999999996,
+      "elapsedMs": 130.36400000000003,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
           "activityIds": [],
           "start": 860,
-          "end": 920,
-          "fitScore": 91
-        },
-        {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 87.33
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1000,
-          "end": 1030,
-          "fitScore": 79.46
-        },
-        {
-          "sceneId": "rest",
-          "activityIds": [],
-          "start": 1030,
-          "end": 1050,
-          "fitScore": 52.84
+          "end": 1040,
+          "fitScore": 90.24
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "1577f563"
+      "digest": "e78072f2"
     },
     {
       "label": "nature-play",
-      "elapsedMs": 301.4277999999995,
-      "status": "feasible",
-      "stages": [
-        {
-          "sceneId": "scau_wandering",
-          "activityIds": [
-            "bridge_view"
-          ],
-          "start": 850,
-          "end": 910,
-          "fitScore": 90.07
-        },
-        {
-          "sceneId": "mall",
-          "activityIds": [
-            "arcade_race"
-          ],
-          "start": 930,
-          "end": 990,
-          "fitScore": 86.61
-        },
-        {
-          "sceneId": "rest",
-          "activityIds": [],
-          "start": 995,
-          "end": 1015,
-          "fitScore": 78.39
-        }
-      ],
-      "cost": [
-        10,
-        15
-      ],
-      "digest": "e8638855"
-    },
-    {
-      "label": "play-nature",
-      "elapsedMs": 280.83140000000003,
-      "status": "feasible",
-      "stages": [
-        {
-          "sceneId": "scau_wandering",
-          "activityIds": [
-            "bridge_view"
-          ],
-          "start": 850,
-          "end": 910,
-          "fitScore": 90.07
-        },
-        {
-          "sceneId": "mall",
-          "activityIds": [
-            "arcade_race"
-          ],
-          "start": 930,
-          "end": 990,
-          "fitScore": 86.61
-        },
-        {
-          "sceneId": "rest",
-          "activityIds": [],
-          "start": 995,
-          "end": 1015,
-          "fitScore": 78.39
-        }
-      ],
-      "cost": [
-        10,
-        15
-      ],
-      "digest": "0dd3754b"
-    },
-    {
-      "label": "revision",
-      "elapsedMs": 204.6909999999998,
+      "elapsedMs": 242.67579999999998,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
           "activityIds": [],
           "start": 860,
-          "end": 920,
-          "fitScore": 89.54
-        },
-        {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 85.29
-        },
-        {
-          "sceneId": "public_lounge",
-          "activityIds": [],
-          "start": 1000,
-          "end": 1030,
-          "fitScore": 76.49
+          "end": 1040,
+          "fitScore": 89.74
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "4a5f9935"
+      "digest": "5ca19dcd"
+    },
+    {
+      "label": "play-nature",
+      "elapsedMs": 232.0376000000001,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "start": 860,
+          "end": 1040,
+          "fitScore": 89.74
+        }
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "digest": "5ca19dcd"
+    },
+    {
+      "label": "revision",
+      "elapsedMs": 162.6554000000001,
+      "status": "feasible",
+      "stages": [
+        {
+          "sceneId": "mall",
+          "activityIds": [],
+          "start": 860,
+          "end": 1040,
+          "fitScore": 89.74
+        }
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "digest": "5ca19dcd"
     }
   ]
 }

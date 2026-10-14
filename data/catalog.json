@@ -2,7 +2,11 @@
   "version": "knowledge-4.1.0",
   "rulesVersion": "production-4.0.0",
   "schemaVersion": "place-activity-4.0",
-  "durationPolicy": "scene_only",
+  "durationPolicy": "flexible_scene",
+  "mealChoiceRoles": [
+    "breakfast",
+    "supper"
+  ],
   "rights": "包含原创结构化摘要和设计参数；本地原材料独立保留，公开数据不包含语料原文。",
   "disclaimer": "费用为两人整段的人民币设计区间，时长、负担、排序权重与窗口属于课程模型参数；现实价格、开放和场地可用性需要用户确认。研究与剧情线索不表示关系成功率、医学结论或现实因果。",
   "interestTags": [
@@ -94,6 +98,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许09:00–17:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "农业博物馆",
       "typeId": "agriculture_museum",
       "default": [],
@@ -261,6 +269,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许09:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "水族馆",
       "scauOnly": false,
       "typeId": "aquarium",
@@ -431,6 +443,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许07:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        90
+      ],
       "title": "校园羽毛球场",
       "scauOnly": false,
       "typeId": "badminton",
@@ -572,6 +588,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–00:30、19:00–24:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "烧烤摊",
       "scauOnly": false,
       "typeId": "barbecue_stall",
@@ -705,6 +725,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "桌游店",
       "scauOnly": false,
       "typeId": "boardgame",
@@ -828,6 +852,570 @@
       "novelty": 45,
       "mental": 1,
       "bold": false,
+      "crowdRisk": "medium",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_mcdonalds",
+      "place": {
+        "name": "麦麦早餐",
+        "kind": "ordinary",
+        "category": "早餐去处",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "scauOnly": false,
+      "description": "一起去附近的麦麦吃早餐，边吃边商量今天想做什么。先看这家店的早餐供应时间。",
+      "minutes": 30,
+      "durationRange": [
+        15,
+        60
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 360,
+          "endMinute": 630
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "title": "麦麦早餐",
+      "typeId": "breakfast_mcdonalds",
+      "seated": true,
+      "default": [],
+      "source": [
+        "user-breakfast-choices"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 1,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 15,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "breakfast_mcdonalds_eat",
+          "title": "点两份麦麦早餐",
+          "description": "各自挑一份喜欢的早餐，套餐和价格按当天菜单来。",
+          "cost": [
+            20,
+            40
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "evidenceIds": [
+            "E-user-breakfast-choices"
+          ],
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 15,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "breakfast_mcdonalds"
+          ],
+          "allowedSceneTypes": [
+            "breakfast_mcdonalds"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "breakfast_mcdonalds_eat"
+      ]
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "low",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_prepared",
+      "place": {
+        "name": "自备早餐（已准备）",
+        "kind": "ordinary",
+        "category": "早餐去处",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "scauOnly": false,
+      "description": "带上已经准备好的面包或其他早餐，在约好的有盖处一起吃，不再另外买一份。",
+      "minutes": 30,
+      "durationRange": [
+        15,
+        60
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": true,
+      "quiet": true,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "title": "自备早餐（已准备）",
+      "typeId": "breakfast_prepared",
+      "seated": true,
+      "default": [],
+      "source": [
+        "user-breakfast-choices"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 1,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 15,
+          "requiresExplicitConsent": true,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "breakfast_prepared_eat",
+          "title": "吃已经准备好的早餐",
+          "description": "确认两个人的早餐已经备好，带来一起吃。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "evidenceIds": [
+            "E-user-breakfast-choices"
+          ],
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 15,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "breakfast_prepared"
+          ],
+          "allowedSceneTypes": [
+            "breakfast_prepared"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "breakfast_prepared_eat"
+      ]
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "medium",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_shop",
+      "place": {
+        "name": "早餐店",
+        "kind": "ordinary",
+        "category": "早餐去处",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "scauOnly": false,
+      "description": "找一家近的早餐店，坐下来吃点热乎的。选两人都愿意吃的，不用一早赶远路。",
+      "minutes": 30,
+      "durationRange": [
+        15,
+        60
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 360,
+          "endMinute": 660
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "title": "早餐店",
+      "typeId": "breakfast_shop",
+      "seated": true,
+      "default": [],
+      "source": [
+        "user-breakfast-choices"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 1,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 15,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "breakfast_shop_eat",
+          "title": "在早餐店吃早点",
+          "description": "包子、粥、肠粉都可以，按当天胃口点两份。",
+          "cost": [
+            10,
+            24
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "evidenceIds": [
+            "E-user-breakfast-choices"
+          ],
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 15,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "breakfast_shop"
+          ],
+          "allowedSceneTypes": [
+            "breakfast_shop"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "breakfast_shop_eat"
+      ]
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "medium",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_supermarket",
+      "place": {
+        "name": "超市买早餐",
+        "kind": "ordinary",
+        "category": "早餐去处",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "scauOnly": false,
+      "description": "在校内超市买点面包和饮品，想简单吃一顿的时候很方便。",
+      "minutes": 30,
+      "durationRange": [
+        15,
+        60
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 420,
+          "endMinute": 660
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "title": "超市买早餐",
+      "typeId": "breakfast_supermarket",
+      "seated": true,
+      "default": [],
+      "source": [
+        "user-breakfast-choices"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 1,
+        "novelty": 45,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 15,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "breakfast_supermarket_eat",
+          "title": "买面包和饮品当早餐",
+          "description": "各选一份够吃的面包和饮品，留意配料、保质期和忌口。",
+          "cost": [
+            10,
+            24
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "exclusiveKey": "main_meal",
+          "evidenceIds": [
+            "E-user-breakfast-choices"
+          ],
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 15,
+            "physicalLoad": -2
+          },
+          "allowedSceneIds": [
+            "breakfast_supermarket"
+          ],
+          "allowedSceneTypes": [
+            "breakfast_supermarket"
+          ]
+        }
+      ],
+      "mealActivityIds": [
+        "breakfast_supermarket_eat"
+      ]
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
       "crowdRisk": "unknown",
       "reviewStatus": "reviewed",
       "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
@@ -877,6 +1465,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "综合体育馆后桥",
       "typeId": "bridge_walk",
       "default": [],
@@ -1002,6 +1594,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        240
+      ],
       "title": "咖啡店",
       "scauOnly": false,
       "typeId": "cafe",
@@ -1170,6 +1766,10 @@
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–24:00，仅用于用户提出的校园停留候选；夜间开放线索为user-provided，不是官方全天开放或室内进入许可。实际通行、照明及开放须确认。",
       "availabilityClueSource": "user-provided",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "茶花园",
       "typeId": "camellia_garden",
       "seated": false,
@@ -1305,6 +1905,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "泰山区宿舍间步道",
       "typeId": "campus",
       "default": [],
@@ -1590,6 +2194,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许07:00–09:00、11:00–14:00、17:00–20:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "校园食堂",
       "typeId": "campus_canteen",
       "default": [],
@@ -1904,6 +2512,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "校园草地",
       "scauOnly": false,
       "typeId": "campus_picnic",
@@ -2078,6 +2690,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许07:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        90
+      ],
       "title": "泰山区12、15、16栋乒乓球桌",
       "typeId": "campus_tabletennis",
       "default": [],
@@ -2282,6 +2898,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许07:00–09:00、11:00–14:00、17:00–20:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "芷园食堂",
       "typeId": "canteen",
       "default": [],
@@ -2589,6 +3209,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "粤式茶楼",
       "scauOnly": false,
       "typeId": "cantonese",
@@ -2735,6 +3359,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        90,
+        180
+      ],
       "title": "电影院",
       "scauOnly": false,
       "typeId": "cinema",
@@ -2905,6 +3533,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "手作店",
       "scauOnly": false,
       "typeId": "craft",
@@ -3086,6 +3718,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "校园甜品店",
       "scauOnly": false,
       "typeId": "dessert",
@@ -3266,6 +3902,10 @@
       "availabilityBasis": "planning_default",
       "availabilityClueSource": "user-provided",
       "availabilityNote": "全天都可以安排在楼下开放的有盖处停留；避开门禁内侧，夜深后放轻声音。",
+      "durationRange": [
+        30,
+        240
+      ],
       "title": "宿舍楼下有盖处",
       "typeId": "dorm_downstairs_shelter",
       "default": [],
@@ -3446,6 +4086,10 @@
       "availabilityBasis": "planning_default",
       "availabilityClueSource": "user-provided",
       "availabilityNote": "楼下开放的有盖处全天可作停留点；用餐要选仍在供应的食堂窗口或附近店铺，预留取餐时间。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "宿舍楼下吃饭",
       "typeId": "dorm_takeaway_meal",
       "default": [],
@@ -3685,6 +4329,10 @@
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–24:00，仅用于用户提出的校园停留候选；夜间开放线索为user-provided，不是官方全天开放或室内进入许可。实际通行、照明及开放须确认。",
       "availabilityClueSource": "user-provided",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "东区实验楼",
       "typeId": "east_lab_stop",
       "seated": false,
@@ -3816,6 +4464,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许09:00–17:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "展览馆",
       "scauOnly": false,
       "typeId": "exhibition",
@@ -3950,6 +4602,10 @@
         }
       ],
       "availabilityNote": "按用户要求允许19:00–次日06:00规划；具体院楼、顶楼进入许可和观星条件须现场确认，不表示任意院楼楼顶均可进入。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "院楼顶楼看星星",
       "typeId": "faculty_rooftop_stars",
       "seated": false,
@@ -4073,6 +4729,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "花园",
       "scauOnly": false,
       "typeId": "garden",
@@ -4244,6 +4904,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        90
+      ],
       "title": "滑冰场",
       "scauOnly": false,
       "typeId": "ice",
@@ -4429,6 +5093,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "商场",
       "scauOnly": false,
       "typeId": "mall",
@@ -4746,6 +5414,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许11:00–14:00、17:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "餐馆",
       "scauOnly": false,
       "typeId": "meal",
@@ -5043,6 +5715,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        90,
+        180
+      ],
       "title": "剧本杀店",
       "scauOnly": false,
       "typeId": "mystery_store",
@@ -5170,6 +5846,10 @@
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–24:00，仅用于用户提出的校园停留候选；夜间开放线索为user-provided，不是官方全天开放或室内进入许可。实际通行、照明及开放须确认。",
       "availabilityClueSource": "user-provided",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "兰花园",
       "typeId": "orchid_garden",
       "seated": false,
@@ -5305,6 +5985,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许09:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        10,
+        45
+      ],
       "title": "照片冲印店",
       "scauOnly": false,
       "typeId": "photo_printing",
@@ -5441,6 +6125,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        240
+      ],
       "title": "公共休息区",
       "scauOnly": false,
       "typeId": "public_lounge",
@@ -5712,6 +6400,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许09:00–18:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "雨林馆",
       "scauOnly": false,
       "typeId": "rainforest",
@@ -5842,6 +6534,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        240
+      ],
       "title": "图书馆",
       "scauOnly": false,
       "typeId": "reading",
@@ -6068,6 +6764,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–24:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        10,
+        60
+      ],
       "title": "休息",
       "scauOnly": false,
       "typeId": "rest",
@@ -6149,6 +6849,10 @@
         }
       ],
       "availabilityNote": "按用户要求全天允许规划；实际行走范围仅限开放校园道路，不代表封闭区域或室内场所全天可进入。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "校内游荡",
       "typeId": "scau_wandering",
       "seated": false,
@@ -6372,6 +7076,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–00:30、19:00–24:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "小吃街",
       "scauOnly": false,
       "typeId": "snack_street",
@@ -6504,6 +7212,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许09:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "街区",
       "scauOnly": false,
       "typeId": "street",
@@ -6817,6 +7529,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "泰山超市",
       "typeId": "supermarket",
       "default": [],
@@ -7081,6 +7797,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "Switch店",
       "scauOnly": false,
       "typeId": "switch_store",
@@ -7256,6 +7976,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        240
+      ],
       "title": "泰山十栋玻璃房",
       "typeId": "taishan_glass",
       "default": [],
@@ -7707,6 +8431,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "泰山实验楼架空层花园",
       "typeId": "taishan_lab_garden",
       "seated": false,
@@ -7826,12 +8554,16 @@
       ],
       "dailyWindows": [
         {
-          "startMinute": 420,
-          "endMinute": 1380
+          "startMinute": 0,
+          "endMinute": 1440
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "规划默认允许07:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "availabilityNote": "门前吧台和有盖处全天可作为停留候选；这里只安排聊天和歇脚，超市购物仍须看营业时间。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "泰山超市门口",
       "typeId": "taishan_supermarket_front",
       "seated": true,
@@ -8005,6 +8737,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许10:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "校园茶点店",
       "scauOnly": false,
       "typeId": "tea",
@@ -8127,6 +8863,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "教四后坡路",
       "typeId": "teaching4_slope",
       "seated": false,
@@ -8256,6 +8996,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–22:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        240
+      ],
       "title": "教四教室",
       "typeId": "teaching4_study",
       "seated": true,
@@ -8386,6 +9130,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许06:00–23:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "东区运动场外圈",
       "typeId": "track_walk",
       "default": [],
@@ -8557,6 +9305,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许08:00–20:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        30,
+        180
+      ],
       "title": "水边公共步道",
       "scauOnly": false,
       "typeId": "waterside",
@@ -8699,6 +9451,10 @@
       ],
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许11:00–14:00、17:00–21:00；不是官方营业时间，实际开放、通行与供应须确认。",
+      "durationRange": [
+        20,
+        90
+      ],
       "title": "校内西式餐馆",
       "scauOnly": false,
       "typeId": "western",
@@ -9450,6 +10206,60 @@
       ]
     },
     {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_mcdonalds_eat",
+      "title": "点两份麦麦早餐",
+      "description": "各自挑一份喜欢的早餐，套餐和价格按当天菜单来。",
+      "cost": [
+        20,
+        40
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 15,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "breakfast_mcdonalds"
+      ],
+      "allowedSceneTypes": [
+        "breakfast_mcdonalds"
+      ]
+    },
+    {
       "group": "play",
       "mode": "multi",
       "novelty": 45,
@@ -9496,6 +10306,168 @@
       ],
       "allowedSceneTypes": [
         "taishan_glass"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "requiresExplicitConsent": true,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_prepared_eat",
+      "title": "吃已经准备好的早餐",
+      "description": "确认两个人的早餐已经备好，带来一起吃。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 15,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "breakfast_prepared"
+      ],
+      "allowedSceneTypes": [
+        "breakfast_prepared"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_shop_eat",
+      "title": "在早餐店吃早点",
+      "description": "包子、粥、肠粉都可以，按当天胃口点两份。",
+      "cost": [
+        10,
+        24
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 15,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "breakfast_shop"
+      ],
+      "allowedSceneTypes": [
+        "breakfast_shop"
+      ]
+    },
+    {
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 15,
+      "requiresExplicitConsent": false,
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "breakfast_supermarket_eat",
+      "title": "买面包和饮品当早餐",
+      "description": "各选一份够吃的面包和饮品，留意配料、保质期和忌口。",
+      "cost": [
+        10,
+        24
+      ],
+      "load": -2,
+      "tags": [
+        "food",
+        "daily"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "breakfast"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "exclusiveKey": "main_meal",
+      "evidenceIds": [
+        "E-user-breakfast-choices"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "minutes": 0,
+      "compositionMode": "included",
+      "durationMode": "within_scene",
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "featureValues": {
+        "novelty": 15,
+        "physicalLoad": -2
+      },
+      "allowedSceneIds": [
+        "breakfast_supermarket"
+      ],
+      "allowedSceneTypes": [
+        "breakfast_supermarket"
       ]
     },
     {
@@ -14605,6 +15577,11 @@
         "label": "公开自述中出现电影后组队游戏的休闲安排，可作为协作游戏灵感；价格不转用到当前目录。"
       },
       {
+        "id": "E-user-breakfast-choices",
+        "type": "evidence",
+        "label": "用户要求先选择是否一起吃早餐，再选择早餐店、麦麦、食堂、超市或自备面包。时长、费用与允许时间为可手动编辑的规划参数。"
+      },
+      {
         "id": "E-user-budget-campus-meals",
         "type": "evidence",
         "label": "校园食堂和芷园增加可选平价早餐与饭菜；宿舍楼下吃饭支持从食堂或附近打包后用餐，兼顾安静、避雨和校园范围宵夜。两人早餐6至10元、午晚餐每餐12至16元、简单宵夜6至8元，四餐费用上界50元；保留原有菜肴和费用，宵夜由用户另选。"
@@ -15775,9 +16752,57 @@
         "label": "吃一份早餐面包"
       },
       {
+        "id": "breakfast_mcdonalds",
+        "type": "scene",
+        "label": "麦麦早餐",
+        "placeKind": "ordinary",
+        "category": "早餐去处"
+      },
+      {
+        "id": "breakfast_mcdonalds_eat",
+        "type": "activity",
+        "label": "点两份麦麦早餐"
+      },
+      {
         "id": "breakfast_pack",
         "type": "activity",
         "label": "买好明早早餐"
+      },
+      {
+        "id": "breakfast_prepared",
+        "type": "scene",
+        "label": "自备早餐（已准备）",
+        "placeKind": "ordinary",
+        "category": "早餐去处"
+      },
+      {
+        "id": "breakfast_prepared_eat",
+        "type": "activity",
+        "label": "吃已经准备好的早餐"
+      },
+      {
+        "id": "breakfast_shop",
+        "type": "scene",
+        "label": "早餐店",
+        "placeKind": "ordinary",
+        "category": "早餐去处"
+      },
+      {
+        "id": "breakfast_shop_eat",
+        "type": "activity",
+        "label": "在早餐店吃早点"
+      },
+      {
+        "id": "breakfast_supermarket",
+        "type": "scene",
+        "label": "超市买早餐",
+        "placeKind": "ordinary",
+        "category": "早餐去处"
+      },
+      {
+        "id": "breakfast_supermarket_eat",
+        "type": "activity",
+        "label": "买面包和饮品当早餐"
       },
       {
         "id": "bridge_view",
@@ -16545,6 +17570,11 @@
         "category": "操场外圈"
       },
       {
+        "id": "user:2026-10-14-breakfast-choice-flow",
+        "type": "user_design",
+        "label": "用户项目设计；现实信息待确认"
+      },
+      {
         "id": "user:2026-10-14-budget-campus-meals",
         "type": "user_design",
         "label": "用户项目设计；现实信息待确认"
@@ -17200,6 +18230,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-12bf9aa862f357",
+        "subject": "breakfast_mcdonalds",
+        "predicate": "allows_activity",
+        "object": "breakfast_mcdonalds_eat",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-12f4ce73f41e09",
         "subject": "boardgame",
         "predicate": "allows_activity",
@@ -17267,6 +18307,16 @@
         "object": "user:2026-10-14-budget-campus-meals",
         "evidenceIds": [
           "E-user-budget-campus-meals"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-139418f213cb52",
+        "subject": "breakfast_mcdonalds_eat",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -17518,6 +18568,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-1e7ce6d80140e0",
+        "subject": "breakfast_shop_eat",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-1e8e4ac7e87423",
         "subject": "E-C003",
         "predicate": "derived_from",
@@ -17599,6 +18659,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-2170b14f94bd26",
+        "subject": "breakfast_mcdonalds_eat",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-218c595b1cb9d2",
         "subject": "street_look",
         "predicate": "supported_by",
@@ -17628,6 +18698,16 @@
           "E-C001"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-22f06a60a4ddcd",
+        "subject": "breakfast_prepared_eat",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-2390106197457f",
@@ -17688,6 +18768,16 @@
         "object": "tag:play",
         "evidenceIds": [
           "E-research-novelty"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-24b3ccb33f2006",
+        "subject": "breakfast_prepared_eat",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -17920,6 +19010,16 @@
           "E-P008"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-2c52f2e9f32a12",
+        "subject": "breakfast_supermarket_eat",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-2c72c74a3be8d9",
@@ -18200,6 +19300,16 @@
         "evidenceIds": [
           "E-user-budget-campus-meals",
           "E-user-campus-shelter"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-34959b0f572f57",
+        "subject": "breakfast_prepared_eat",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -18597,6 +19707,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-40889be4927110",
+        "subject": "breakfast_prepared",
+        "predicate": "allows_activity",
+        "object": "breakfast_prepared_eat",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-40f8979268110c",
         "subject": "activity-at:taishan_glass:boardgame_coop",
         "predicate": "supported_by",
@@ -18614,6 +19734,16 @@
         "evidenceIds": [
           "E-campus-evening",
           "E-campus-walk"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-41106f7cf37d27",
+        "subject": "breakfast_shop_eat",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -18794,6 +19924,16 @@
         "object": "E-C004",
         "evidenceIds": [
           "E-C004"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-49ed8cd24c0269",
+        "subject": "breakfast_supermarket_eat",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -19799,6 +20939,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-678f1f7ba0f4a5",
+        "subject": "breakfast_mcdonalds_eat",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-67e6b89021a2bc",
         "subject": "walk_together",
         "predicate": "supported_by",
@@ -19846,6 +20996,16 @@
         "object": "E-C002",
         "evidenceIds": [
           "E-C002"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-68f1f44e3b6768",
+        "subject": "breakfast_supermarket",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -19952,6 +21112,16 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-6c978281499150",
+        "subject": "breakfast_shop",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-6d4c07e915b27d",
         "subject": "dorm_downstairs_shelter",
         "predicate": "allows_activity",
@@ -20004,6 +21174,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-6fbbf9fd174003",
+        "subject": "E-user-breakfast-choices",
+        "predicate": "derived_from",
+        "object": "user:2026-10-14-breakfast-choice-flow",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-6fd820c0eaae1d",
         "subject": "E-G002",
         "predicate": "derived_from",
@@ -20043,6 +21223,16 @@
           "E-C002"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-7192178df00fb0",
+        "subject": "breakfast_shop_eat",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-719bfe7837dff0",
@@ -20640,6 +21830,16 @@
         "object": "E-campus-note",
         "evidenceIds": [
           "E-campus-note"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-848703f08f5af8",
+        "subject": "breakfast_mcdonalds",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -21292,6 +22492,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-964f16b11ba3bb",
+        "subject": "breakfast_shop",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-9661821a2c4a2f",
         "subject": "track_walk",
         "predicate": "has_feature",
@@ -21447,6 +22657,16 @@
         "object": "tag:photo",
         "evidenceIds": [
           "E-P007"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-9a196b8d3a2db8",
+        "subject": "breakfast_mcdonalds",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -21987,6 +23207,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-aba936aa094e19",
+        "subject": "breakfast_supermarket",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-abd722da5be2a1",
         "subject": "campus_picnic",
         "predicate": "requires",
@@ -22115,6 +23345,16 @@
         "object": "E-G005",
         "evidenceIds": [
           "E-G005"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-ae94ac2409669d",
+        "subject": "breakfast_prepared",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -22737,6 +23977,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-c09fa75d0de9b1",
+        "subject": "breakfast_shop_eat",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-c0f1569aa80bc1",
         "subject": "east_lab_stop",
         "predicate": "has_feature",
@@ -22794,6 +24044,16 @@
         "object": "E-P010",
         "evidenceIds": [
           "E-P010"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-c1d4d0031a759e",
+        "subject": "breakfast_supermarket_eat",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -22918,6 +24178,16 @@
         "object": "E-research-phone",
         "evidenceIds": [
           "E-research-phone"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-c6659181fc11cc",
+        "subject": "breakfast_supermarket",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -23331,6 +24601,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-d0823e80725768",
+        "subject": "breakfast_prepared",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-d0dacc802e11b9",
         "subject": "read_alone",
         "predicate": "supported_by",
@@ -23738,6 +25018,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-dd15179f413a31",
+        "subject": "breakfast_supermarket_eat",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-dd6e487c777c2f",
         "subject": "switch_race",
         "predicate": "supported_by",
@@ -23838,6 +25128,16 @@
         "object": "tag:nature",
         "evidenceIds": [
           "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e15bf38cf0b732",
+        "subject": "breakfast_shop",
+        "predicate": "allows_activity",
+        "object": "breakfast_shop_eat",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -24587,6 +25887,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f2fc3dc788d085",
+        "subject": "breakfast_shop",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-f2fcefd467cec5",
         "subject": "activity-at:campus_canteen:breakfast_eat",
         "predicate": "has_feature",
@@ -24636,6 +25946,16 @@
         "object": "tag:daily",
         "evidenceIds": [
           "E-P010"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f4031dc6e2eff8",
+        "subject": "breakfast_mcdonalds_eat",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -24871,6 +26191,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f9d74158dea8a2",
+        "subject": "breakfast_prepared_eat",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-f9dde0f71af9c0",
         "subject": "campus_budget_meal",
         "predicate": "provides",
@@ -24887,6 +26217,16 @@
         "object": "tag:food",
         "evidenceIds": [
           "E-P004"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-fa3cfd053d4aac",
+        "subject": "breakfast_mcdonalds",
+        "predicate": "supported_by",
+        "object": "E-user-breakfast-choices",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
         ],
         "assertionKind": "designed"
       },
@@ -25002,6 +26342,26 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-fc7365d4c64e7b",
+        "subject": "breakfast_prepared",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-fc7e6d18263dea",
+        "subject": "breakfast_supermarket",
+        "predicate": "allows_activity",
+        "object": "breakfast_supermarket_eat",
+        "evidenceIds": [
+          "E-user-breakfast-choices"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-fc8f870d3159c6",
         "subject": "activity-at:taishan_glass:boardgame_coop",
         "predicate": "preconditions",
@@ -25109,5 +26469,5 @@
       }
     ]
   },
-  "contentRevision": "553ad193a6bacddb"
+  "contentRevision": "22a32385a85047d3"
 }

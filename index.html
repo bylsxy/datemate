@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#fbf9f6"><meta name="description" content="约会策划"><title>约会策划 · DateMate</title><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=fc6f1dd058ad2673"><script type="module" src="./app.mjs?v=fc6f1dd058ad2673"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#fbf9f6"><meta name="description" content="约会策划"><title>约会策划 · DateMate</title><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=f3e372fb8d68c375"><script type="module" src="./app.mjs?v=f3e372fb8d68c375"></script>
 </head>
 <body><div class="page-shell">
 <header class="site-header"><a class="brand" href="./" aria-label="DateMate 首页"><span class="brand-mark" aria-hidden="true">d.</span><span>DateMate</span></a></header>
@@ -32,7 +32,7 @@
 <button class="apply-button" type="submit">规划</button></form></details></aside>
 <main id="main-content">
 <section id="view-plan" class="view">
-  <section class="exploration" aria-labelledby="exploration-title"><div class="slider-top"><div class="exploration-label"><h2 id="exploration-title">探索度</h2><p class="slider-note">possibility</p></div><output id="exploration-value" for="exploration">0<small>/ 100</small></output></div><input id="exploration" type="range" min="0" max="100" step="1" value="0" aria-label="探索度"></section>
+  <section class="exploration" aria-labelledby="exploration-title"><div class="slider-top"><div class="exploration-label"><h2 id="exploration-title">探索度</h2><p class="slider-note">保留已选，为后面找灵感</p></div><output id="exploration-value" for="exploration">0<small>/ 100</small></output></div><input id="exploration" type="range" min="0" max="100" step="1" value="0" aria-label="探索度"><button id="restart-plan" type="button" class="restart-plan">全部重新推荐</button></section>
   <span id="status" class="sr-only" role="status" aria-live="polite"></span>
   <section id="preparation-summary" class="preparation-summary" aria-labelledby="preparation-title" hidden><h2 id="preparation-title">需要准备</h2><div id="preparation-items"></div></section>
   <div id="stages" aria-busy="true"><section class="skeleton-stage" role="status" aria-label="正在加载"><div class="stage-heading"><span class="skeleton skeleton-time"></span></div><div class="skeleton-cards"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div><div class="skeleton-row"><span class="skeleton skeleton-activity"></span><span class="skeleton skeleton-activity"></span></div></section></div>

@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {projectStageChoice, selectStageIntent, selectMealIntent, selectDepartureIntent, exploreIntent} from '../planning-intent.mjs';
+import {projectStageChoice, selectStageIntent, selectMealIntent, selectDepartureIntent, exploreIntent, restartIntent, updateContextIntent} from '../planning-intent.mjs';
 
 const catalog = {scenes: ['a', 'b', 'c', 'food', 'other-food'].map(id => ({
   id, activities: [{id: 'walk'}, {id: 'meal'}, {id: 'touch', requiresExplicitConsent: true}],
@@ -95,23 +95,36 @@ test('餐次点击也保留前序未完成选择并重算同意，不重复固�
   assert.throws(() => selectMealIntent(state(), misplaced, 'lunch', {sceneId: 'food', activityIds: ['meal']}, 1, catalog), /边界/);
 });
 
-test('探索释放所有真实选择与旧同意，保留特殊用餐、硬条件、分别及结束上限', () => {
+test('探索保留已确认选择及相关同意，只释放后续未确认餐馆', () => {
   const input = state({prefix: [{sceneId: 'a', activityIds: ['touch'], startMinute: 40}]});
+  input.context.explicitConsentIds=['touch','stale'];
   input.context.mealChoices = {breakfast: {mode: 'before_meeting'}, lunch: {sceneId: 'food', activityIds: ['meal']}, dinner: {sceneId: 'other-food', activityIds: ['meal']}, supper: {mode: 'skip'}};
   input.context.anchors = [{index: 2, startMinute: 200, choice: {sceneId: 'c', activityIds: ['walk']}}];
   input.context.dietaryRestrictions = ['gluten'];
   input.context.weather = 'rain';
   const next = exploreIntent(input, 97, 0xffffffff);
   assert.equal(next.exploration, 97);
-  assert.deepEqual(next.prefix, []);
+  assert.deepEqual(next.prefix, input.prefix);
   assert.deepEqual(next.context.mealChoices, {breakfast: {mode: 'before_meeting'}, supper: {mode: 'skip'}});
-  assert.deepEqual(next.context.explicitConsentIds, []);
+  assert.deepEqual(next.context.explicitConsentIds, ['touch']);
   assert.equal(next.context.explorationSeed, 0xffffffff);
   const expected = structuredClone(input.context);
   expected.mealChoices = next.context.mealChoices;
-  expected.explicitConsentIds = [];
+  expected.explicitConsentIds = ['touch'];
   expected.explorationSeed = 0xffffffff;
   assert.deepEqual(next.context, expected);
+});
+
+test('只有全部重新推荐才清空已选；改变软偏好保留选择，改变硬条件再重排',()=>{
+  const input=state({prefix:[{sceneId:'a',activityIds:['touch'],durationMinutes:60}]});
+  input.context.explicitConsentIds=['touch'];input.context.minimumStageCount=2;
+  const restarted=restartIntent(input,123);
+  assert.deepEqual(restarted.prefix,[]);assert.deepEqual(restarted.context.explicitConsentIds,[]);
+  assert.equal(restarted.context.endAfterStage,undefined);assert.equal(restarted.context.minimumStageCount,undefined);
+  const soft=updateContextIntent(input,{...input.context,preferencesA:['nature']});
+  assert.equal(soft.hardChanged,false);assert.deepEqual(soft.next.prefix,input.prefix);
+  const hard=updateContextIntent(input,{...input.context,weather:'rain'});
+  assert.equal(hard.hardChanged,true);assert.deepEqual(hard.next.prefix,[]);
 });
 
 test('探索接受零seed，拒绝非uint32和非整数探索度', () => {

@@ -1,8 +1,10 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=fc6f1dd058ad2673';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=fc6f1dd058ad2673';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=fc6f1dd058ad2673';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=fc6f1dd058ad2673';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=f3e372fb8d68c375';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=f3e372fb8d68c375';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=f3e372fb8d68c375';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=f3e372fb8d68c375';
 
+import {durationBounds,splitDuration} from './duration-policy.mjs?v=f3e372fb8d68c375';
+import {mealModeCard,mealOptions} from './meal-options.mjs?v=f3e372fb8d68c375';
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));
@@ -24,16 +26,29 @@ export function scoreMarkup(candidate,{planningFailed=false}={}) {
 }
 
 /** 卡片按地点 ID 复用；保留阶段按稳定 view.key 关联，只有后续推荐允许重排。 */
-export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,getIntent,onCandidateVisible}) {
+export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,onDuration,onSplit,getIntent,onCandidateVisible,onActionsChanged}) {
   const root=document.querySelector('#stages');
   const window=root.ownerDocument.defaultView;
   const scenes=new Map(catalog.scenes.map(s=>[s.id,s]));
   const views=new Map(); let result=null, pendingPreserveThrough=-1, pendingPreservation=null, actionRound=0, busy=false;
   const actions=new Map();
+  const groupedMode=view=>catalog.mealChoiceRoles?.includes(view.mealRole)?mealModeCard(view.mealRole):null;
+  const modeToggler=card=>{const view=views.get(card?.dataset?.view);return view&&card.dataset.scene===groupedMode(view)?.id?view:null;};
   const actionStatus=status=>status==='verified'?'完整后续已验证，可以选择':status==='pending'?'完整后续正在验证，仅可浏览':status==='hard_rejected'?'该选择与后续冲突':status==='error'?'验证异常，暂不可选':'本次有限搜索未找到完整后续，暂不可选';
   function paintAction(action){
     const view=views.get(action.viewKey);if(!view)return;
-    const enabled=!busy&&action.validationStatus==='verified'&&action.continuationWitness!=null&&result?.ok!==false&&!view.element.classList.contains('is-recomputing');
+    const enabled=!busy&&action.validationStatus==='verified'&&action.continuationWitness!=null&&(result?.ok!==false||action.actionType==='meal_option')&&!view.element.classList.contains('is-recomputing');
+    if(action.actionType==='meal_option'){
+      const input=view.mealInputs?.get(action.sceneId);if(!input)return;
+      input.dataset.actionKey=action.actionKey;input.disabled=!enabled;input.checked=action.selected;
+      const label=input.closest('.activity-card');label.hidden=action.validationStatus==='hard_rejected'&&!action.selected;label.classList.toggle('selected',action.selected);label.classList.toggle('is-unselectable',!enabled);label.title=enabled?'选择这个吃法，后面重新安排':actionStatus(action.validationStatus);
+      return;
+    }
+    if(action.actionType==='duration'||action.actionType==='split'){
+      const control=action.actionType==='duration'?view.durationOptions?.get(action.durationMinutes):view.splitButton;
+      if(control){control.dataset.actionKey=action.actionKey;control.disabled=!enabled;control.hidden=action.validationStatus==='hard_rejected';control.title=enabled?'只调整这一段，后面重新安排':actionStatus(action.validationStatus);}
+      return;
+    }
     const element=action.actionType!=='activity'?view.cards.get(action.sceneId):[...view.activities.querySelectorAll('input[data-activity]')].find(input=>input.dataset.activity===action.activityId);
     if(!element)return;
     element.dataset.actionKey=action.actionKey;element.dataset.validationStatus=action.validationStatus;
@@ -65,10 +80,11 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       if(view.element.classList.contains('is-recomputing'))continue;
       const current=view.entry?.stage,ids=current?.activityIds||[];
       const add=(action)=>{
-        action.actionKey=JSON.stringify([actionRound,view.key,view.index,view.mealRole,action.actionType,action.sceneId,action.activityId??null,action.activityIds]);
+        action.actionKey=JSON.stringify([actionRound,view.key,view.index,view.mealRole,action.actionType,action.sceneId,action.activityId??null,action.activityIds,action.durationMinutes??null]);
         action.validationStatus='pending';actions.set(action.actionKey,action);paintAction(action);
       };
       for(const [sceneId,card]of view.cards){
+        if(sceneId===groupedMode(view)?.id)continue;
         const special=specialFor(view.mealRole);
         if(special?.id===sceneId&&result?.ok===false){card.classList.remove('is-unselectable');card.hidden=false;card.removeAttribute('aria-disabled');delete card.dataset.actionKey;card.querySelector('.scene-score').hidden=true;continue;}
         const candidate=view.candidates.get(sceneId),scene=scenes.get(sceneId);
@@ -77,9 +93,14 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
         add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType,sceneId,activityIds:[...activityIds],...(actionType==='departure'?{departureId:sceneId}:actionType==='meal_mode'?{choice:{mode:special.mode}}:{}),candidate:candidate?structuredClone(candidate):undefined,continuationWitness:candidate?.continuationWitness??(current?.sceneId===sceneId?current?.continuationWitness:undefined)});
       }
       const scene=scenes.get(current?.sceneId);
+      for(const choice of view.mealChoices||[])if(view.mealInputs?.has(choice.sceneId))add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'meal_option',sceneId:choice.sceneId,activityIds:[...choice.activityIds],selected:choice.selected,candidate:choice.candidate});
       if(scene)for(const input of view.activities.querySelectorAll('input[data-activity]')){
         const activityId=input.dataset.activity;
         add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'activity',activityId,sceneId:scene.id,activityIds:toggleActivity(scene,ids,activityId),selected:ids.includes(activityId)});
+      }
+      if(scene&&current?.durationRange&&!current.virtualMeal){
+        for(const minutes of view.durationOptions?.keys()||[])if(minutes!==current.minutes)add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'duration',sceneId:scene.id,activityIds:[...ids],durationMinutes:minutes});
+        if(view.splitButton)add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'split',sceneId:scene.id,activityIds:[...ids]});
       }
     }
   }
@@ -89,7 +110,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   function updateActionValidation(update={}){
     const action=actions.get(update.actionKey),view=action&&views.get(action.viewKey);
     if(!action||!view||busy||view.element.classList.contains('is-recomputing')||!['verified','unresolved','hard_rejected','error'].includes(update.validationStatus))return false;
-    for(const key of ['viewKey','stageIndex','sceneId','mealRole','actionType','activityId','departureId'])if(update[key]!==undefined&&update[key]!==action[key])return false;
+    for(const key of ['viewKey','stageIndex','sceneId','mealRole','actionType','activityId','departureId','durationMinutes'])if(update[key]!==undefined&&update[key]!==action[key])return false;
     if(update.validationStatus==='verified'&&update.continuationWitness==null)return false;
     action.validationStatus=update.validationStatus;
     if(update.candidate)action.candidate={...action.candidate,...structuredClone(update.candidate)};
@@ -128,7 +149,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   function watchVisibility(view) {
     // render 已清理旧轮资源；重新接入可见检测不能清掉刚启动的居中滚动等待。
     view.visibility?.dispose();view.visibility=null;
-    if(typeof onCandidateVisible!=='function'||view.departure||result?.ok===false)return;
+    if(typeof onCandidateVisible!=='function'||view.departure||result?.ok===false&&!groupedMode(view))return;
     const notified=new Set();let stopped=false,frame=0,observer=null;
     function visibleBounds() {
       const bounds=view.strip.getBoundingClientRect(),viewport=window.visualViewport;
@@ -142,7 +163,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       const sceneId=card.dataset.scene,action=actions.get(card.dataset.actionKey);
       if(stopped||card.hidden||card.closest('.activity-card')?.hidden||view.element.classList.contains('is-recomputing')||notified.has(action?.actionKey||sceneId))return;
       if(action? action.validationStatus!=='pending':card.querySelector('.scene-score')?.hidden||view.candidates.get(sceneId)?.scoreStatus!=='pending')return;
-      if(action?.actionType==='activity'){
+      if(action?.actionType==='activity'||action?.actionType==='meal_option'){
         const viewport=window.visualViewport,left=viewport?.offsetLeft||0,top=viewport?.offsetTop||0;
         clip={left,top,right:left+(viewport?.width??window.innerWidth),bottom:top+(viewport?.height??window.innerHeight)};
       }
@@ -158,6 +179,11 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       const clip=visibleBounds();
       for(const card of view.cards.values())notify(card,clip);
       for(const input of view.activities.querySelectorAll('input[data-activity]'))notify(input,clip);
+      for(const input of view.mealInputs?.values()||[])notify(input,clip);
+      if(view.durationSelect){
+        const bounds=view.durationSelect.getBoundingClientRect();
+        if(bounds.bottom>0&&bounds.top<window.innerHeight)for(const action of actions.values())if(action.viewKey===view.key&&['duration','split'].includes(action.actionType)&&action.validationStatus==='pending')onCandidateVisible?.(structuredClone(action));
+      }
     }
     const queue=()=>{if(!stopped&&!frame)frame=window.requestAnimationFrame(scan);};
     if(window.IntersectionObserver){
@@ -166,6 +192,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       },{threshold:0});
       for(const card of view.cards.values())observer.observe(card);
       for(const input of view.activities.querySelectorAll('input[data-activity]'))observer.observe(input);
+      for(const input of view.mealInputs?.values()||[])observer.observe(input);
     }
     // 显式 root 的 IO 不保证纵向滚入屏幕时再次回调；两条路径都补页面滚动扫描。
     view.strip.addEventListener('scroll',queue,{passive:true});
@@ -306,9 +333,11 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     const allowed=scene=>{
       if(!isSceneInSchoolScope(scene,context))return false;
       if(!context.periodIds?.length||!scene.dailyWindows)return true;
-      const start=stage.start??stage.startMinute??meal?.targetMinute;
+      const candidate=(meal?.candidates||stage.candidates||[]).find(c=>c.sceneId===scene.id);
+      const start=candidate?.start??stage.start??stage.startMinute??meal?.targetMinute;
       if(!Number.isFinite(start))return false;
-      return isSceneOpenDuring(scene,start,start+sceneDurationAt(scene,start,{mealRole:meal?.mealRole??stage.mealRole}));
+      const minutes=scene.id===stage.sceneId&&Number.isFinite(stage.minutes)?stage.minutes:candidate?.minutes??sceneDurationAt(scene,start,{mealRole:meal?.mealRole??stage.mealRole});
+      return isSceneOpenDuring(scene,start,start+minutes);
     };
     const incoming=new Map((meal?.candidates?.length?meal.candidates:stage.candidates||[]).map(c=>[c.sceneId||c.id,c]));
     // 新一轮候选可能截断；保留视图必须继续展示用户已经刷到的全部卡片。
@@ -326,7 +355,11 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     view.candidates=candidates;
     let ordered=view.departure?(catalog.departures||[]).filter(d=>candidates.has(d.id)):[...candidates.keys()].map(id=>scenes.get(id)).filter(s=>s&&(!view.mealRole||s.mealRoles?.includes(view.mealRole)));
     if(isExplorationView(view))ordered.sort((a,b)=>{const ai=displayIndex(candidates.get(a.id)),bi=displayIndex(candidates.get(b.id));return ai>bi?1:ai<bi?-1:0;});
-    const special=specialFor(view.mealRole);if(special)ordered.push(special);
+    const special=specialFor(view.mealRole),mode=groupedMode(view);if(special)ordered.push(special);
+    if(mode){
+      const activeScene=scenes.get(stage.sceneId),recommended=activeScene||ordered.find(scene=>scene.id!==special?.id);
+      ordered=[{...mode,description:recommended?.description||'选一个两个人都愿意吃的早餐方案。'},special];
+    }
     if(preserve){
       const byId=new Map(ordered.map(scene=>[scene.id,scene]));
       ordered=[...view.strip.children].map(card=>byId.get(card.dataset.scene)).filter(Boolean);
@@ -344,25 +377,45 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       if(view.departure)card.dataset.departure=scene.id;else delete card.dataset.departure;
       card.classList.toggle('meal-card',!!view.mealRole);
       // 所有地点及别离卡直接展示目录全文，手工说明不经过摘要或长度截断。
-      const c=candidates.get(scene.id),isSpecial=scene===special||view.departure;card.querySelector('.scene-title').textContent=scene.title;card.querySelector('.scene-desc').textContent=scene.description??'';card.title=scene.description??'';
+      const c=candidates.get(scene.id),isSpecial=scene===special||scene.id===mode?.id||view.departure;card.querySelector('.scene-title').textContent=scene.title;card.querySelector('.scene-desc').textContent=scene.description??'';card.title=scene.description??'';
       card.querySelector('.scene-score').hidden=isSpecial;card.querySelector('.scene-score').classList.remove('is-pending','is-validating');card.classList.remove('is-pending');
       if(isSpecial){card.querySelector('.scene-score').innerHTML='';card.querySelector('.scene-score').title='';card.setAttribute('aria-label',scene.title);}
       else updateScore(view,card,c);
       const at=view.strip.children[index];if(at!==card)view.strip.insertBefore(card,at||null);
     });
-    view.selectedId=stage.sceneId;
-    if(!view.controller)view.controller=attachCarousel(view.strip,{selectedId:stage.sceneId});
-    else view.controller.update({selectedId:stage.sceneId});
+    view.selectedId=mode?(stage.virtualMeal?(meal?.choiceMode==='together'?null:special?.id):mode.id):stage.sceneId;
+    if(!view.controller)view.controller=attachCarousel(view.strip,{selectedId:view.selectedId});
+    else view.controller.update({selectedId:view.selectedId});
     syncCarousel(view.strip);
     if(center)centerSelection(view,true);
   }
+  function setMealOptionContent(view,stage){
+    view.mealInputs=new Map();view.mealChoices=[];view.activities.innerHTML='';
+    const explicit=getIntent()?.context?.mealChoices?.[view.mealRole];
+    const expanded=view.mealExpanded||!stage.virtualMeal&&(stage.manual||explicit?.sceneId);
+    if(!expanded){view.activities.hidden=true;return;}
+    view.activities.hidden=false;view.mealExpanded=true;
+    view.mealChoices=mealOptions(catalog,getIntent()?.context||{},view.mealRole,stage.virtualMeal?null:stage,[...view.candidates.values()]);
+    view.activities.innerHTML=`<p class="meal-choice-hint">${stage.virtualMeal?'选一个吃法，再更新后面的安排。':'这顿怎么吃？选一个就好。'}</p><div class="activity-options meal-options">${view.mealChoices.map(choice=>`<label class="activity-card${choice.selected?' selected':''}"><input type="radio" name="meal-option-${esc(view.key)}" data-meal-option="${esc(choice.sceneId)}" data-view="${esc(view.key)}"${choice.selected?' checked':''} disabled><span class="activity-content"><span class="activity-title">${esc(choice.title)}</span><span class="activity-desc">${esc(choice.description)}</span><small>两人 ¥${choice.cost[0]}–${choice.cost[1]}</small></span></label>`).join('')}</div>`;
+    for(const input of view.activities.querySelectorAll('input[data-meal-option]'))view.mealInputs.set(input.dataset.mealOption,input);
+  }
   function updateStageContent(view,stage){
     const start=stage.start??stage.startMinute,end=stage.end??stage.endMinute;
-    view.heading.innerHTML=`<h2 class="stage-time">${formatTime(start)}${stage.virtualMeal?'':`-${formatTime(end)}`}</h2>`;
+    view.heading.innerHTML=`<h2 class="stage-time">${groupedMode(view)?`${view.mealRole==='breakfast'?'早餐':'宵夜'} · `:''}${formatTime(start)}${stage.virtualMeal?'':`-${formatTime(end)}`}</h2>`;
     view.transfer.hidden=!stage.transfer;
     view.transfer.innerHTML=`<span>${formatTime(start-(stage.transfer||0))}-${formatTime(start)}</span><span>转场</span>`;
-    setActivityContent(view,scenes.get(stage.sceneId),stage.activityIds||[]);
-    view.meta.innerHTML='';view.meta.hidden=true;
+    if(groupedMode(view))setMealOptionContent(view,stage);else {view.activities.hidden=false;setActivityContent(view,scenes.get(stage.sceneId),stage.activityIds||[]);}
+    view.meta.innerHTML='';view.meta.hidden=true;view.durationOptions=new Map();view.durationSelect=null;view.splitButton=null;
+    const scene=scenes.get(stage.sceneId);
+    if(scene?.durationRange&&!stage.virtualMeal&&!stage.departure&&(!groupedMode(view)||view.mealExpanded)){
+      const {min,max}=durationBounds(scene),current=stage.minutes??end-start;
+      const values=[...new Set([min,max,current,20,30,45,60,90,120,150,180,210,240].filter(n=>n>=min&&n<=max))].sort((a,b)=>a-b);
+      const canSplit=!stage.mealRole&&scene.kind!=='rest'&&result.stages.length<24&&splitDuration(scene,current);
+      view.meta.hidden=false;
+      view.meta.innerHTML=`<div class="duration-controls"><label>停留多久 <select data-duration-control data-view="${esc(view.key)}" aria-label="阶段${view.index+1}停留时间">${values.map(n=>`<option value="${n}"${n===current?' selected':' disabled'}>${n} 分钟</option>`).join('')}</select></label>${canSplit?`<button type="button" data-split data-view="${esc(view.key)}" disabled>拆成两段</button>`:''}<span>${stage.manual?'已按你的选择保留':'先在这里慢慢待着'} · 可调 ${min}–${max} 分钟</span></div>`;
+      view.durationSelect=view.meta.querySelector('select');view.durationOptions=new Map([...view.durationSelect.options].map(option=>[Number(option.value),option]));
+      view.splitButton=view.meta.querySelector('button[data-split]');
+    }
   }
   function sameStageContent(previous,next){
     if(!previous||previous.sceneId!==next.sceneId)return false;
@@ -412,6 +465,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       const contentUnchanged=sameStageContent(view.entry?.stage,stage)&&wasSelected===stage.sceneId&&!view.element.classList.contains('is-recomputing');
       view.orderLocked=!!retention;view.entry=entry;
       view.index=index;view.mealRole=stage.mealRole||null;view.departure=!!stage.departure;view.element.dataset.index=index;view.strip.dataset.index=index;
+      if(groupedMode(view)&&stage.virtualMeal)view.mealExpanded=false;
       view.element.classList.toggle('departure-stage',view.departure);view.element.setAttribute('aria-label',view.departure?'分别方式':meal?meal.label:`阶段${index+1}`);
       view.element.classList.toggle('meal-stage',!!view.mealRole);view.strip.setAttribute('aria-label',view.departure?'分别方式':meal?`${meal.label}地点`:`阶段${index+1}地点`);
       if(root.children[position]!==view.element)root.insertBefore(view.element,root.children[position]||null);
@@ -420,6 +474,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
         // 只有真实内容一致时保留前段节点；事件索引跟随稳定 key 对应的新阶段。
         for(const card of view.cards.values())card.dataset.stage=index;
         for(const input of view.activities.querySelectorAll('input[data-activity]'))input.dataset.stage=index;
+        updateCards(view,stage,meal,{preserve:true,center:false});
         if(centerSelected)centerSelection(view,true);
         watchVisibility(view);return;
       }
@@ -476,14 +531,14 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   function lockThrough(view){for(const key of preservationThrough(view.index,view.key).keys){const previous=views.get(key);previous.orderLocked=true;stopVisibility(previous);}}
   function enabledAction(element){
     const action=actions.get(element?.dataset.actionKey),view=action&&views.get(action.viewKey);
-    return !busy&&action?.validationStatus==='verified'&&action.continuationWitness!=null&&result?.ok!==false&&!view?.element.classList.contains('is-recomputing')?action:null;
+    return !busy&&action?.validationStatus==='verified'&&action.continuationWitness!=null&&(result?.ok!==false||action.actionType==='meal_option')&&!view?.element.classList.contains('is-recomputing')?action:null;
   }
   const recoveryMeal=card=>!busy&&result?.ok===false&&card?.dataset.scene===specialFor(card.dataset.meal)?.id;
   // 捕获阶段拦截 Enter/Space，避免轮播在冒泡阶段合成 click。
   function guardActivation(event){
     if(event.type==='keydown'&&!['Enter',' ','Spacebar'].includes(event.key))return;
     const card=event.target.closest('.scene-card'),input=event.target.closest('input[data-activity]')||event.target.closest('.activity-card')?.querySelector('input[data-activity]');
-    if(recoveryMeal(card))return;
+    if(recoveryMeal(card)||modeToggler(card))return;
     const target=input||card;if(!target||enabledAction(target))return;
     if(input){const action=actions.get(input.dataset.actionKey);if(action)input.checked=action.selected;}
     event.preventDefault?.();event.stopImmediatePropagation?.();
@@ -491,8 +546,13 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   root.addEventListener('click',guardActivation,true);
   root.addEventListener('keydown',guardActivation,true);
   root.addEventListener('click',event=>{
+    const split=event.target.closest('button[data-split]');
+    if(split){const action=enabledAction(split),view=views.get(split.dataset.view);if(action&&view){lockThrough(view);onSplit?.(view.index,{knownPlan:action.continuationWitness});}return;}
     const card=event.target.closest('.scene-card');if(!card||card.dataset.dragged==='1')return;
     const view=views.get(card.dataset.view);if(!view)return;
+    if(modeToggler(card)){
+      if(busy)return;view.mealExpanded=true;setMealOptionContent(view,view.entry.stage);registerActions();stopVisibility(view);watchVisibility(view);onActionsChanged?.();centerCard(view.strip,card.dataset.scene,{smooth:true});return;
+    }
     const action=enabledAction(card);if(!action&&!recoveryMeal(card))return;
     lockThrough(view);
     const index=view.index,candidate=view.candidates.get(card.dataset.scene);
@@ -506,6 +566,10 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     onScene(index,card.dataset.scene,[...action.activityIds],{knownPlan:action.continuationWitness});
   });
   root.addEventListener('change',event=>{
+    const mealInput=event.target.closest('input[data-meal-option]');
+    if(mealInput){const view=views.get(mealInput.dataset.view),action=enabledAction(mealInput);if(view&&action){lockThrough(view);onMeal(view.mealRole,{sceneId:action.sceneId,activityIds:[...action.activityIds]},{fromStage:view.index,knownPlan:action.continuationWitness});}return;}
+    const select=event.target.closest('select[data-duration-control]');
+    if(select){const view=views.get(select.dataset.view),action=enabledAction(select.selectedOptions[0]);if(action&&view){lockThrough(view);onDuration?.(view.index,action.durationMinutes,{knownPlan:action.continuationWitness});}else if(view)select.value=String(view.entry.stage.minutes);return;}
     const input=event.target.closest('input[data-activity]');if(!input)return;
     const view=views.get(input.closest('.stage').querySelector('.scene-card').dataset.view);if(!view)return;
     const action=enabledAction(input);if(!action){const previous=actions.get(input.dataset.actionKey);if(previous)input.checked=previous.selected;return;}

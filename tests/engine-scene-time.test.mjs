@@ -139,12 +139,14 @@ test('原地休息不能凭空开始或延续到已进入地点闭店之后', ()
 test('真实目录night无学校有通用游荡，scau夜晚及晚上+夜晚均有真实开放阶段', () => {
   const generic = planDate({ ...ctx, area: 'campus', school: '' }, catalog);
   assert.equal(generic.ok, true, generic.errors.join(';'));
-  assert.ok(generic.stages.some(s => s.sceneId === 'scau_wandering'));
+  assert.ok(generic.stages.some(s => ['scau_wandering','dorm_downstairs_shelter'].includes(s.sceneId)));
   assert.ok(generic.stages.every(s => s.sceneId !== 'faculty_rooftop_stars'));
   for (const periodIds of [['night'], ['evening', 'night']]) {
     const result = planDate({ ...ctx, periodIds, area: 'near', school: 'scau' }, catalog);
     assert.equal(result.ok, true, result.errors.join(';'));
-    assert.ok(result.stages.filter(s => !s.mealRole && s.sceneId !== 'rest').length >= 2);
+    const ordinary=result.stages.filter(s => !s.mealRole && s.sceneId !== 'rest');
+    assert.ok(ordinary.length >= (periodIds.length===1?1:2));
+    if(periodIds.length===1)assert.equal(ordinary.length,1,'单个夜晚默认连续停留，不强制换地方');
     for (const stage of result.stages) {
       const source = catalog.scenes.find(s => s.id === stage.sceneId);
       assert.equal(isSceneOpenDuring(source, stage.start, stage.end), true, stage.sceneId);

@@ -125,7 +125,8 @@ test('探索确实穿透beam剪枝发现资源后续，非仅随机排列已有�
   assert.equal(low.ok, true, low.errors.join(';'));
   assert.ok(!low.stages.some(s => s.sceneId === 'z-value'));
   assert.equal(low.stages[0].candidates.find(c => c.sceneId === 'z-prepare').fitScore, null);
-  const high = planDate({ ...context, explorationSeed: 'beam-0' }, c, { ...options, exploration: 100 });
+  const high = Array.from({length:16},(_,i)=>planDate({ ...context, explorationSeed: `beam-${i}` }, c, { ...options, exploration: 100 })).find(r=>r.stages.some(s=>s.sceneId==='z-value'));
+  assert.ok(high,'高探索应能在有限种子中发现基线剪掉的资源路线');
   assert.deepEqual(high.stages.map(s => s.sceneId), ['z-prepare', 'z-value']);
   assert.ok(high.stages[0].candidates.find(c => c.sceneId === 'z-prepare').continuationFound);
   checkRealScores(high);

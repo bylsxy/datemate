@@ -9,6 +9,7 @@ node_modules/
 .venv/
 __pycache__/
 *.log
+tests/*.audit.tap
 .DS_Store
 Thumbs.db
 

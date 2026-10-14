@@ -243,7 +243,7 @@ test('上午下午真实覆盖优于提前结束和长等待，午间间隔允�
   assert.ok(result.metrics.waitingMinutes <= 60);
   assert.ok(result.stages.some(s => !s.mealRole && s.start < 840 && s.end > 720), '12:00..14:00间隔没有安排真实活动');
   assert.ok(result.stages.at(-1).end >= 1020);
-  assert.ok(result.stages.every(s => s.end - s.start === catalog.scenes.find(c => c.id === s.sceneId).minutes));
+  assert.ok(result.stages.every(s => { const [min,max] = catalog.scenes.find(c => c.id === s.sceneId).durationRange; return s.end-s.start===s.minutes && s.minutes>=min && s.minutes<=max; }));
 });
 
 test('纯餐饮和多用途地点分开：玻璃房桌游仍可作为普通阶段，不偷吃一顿饭', () => {

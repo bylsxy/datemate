@@ -30,6 +30,18 @@
 .scene-card:focus-visible{outline-offset:3px}
 .scene-card.is-unselectable{cursor:default}
 .scene-card[hidden]{display:none}
+.duration-controls{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:10px 4px 20px;color:var(--muted);font-size:12px}
+.duration-controls label{display:flex;align-items:center;gap:8px;color:var(--ink)}
+.duration-controls select,.duration-controls button{font:inherit;border:1px solid var(--line,#ddd);border-radius:12px;padding:8px 11px;background:var(--paper,#fff);color:var(--ink)}
+.duration-controls button{cursor:pointer;color:var(--rose);font-weight:600}
+.duration-controls button:disabled{opacity:.5;cursor:wait}
+.duration-controls>span{flex-basis:100%;font-size:11px}
+.restart-plan{display:block;margin:12px 0 0 auto;border:0;background:none;color:var(--rose);font-size:12px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}
+.meal-choice-hint{font-size:13px;color:var(--muted);margin:8px 2px 12px}
+.meal-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:10px;max-width:900px;margin:0 auto 14px}
+.meal-options .activity-card{width:100%;box-sizing:border-box;margin:0}
+.meal-options .activity-card.selected{border-color:var(--rose);background:#fff7fa}
+.meal-options small{font-size:11px;color:var(--rose)}
 .activity-card[hidden]{display:none}
 .activity-card.is-unselectable{cursor:default;border-style:dashed}
 .activity-card.is-unselectable:not(.selected){background:#f5f2f3}
