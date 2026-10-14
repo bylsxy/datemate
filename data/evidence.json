@@ -752,7 +752,7 @@
     "sourceLocator": "user:2026-10-14-scau-wandering-stars",
     "sourceKind": "user_design",
     "assertionKind": "designed",
-    "summary": "用户要求新增全天允许的华农校内游荡场景，以及仅允许晚上和深夜的院楼顶楼看星星场景；两处均属于华农学校级，不绑定泰山区。",
+    "summary": "用户要求全天允许的校内游荡场景适用于所有大学学生，不绑定学校或宿舍区；院楼顶楼看星星仍为华农学校级场景，仅允许晚上和深夜，不绑定泰山区。",
     "reviewStatus": "awaiting_confirmation",
     "publicExcerptAllowed": false,
     "rightsStatus": "original_user_design",

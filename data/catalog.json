@@ -5425,7 +5425,7 @@
       "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
-      "scauOnly": true,
+      "scauOnly": false,
       "minutes": 60,
       "cost": [
         0,
@@ -5448,14 +5448,14 @@
       "availabilityClueSource": "user-provided",
       "id": "scau_wandering",
       "place": {
-        "name": "华农校内游荡",
+        "name": "校内游荡",
         "kind": "ordinary",
         "category": "校园漫步",
-        "universityId": "scau",
+        "universityId": "",
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "不赶着去下一个地方，在华农开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
+      "description": "不赶着去下一个地方，在学校开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
       "tags": [
         "nature",
         "outdoor",
@@ -5468,7 +5468,7 @@
         }
       ],
       "availabilityNote": "按用户要求全天允许规划；实际行走范围仅限开放校园道路，不代表封闭区域或室内场所全天可进入。",
-      "title": "华农校内游荡",
+      "title": "校内游荡",
       "typeId": "scau_wandering",
       "seated": false,
       "default": [],
@@ -13757,7 +13757,7 @@
       {
         "id": "E-user-scau-wandering-stars",
         "type": "evidence",
-        "label": "用户要求新增全天允许的华农校内游荡场景，以及仅允许晚上和深夜的院楼顶楼看星星场景；两处均属于华农学校级，不绑定泰山区。"
+        "label": "用户要求全天允许的校内游荡场景适用于所有大学学生，不绑定学校或宿舍区；院楼顶楼看星星仍为华农学校级场景，仅允许晚上和深夜，不绑定泰山区。"
       },
       {
         "id": "E-user-switch",
@@ -15389,7 +15389,7 @@
       {
         "id": "scau_wandering",
         "type": "scene",
-        "label": "华农校内游荡",
+        "label": "校内游荡",
         "placeKind": "ordinary",
         "category": "校园漫步"
       },
@@ -23814,5 +23814,5 @@
       }
     ]
   },
-  "contentRevision": "abc7c206c6c92c8b"
+  "contentRevision": "c1756332178a7fc1"
 }

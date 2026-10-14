@@ -136,8 +136,11 @@ test('原地休息不能凭空开始或延续到已进入地点闭店之后', ()
   assert.ok(rejected.errors.some(e => e.startsWith('H_SCENE_HOURS:')));
 });
 
-test('真实目录night无学校不可凭rest成行，scau夜晚及晚上+夜晚均有真实开放阶段', () => {
-  assert.equal(planDate(ctx, catalog).ok, false);
+test('真实目录night无学校有通用游荡，scau夜晚及晚上+夜晚均有真实开放阶段', () => {
+  const generic = planDate({ ...ctx, area: 'campus', school: '' }, catalog);
+  assert.equal(generic.ok, true, generic.errors.join(';'));
+  assert.ok(generic.stages.some(s => s.sceneId === 'scau_wandering'));
+  assert.ok(generic.stages.every(s => s.sceneId !== 'faculty_rooftop_stars'));
   for (const periodIds of [['night'], ['evening', 'night']]) {
     const result = planDate({ ...ctx, periodIds, area: 'near', school: 'scau' }, catalog);
     assert.equal(result.ok, true, result.errors.join(';'));

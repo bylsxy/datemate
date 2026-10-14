@@ -1,10 +1,10 @@
 {
   "dataVersion": "knowledge-4.1.0",
-  "contentRevision": "abc7c206c6c92c8b",
+  "contentRevision": "c1756332178a7fc1",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 316.0217,
+      "elapsedMs": 350.0972,
       "status": "feasible",
       "stages": [
         {
@@ -37,7 +37,7 @@
     },
     {
       "label": "exploration90",
-      "elapsedMs": 288.97890000000007,
+      "elapsedMs": 383.69499999999994,
       "status": "feasible",
       "stages": [
         {
@@ -79,7 +79,7 @@
     },
     {
       "label": "replayed",
-      "elapsedMs": 208.9244,
+      "elapsedMs": 178.73919999999998,
       "status": "feasible",
       "stages": [
         {
@@ -112,7 +112,7 @@
     },
     {
       "label": "mall-0",
-      "elapsedMs": 216.57150000000001,
+      "elapsedMs": 253.29179999999997,
       "status": "feasible",
       "stages": [
         {
@@ -145,7 +145,7 @@
     },
     {
       "label": "mall-1",
-      "elapsedMs": 238.8218999999999,
+      "elapsedMs": 278.55560000000014,
       "status": "feasible",
       "stages": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "label": "mall-2",
-      "elapsedMs": 277.72530000000006,
+      "elapsedMs": 252.88200000000006,
       "status": "feasible",
       "stages": [
         {
@@ -224,7 +224,7 @@
     },
     {
       "label": "shared-play",
-      "elapsedMs": 186.18920000000003,
+      "elapsedMs": 205.61910000000034,
       "status": "feasible",
       "stages": [
         {
@@ -263,7 +263,7 @@
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 154.24860000000012,
+      "elapsedMs": 144.23660000000018,
       "status": "feasible",
       "stages": [
         {
@@ -303,77 +303,81 @@
     },
     {
       "label": "nature-play",
-      "elapsedMs": 178.35799999999972,
+      "elapsedMs": 197.06950000000006,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
-          "activityIds": [],
+          "activityIds": [
+            "arcade_race"
+          ],
           "start": 860,
           "end": 920,
-          "fitScore": 89.63
+          "fitScore": 90.08
         },
         {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 85.48
-        },
-        {
-          "sceneId": "dessert",
+          "sceneId": "scau_wandering",
           "activityIds": [
-            "dessert_ice"
+            "bridge_view"
           ],
-          "start": 1010,
-          "end": 1040,
-          "fitScore": 76.98
+          "start": 940,
+          "end": 1000,
+          "fitScore": 86.42
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "start": 1000,
+          "end": 1020,
+          "fitScore": 78.61
         }
       ],
       "cost": [
         10,
-        35
+        15
       ],
-      "digest": "88ed2280"
+      "digest": "6d84b518"
     },
     {
       "label": "play-nature",
-      "elapsedMs": 181.23669999999993,
+      "elapsedMs": 195.78250000000025,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
-          "activityIds": [],
+          "activityIds": [
+            "arcade_race"
+          ],
           "start": 860,
           "end": 920,
-          "fitScore": 89.63
+          "fitScore": 90.08
         },
         {
-          "sceneId": "boardgame",
-          "activityIds": [],
-          "start": 930,
-          "end": 990,
-          "fitScore": 85.48
-        },
-        {
-          "sceneId": "dessert",
+          "sceneId": "scau_wandering",
           "activityIds": [
-            "dessert_ice"
+            "bridge_view"
           ],
-          "start": 1010,
-          "end": 1040,
-          "fitScore": 76.98
+          "start": 940,
+          "end": 1000,
+          "fitScore": 86.42
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "start": 1000,
+          "end": 1020,
+          "fitScore": 78.61
         }
       ],
       "cost": [
         10,
-        35
+        15
       ],
-      "digest": "dd9acce8"
+      "digest": "0fd49252"
     },
     {
       "label": "revision",
-      "elapsedMs": 120.36450000000013,
+      "elapsedMs": 124.55450000000019,
       "status": "feasible",
       "stages": [
         {

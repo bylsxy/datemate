@@ -52,10 +52,10 @@ test('通用校园、学校级、泰山区三层权限及活动范围使用同�
 
 test('全部45个场景显式声明通用学校属性，名称类别描述中的华农地点没有漏标', () => {
   assert.equal(catalog.scenes.length, 45);
-  assert.equal(catalog.scenes.filter(s => s.place.universityId === '').length, 28);
+  assert.equal(catalog.scenes.filter(s => s.place.universityId === '').length, 29);
   const schoolIds = catalog.scenes.filter(s => s.place.universityId === 'scau').map(s => s.id);
-  assert.equal(schoolIds.length, 17);
-  assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 6);
+  assert.equal(schoolIds.length, 16);
+  assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 5);
   assert.equal(catalog.scenes.filter(s => s.place.campusArea === 'taishan').length, 11);
   for (const scene of catalog.scenes) {
     assert.ok(['', 'scau'].includes(scene.place.universityId), scene.id);
@@ -71,8 +71,18 @@ test('全部45个场景显式声明通用学校属性，名称类别描述中的
   assert.equal(isSceneInSchoolScope(museum, { area: 'campus', school: 'scau' }), true);
 });
 
-test('华农校内游荡和院楼顶楼看星星属于学校级，选择华农后不限定宿舍区', () => {
-  for (const id of ['scau_wandering', 'faculty_rooftop_stars']) {
+test('校内游荡保留稳定ID并适用于通用校园，院楼顶楼看星星仍为学校级', () => {
+  const wandering = catalog.scenes.find(s => s.id === 'scau_wandering');
+  assert.ok(wandering);
+  assert.equal(wandering.title, '校内游荡');
+  assert.equal(wandering.place.name, '校内游荡');
+  assert.equal(wandering.scauOnly, false);
+  assert.equal(wandering.place.universityId, '');
+  assert.equal(wandering.place.campusArea, '');
+  for (const area of ['all', 'campus', 'near']) for (const school of ['', 'other', 'scau']) {
+    assert.equal(isSceneInSchoolScope(wandering, { area, school, campusArea: 'taishan' }), true, `${area}/${school}`);
+  }
+  for (const id of ['faculty_rooftop_stars']) {
     const scene = catalog.scenes.find(s => s.id === id);
     assert.ok(scene, id);
     assert.equal(scene.place.universityId, 'scau', id);
@@ -84,6 +94,18 @@ test('华农校内游荡和院楼顶楼看星星属于学校级，选择华农�
       }
     }
     assert.equal(isSceneInSchoolScope(scene, { area: 'all', school: 'scau', campusArea: 'taishan' }), false, id);
+  }
+});
+
+test('未选华农的真实目录在校内及周边night自动规划包含校内游荡', () => {
+  for (const area of ['campus', 'near']) for (const school of ['', 'other']) {
+    const result = planDate({ ...context, area, school, campusArea: 'taishan', periodIds: ['night'] }, catalog);
+    assert.equal(result.ok, true, `${area}/${school}: ${result.errors.join(';')}`);
+    assert.ok(result.stages.some(s => s.sceneId === 'scau_wandering'), `${area}/${school}`);
+    assert.ok(choices(result).every(id => isSceneInSchoolScope(catalog.scenes.find(s => s.id === id), result.context)));
+    assert.ok(!choices(result).includes('faculty_rooftop_stars'));
+    assert.equal(result.metrics.periodCoverageSatisfied, true);
+    assert.equal(result.metrics.endingCoverageSatisfied, true);
   }
 });
 

@@ -1,22 +1,22 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=2a1461a1394feb8d';
-import {createTimeline} from './timeline.mjs?v=2a1461a1394feb8d';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=2a1461a1394feb8d';
-import {createReasonView} from './reasons-view.mjs?v=2a1461a1394feb8d';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=2a1461a1394feb8d';
-import {createPlacePicker} from './place-picker.mjs?v=2a1461a1394feb8d';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=2a1461a1394feb8d';
-import {dietaryOptions} from './data/activities.mjs?v=2a1461a1394feb8d';
-import * as reasoning from './reasoning.mjs?v=2a1461a1394feb8d';
-import {normalizePeriods} from './time-periods.mjs?v=2a1461a1394feb8d';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=2a1461a1394feb8d';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent} from './planning-intent.mjs?v=2a1461a1394feb8d';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=2282fe29fa1beeb7';
+import {createTimeline} from './timeline.mjs?v=2282fe29fa1beeb7';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=2282fe29fa1beeb7';
+import {createReasonView} from './reasons-view.mjs?v=2282fe29fa1beeb7';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=2282fe29fa1beeb7';
+import {createPlacePicker} from './place-picker.mjs?v=2282fe29fa1beeb7';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=2282fe29fa1beeb7';
+import {dietaryOptions} from './data/activities.mjs?v=2282fe29fa1beeb7';
+import * as reasoning from './reasoning.mjs?v=2282fe29fa1beeb7';
+import {normalizePeriods} from './time-periods.mjs?v=2282fe29fa1beeb7';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=2282fe29fa1beeb7';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent} from './planning-intent.mjs?v=2282fe29fa1beeb7';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=2a1461a1394feb8d',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=2282fe29fa1beeb7',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,getIntent:snapshot,onCandidateVisible:prioritizeCandidate});
@@ -64,7 +64,6 @@ function planningError(r,context){
   if(errors.includes('H_REQUIRED'))return '当前条件无法满足全部必去地点，请调整时段或减少必去地点。';
   if(errors.includes('H_FATIGUE'))return '这项玩法接上去会太累，先休息一段或换个轻松的选择。';
   if(errors.includes('H_SCENE_HOURS'))return '所选地点在这个时间不允许安排，请换一个开放地点或调整时段。';
-  if(context.periodIds?.includes('night')&&context.school!=='scau')return '当前知识库暂未收录适用于你学校的深夜开放场景，请调整时段；华农学生可在学校条件中勾选华农。';
   return '当前条件还没有可行安排，请调整条件或用餐选择。';
 }
 function snapshot(){return clone(pending?.next || active?.next || state);}

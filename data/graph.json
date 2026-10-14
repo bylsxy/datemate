@@ -294,7 +294,7 @@
     {
       "id": "E-user-scau-wandering-stars",
       "type": "evidence",
-      "label": "用户要求新增全天允许的华农校内游荡场景，以及仅允许晚上和深夜的院楼顶楼看星星场景；两处均属于华农学校级，不绑定泰山区。"
+      "label": "用户要求全天允许的校内游荡场景适用于所有大学学生，不绑定学校或宿舍区；院楼顶楼看星星仍为华农学校级场景，仅允许晚上和深夜，不绑定泰山区。"
     },
     {
       "id": "E-user-switch",
@@ -1926,7 +1926,7 @@
     {
       "id": "scau_wandering",
       "type": "scene",
-      "label": "华农校内游荡",
+      "label": "校内游荡",
       "placeKind": "ordinary",
       "category": "校园漫步"
     },

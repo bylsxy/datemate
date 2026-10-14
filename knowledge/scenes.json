@@ -2389,7 +2389,7 @@
       "availabilityClueSource": "user-provided"
     },
     {
-      "scauOnly": true,
+      "scauOnly": false,
       "minutes": 60,
       "cost": [
         0,
@@ -2412,14 +2412,14 @@
       "availabilityClueSource": "user-provided",
       "id": "scau_wandering",
       "place": {
-        "name": "华农校内游荡",
+        "name": "校内游荡",
         "kind": "ordinary",
         "category": "校园漫步",
-        "universityId": "scau",
+        "universityId": "",
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "不赶着去下一个地方，在华农开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
+      "description": "不赶着去下一个地方，在学校开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
       "tags": [
         "nature",
         "outdoor",
