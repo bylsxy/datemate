@@ -1,4 +1,4 @@
-import {selectStageIntent, selectMealIntent, selectDepartureIntent, projectStageChoice} from './planning-intent.mjs?v=18b3ef48b9ee1cba';
+import {selectStageIntent, selectMealIntent, selectDepartureIntent, projectStageChoice} from './planning-intent.mjs?v=bc440f8eb58e287a';
 
 // 候选验证与当前安排分开：只补全卡片评分，不改选中地点、时间线或复盘输出。
 export const candidateKey = ({stageIndex, sceneId, mealRole}) => `${mealRole ? `meal-${mealRole}` : `stage-${stageIndex}`}:${sceneId}`;

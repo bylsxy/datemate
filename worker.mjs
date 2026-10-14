@@ -1,6 +1,6 @@
-import { createPlanner, createContinuationSearch, planDate, verifyPlanWitness } from './engine.mjs?v=18b3ef48b9ee1cba';
-import { catalog, rules, graph } from './data/catalog.mjs?v=18b3ef48b9ee1cba';
-import { createCandidateScheduler } from './candidate-validation.mjs?v=18b3ef48b9ee1cba';
+import { createPlanner, createContinuationSearch, planDate, verifyPlanWitness } from './engine.mjs?v=bc440f8eb58e287a';
+import { catalog, rules, graph } from './data/catalog.mjs?v=bc440f8eb58e287a';
+import { createCandidateScheduler } from './candidate-validation.mjs?v=bc440f8eb58e287a';
 
 const knowledge = { ...catalog, rules, graph };
 const planner = createPlanner(knowledge);
@@ -25,7 +25,7 @@ self.onmessage = ({ data }) => {
   if (data.type === 'pauseValidation') {validation.pause(data.paused);return;}
   try {
     const started = performance.now();
-    const result = data.search || data.knownPlan ? planDate(data.state.context, knowledge, {...data.search, knownPlan:data.knownPlan??undefined, exploration:data.state.exploration, fixedPrefix:data.state.prefix}) : planner.plan(data.state.context, data.state.exploration, data.state.prefix);
+    const result = data.search || data.knownPlan || data.selectionMode ? planDate(data.state.context, knowledge, {...data.search, selectionMode:data.selectionMode??data.search?.selectionMode, knownPlan:data.knownPlan??undefined, exploration:data.state.exploration, fixedPrefix:data.state.prefix}) : planner.plan(data.state.context, data.state.exploration, data.state.prefix);
     self.postMessage({ id: data.id, result, elapsed: performance.now() - started });
   } catch (error) {
     self.postMessage({ id: data.id, error: error.message || String(error) });

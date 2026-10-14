@@ -1,7 +1,7 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=18b3ef48b9ee1cba';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=18b3ef48b9ee1cba';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=18b3ef48b9ee1cba';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=18b3ef48b9ee1cba';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=bc440f8eb58e287a';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=bc440f8eb58e287a';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=bc440f8eb58e287a';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=bc440f8eb58e287a';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
@@ -186,7 +186,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   }
   function isExplorationView(view){
     const stage=view.entry?.stage;
-    return stage?.decisionMode==='seeded_exploration'||stage?.choiceMode==='seeded_exploration'||!!stage?.virtualMeal&&stage.decisionMode==null&&stage.choiceMode==null&&result?.exploration>0;
+    return stage?.displayMode==='seeded_exploration'||result?.displayMode==='seeded_exploration'||stage?.decisionMode==='seeded_exploration'||stage?.choiceMode==='seeded_exploration'||!!stage?.virtualMeal&&stage.decisionMode==null&&stage.choiceMode==null&&result?.exploration>0;
   }
   const displayIndex=candidate=>Number.isFinite(candidate?.displayOrderIndex)?candidate.displayOrderIndex:Number.isFinite(candidate?.explorationRank)?candidate.explorationRank:Infinity;
   function queueCandidateSort(view) {
@@ -373,8 +373,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       ['fixedStartMinute','fixedEndMinute','mealRole'].every(key=>previous[key]===next[key])&&
       (previous.transfer||0)===(next.transfer||0)&&!!previous.virtualMeal===!!next.virtualMeal&&!!previous.departure===!!next.departure;
   }
-  /** preserveKey 按现有 DOM 截到当前视图；未传沿用 pending，preserveThrough:-1 解除保留。 */
-  function render(nextResult,{preserveThrough=pendingPreserveThrough,preserveKey}={}) {
+  /** preserveKey 按现有 DOM 截到当前视图；centerSelected 只居中横条，不改变保留顺序。 */
+  function render(nextResult,{preserveThrough=pendingPreserveThrough,preserveKey,centerSelected=false}={}) {
     // 必须在 index 更新前冻结范围；虚拟用餐变为真实阶段时索引可能改变。
     const retention=preserveThrough<0?{keys:[],key:null}:pendingPreservation&&preserveThrough===pendingPreserveThrough&&(preserveKey==null||preserveKey===pendingPreservation.key)?pendingPreservation:preservationThrough(preserveThrough,preserveKey);
     const preserved=new Map(retention.keys.filter(key=>views.has(key)).map(key=>[key,{view:views.get(key),full:key!==retention.key}]));
@@ -420,9 +420,10 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
         // 只有真实内容一致时保留前段节点；事件索引跟随稳定 key 对应的新阶段。
         for(const card of view.cards.values())card.dataset.stage=index;
         for(const input of view.activities.querySelectorAll('input[data-activity]'))input.dataset.stage=index;
+        if(centerSelected)centerSelection(view,true);
         watchVisibility(view);return;
       }
-      updateCards(view,stage,meal,{preserve:!!retention,center:!retention?.full&&wasSelected!==stage.sceneId});updateStageContent(view,stage);
+      updateCards(view,stage,meal,{preserve:!!retention,center:centerSelected||!retention?.full&&wasSelected!==stage.sceneId});updateStageContent(view,stage);
       watchVisibility(view);
     });
     registerActions();
@@ -492,7 +493,6 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   root.addEventListener('click',event=>{
     const card=event.target.closest('.scene-card');if(!card||card.dataset.dragged==='1')return;
     const view=views.get(card.dataset.view);if(!view)return;
-    if(result?.ok!==false&&view.selectedId===card.dataset.scene)return;
     const action=enabledAction(card);if(!action&&!recoveryMeal(card))return;
     lockThrough(view);
     const index=view.index,candidate=view.candidates.get(card.dataset.scene);

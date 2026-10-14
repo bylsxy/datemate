@@ -37,7 +37,7 @@ function fixture(){
   const win={requestAnimationFrame:fn=>{frames.set(++next,fn);return next;},cancelAnimationFrame:id=>frames.delete(id),setTimeout:fn=>{timers.set(++next,fn);return next;},clearTimeout:id=>timers.delete(id),addEventListener(){},removeEventListener(){},innerWidth:500,innerHeight:500};
   const doc={defaultView:win,documentElement:{clientWidth:500,clientHeight:500},createElement:tag=>new Element(doc,tag)};
   const root=new Element(doc);doc.querySelector=()=>root;doc.activeElement=null;
-  const deps={isSceneInSchoolScope,esc:value=>value,formatTime:String,toggleActivity:(_scene,ids,id)=>ids.includes(id)?ids.filter(item=>item!==id):[...ids,id],syncCarousel(){},centerCard:(strip,id)=>centers.push([strip,id]),attachCarousel:strip=>({update({selectedId}){for(const card of strip.children){card.classList.toggle('selected',card.dataset.scene===selectedId);card.setAttribute('aria-checked',String(card.dataset.scene===selectedId));}},destroy(){}})};
+  const deps={isSceneInSchoolScope,esc:value=>value,formatTime:String,toggleActivity:(_scene,ids,id)=>ids.includes(id)?ids.filter(item=>item!==id):[...ids,id],syncCarousel(){},centerCard:(strip,id,options)=>centers.push([strip,id,options]),attachCarousel:strip=>({update({selectedId}){for(const card of strip.children){card.classList.toggle('selected',card.dataset.scene===selectedId);card.setAttribute('aria-checked',String(card.dataset.scene===selectedId));}},destroy(){}})};
   const scenes=['a','b','c','d'].map(id=>({id,title:id,description:id,activities:[{id:`${id}-act`,title:id,description:id,group:'玩法',mealRoles:['breakfast']}],mealRoles:['breakfast'],default:[`${id}-act`]}));
   let intent={prefix:[],context:{dietaryRestrictions:[]}};
   return {doc,root,deps,centers,catalog:{scenes},getIntent:()=>intent,setIntent:value=>intent=value,flush(){for(const queue of [timers,frames])for(const [id,fn]of [...queue]){queue.delete(id);fn();}},emit(type,target){for(const fn of root.listeners[type]||[])fn({target});}};
@@ -188,6 +188,12 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     assert.equal(latest.stages[0].scoreReference.total,20);
     const unchangedInput=earlier.querySelector('input[data-activity="b-act"]');
     timeline.render(structuredClone(latest),{preserveThrough:2,preserveKey:'stage-2'});
+    assert.equal(earlier.querySelector('input[data-activity="b-act"]'),unchangedInput);
+    // 显式居中也覆盖内容完全未变的前段与当前段，只改变横条滚动。
+    const beforeCenter=f.centers.length,retainedOrders=f.root.children.map(order);
+    timeline.render(structuredClone(latest),{preserveThrough:2,preserveKey:'stage-2',centerSelected:true});
+    assert.deepEqual(f.centers.slice(beforeCenter),f.root.children.map((view,index)=>[view.querySelector('.scene-strip'),latest.stages[index].sceneId,{smooth:true}]));
+    assert.deepEqual(f.root.children.map(order),retainedOrders);
     assert.equal(earlier.querySelector('input[data-activity="b-act"]'),unchangedInput);
     // 失败用餐回退和旧候选保留不能泄漏专属校园场景。
     Object.assign(f.catalog.scenes[1],{scauOnly:true,area:'campus',place:{universityId:'scau',campusArea:'taishan'}});

@@ -1,11 +1,11 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=18b3ef48b9ee1cba';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=18b3ef48b9ee1cba';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=18b3ef48b9ee1cba';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=18b3ef48b9ee1cba';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=18b3ef48b9ee1cba';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=bc440f8eb58e287a';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=bc440f8eb58e287a';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=bc440f8eb58e287a';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=bc440f8eb58e287a';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=bc440f8eb58e287a';
 
-export { canonical, digest } from './reasoning.mjs?v=18b3ef48b9ee1cba';
-export const VERSION = 'datemate-engine-3.3.2';
+export { canonical, digest } from './reasoning.mjs?v=bc440f8eb58e287a';
+export const VERSION = 'datemate-engine-3.3.3';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
@@ -516,6 +516,8 @@ function* searchDate(input = {}, catalog, options = {}) {
   const periodDefaults = ctx.periodIds ? { maxStages: Math.min(24, Math.max(CONFIG.maxStages, Math.ceil(ctx.duration / 45) + 2)), beamWidth: 8, activitySubsetLimit: 8 } : {};
   const rawConfig = { ...CONFIG, ...periodDefaults, candidateLimit: CONFIG.candidateLimit + Math.round(12 * explorer.strength), ...(input.searchConfig || {}), ...options };
   const config = { method: rawConfig.method === 'exact' ? 'exact' : 'bounded', maxStages: integer(rawConfig.maxStages ?? rawConfig.maxDepth, CONFIG.maxStages, 1, 24), beamWidth: integer(rawConfig.beamWidth, CONFIG.beamWidth, 1, 2048), maxExpandedNodes: integer(rawConfig.maxExpandedNodes, CONFIG.maxExpandedNodes, 1, 1000000), maxCandidateExpandedNodes: integer(rawConfig.maxCandidateExpandedNodes, CONFIG.maxCandidateExpandedNodes, 0, 100000), activitySubsetLimit: integer(rawConfig.activitySubsetLimit, CONFIG.activitySubsetLimit, 1, 4096), candidateLimit: integer(rawConfig.candidateLimit, CONFIG.candidateLimit, 1, 64), tieBreak: 'stable-id' };
+  // 主动选择后按真实效用重新择优；探索仍拓宽搜索和展示，最终选择方式单独记录以便复盘。
+  config.selectionMode = rawConfig.selectionMode === 'utility_best' || !explorer.strength ? 'utility_best' : 'seeded_exploration';
   if (ctx.endAfterStage !== null) config.maxStages = Math.min(config.maxStages, ctx.endAfterStage + 1);
   if (prefix.length > config.maxStages) return errorResponse('invalid_input', [fail('H_PREFIX_LENGTH', '固定前缀超过主动结束位置或阶段上限。')], ctx, versions);
   if (ctx.requiredSceneIds.length > config.maxStages) return errorResponse('invalid_input', [fail('H_REQUIRED_LENGTH', '必去地点数量超过当前阶段上限。')], ctx, versions);
@@ -693,8 +695,10 @@ function* searchDate(input = {}, catalog, options = {}) {
   finished.sort((a, b) => orderStates(a, b, exploration));
   const selection = explorer.choose(finished, { key: stateKey, value: st => objective(st, exploration), scope: 'complete-plan' });
   // 后续候选评分取发现的最高真实效用，不把探索选择的噪声带入契合分。
-  const best = options.continuationOnly ? finished[0] : selection.selected;
-  const explorationSelection = { version: EXPLORATION_VERSION, seed: ctx.explorationSeed, strength: explorer.strength, mode: explorer.strength ? 'seeded_exploration' : 'utility_best', label: explorer.strength ? '探索选择' : '效用择优', objective: objective(best, exploration), bestDiscoveredObjective: selection.bestDiscoveredObjective, utilityGap: selection.utilityGap, maxUtilityGap: selection.maxUtilityGap, searchNoise: selection.searchNoise };
+  const preferBest = options.continuationOnly || config.selectionMode === 'utility_best';
+  const best = preferBest ? finished[0] : selection.selected;
+  const displayMode = explorer.strength ? 'seeded_exploration' : 'utility_best';
+  const explorationSelection = { version: EXPLORATION_VERSION, seed: ctx.explorationSeed, strength: explorer.strength, mode: config.selectionMode, label: preferBest ? '效用择优' : '探索选择', objective: objective(best, exploration), bestDiscoveredObjective: selection.bestDiscoveredObjective, utilityGap: preferBest ? 0 : selection.utilityGap, maxUtilityGap: preferBest ? 0 : selection.maxUtilityGap, searchNoise: preferBest ? 0 : selection.searchNoise };
   if (options.continuationOnly) return continuationResult(best, best === known?.state ? known.prefixUtility : candidatePrefixUtility);
   function continuationValues(terminals, searchHistory) {
     const values = new Map();
@@ -767,7 +771,7 @@ function* searchDate(input = {}, catalog, options = {}) {
     if (!explorationDisplay) ordered.sort(orderEntries);
     ordered = ordered.map((candidate, rank) => ({ ...candidate, explorationRank: rank, displayOrderIndex: rank }));
     const decisionMode = lockedStage ? 'manual' : explorationSelection.mode;
-    const stage = { ...original, index, fitScore: own.fitScore, score: own.score, recommendationIndex: own.score, scoreStatus: own.scoreStatus, evaluationStatus: own.evaluationStatus, scoreVersion: own.scoreVersion, scoreReference, rawUtility: own.rawUtility, candidates: ordered, manual: index < prefix.length, selected: true, choiceMode: decisionMode, decisionMode, selectionMode: decisionMode, selectionLabel: lockedStage ? '人工固定' : explorationSelection.label };
+    const stage = { ...original, index, fitScore: own.fitScore, score: own.score, recommendationIndex: own.score, scoreStatus: own.scoreStatus, evaluationStatus: own.evaluationStatus, scoreVersion: own.scoreVersion, scoreReference, rawUtility: own.rawUtility, candidates: ordered, manual: index < prefix.length, selected: true, choiceMode: decisionMode, decisionMode, selectionMode: decisionMode, displayMode: explorationDisplay ? 'seeded_exploration' : 'utility_best', selectionLabel: lockedStage ? '人工固定' : explorationSelection.label };
     before = ownState;
     return stage;
   });
@@ -793,7 +797,7 @@ function* searchDate(input = {}, catalog, options = {}) {
         break;
       }
     }
-    const exploredMenu = explorer.strength > 0 && stageIndex !== null && stages[stageIndex].decisionMode === 'seeded_exploration';
+    const exploredMenu = explorer.strength > 0 && stageIndex !== null && stages[stageIndex].displayMode === 'seeded_exploration';
     const menuEntries = [...candidates.values()].sort((a, b) => Number(b.continuationFound) - Number(a.continuationFound) || (b.fitScore ?? -Infinity) - (a.fitScore ?? -Infinity) || cmp(a.sceneId, b.sceneId));
     const ordered = (exploredMenu ? explorer.display(menuEntries, menuEntries.length, { key: c => c.sceneId, confirmed: c => c.continuationFound, scope: `meal-cards:${meal.mealRole}:${stateKey(menuState)}` }) : menuEntries)
       .map((candidate, rank) => ({ ...candidate, explorationRank: rank, displayOrderIndex: rank }));
@@ -809,7 +813,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   const warnings = [...new Set(stages.flatMap(s => s.warnings))];
   const replay = { schema: 'datemate-replay-3.0', versions, context: ctx, exploration, explorationSeed: ctx.explorationSeed, explorationVersion: EXPLORATION_VERSION, prefix, anchors, search: config, ...(known && !known.errors.length ? { knownPlan: compactWitness(known.state) } : {}) };
   const core = { stages: stages.map(s => ({ sceneId: s.sceneId, activityIds: s.activityIds, ...(s.mealRole ? { mealRole: s.mealRole } : {}), start: s.start, end: s.end, costCents: s.costCents, score: s.score })), mealRequirements, ...(departure ? { departure } : {}), metrics: measured };
-  return { ok: true, status: 'feasible', searchStatus: 'heuristic_feasible_not_proved_optimal', context: ctx, exploration, explorationSeed: ctx.explorationSeed, choiceMode: explorationSelection.mode, decisionMode: explorationSelection.mode, explorationSelection, prefix, anchors, stages, continuationWitness: compactWitness(best), mealRequirements, ...(departure ? { departure } : {}), totalCost: measured.totalCost, totalCostCents: measured.totalCostCents, endingBuffer: measured.endingBuffer, metrics: measured, candidates: stages.map(s => s.candidates), paretoPlans: pareto(finished, ctx, exploration), trace: stages.flatMap(s => s.trace), search: stats, evaluated: stats.expandedNodes, versions, assumptions, warnings, errors: [], suggestions: [], replay, fingerprint: digest(replay), inputDigest: digest(replay), outputFingerprint: digest(core), outputDigest: digest(core) };
+  return { ok: true, status: 'feasible', searchStatus: 'heuristic_feasible_not_proved_optimal', context: ctx, exploration, explorationSeed: ctx.explorationSeed, choiceMode: explorationSelection.mode, decisionMode: explorationSelection.mode, displayMode, explorationSelection, prefix, anchors, stages, continuationWitness: compactWitness(best), mealRequirements, ...(departure ? { departure } : {}), totalCost: measured.totalCost, totalCostCents: measured.totalCostCents, endingBuffer: measured.endingBuffer, metrics: measured, candidates: stages.map(s => s.candidates), paretoPlans: pareto(finished, ctx, exploration), trace: stages.flatMap(s => s.trace), search: stats, evaluated: stats.expandedNodes, versions, assumptions, warnings, errors: [], suggestions: [], replay, fingerprint: digest(replay), inputDigest: digest(replay), outputFingerprint: digest(core), outputDigest: digest(core) };
 }
 
 export function createPlanner(catalog, options = {}) {
