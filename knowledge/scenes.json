@@ -2387,6 +2387,108 @@
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–24:00，仅用于用户提出的校园停留候选；夜间开放线索为user-provided，不是官方全天开放或室内进入许可。实际通行、照明及开放须确认。",
       "availabilityClueSource": "user-provided"
+    },
+    {
+      "scauOnly": true,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-scau-wandering-stars"
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "id": "scau_wandering",
+      "place": {
+        "name": "华农校内游荡",
+        "kind": "ordinary",
+        "category": "校园漫步",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "不赶着去下一个地方，在华农开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
+      "tags": [
+        "nature",
+        "outdoor",
+        "daily"
+      ],
+      "activityIds": [
+        "campus_watch",
+        "bridge_view",
+        "photo_pair"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityNote": "按用户要求全天允许规划；实际行走范围仅限开放校园道路，不代表封闭区域或室内场所全天可进入。"
+    },
+    {
+      "scauOnly": true,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-scau-wandering-stars"
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "id": "faculty_rooftop_stars",
+      "place": {
+        "name": "院楼顶楼看星星",
+        "kind": "ordinary",
+        "category": "校园观星停留地",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "在允许进入、有护栏的院楼顶楼一起看看星星、聊聊天；不翻越门禁，不靠近楼顶边缘，遇到下雨或大风就换个地方。",
+      "tags": [
+        "nature",
+        "outdoor",
+        "romantic"
+      ],
+      "activityIds": [
+        "campus_watch"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 360
+        },
+        {
+          "startMinute": 1140,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityNote": "按用户要求允许19:00–次日06:00规划；具体院楼、顶楼进入许可和观星条件须现场确认，不表示任意院楼楼顶均可进入。"
     }
   ]
 }

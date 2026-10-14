@@ -1,10 +1,10 @@
 {
   "dataVersion": "knowledge-4.1.0",
-  "contentRevision": "599942b35ffab2b0",
+  "contentRevision": "abc7c206c6c92c8b",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 313.3144,
+      "elapsedMs": 316.0217,
       "status": "feasible",
       "stages": [
         {
@@ -37,7 +37,7 @@
     },
     {
       "label": "exploration90",
-      "elapsedMs": 497.89090000000004,
+      "elapsedMs": 288.97890000000007,
       "status": "feasible",
       "stages": [
         {
@@ -79,7 +79,7 @@
     },
     {
       "label": "replayed",
-      "elapsedMs": 163.26070000000004,
+      "elapsedMs": 208.9244,
       "status": "feasible",
       "stages": [
         {
@@ -112,7 +112,7 @@
     },
     {
       "label": "mall-0",
-      "elapsedMs": 229.5900999999999,
+      "elapsedMs": 216.57150000000001,
       "status": "feasible",
       "stages": [
         {
@@ -145,7 +145,7 @@
     },
     {
       "label": "mall-1",
-      "elapsedMs": 186.30100000000016,
+      "elapsedMs": 238.8218999999999,
       "status": "feasible",
       "stages": [
         {
@@ -180,7 +180,7 @@
     },
     {
       "label": "mall-2",
-      "elapsedMs": 227.3447000000001,
+      "elapsedMs": 277.72530000000006,
       "status": "feasible",
       "stages": [
         {
@@ -224,7 +224,7 @@
     },
     {
       "label": "shared-play",
-      "elapsedMs": 159.83389999999986,
+      "elapsedMs": 186.18920000000003,
       "status": "feasible",
       "stages": [
         {
@@ -263,7 +263,7 @@
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 130.43849999999998,
+      "elapsedMs": 154.24860000000012,
       "status": "feasible",
       "stages": [
         {
@@ -303,7 +303,7 @@
     },
     {
       "label": "nature-play",
-      "elapsedMs": 176.23450000000003,
+      "elapsedMs": 178.35799999999972,
       "status": "feasible",
       "stages": [
         {
@@ -338,7 +338,7 @@
     },
     {
       "label": "play-nature",
-      "elapsedMs": 128.65179999999964,
+      "elapsedMs": 181.23669999999993,
       "status": "feasible",
       "stages": [
         {
@@ -373,7 +373,7 @@
     },
     {
       "label": "revision",
-      "elapsedMs": 125.05079999999998,
+      "elapsedMs": 120.36450000000013,
       "status": "feasible",
       "stages": [
         {

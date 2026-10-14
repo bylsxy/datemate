@@ -50,12 +50,12 @@ test('通用校园、学校级、泰山区三层权限及活动范围使用同�
   assert.equal(isSceneInSchoolScope(synthetic.scenes.find(s => s.id === 'rest'), { area: 'campus' }), true);
 });
 
-test('全部43个场景显式声明通用学校属性，名称类别描述中的华农地点没有漏标', () => {
-  assert.equal(catalog.scenes.length, 43);
+test('全部45个场景显式声明通用学校属性，名称类别描述中的华农地点没有漏标', () => {
+  assert.equal(catalog.scenes.length, 45);
   assert.equal(catalog.scenes.filter(s => s.place.universityId === '').length, 28);
   const schoolIds = catalog.scenes.filter(s => s.place.universityId === 'scau').map(s => s.id);
-  assert.equal(schoolIds.length, 15);
-  assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 4);
+  assert.equal(schoolIds.length, 17);
+  assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 6);
   assert.equal(catalog.scenes.filter(s => s.place.campusArea === 'taishan').length, 11);
   for (const scene of catalog.scenes) {
     assert.ok(['', 'scau'].includes(scene.place.universityId), scene.id);
@@ -69,6 +69,22 @@ test('全部43个场景显式声明通用学校属性，名称类别描述中的
   assert.equal(museum.place.campusArea, '');
   assert.equal(isSceneInSchoolScope(museum, { area: 'campus' }), false);
   assert.equal(isSceneInSchoolScope(museum, { area: 'campus', school: 'scau' }), true);
+});
+
+test('华农校内游荡和院楼顶楼看星星属于学校级，选择华农后不限定宿舍区', () => {
+  for (const id of ['scau_wandering', 'faculty_rooftop_stars']) {
+    const scene = catalog.scenes.find(s => s.id === id);
+    assert.ok(scene, id);
+    assert.equal(scene.place.universityId, 'scau', id);
+    assert.equal(scene.place.campusArea, '', id);
+    for (const area of ['campus', 'near']) {
+      for (const campusArea of ['', 'taishan', 'other']) {
+        assert.equal(isSceneInSchoolScope(scene, { area, campusArea }), false, `${id}/${area}/${campusArea}`);
+        assert.equal(isSceneInSchoolScope(scene, { area, school: 'scau', campusArea }), true, `${id}/${area}/${campusArea}`);
+      }
+    }
+    assert.equal(isSceneInSchoolScope(scene, { area: 'all', school: 'scau', campusArea: 'taishan' }), false, id);
+  }
 });
 
 test('构建器拒绝未知学校、未知校区和不一致的专属地点属性', () => {

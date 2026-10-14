@@ -1,10 +1,10 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=bc440f8eb58e287a';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=bc440f8eb58e287a';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=bc440f8eb58e287a';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=bc440f8eb58e287a';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=bc440f8eb58e287a';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=2a1461a1394feb8d';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=2a1461a1394feb8d';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=2a1461a1394feb8d';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=2a1461a1394feb8d';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=2a1461a1394feb8d';
 
-export { canonical, digest } from './reasoning.mjs?v=bc440f8eb58e287a';
+export { canonical, digest } from './reasoning.mjs?v=2a1461a1394feb8d';
 export const VERSION = 'datemate-engine-3.3.3';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;

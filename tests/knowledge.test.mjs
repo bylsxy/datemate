@@ -119,7 +119,8 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
   assert.ok(sources.every(s => !s.rawTextIncluded && /^[a-f0-9]{64}$/.test(s.sha256)));
   assert.ok(evidence.every(e => !e.publicExcerptAllowed && !Object.hasOwn(e, 'originalExcerpt')));
   const userEvidence = evidence.filter(e => e.sourceKind === 'user_design');
-  assert.equal(userEvidence.length, 8);
+  assert.equal(userEvidence.length, 9);
+  assert.ok(userEvidence.some(e => e.id === 'E-user-scau-wandering-stars'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-scau-night-stops'));
   assert.ok(userEvidence.some(e => e.id === 'E-user-campus-canteen'));
   assert.ok(userEvidence.every(e => e.sourceDocumentId === null && e.reviewStatus === 'awaiting_confirmation'));

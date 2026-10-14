@@ -1,7 +1,7 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=bc440f8eb58e287a';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=bc440f8eb58e287a';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=bc440f8eb58e287a';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=bc440f8eb58e287a';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=2a1461a1394feb8d';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=2a1461a1394feb8d';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=2a1461a1394feb8d';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=2a1461a1394feb8d';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;

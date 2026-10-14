@@ -3225,6 +3225,134 @@
       "mealActivityIds": []
     },
     {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "scauOnly": true,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-scau-wandering-stars"
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "id": "faculty_rooftop_stars",
+      "place": {
+        "name": "院楼顶楼看星星",
+        "kind": "ordinary",
+        "category": "校园观星停留地",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "在允许进入、有护栏的院楼顶楼一起看看星星、聊聊天；不翻越门禁，不靠近楼顶边缘，遇到下雨或大风就换个地方。",
+      "tags": [
+        "nature",
+        "outdoor",
+        "romantic"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 360
+        },
+        {
+          "startMinute": 1140,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityNote": "按用户要求允许19:00–次日06:00规划；具体院楼、顶楼进入许可和观星条件须现场确认，不表示任意院楼楼顶均可进入。",
+      "title": "院楼顶楼看星星",
+      "typeId": "faculty_rooftop_stars",
+      "seated": false,
+      "default": [],
+      "mealRoles": [],
+      "source": [
+        "user-scau-wandering-stars"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 1,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_watch",
+          "title": "观察景物",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 1,
+          "description": "把注意力放在共同看到的东西上。",
+          "tags": [
+            "nature",
+            "quiet"
+          ],
+          "evidenceIds": [
+            "E-P001"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": 1
+          },
+          "allowedSceneIds": [
+            "faculty_rooftop_stars"
+          ],
+          "allowedSceneTypes": [
+            "faculty_rooftop_stars"
+          ]
+        }
+      ],
+      "mealActivityIds": []
+    },
+    {
       "fit": 80,
       "novelty": 65,
       "mental": 1,
@@ -5285,6 +5413,222 @@
         "mentalLoad": 1
       },
       "activities": [],
+      "mealActivityIds": []
+    },
+    {
+      "fit": 78,
+      "novelty": 45,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "local_source_summary_reviewed_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "scauOnly": true,
+      "minutes": 60,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 1,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "quiet": false,
+      "weather": [
+        "clear",
+        "unknown"
+      ],
+      "windows": [],
+      "evidenceIds": [
+        "E-user-scau-wandering-stars"
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityClueSource": "user-provided",
+      "id": "scau_wandering",
+      "place": {
+        "name": "华农校内游荡",
+        "kind": "ordinary",
+        "category": "校园漫步",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "不赶着去下一个地方，在华农开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
+      "tags": [
+        "nature",
+        "outdoor",
+        "daily"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 0,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityNote": "按用户要求全天允许规划；实际行走范围仅限开放校园道路，不代表封闭区域或室内场所全天可进入。",
+      "title": "华农校内游荡",
+      "typeId": "scau_wandering",
+      "seated": false,
+      "default": [],
+      "mealRoles": [],
+      "source": [
+        "user-scau-wandering-stars"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "provides": [],
+      "consumes": [],
+      "preparationIds": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 0,
+        "novelty": 45,
+        "physicalLoad": 1,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "campus_watch",
+          "title": "观察景物",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 1,
+          "description": "把注意力放在共同看到的东西上。",
+          "tags": [
+            "nature",
+            "quiet"
+          ],
+          "evidenceIds": [
+            "E-P001"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": 1
+          },
+          "allowedSceneIds": [
+            "scau_wandering"
+          ],
+          "allowedSceneTypes": [
+            "scau_wandering"
+          ]
+        },
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 45,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "bridge_view",
+          "title": "找一个共同景物",
+          "description": "各自挑一个喜欢的细节，再看看对方选的地方。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "tags": [
+            "nature",
+            "photo"
+          ],
+          "evidenceIds": [
+            "E-campus-walk"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 45,
+            "physicalLoad": 0
+          },
+          "allowedSceneIds": [
+            "scau_wandering"
+          ],
+          "allowedSceneTypes": [
+            "scau_wandering"
+          ]
+        },
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 45,
+          "requiresExplicitConsent": true,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "photo_pair",
+          "title": "轮流拍一组照片",
+          "description": "双方同意再拍，照片用途由本人决定。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 1,
+          "tags": [
+            "photo",
+            "creative"
+          ],
+          "provides": [
+            "photo_pair"
+          ],
+          "evidenceIds": [
+            "E-P007"
+          ],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "dietaryTags": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 45,
+            "physicalLoad": 1
+          },
+          "allowedSceneIds": [
+            "scau_wandering"
+          ],
+          "allowedSceneTypes": [
+            "scau_wandering"
+          ]
+        }
+      ],
       "mealActivityIds": []
     },
     {
@@ -8495,10 +8839,12 @@
         "physicalLoad": 0
       },
       "allowedSceneIds": [
-        "bridge_walk"
+        "bridge_walk",
+        "scau_wandering"
       ],
       "allowedSceneTypes": [
-        "bridge_walk"
+        "bridge_walk",
+        "scau_wandering"
       ]
     },
     {
@@ -8680,7 +9026,9 @@
         "camellia_garden",
         "campus",
         "east_lab_stop",
+        "faculty_rooftop_stars",
         "orchid_garden",
+        "scau_wandering",
         "taishan_lab_garden",
         "teaching4_slope"
       ],
@@ -8688,7 +9036,9 @@
         "camellia_garden",
         "campus",
         "east_lab_stop",
+        "faculty_rooftop_stars",
         "orchid_garden",
+        "scau_wandering",
         "taishan_lab_garden",
         "teaching4_slope"
       ]
@@ -10024,9 +10374,11 @@
         "physicalLoad": 1
       },
       "allowedSceneIds": [
+        "scau_wandering",
         "street"
       ],
       "allowedSceneTypes": [
+        "scau_wandering",
         "street"
       ]
     },
@@ -13403,6 +13755,11 @@
         "label": "用户提出东区实验楼、茶花园、兰花园作为华农夜间停留候选，并提供开放线索；规划默认一般夜间停留60分钟、宵夜30分钟。东区实验楼的存在与茶花园的位置有学校资料线索，夜间开放仅依据用户提供信息。"
       },
       {
+        "id": "E-user-scau-wandering-stars",
+        "type": "evidence",
+        "label": "用户要求新增全天允许的华农校内游荡场景，以及仅允许晚上和深夜的院楼顶楼看星星场景；两处均属于华农学校级，不绑定泰山区。"
+      },
+      {
         "id": "E-user-switch",
         "type": "evidence",
         "label": "用户指定 Switch 店作为地点类型；多人游戏属于可调整的设计候选，店铺和设备可用性待确认。"
@@ -14686,6 +15043,13 @@
         "category": "展览馆"
       },
       {
+        "id": "faculty_rooftop_stars",
+        "type": "scene",
+        "label": "院楼顶楼看星星",
+        "placeKind": "ordinary",
+        "category": "校园观星停留地"
+      },
+      {
         "id": "film_exchange",
         "type": "activity",
         "label": "聊一个印象镜头"
@@ -15023,6 +15387,13 @@
         "category": "原地休息"
       },
       {
+        "id": "scau_wandering",
+        "type": "scene",
+        "label": "华农校内游荡",
+        "placeKind": "ordinary",
+        "category": "校园漫步"
+      },
+      {
         "id": "script_mystery",
         "type": "activity",
         "label": "共同推理一个剧本"
@@ -15275,6 +15646,11 @@
         "label": "用户项目设计；现实信息待确认"
       },
       {
+        "id": "user:2026-10-14-scau-wandering-stars",
+        "type": "user_design",
+        "label": "用户项目设计；现实信息待确认"
+      },
+      {
         "id": "walk_together",
         "type": "departure",
         "label": "一起回去"
@@ -15488,6 +15864,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-0503d4543bb447",
+        "subject": "E-user-scau-wandering-stars",
+        "predicate": "derived_from",
+        "object": "user:2026-10-14-scau-wandering-stars",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-058413f5161460",
         "subject": "read_share",
         "predicate": "has_feature",
@@ -15588,6 +15974,16 @@
         "evidenceIds": [
           "E-G001",
           "E-shared-game"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-091dd4a8275ce0",
+        "subject": "faculty_rooftop_stars",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
         ],
         "assertionKind": "designed"
       },
@@ -16094,6 +16490,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-1c57d2f220665d",
+        "subject": "scau_wandering",
+        "predicate": "supported_by",
+        "object": "E-user-scau-wandering-stars",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-1c7e4ae3604d37",
         "subject": "craft_card",
         "predicate": "requires",
@@ -16449,6 +16855,17 @@
         "object": "E-P008",
         "evidenceIds": [
           "E-P008"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-28fd82b54fd0c3",
+        "subject": "scau_wandering",
+        "predicate": "allows_activity",
+        "object": "campus_watch",
+        "evidenceIds": [
+          "E-P001",
+          "E-user-scau-wandering-stars"
         ],
         "assertionKind": "designed"
       },
@@ -17046,6 +17463,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-3b400343233067",
+        "subject": "faculty_rooftop_stars",
+        "predicate": "allows_activity",
+        "object": "campus_watch",
+        "evidenceIds": [
+          "E-P001",
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-3b6dfd2629e564",
         "subject": "purchase_picnic",
         "predicate": "has_feature",
@@ -17358,6 +17786,17 @@
         "object": "E-C004",
         "evidenceIds": [
           "E-C004"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-4a172e316c08ff",
+        "subject": "scau_wandering",
+        "predicate": "allows_activity",
+        "object": "photo_pair",
+        "evidenceIds": [
+          "E-P007",
+          "E-user-scau-wandering-stars"
         ],
         "assertionKind": "designed"
       },
@@ -20260,6 +20699,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-a8bb972f8b398b",
+        "subject": "faculty_rooftop_stars",
+        "predicate": "has_feature",
+        "object": "tag:romantic",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-a9bf3ca409ad78",
         "subject": "read_alone",
         "predicate": "has_feature",
@@ -20565,6 +21014,16 @@
         "object": "tag:nature",
         "evidenceIds": [
           "E-campus-walk"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-b14d7bfcff752e",
+        "subject": "scau_wandering",
+        "predicate": "has_feature",
+        "object": "tag:outdoor",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
         ],
         "assertionKind": "designed"
       },
@@ -21195,6 +21654,16 @@
           "E-game-ec909165"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-c42b8aedfcdb03",
+        "subject": "faculty_rooftop_stars",
+        "predicate": "supported_by",
+        "object": "E-user-scau-wandering-stars",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-c5292e000d2d3b",
@@ -22135,6 +22604,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-e1063d3be09c16",
+        "subject": "scau_wandering",
+        "predicate": "has_feature",
+        "object": "tag:nature",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-e17f4ccf1efbe9",
         "subject": "canteen",
         "predicate": "has_feature",
@@ -22735,6 +23214,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-ef135b3fc62e83",
+        "subject": "faculty_rooftop_stars",
+        "predicate": "has_feature",
+        "object": "tag:nature",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-ef24158a291393",
         "subject": "campus_watch",
         "predicate": "supported_by",
@@ -22891,6 +23380,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-f3ecdb4dba1bff",
+        "subject": "scau_wandering",
+        "predicate": "allows_activity",
+        "object": "bridge_view",
+        "evidenceIds": [
+          "E-campus-walk",
+          "E-user-scau-wandering-stars"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-f3faced323bedb",
         "subject": "super_exchange",
         "predicate": "has_feature",
@@ -22962,6 +23462,16 @@
         "evidenceIds": [
           "E-shared-game",
           "E-user-glass-boardgame"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f69fbc7144cc17",
+        "subject": "scau_wandering",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-scau-wandering-stars"
         ],
         "assertionKind": "designed"
       },
@@ -23304,5 +23814,5 @@
       }
     ]
   },
-  "contentRevision": "a7d9c95c35fd224c"
+  "contentRevision": "abc7c206c6c92c8b"
 }
