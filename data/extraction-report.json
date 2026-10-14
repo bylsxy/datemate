@@ -7,8 +7,8 @@
     "activityPlacementCount": 103,
     "ruleCount": 47,
     "evidenceCount": 63,
-    "graphNodeCount": 444,
-    "graphEdgeCount": 846,
+    "graphNodeCount": 446,
+    "graphEdgeCount": 856,
     "sourceCount": 151,
     "scannedSourceCount": 151,
     "adoptedSourceCount": 26,
@@ -52,16 +52,16 @@
     "knowledge/departures.json"
   ],
   "sourceHashes": {
-    "scenes.json": "1e47b77e9b22324f58aaf5df1e8c7a0ff8cf6386e50382ba5560cc3c74153fc7",
-    "activities.json": "5b76dac598b87b51073e4f77116a3e686de4d8591161c137ff91083d03189f30",
-    "rules.json": "75f3077820a6507480812a7fbc6f0b6250d9096ca3c48ec7d55e5048cb6dea78",
+    "scenes.json": "9131f607df045a0787c7cb85b07c156298783d7dd2a6a2a9f463b4709aa0ffc0",
+    "activities.json": "f07bb50ff934be67a3d88e0ec6aed5989584341d6c44e371e4a71ef3430475f1",
+    "rules.json": "1ce1973b81df5978233e92d01c8736977a5f42bd3a091be9b6b3f792ab64d0d8",
     "metadata.json": "3fbeb73f33627e5881737c59f39c460e0efec7aa9328d8799b762d47d4aa005c",
     "evidence.json": "fd926e191e306eede00991c2555b9ad8831803f18e38a03554c804469e89a33f",
     "source-registry.json": "d767700e9e8d121758ce677c77da32f836484de9490ca8403c0aebfc967160a0",
     "conditions.json": "ee592cb574465d89cf2781415a3098cb66abef24a7f26b7d5515d85e313d0830",
     "departures.json": "36a62a3349badb1764c9f365b0d23cbccbb428777dbe2ab164315ad604935684"
   },
-  "catalogContentSha256": "35f44a9784f2fbaa430cfb71b411d8e5486f06a1dc31c74a00d70bc3ef65f5e5",
+  "catalogContentSha256": "9a26cdaf478bea235cb38c2872b4a8976579bcca452528dbe15f8b7f80acecf8",
   "defaultContext": {
     "cityTier": "tier1",
     "departureChoice": "separate",

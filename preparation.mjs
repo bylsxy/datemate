@@ -1,4 +1,4 @@
-import { preparationOptions } from './data/activities.mjs?v=f3e372fb8d68c375';
+import { preparationOptions } from './data/activities.mjs?v=644ec13f68f75c23';
 
 // 这些资源表示行程内已经完成的成果，不能靠默认准备库存满足。
 export const INTERNAL_PREPARATION_IDS = Object.freeze([

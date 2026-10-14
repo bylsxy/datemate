@@ -1317,6 +1317,16 @@
       "label": "校园食堂：各选一道菜并用餐"
     },
     {
+      "id": "activity-at:dorm_downstairs_shelter:talk_highlight",
+      "type": "activity_variant",
+      "label": "宿舍楼下：分享今天一个小亮点"
+    },
+    {
+      "id": "activity-at:dorm_downstairs_shelter:talk_next",
+      "type": "activity_variant",
+      "label": "宿舍楼下：各提一个下次想做的事"
+    },
+    {
       "id": "activity-at:taishan_glass:boardgame_cards",
       "type": "activity_variant",
       "label": "泰山十栋玻璃房：玩一轮轻量卡牌"
@@ -1363,12 +1373,12 @@
     {
       "id": "arcade_race",
       "type": "activity",
-      "label": "赛车对决"
+      "label": "卡丁车"
     },
     {
       "id": "architecture_detail",
       "type": "activity",
-      "label": "找一处建筑细节"
+      "label": "观察建筑细节"
     },
     {
       "id": "badminton",
@@ -1641,7 +1651,7 @@
     {
       "id": "dorm_downstairs_shelter",
       "type": "scene",
-      "label": "宿舍楼下有盖处",
+      "label": "宿舍楼下",
       "placeKind": "ordinary",
       "category": "校园日常停留点"
     },
@@ -2314,9 +2324,9 @@
     {
       "id": "western",
       "type": "scene",
-      "label": "校内西式餐馆",
+      "label": "西式餐馆",
       "placeKind": "ordinary",
-      "category": "校内西式餐馆"
+      "category": "西式餐馆"
     },
     {
       "id": "western_meal",
@@ -3647,6 +3657,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-2ab7f0ebc686e4",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_highlight",
+      "predicate": "specializes",
+      "object": "talk_highlight",
+      "evidenceIds": [
+        "E-research-phone"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-2ab8933b3a1e22",
       "subject": "reading",
       "predicate": "has_feature",
@@ -3690,6 +3710,16 @@
         "E-P008"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-2c3e2f0ce9a9a5",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "has_activity_variant",
+      "object": "activity-at:dorm_downstairs_shelter:talk_next",
+      "evidenceIds": [
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-2c52f2e9f32a12",
@@ -4885,6 +4915,16 @@
       "evidenceIds": [
         "E-shared-game",
         "E-user-glass-boardgame"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-51ce48700acc35",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_next",
+      "predicate": "has_feature",
+      "object": "tag:romantic",
+      "evidenceIds": [
+        "E-research-novelty"
       ],
       "assertionKind": "designed"
     },
@@ -6616,6 +6656,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-86eff0b4089211",
+      "subject": "dorm_downstairs_shelter",
+      "predicate": "has_activity_variant",
+      "object": "activity-at:dorm_downstairs_shelter:talk_highlight",
+      "evidenceIds": [
+        "E-research-phone"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-870dfb9db1d65e",
       "subject": "breakfast_eat",
       "predicate": "has_feature",
@@ -6646,6 +6696,16 @@
         "E-P005",
         "E-P006",
         "E-user-meal-periods"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-8774157b9a2187",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_highlight",
+      "predicate": "has_feature",
+      "object": "tag:quiet",
+      "evidenceIds": [
+        "E-research-phone"
       ],
       "assertionKind": "designed"
     },
@@ -7047,6 +7107,16 @@
       "evidenceIds": [
         "E-shared-game",
         "E-user-glass-boardgame"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-93fe8c96f43c4d",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_next",
+      "predicate": "supported_by",
+      "object": "E-research-novelty",
+      "evidenceIds": [
+        "E-research-novelty"
       ],
       "assertionKind": "designed"
     },
@@ -9468,6 +9538,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-d497fa342ed8e6",
+      "subject": "taishan_lab_garden",
+      "predicate": "has_feature",
+      "object": "tag:quiet",
+      "evidenceIds": [
+        "E-campus-evening"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-d5163787498824",
       "subject": "E-fiction-living",
       "predicate": "derived_from",
@@ -10152,6 +10232,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-e6e0bc25dbcbc7",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_highlight",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-research-phone"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-e6fbb0848f88dd",
       "subject": "read_alone",
       "predicate": "has_feature",
@@ -10179,6 +10269,16 @@
       "object": "E-G001",
       "evidenceIds": [
         "E-G001"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-e7f81f5f28e96a",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_next",
+      "predicate": "specializes",
+      "object": "talk_next",
+      "evidenceIds": [
+        "E-research-novelty"
       ],
       "assertionKind": "designed"
     },
@@ -10488,6 +10588,16 @@
       "subject": "R-shared-romantic",
       "predicate": "supported_by",
       "object": "E-research-novelty",
+      "evidenceIds": [
+        "E-research-novelty"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-f11bfe471024ab",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_next",
+      "predicate": "has_feature",
+      "object": "tag:quiet",
       "evidenceIds": [
         "E-research-novelty"
       ],
@@ -10931,6 +11041,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-fad244cdb3cead",
+      "subject": "activity-at:dorm_downstairs_shelter:talk_highlight",
+      "predicate": "supported_by",
+      "object": "E-research-phone",
+      "evidenceIds": [
+        "E-research-phone"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-fb153e1a17f3d6",
       "subject": "switch_coop",
       "predicate": "has_feature",
@@ -10968,17 +11088,6 @@
       "object": "E-campus-walk",
       "evidenceIds": [
         "E-campus-walk"
-      ],
-      "assertionKind": "designed"
-    },
-    {
-      "id": "EDGE-fb75db43c2a83b",
-      "subject": "dorm_takeaway_meal",
-      "predicate": "has_feature",
-      "object": "tag:quiet",
-      "evidenceIds": [
-        "E-user-budget-campus-meals",
-        "E-user-campus-shelter"
       ],
       "assertionKind": "designed"
     },

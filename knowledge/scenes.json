@@ -12,7 +12,7 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "从食堂或附近买好打包饭，带到宿舍楼下有盖、能放稳餐盒的位置一起吃。靠边避开人流，吃完把垃圾带走。",
+      "description": "从食堂或附近买好打包饭，带到宿舍楼下玻璃房、能放稳餐盒的地方吃，可以避开人流。",
       "scauOnly": false,
       "minutes": 45,
       "cost": [
@@ -24,15 +24,14 @@
       "area": "campus",
       "indoor": false,
       "sheltered": true,
-      "quiet": true,
+      "quiet": false,
       "mental": 0,
       "bold": false,
       "crowdRisk": "low",
-      "seated": false,
+      "seated": true,
       "tags": [
         "food",
         "daily",
-        "quiet",
         "outdoor"
       ],
       "weather": [
@@ -69,19 +68,20 @@
       "durationRange": [
         20,
         90
-      ]
+      ],
+      "activityOverrides": {}
     },
     {
       "id": "dorm_downstairs_shelter",
       "place": {
-        "name": "宿舍楼下有盖处",
+        "name": "宿舍楼下",
         "kind": "ordinary",
         "category": "校园日常停留点",
         "universityId": "",
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在宿舍楼下有顶的位置待一会儿，聊聊今天的事，也可以安静陪着彼此。靠边避开人流，别挡出入口；雨飘进来就换到更里面的有盖处。",
+      "description": "在宿舍楼下有顶的位置，避开人流，亦可躲雨",
       "scauOnly": false,
       "minutes": 60,
       "cost": [
@@ -128,7 +128,15 @@
       "durationRange": [
         30,
         240
-      ]
+      ],
+      "activityOverrides": {
+        "talk_highlight": {
+          "description": "夸夸对方吧，或者各说一件今天开心或有意思的小事，并倾听一下"
+        },
+        "talk_next": {
+          "description": "各说一件下次想一起做的事，先记下来，有空再约。"
+        }
+      }
     },
     {
       "id": "taishan_supermarket_front",
@@ -140,7 +148,7 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在泰超门口的有盖吧台边坐坐、聊聊天，下雨也能避一会儿。吃泰超略贵，只停留不用消费。",
+      "description": "泰超门口吧台氛围，有酒就更好了，只是吃泰超略贵",
       "sheltered": true,
       "weather": [
         "clear",
@@ -181,7 +189,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "activityOverrides": {}
     },
     {
       "id": "teaching4_study",
@@ -193,7 +202,7 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "并排坐着各自看书或学习，累了再一起离开。教室有课就换个地方，别打扰自习的同学。",
+      "description": "可以自习，在教室唧唧我我似乎会打扰别的同学",
       "sheltered": true,
       "weather": [
         "clear",
@@ -245,7 +254,7 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "沿教四后面的坡路慢慢走，边走边聊。上坡有点费力，雨天路滑时换个地方。",
+      "description": "教四后面的坡路，晚上挺幽静的",
       "sheltered": false,
       "scauOnly": true,
       "minutes": 30,
@@ -291,11 +300,10 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "在泰山实验楼架空层的花园边停一会儿，看看花木、聊聊天。有顶的位置可以避雨，别挡住通道。",
-      "sheltered": true,
+      "description": "泰山实验楼架空层的花园，但下雨的时候椅子会湿",
+      "sheltered": false,
       "weather": [
         "clear",
-        "rain",
         "unknown"
       ],
       "scauOnly": true,
@@ -311,7 +319,8 @@
       "quiet": false,
       "tags": [
         "nature",
-        "outdoor"
+        "outdoor",
+        "quiet"
       ],
       "evidenceIds": [
         "E-campus-evening"
@@ -618,7 +627,7 @@
       "place": {
         "name": "综合体育馆后桥",
         "universityId": "scau",
-        "campusArea": "taishan",
+        "campusArea": "",
         "kind": "ordinary",
         "category": "校园桥边",
         "verificationStatus": "awaiting_confirmation"
@@ -1025,7 +1034,7 @@
       "place": {
         "name": "芷园食堂",
         "universityId": "scau",
-        "campusArea": "taishan",
+        "campusArea": "",
         "kind": "ordinary",
         "category": "校园食堂",
         "verificationStatus": "awaiting_confirmation"
@@ -2446,7 +2455,7 @@
       ],
       "load": 0,
       "kind": "meal",
-      "area": "campus",
+      "area": "near",
       "indoor": true,
       "fit": 79,
       "novelty": 40,
@@ -2471,9 +2480,9 @@
         "E-user-meal-periods"
       ],
       "place": {
-        "name": "校内西式餐馆",
+        "name": "西式餐馆",
         "kind": "ordinary",
-        "category": "校内西式餐馆",
+        "category": "西式餐馆",
         "verificationStatus": "awaiting_confirmation",
         "universityId": "",
         "campusArea": ""
@@ -2568,7 +2577,7 @@
         "kind": "ordinary",
         "category": "小吃街",
         "verificationStatus": "awaiting_confirmation",
-        "universityId": "",
+        "universityId": "scau",
         "campusArea": ""
       },
       "description": "在小吃街挑两样热食当宵夜，吃完慢慢回去。先看营业和座位，下雨时换个有盖的地方。",
@@ -2580,7 +2589,7 @@
       ],
       "load": 1,
       "kind": "meal",
-      "area": "near",
+      "area": "campus",
       "indoor": false,
       "quiet": false,
       "seated": false,
@@ -2616,9 +2625,10 @@
       "availabilityBasis": "planning_default",
       "availabilityNote": "规划默认允许00:00–00:30、19:00–24:00；不是官方营业时间，实际开放、通行与供应须确认。",
       "durationRange": [
-        20,
+        30,
         90
-      ]
+      ],
+      "scauOnly": true
     },
     {
       "id": "east_lab_stop",
@@ -2627,7 +2637,7 @@
         "kind": "ordinary",
         "category": "校园公共停留地",
         "universityId": "scau",
-        "campusArea": "",
+        "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
       "description": "在东区实验楼外的开放公共区域停一会儿，聊聊天、看看周围。别进入实验室和办公区，夜里挑有照明的位置。",
@@ -2817,7 +2827,7 @@
       ]
     },
     {
-      "scauOnly": true,
+      "scauOnly": false,
       "minutes": 60,
       "cost": [
         0,
@@ -2843,7 +2853,7 @@
         "name": "院楼顶楼看星星",
         "kind": "ordinary",
         "category": "校园观星停留地",
-        "universityId": "scau",
+        "universityId": "",
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },

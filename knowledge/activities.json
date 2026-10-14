@@ -7,10 +7,10 @@
       "assertionKind": "designed",
       "evidenceStatus": "user_design_real_world_unverified",
       "title": "吃份简单宵夜",
-      "description": "从食堂或附近买两份热包子当宵夜，在店里吃或打包带回有盖处。先看看还有没有供应，留意馅料和忌口。",
+      "description": "买两份烤冷面当宵夜，在店里吃或打包带回有屋檐的地方。先看看还有没有供应？",
       "cost": [
         6,
-        8
+        14
       ],
       "load": -2,
       "group": "meal_style",
@@ -29,9 +29,7 @@
       "mealRoles": [
         "supper"
       ],
-      "dietaryTags": [
-        "gluten"
-      ],
+      "dietaryTags": [],
       "exclusiveKey": "main_meal"
     },
     {
@@ -39,7 +37,7 @@
       "assertionKind": "designed",
       "evidenceStatus": "user_design_real_world_unverified",
       "title": "吃份平价早餐",
-      "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，可以打包带回楼下有盖处吃。按胃口选够吃的份量，饮品另外点。",
+      "description": "在食堂或附近的平价窗口各买一份馒头或面包当早餐，方便打包带走吃.",
       "cost": [
         6,
         10
@@ -71,10 +69,10 @@
       "assertionKind": "designed",
       "evidenceStatus": "user_design_real_world_unverified",
       "title": "吃份平价饭菜",
-      "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包带回楼下有盖处吃。先看看价签和忌口，饮品、加菜另算。",
+      "description": "在食堂或附近的平价窗口各买一份米饭配荤素熟菜，也可以打包去别处吃。",
       "cost": [
         12,
-        16
+        18
       ],
       "load": -2,
       "group": "meal_style",
@@ -102,7 +100,7 @@
     {
       "id": "aqua_observe",
       "title": "看海洋动物",
-      "description": "一起看看鱼群和海洋动物，遇到有趣的就停下来多看一会儿。",
+      "description": "老辈子打法",
       "cost": [
         0,
         0
@@ -129,7 +127,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "借水族箱的光拍张剪影，轮流给对方取景。避开人流，不开闪光灯。",
+      "description": "借水族箱的光拍张剪影，轮流给对方取景",
       "novelty": 60,
       "tags": [
         "nature",
@@ -170,7 +168,7 @@
       "load": 1,
       "group": "play",
       "mode": "multi",
-      "description": "挑个喜欢的娃娃，试着抓几次。先说好花多少，没抓到也不用追加。",
+      "description": "挑个喜欢的娃娃，试着抓几次。先说好花多少，没抓到也不用追加。别心疼钱啊",
       "novelty": 45,
       "tags": [
         "play"
@@ -181,15 +179,15 @@
     },
     {
       "id": "arcade_race",
-      "title": "赛车对决",
+      "title": "卡丁车",
       "cost": [
-        10,
-        15
+        100,
+        300
       ],
       "load": 2,
       "group": "play",
       "mode": "multi",
-      "description": "各选一辆车跑一轮，看看谁先到终点，也可以换着玩。",
+      "description": "商场里居然有卡丁车",
       "novelty": 82,
       "tags": [
         "play"
@@ -200,7 +198,7 @@
     },
     {
       "id": "architecture_detail",
-      "title": "找一处建筑细节",
+      "title": "观察建筑细节",
       "description": "各找一处喜欢的门窗、墙面纹理或颜色，指给对方看。",
       "cost": [
         0,
