@@ -35,10 +35,12 @@ test('有盖场景均可避雨，泰超门口保持非室内和略贵提醒', ()
     assert.equal(typeof s.sheltered, 'boolean', s.id);
     if (s.sheltered) assert.ok(s.weather.includes('rain'), s.id);
   }
-  for (const id of ['taishan_supermarket_front', 'taishan_lab_garden']) {
-    assert.equal(scene(id).indoor, false);
-    assert.equal(scene(id).sheltered, true);
-  }
+  assert.equal(scene('taishan_supermarket_front').indoor, false);
+  assert.equal(scene('taishan_supermarket_front').sheltered, true);
+  // 手工源明确说明架空层花园的椅子会湿，不能因名称推断可避雨。
+  assert.equal(scene('taishan_lab_garden').indoor, false);
+  assert.equal(scene('taishan_lab_garden').sheltered, false);
+  assert.ok(!scene('taishan_lab_garden').weather.includes('rain'));
   assert.match(scene('taishan_supermarket_front').description, /吧台/);
   assert.match(scene('taishan_supermarket_front').description, /略贵/);
   for (const id of ['garden', 'camellia_garden', 'orchid_garden', 'faculty_rooftop_stars']) {
@@ -46,14 +48,14 @@ test('有盖场景均可避雨，泰超门口保持非室内和略贵提醒', ()
   }
 });
 
-test('校园安静打包路线四餐上界50元，餐食由付费活动提供', () => {
+test('校园打包路线四餐上界60元，不承诺安静，餐食由付费活动提供', () => {
   const s = scene('dorm_takeaway_meal');
   assert.equal(s.scauOnly, false);
   assert.equal(s.place.universityId, '');
   assert.equal(s.place.campusArea, '');
   assert.equal(s.area, 'campus');
   assert.equal(s.kind, 'meal');
-  assert.equal(s.quiet, true);
+  assert.equal(s.quiet, false);
   assert.equal(s.crowdRisk, 'low');
   assert.equal(s.sheltered, true);
   assert.ok(s.weather.includes('rain'));
@@ -62,7 +64,7 @@ test('校园安静打包路线四餐上界50元，餐食由付费活动提供', 
   assert.deepEqual(s.mealRoles, ['breakfast', 'lunch', 'dinner', 'supper']);
   assert.deepEqual(s.dailyWindows, [{ startMinute: 0, endMinute: 1440 }]);
   const picks = ['campus_budget_breakfast', 'campus_budget_meal', 'campus_budget_meal', 'campus_budget_supper'];
-  assert.equal(picks.reduce((sum, id) => sum + activity(id).cost[1], 0), 50);
+  assert.equal(picks.reduce((sum, id) => sum + activity(id).cost[1], 0), 60);
   for (const role of s.mealRoles) {
     const options = s.activities.filter(a => a.mealRoles.includes(role));
     assert.ok(options.length > 0, role);

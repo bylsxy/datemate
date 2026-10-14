@@ -7,35 +7,37 @@ import {mergeStayOption} from '../duration-policy.mjs';
 import {buildActionJobs} from '../candidate-validation.mjs';
 
 const night={periodIds:['night'],area:'campus',weather:'rain',budget:0};
+// 可逆拆分在同地点验证；真实目录仍用于下方不同地点转场与费用语义。
+const samePlaceCatalog={...catalog,scenes:catalog.scenes.filter(scene=>scene.id==='dorm_downstairs_shelter')};
 const state=context=>({context,exploration:0,prefix:[]});
-const checked=(context,options={})=>{const r=planDate(context,catalog,options);assert.equal(r.ok,true,r.errors.join(';'));return r;};
+const checked=(context,options={},source=catalog)=>{const r=planDate(context,source,options);assert.equal(r.ok,true,r.errors.join(';'));return r;};
 const details=stage=>({choice:projectStageChoice(stage),start:stage.start,end:stage.end});
-function split(input,result,index){
-  const next=splitStageIntent(input,result,index,catalog);
-  const [job]=buildActionJobs(result,input,catalog,[{actionType:'split',stageIndex:index,sceneId:result.stages[index].sceneId}]);
-  const verified=verifyPlanWitness(job.context,catalog,{...job.search,fixedPrefix:job.prefix,knownPlan:job.knownPlan});
+function split(input,result,index,source=catalog){
+  const next=splitStageIntent(input,result,index,source);
+  const [job]=buildActionJobs(result,input,source,[{actionType:'split',stageIndex:index,sceneId:result.stages[index].sceneId}]);
+  const verified=verifyPlanWitness(job.context,source,{...job.search,fixedPrefix:job.prefix,knownPlan:job.knownPlan});
   assert.equal(verified.ok,true,verified.errors.join(';'));
-  return {input:next,result:checked(next.context,{fixedPrefix:next.prefix})};
+  return {input:next,result:checked(next.context,{fixedPrefix:next.prefix},source)};
 }
-function merge(input,result,index){
-  const [job]=buildActionJobs(result,input,catalog,[{actionType:'merge',stageIndex:index,sceneId:result.stages[index].sceneId}]);
-  const next=mergeStageIntent(input,result,index,catalog);
+function merge(input,result,index,source=catalog){
+  const [job]=buildActionJobs(result,input,source,[{actionType:'merge',stageIndex:index,sceneId:result.stages[index].sceneId}]);
+  const next=mergeStageIntent(input,result,index,source);
   assert.deepEqual(job.context,next.context);
   assert.deepEqual(job.prefix,next.prefix);
-  const verified=verifyPlanWitness(job.context,catalog,{...job.search,fixedPrefix:job.prefix,knownPlan:job.knownPlan});
+  const verified=verifyPlanWitness(job.context,source,{...job.search,fixedPrefix:job.prefix,knownPlan:job.knownPlan});
   assert.equal(verified.ok,true,verified.errors.join(';'));
-  return {input:next,result:checked(next.context,{fixedPrefix:next.prefix,knownPlan:verified.continuationWitness})};
+  return {input:next,result:checked(next.context,{fixedPrefix:next.prefix,knownPlan:verified.continuationWitness},source)};
 }
 
 test('雨夜拆分后能合回原来一段，连续操作不遗留强制拆分条件',()=>{
-  const original=checked(night);
+  const original=checked(night,{},samePlaceCatalog);
   let current={input:state(night),result:original};
   for(let i=0;i<2;i++){
-    current=split(current.input,current.result,0);
+    current=split(current.input,current.result,0,samePlaceCatalog);
     assert.equal(current.result.stages.length,2);
     assert.deepEqual(current.input.splitStageIndexes,[1]);
     const before=structuredClone(current);
-    current=merge(current.input,current.result,0);
+    current=merge(current.input,current.result,0,samePlaceCatalog);
     assert.equal(current.result.stages.length,1);
     assert.deepEqual(current.input.splitStageIndexes,[]);
     assert.deepEqual(details(current.result.stages[0]),details(original.stages[0]));
@@ -54,20 +56,22 @@ test('不同地点合并保留前段选择，取消后段及转场并重新核�
   assert.deepEqual(changed.stages[0].activityIds,first.activityIds);
   assert.equal(changed.stages[0].minutes,first.minutes+second.minutes);
   assert.equal(changed.metrics.transferMinutes,current.result.metrics.transferMinutes-second.transfer);
+  assert.equal(changed.stages[0].end,second.end-second.transfer,'取消转场不自动补成额外停留');
   assert.ok(changed.totalCost[1]<=current.result.totalCost[1]);
 });
 
 test('拆成三段后可以逐次合并，剩余段数要求随之减少',()=>{
-  let current=split(state(night),checked(night),0);
-  current=split(current.input,current.result,1);
+  const original=checked(night,{},samePlaceCatalog);
+  let current=split(state(night),original,0,samePlaceCatalog);
+  current=split(current.input,current.result,1,samePlaceCatalog);
   assert.equal(current.result.stages.length,3);
   assert.deepEqual(current.input.splitStageIndexes,[1,2]);
-  current=merge(current.input,current.result,0);
+  current=merge(current.input,current.result,0,samePlaceCatalog);
   assert.equal(current.result.stages.length,2);
   assert.deepEqual(current.input.splitStageIndexes,[1]);
-  current=merge(current.input,current.result,0);
+  current=merge(current.input,current.result,0,samePlaceCatalog);
   assert.equal(current.result.stages.length,1);
-  assert.equal(current.result.stages[0].minutes,140);
+  assert.deepEqual(details(current.result.stages[0]),details(original.stages[0]));
 });
 
 test('拆分来源随选择保留，全部重选或改变硬条件后清除，不给普通阶段加合并入口',()=>{
@@ -79,7 +83,8 @@ test('拆分来源随选择保留，全部重选或改变硬条件后清除，�
   }
   assert.deepEqual(exploreIntent(current.input,10,123).splitStageIndexes,[1]);
   assert.equal(restartIntent(current.input,123).splitStageIndexes,undefined);
-  assert.equal(updateContextIntent(current.input,{...current.input.context,weather:'clear'}).next.splitStageIndexes,undefined);
+  assert.deepEqual(updateContextIntent(current.input,{...current.input.context,weather:'clear'}).next.splitStageIndexes,[1]);
+  assert.equal(updateContextIntent(current.input,{...current.input.context,budget:10}).next.splitStageIndexes,undefined);
   assert.equal(state(night).splitStageIndexes,undefined);
 });
 

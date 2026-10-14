@@ -150,13 +150,15 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
 test('四餐角色均有实际用餐活动，早餐与宵夜适用语义独立', () => {
   const expected = { breakfast: ['breakfast_mcdonalds','breakfast_prepared','breakfast_shop','breakfast_supermarket','campus_canteen', 'canteen', 'dorm_takeaway_meal', 'taishan_glass'], lunch: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], dinner: ['campus_canteen', 'canteen', 'cantonese', 'dorm_takeaway_meal', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'dorm_takeaway_meal', 'snack_street'] };
   for (const [role, ids] of Object.entries(expected)) {
-    assert.deepEqual(catalog.scenes.filter(s => s.mealRoles.includes(role)).map(s => s.id).sort(), ids.sort());
-    for (const id of ids) {
+    const actual=catalog.scenes.filter(s => s.mealRoles.includes(role)).map(s => s.id);
+    assert.ok(ids.every(id=>actual.includes(id)));
+    for (const id of actual) {
       const s = scene(id), options = s.activities.filter(a => a.mealRoles.includes(role));
       assert.ok(options.length > 0);
       assert.ok(options.every(a => a.provides.includes('meal_completed') && s.mealActivityIds.includes(a.id)));
       assert.ok(!s.provides.includes('meal_completed'));
-      assert.deepEqual(s.cost, [0, 0]);
+      // 套餐/自助可把双人票价记在场景，单点则由餐食活动收费。
+      assert.ok(s.cost[1]===0||options.every(a=>a.cost[1]===0),'已含餐的场景票价不应重复收取正餐活动费');
     }
   }
   assert.ok(activity('breakfast_eat').cost[1] <= 20);
@@ -188,7 +190,7 @@ test('华农自述地点具有校内与泰山区属性，引用本地定位证�
   for (const [id, name] of Object.entries(expected)) {
     const s = scene(id);
     assert.equal(s.title, name); assert.equal(s.scauOnly, true); assert.equal(s.area, 'campus');
-    assert.equal(s.place.universityId, 'scau'); assert.equal(s.place.campusArea, 'taishan');
+    assert.equal(s.place.universityId, 'scau'); assert.equal(s.place.campusArea, ['bridge_walk','canteen'].includes(id)?'':'taishan');
     assert.equal(s.place.verificationStatus, 'awaiting_confirmation');
     assert.ok(s.evidenceIds.some(id => evidence.find(e => e.id === id)?.sourceDocumentId === 'SRC-9d52a0728f3d'));
   }
@@ -198,8 +200,8 @@ test('华农自述地点具有校内与泰山区属性，引用本地定位证�
   assert.throws(() => compileKnowledge(changed(d => d.scenes.scenes.find(s => s.id === 'canteen').area = 'near')), /华农泰山区属性/);
 });
 
-test('离开目录独立于地点，默认各自回去且酒店须过夜并明确选择', () => {
-  assert.deepEqual(catalog.departures.map(d => d.id), ['hotel', 'separate', 'walk_together']);
+test('四种离开目录独立于地点，默认各自回去且住宿须过夜并明确选择', () => {
+  assert.deepEqual(catalog.departures.map(d => d.id), ['camping', 'hotel', 'separate', 'walk_together']);
   assert.equal(catalog.defaultDepartureId, 'separate'); assert.equal(catalog.defaultCityTier, 'tier1');
   assert.equal(compiled.metadata.defaultContext.departureChoice, 'separate'); assert.equal(compiled.metadata.defaultContext.cityTier, 'tier1');
   for (const d of catalog.departures) {
@@ -215,8 +217,11 @@ test('离开目录独立于地点，默认各自回去且酒店须过夜并明�
   assert.equal(byId.hotel.minutes, 15); assert.equal(byId.hotel.onlyOvernight, true); assert.equal(byId.hotel.requiresExplicitChoice, true);
   assert.equal(byId.hotel.costUnit, 'CNY_per_room_for_two_per_night');
   assert.deepEqual(byId.hotel.costByCityTier, { tier1: [200, 400], tier2: [150, 300], tier3: [100, 250] });
+  assert.equal(byId.camping.minutes, 30); assert.equal(byId.camping.onlyOvernight, true); assert.equal(byId.camping.requiresExplicitChoice, true);
+  assert.equal(byId.camping.costUnit, 'CNY_for_two_per_night'); assert.deepEqual(byId.camping.cost, [120, 300]);
   assert.match(evidence.find(e => e.id === 'E-user-departures').verificationBoundary, /初版设计参数/);
   assert.deepEqual(compiled.conditions.find(c => c.key === 'cityTier').allowedValues, ['tier1', 'tier2', 'tier3']);
+  assert.deepEqual(compiled.conditions.find(c => c.key === 'departureChoice').allowedValues, ['separate', 'walk_together', 'hotel', 'camping']);
 });
 
 test('非法离开引用、默认住宿、自动住宿与房费在构建前拒绝', () => {

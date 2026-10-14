@@ -1,13 +1,14 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=d4f7f2e5b8714a6e';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=d4f7f2e5b8714a6e';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=d4f7f2e5b8714a6e';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=d4f7f2e5b8714a6e';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=d4f7f2e5b8714a6e';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=f9ba8b25a44e98dd';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=f9ba8b25a44e98dd';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=f9ba8b25a44e98dd';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=f9ba8b25a44e98dd';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=f9ba8b25a44e98dd';
+import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=f9ba8b25a44e98dd';
 
-export { canonical, digest } from './reasoning.mjs?v=d4f7f2e5b8714a6e';
-import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=d4f7f2e5b8714a6e';
-export const VERSION = 'datemate-engine-4.0.0';
-export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
+export { canonical, digest } from './reasoning.mjs?v=f9ba8b25a44e98dd';
+import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=f9ba8b25a44e98dd';
+export const VERSION = 'datemate-engine-4.1.0';
+export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-4.0.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const copy = value => JSON.parse(JSON.stringify(value));
@@ -46,7 +47,6 @@ export function normalize(input = {}) {
   const ctx = {
     duration, budget: budget === undefined || budget === null || budget === '' ? null : number(budget, NaN),
     reserve: integer(raw.reserve, 15, 0, 240), robust: raw.robust !== false,
-    weather: ['clear', 'rain', 'unknown'].includes(raw.weather) ? raw.weather : 'unknown',
     area: raw.area === 'nearby' ? 'near' : ['campus', 'near', 'all'].includes(raw.area) ? raw.area : 'all',
     fatigueA: clamp(number(raw.fatigueA, 2), 0, 10), fatigueB: clamp(number(raw.fatigueB, 2), 0, 10),
     goals: list(raw.goals), preferences: list(raw.preferences), preferencesA: list(raw.preferencesA), preferencesB: list(raw.preferencesB),
@@ -62,13 +62,13 @@ export function normalize(input = {}) {
     finalPeriodStart: periods ? TIME_PERIODS.find(p => p.id === periods.periodIds.at(-1)).startMinute : null,
     maxLoad: clamp(number(raw.maxLoad, 10), 0, 10), endAfterStage: raw.endAfterStage === undefined || raw.endAfterStage === null ? null : integer(raw.endAfterStage, 0, 0, 23),
     minimumStageCount: integer(raw.minimumStageCount, 0, 0, 24),
-    facts: copy(raw.facts || {}), energy: raw.energy ?? ((Math.max(number(raw.fatigueA, 2), number(raw.fatigueB, 2)) >= 6) ? 'low' : 'normal'),
+    facts: copy(raw.facts || {}), ...normalizePreferences(raw),
     explorationSeed: normalizeExplorationSeed(raw.explorationSeed),
   };
   Object.assign(ctx, normalizeSchoolScope({ ...raw, area: ctx.area }));
   if (ctx.budget !== null && (!Number.isFinite(ctx.budget) || ctx.budget < 0)) throw Error(fail('H_BUDGET', '预算必须为非负金额或未指定。'));
-  if (periods && (!['separate', 'walk_together', 'hotel'].includes(ctx.departureChoice) || !['tier1', 'tier2', 'tier3'].includes(ctx.cityTier))) throw Error(fail('H_DEPARTURE_CHOICE', '请选择有效的分别方式与城市等级。'));
-  if (periods && ctx.departureChoice === 'hotel' && periods.endMinute <= 1440) throw Error(fail('H_DEPARTURE_OVERNIGHT', '只有跨午夜的约会时段可以选择酒店。'));
+  if (periods && (!['separate', 'walk_together', 'hotel', 'camping'].includes(ctx.departureChoice) || !['tier1', 'tier2', 'tier3'].includes(ctx.cityTier))) throw Error(fail('H_DEPARTURE_CHOICE', '请选择有效的分别方式与城市等级。'));
+  if (periods && ['hotel', 'camping'].includes(ctx.departureChoice) && periods.endMinute <= 1440) throw Error(fail('H_DEPARTURE_OVERNIGHT', '只有跨午夜的约会时段可以选择酒店或露营。'));
   ctx.budgetHigh = ctx.budget;
   ctx.budgetHighCents = ctx.budget === null ? null : cents(ctx.budget);
   ctx.minutes = ctx.duration;
@@ -81,8 +81,8 @@ function compileDepartures(catalog, ctx) {
   const departures = catalog.departures.map(raw => {
     const cost = raw.costByCityTier?.[ctx.cityTier] ?? raw.cost;
     const values = Array.isArray(cost) ? cost : [cost, cost];
-    if (!['separate', 'walk_together', 'hotel'].includes(raw.id) || !Number.isInteger(raw.minutes) || raw.minutes <= 0 || raw.minutes > 240 || values.length !== 2 || values.some(n => typeof n !== 'number' || !Number.isFinite(n) || n < 0) || values[1] < values[0]) throw Error(fail('H_DEPARTURE_DATA', '分别方式需使用正整数分钟和有效设计费用区间。'));
-    return { ...raw, cost: [...values], costCents: values.map(cents), reservedMinutes: Math.max(15, raw.minutes), cityTier: ctx.cityTier, manualOnly: raw.id === 'hotel' || raw.requiresExplicitChoice === true, realWorldStatus: 'needs_confirmation' };
+    if (!['separate', 'walk_together', 'hotel', 'camping'].includes(raw.id) || !Number.isInteger(raw.minutes) || raw.minutes <= 0 || raw.minutes > 240 || values.length !== 2 || values.some(n => typeof n !== 'number' || !Number.isFinite(n) || n < 0) || values[1] < values[0]) throw Error(fail('H_DEPARTURE_DATA', '分别方式需使用正整数分钟和有效设计费用区间。'));
+    return { ...raw, cost: [...values], costCents: values.map(cents), reservedMinutes: Math.max(15, raw.minutes), cityTier: ctx.cityTier, manualOnly: ['hotel', 'camping'].includes(raw.id) || raw.requiresExplicitChoice === true, realWorldStatus: 'needs_confirmation' };
   });
   if (new Set(departures.map(d => d.id)).size !== departures.length || !departures.some(d => d.id === ctx.departureChoice)) throw Error(fail('H_DEPARTURE_DATA', '分别方式目录重复或缺少所选方式。'));
   return departures;
@@ -91,7 +91,7 @@ function compileDepartures(catalog, ctx) {
 function departureResult(ctx, st = null) {
   if (!ctx.departure) return null;
   const sum = st?.costCents ?? [0, 0];
-  const candidates = ctx.departures.filter(d => d.id !== 'hotel' || ctx.windows.at(-1).endMinute > 1440).map(d => {
+  const candidates = ctx.departures.filter(d => !['hotel', 'camping'].includes(d.id) || ctx.windows.at(-1).endMinute > 1440).map(d => {
     const withinBudget = ctx.budgetHighCents === null || sum[1] + d.costCents[1] <= ctx.budgetHighCents;
     const withinTime = !st || st.time + d.reservedMinutes + ctx.reserve + st.uncertaintyTotal <= ctx.windows.at(-1).endMinute;
     return { ...d, selected: d.id === ctx.departureChoice, available: withinBudget && withinTime, fitScore: null, scoreStatus: 'pending', evaluationStatus: 'continuation_not_evaluated', feasibilityStatus: withinBudget && withinTime ? 'local_feasible_future_not_proved' : 'hard_constraint_rejected', errors: [...(!withinBudget ? [fail('H_BUDGET', '分别方式与当前行程合计超过预算。')] : []), ...(!withinTime ? [fail('H_TIME_WINDOW', '跨度内没有足够时间完成分别并保留缓冲。')] : [])] };
@@ -104,13 +104,14 @@ const departureReservedMinutes = ctx => ctx.departure?.reservedMinutes ?? 0;
 const departureCostCents = ctx => ctx.departure?.costCents ?? [0, 0];
 
 function normalizeAction(action, scene) {
+  if (action.socialDemand !== undefined && (!Number.isInteger(action.socialDemand) || action.socialDemand < 0 || action.socialDemand > 3)) throw Error(fail('H_DATA', `活动${action.id}的社交负担需为0至3。`));
   const costs = action.costCents ? range(action.costCents).map(Math.round) : range(action.cost ?? action.baseline?.cost).map(cents);
   const load = range(action.load ?? action.baseline?.load)[1];
   if (!action.id || costs.some(n => n < 0) || costs[1] < costs[0] || !Number.isFinite(load)) throw Error(fail('H_DATA', `活动${action.id || '(无ID)'}的资源字段无效。`));
   return { ...action, id: String(action.id), minutes: 0, costCents: costs, load, group: action.group || 'optional', mode: action.compositionMode === 'exclusive' ? 'single' : action.mode || 'multiple', tags: list(action.tags), compositionMode: 'within_scene', predecessorIds: list(action.predecessorIds), preparationIds: list(action.preparationIds), requires: inventory(action.requires ?? action.preconditions), provides: inventory(action.provides), consumes: inventory(action.consumes), sceneId: scene.id };
 }
 
-function compileCatalog(catalog) {
+function compileCatalog(catalog, ctx = { weekPart: 'weekday' }) {
   if (!catalog || !Array.isArray(catalog.scenes) || !catalog.scenes.length) throw Error(fail('H_DATA', '场景目录为空。'));
   const flat = new Map((catalog.activities || []).map(a => [a.id, a]));
   const scenes = [...catalog.scenes].sort((a, b) => cmp(a.id, b.id)).map(raw => {
@@ -118,10 +119,20 @@ function compileCatalog(catalog) {
     scene.minutes = range(raw.minutes ?? raw.baseline?.duration)[1];
     durationBounds(scene);
     validateDailyWindows(scene);
-    scene.costCents = raw.costCents ? range(raw.costCents).map(Math.round) : range(raw.cost ?? raw.baseline?.cost).map(cents);
+    const weekCost = raw.costByWeekPart?.[ctx.weekPart];
+    if (weekCost !== undefined && (!Array.isArray(weekCost) || weekCost.length !== 2 || weekCost.some(n => typeof n !== 'number' || !Number.isFinite(n) || n < 0) || weekCost[1] < weekCost[0])) throw Error(fail('H_DATA', `场景${raw.id}的周中周末费用区间无效。`));
+    scene.costCents = weekCost !== undefined ? weekCost.map(cents) : raw.costCents ? range(raw.costCents).map(Math.round) : range(raw.cost ?? raw.baseline?.cost).map(cents);
+    scene.cost = scene.costCents.map(money);
+    scene.weekPart = ctx.weekPart;
+    scene.queueMinutes = Math.max(0, number(raw.queueMinutesByWeekPart?.[ctx.weekPart] ?? raw.queueMinutes, 0));
+    scene.socialDemand = raw.socialDemand === undefined ? 1 : raw.socialDemand;
+    if (!Number.isInteger(scene.socialDemand) || scene.socialDemand < 0 || scene.socialDemand > 3) throw Error(fail('H_DATA', `场景${raw.id}的社交负担需为0至3。`));
     scene.load = range(raw.load)[1];
     scene.loadByPerson = raw.loadByPerson || raw.loadBySubject || raw.baseline?.loadBySubject;
     scene.preparationIds = list(raw.preparationIds);
+    scene.predecessorIds = list(raw.predecessorIds);
+    scene.bundledMeals = list(raw.bundledMeals);
+    if(scene.bundledMeals.some(role=>!['breakfast','lunch','dinner','supper'].includes(role))) throw Error(fail('H_DATA', `场景${raw.id}的行程内餐次无效。`));
     scene.requires = inventory(raw.requires ?? raw.preconditions);
     scene.provides = inventory(raw.provides); scene.consumes = inventory(raw.consumes);
     scene.fit = number(raw.fit ?? raw.featureValues?.comfort, 70);
@@ -271,7 +282,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
       const place = scene.kind === 'rest' ? compiled.byId.get(st.placeId) : null;
       // 休息恢复量沿用休息卡；环境属性继承真实地点，不能凭休息卡变成室内或安静场所。
       const environment = place ? Object.fromEntries(['indoor', 'sheltered', 'quiet', 'crowded', 'uncrowded', 'crowdRisk'].map(key => [key, place[key]])) : {};
-      const facts = { context: { ...ctx, fatigueA: st.fatigue[0], fatigueB: st.fatigue[1], prepared: Object.keys(st.resources).filter(k => st.resources[k] > 0).sort(cmp) }, scene: { ...scene, ...environment }, ...(activity ? { activity } : {}), state: { maxLoad: Math.max(...st.fatigue), predictedLoadByPerson: { A: st.fatigue[0], B: st.fatigue[1] } } };
+      const facts = { context: { ...ctx, fatigueA: st.fatigue[0], fatigueB: st.fatigue[1], prepared: Object.keys(st.resources).filter(k => st.resources[k] > 0).sort(cmp) }, scene: { ...scene, ...environment }, graph: { matchedPreferenceTags: [...graphFeatures(scene, activity ? [activity] : []).matches] }, ...(activity ? { activity } : {}), state: { maxLoad: Math.max(...st.fatigue), predictedLoadByPerson: { A: st.fatigue[0], B: st.fatigue[1] } } };
       reasoningCache.set(key, forwardChain(facts, compiled.rules));
     }
     return reasoningCache.get(key);
@@ -279,11 +290,12 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
   function graphFeatures(scene, acts) {
     const key = canonical([scene.id, acts.map(a => a.id)]);
     if (preferenceCache.has(key)) return preferenceCache.get(key);
-    const endpoints = list([...ctx.preferencesA, ...ctx.preferencesB, ...ctx.preferences, ...ctx.goals]);
+    const stateInterests = ctx.reunion ? ['private', 'shared_hobby'] : [];
+    const endpoints = list([...ctx.preferencesA, ...ctx.preferencesB, ...ctx.preferences, ...ctx.goals, ...stateInterests]);
     const matches = new Set(), trace = [], selected = new Set(acts.map(a => a.id));
     for (const tag of endpoints) {
       const paths = queryGraph(compiled.graph, scene.id, `preference:${tag}`, { maxDepth: 4, maxPaths: 12 }).filter(path => !path.nodes.some(id => scene.activities.some(a => a.id === id) && !selected.has(id)));
-      if (paths.length) { matches.add(tag); const path = paths[0]; trace.push({ ruleId: 'KG_PREFERENCE_PATH', rule: 'KG_PREFERENCE_PATH', message: `沿场景—体验属性—明示偏好路径匹配${tag}`, path: path.nodes, edges: path.edges.map(e => e.id), inputFacts: [{ id: 'explicitPreference', value: tag }], outputFacts: [{ id: `feature.preference.${tag}`, value: true }], evidenceIds: path.evidenceIds, evidence: path.evidenceIds, assertionKind: 'designed' }); }
+      if (paths.length) { matches.add(tag); const path = paths[0]; trace.push({ ruleId: 'KG_PREFERENCE_PATH', rule: 'KG_PREFERENCE_PATH', message: `沿场景—体验属性—偏好路径匹配${tag}`, path: path.nodes, edges: path.edges.map(e => e.id), inputFacts: [{ id: stateInterests.includes(tag) ? 'context.reunion' : 'explicitPreference', value: stateInterests.includes(tag) ? ctx.reunion : tag }], outputFacts: [{ id: `feature.preference.${tag}`, value: true }], evidenceIds: path.evidenceIds, evidence: path.evidenceIds, assertionKind: 'designed' }); }
     }
     const result = { matches, trace };
     preferenceCache.set(key, result); return result;
@@ -312,12 +324,10 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (ctx.bans.includes(scene.id) || ctx.bans.includes(`kind:${scene.kind}`) || ctx.excludedSceneTypes.includes(scene.typeId || scene.kind)) errors.push(fail('H_EXCLUDED', '场景或场景类型已排除。'));
     if (scene.publicAllowed === false || scene.reviewStatus === 'rejected' || scene.reviewStatus === 'draft') errors.push(fail('H_REVIEW', '场景未通过公开使用审核。'));
     if (ctx.availability[scene.id] === 'unavailable') errors.push(fail('H_AVAILABILITY', '场景明确不可用。'));
+    if (scene.predecessorIds.some(id => !st.completed.includes(id))) errors.push(fail('H_PREDECESSOR', `场景${scene.id}缺少前置场景或活动。`));
     if (ctx.area === 'campus' && !['campus', 'current'].includes(scene.area) || ctx.area === 'near' && scene.area === 'off') errors.push(fail('H_RANGE', '超出本次地点范围。'));
     else if (!isSceneInSchoolScope(scene, ctx) || !isSceneInSchoolScope(place, ctx)) errors.push(fail('H_SCHOOL_SCOPE', '地点不适用于本次学校或校区范围。'));
-    if (ctx.weather !== 'unknown' && [scene, place].some(item => Array.isArray(item.weather) && item.weather.length && !item.weather.includes(ctx.weather))) errors.push(fail('H_WEATHER', '场景明确适用天气与本次已知天气不符。'));
-    if (ctx.quietRequired && place.quiet !== true) errors.push(fail('H_QUIET', '与明示安静要求不符。'));
-    if (ctx.mentalLow && number(scene.mental, 0) >= 4) errors.push(fail('H_MENTAL', '超过本次认知负担上限。'));
-    if (ctx.crowdAvoidance && (place.crowded === true || place.uncrowded === false || place.crowdRisk === 'high')) errors.push(fail('H_CROWD', '与避开拥挤要求不符。'));
+    if (scene.dreamOnly === true && exploration !== 100) errors.push(fail('H_DREAM_ONLY', '该场景仅在探索度100的梦幻模式可选；降低探索度后请移除该阶段及其后续固定安排。'));
     if (ctx.periodIds && scene.kind === 'rest' && st.placeId === null) errors.push(fail('H_REST_PLACE', '原地休息需要先进入一个可停留的地点。'));
     const dietary = list([...(scene.dietaryTags || []), ...acts.flatMap(a => a.dietaryTags || [])]);
     if (ctx.dietaryRestrictions.some(tag => dietary.includes(tag))) errors.push(fail('H_DIET', '具体食物或活动与明示饮食限制冲突。'));
@@ -343,13 +353,15 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     for (const inferred of inferences) for (const id of inferred.requiredPreparations) if (!(st.resources[id] > 0) && !(resources[id] > 0)) return { errors: [fail('H_PREPARATION', `规则要求准备${id}。`)] };
     const costCents = scene.costCents.map((n, i) => n + acts.reduce((sum, a) => sum + a.costCents[i], 0));
     if (ctx.budgetHighCents !== null && st.costCents[1] + costCents[1] + departureCostCents(ctx)[1] > ctx.budgetHighCents) return { errors: [fail('H_BUDGET', '按整数分核算的双人费用及分别方式上界超过预算。')] };
-    const remainingMealCost=[...mealFloors].filter(([role])=>role!==mealRole&&!st.mealRoles.includes(role)).reduce((sum,[,price])=>sum+price,0);
+    const canBundle=meal=>scene.bundledMeals.includes(meal.mealRole)&&!meal.sceneId;
+    const blockingMeal=ctx.mealRequirements.find(meal=>meal.choiceMode==='together'&&!st.mealRoles.includes(meal.mealRole)&&meal.mealRole!==mealRole&&!canBundle(meal));
+    const remainingMealCost=[...mealFloors].filter(([role])=>role!==mealRole&&!st.mealRoles.includes(role)&&!scene.bundledMeals.includes(role)).reduce((sum,[,price])=>sum+price,0);
     if(ctx.budgetHighCents!==null&&Number.isFinite(remainingMealCost)&&st.costCents[1]+costCents[1]+departureCostCents(ctx)[1]+remainingMealCost>ctx.budgetHighCents)return {errors:[fail('H_BUDGET','这项选择加上后面必需的用餐费用会超出预算。')]};
     const load = [0, 1].map(i => range(scene.loadByPerson?.[i === 0 ? 'A' : 'B'] ?? scene.load)[1] + acts.reduce((sum, a) => sum + range(a.loadByPerson?.[i === 0 ? 'A' : 'B'] ?? a.load)[1], 0));
     const fatigueAfter = st.fatigue.map((f, i) => Math.max(0, f + load[i]));
     if (fatigueAfter.some(f => f > ctx.maxLoad)) return { errors: [fail('H_LOAD', '预计负担超过本次双方上限。')] };
     const transit = transfer(st, scene, catalog);
-    const uncertainty = ctx.robust ? integer(scene.uncertaintyMinutes, place.indoor === false && !place.sheltered && ctx.weather === 'unknown' ? 5 : scene.reliable === false ? 10 : 0, 0, 120) : 0;
+    const uncertainty = ctx.robust ? integer(scene.uncertaintyMinutes, scene.reliable === false ? 10 : 0, 0, 120) : 0;
     const exactStart = anchor?.startMinute ?? choice.startMinute;
     const isMeal = scene.kind === 'meal' || acts.some(a => a.exclusiveKey === 'main_meal' || a.provides.meal_completed > 0);
     let slot = null, hoursRejected = false;
@@ -370,7 +382,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
         const openEnd = Math.min(w.endMinute, mealSlot?.endMinute ?? Infinity);
         const nextAppointment = !anchor ? ctx.anchors?.[st.anchorIndex]?.startMinute ?? Infinity : Infinity;
         const stop = Math.min(openEnd, window.endMinute - ctx.reserve - departureReservedMinutes(ctx) - carry,
-          ctx.periodIds && !mealRole && pendingMeal ? pendingMeal.targetMinute - carry : Infinity, nextAppointment);
+          ctx.periodIds && !mealRole && blockingMeal ? blockingMeal.targetMinute - carry : Infinity, nextAppointment);
         const bounds = durationBounds(scene);
         const automaticMinimum = ctx.minimumStageCount > st.stages.length ? bounds.min : sceneStayMinutes({...scene,minutes:bounds.min}, start, mealRole, Boolean(ctx.periodIds));
         const minutes = chooseStayDuration(scene, {available:stop-start, requested:choice.durationMinutes,
@@ -391,16 +403,26 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
       if (st.usedMinutes + used + ctx.reserve + departureReservedMinutes(ctx) + uncertaintyTotal > ctx.duration) continue;
       if (isMeal && !ctx.periodIds && st.mealWindows.includes(window.id)) continue;
       // 必需饭点的截止时间约束每个普通阶段，预约和人工前缀同样不能绕过。
-      if (ctx.periodIds && !mealRole && pendingMeal && end + uncertaintyCarry > pendingMeal.targetMinute) continue;
-      slot = { start, end, minutes, windowIndex: wi, windowId: window.id, wait: start - earliest, used, reserve, uncertainty, uncertaintyCarry, uncertaintyTotal }; break;
+      if (ctx.periodIds && !mealRole && blockingMeal && end + uncertaintyCarry > blockingMeal.targetMinute) continue;
+      // 完整旅行卡的费用与时长已含餐。每餐仍需在实际饭点留出30分钟，不能靠标签跳过。
+      const bundledMeals=ctx.mealRequirements.filter(meal=>meal.choiceMode==='together'&&!st.mealRoles.includes(meal.mealRole)&&meal.mealRole!==mealRole&&canBundle(meal)&&end>meal.targetMinute).map(meal=>{
+        const mealStart=Math.max(start,meal.targetMinute);
+        return {mealRole:meal.mealRole,label:meal.label,startMinute:mealStart,endMinute:mealStart+30,latestEnd:meal.endMinute};
+      });
+      if(bundledMeals.some(meal=>meal.endMinute>end||meal.endMinute>meal.latestEnd))continue;
+      slot = { start, end, minutes, bundledMeals, windowIndex: wi, windowId: window.id, wait: start - earliest, used, reserve, uncertainty, uncertaintyCarry, uncertaintyTotal }; break;
     }
     if (!slot) return { errors: [hoursRejected ? fail('H_SCENE_HOURS', '场景开放时间不能完整容纳本阶段，请选择其他地点或时段。') : fail('H_TIME_WINDOW', '阶段、转场、预约时间和必要缓冲无法放入可用时间窗。')] };
+    const bundledRoles=slot.bundledMeals.map(meal=>meal.mealRole);
+    const laterMealCost=[...mealFloors].filter(([role])=>role!==mealRole&&!st.mealRoles.includes(role)&&!bundledRoles.includes(role)).reduce((sum,[,price])=>sum+price,0);
+    if(ctx.budgetHighCents!==null&&Number.isFinite(laterMealCost)&&st.costCents[1]+costCents[1]+departureCostCents(ctx)[1]+laterMealCost>ctx.budgetHighCents)return {errors:[fail('H_BUDGET','行程与剩余餐次费用超过预算。')]};
     const minutes = slot.minutes;
     const schedule = scheduleWithinScene(minutes, ordering.ordered);
     if (ctx.periodIds && TIME_PERIODS.some(p => ctx.periodIds.includes(p.id) && p.endMinute <= slot.start && !st.stages.some(s => s.start < p.endMinute && s.end > p.startMinute))) return { errors: [fail('H_PERIOD_COVERAGE', '不能跳过已选择的时段；每个时段需有实际规划阶段。')] };
     const pendingAnchor = ctx.anchors?.[st.anchorIndex];
     if (!anchor && pendingAnchor?.startMinute !== undefined && slot.end > pendingAnchor.startMinute) return { errors: [fail('H_ANCHOR_TIME', '当前阶段会越过后续固定预约。')] };
     const graph = graphFeatures(scene, acts), tags = list([...scene.tags, ...acts.flatMap(a => a.tags)]);
+    const soft = preferencePolicy(ctx, scene, place, tags, graph.matches, exploration, acts);
     const matchA = ctx.preferencesA.filter(p => graph.matches.has(p)).length, matchB = ctx.preferencesB.filter(p => graph.matches.has(p)).length;
     const sharedInterest = ctx.preferencesA.filter(p => ctx.preferencesB.includes(p) && graph.matches.has(p)).length * 8;
     const generalPreference = ctx.preferences.filter(p => graph.matches.has(p)).length * 5;
@@ -423,18 +445,23 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const repeatFunctionPenalty = st.kinds.includes(scene.kind) ? 18 : 0;
     const repeatScenePenalty = st.visited.includes(scene.id) ? 36 : 0;
     const unnecessaryRestPenalty = scene.kind === 'rest' && Math.max(...st.fatigue) < 6 ? 35 : 0;
-    const ruleBonus = (sceneInference.scenePreferences[scene.id] || 0) + acts.reduce((sum, a, i) => sum + (inferences[i + 1].activityPreferences[a.id] || 0), 0) - repeatFunctionPenalty - repeatScenePenalty - unnecessaryRestPenalty;
+    const ruleBonus = soft.score + (sceneInference.scenePreferences[scene.id] || 0) + acts.reduce((sum, a, i) => sum + (inferences[i + 1].activityPreferences[a.id] || 0), 0) - repeatFunctionPenalty - repeatScenePenalty - unnecessaryRestPenalty;
     const newKind = st.kinds.includes(scene.kind) ? 0 : 1;
     const discounted = (ctx.periodIds ? 0.96 : 0.88) ** st.stages.length;
     const durationWeight = ctx.periodIds && scene.durationRange ? minutes / 60 : 1;
     const stageComplexityPenalty = (ctx.periodIds ? scene.durationRange ? 15 : 1.5 : 8) * (2 * st.stages.length + 1);
-    const features = { preferenceA: matchA * 18, preferenceB: matchB * 18, sharedInterest, generalPreference, goalBonus, themeBonus, activityExperienceA: activityExperience[0], activityExperienceB: activityExperience[1], sharedActivityExperience, generalActivityExperience, comfort: fit - (comfortPenalty[0] + comfortPenalty[1]) / 2, transferPenalty: -transit * 0.12, extraActivityPenalty: -extraActivityPenalty, resourcePenalty: -resourcePenalty, repeatFunctionPenalty: -repeatFunctionPenalty, repeatScenePenalty: -repeatScenePenalty, unnecessaryRestPenalty: -unnecessaryRestPenalty, stageComplexityPenalty: -stageComplexityPenalty, novelty: novelty * exploration / 100 * 0.55, variety: newKind * (4 + exploration * 0.06), ruleBonus, fairnessFloor: Math.min(...values) * 0.3 };
-    const stage = { sceneId: scene.id, activityIds: ids, minutes, transfer: transit, wait: slot.wait, start: slot.start, end: slot.end, startMinute: slot.start, endMinute: slot.end, fixedStartMinute: exactStart ?? null, windowId: slot.windowId, cost: costCents.map(money), costCents, load: Math.max(...load), loadByPerson: { A: load[0], B: load[1] }, schedule: schedule, reserve: slot.reserve, uncertaintyMinutes: uncertainty, tags, featureContributions: features, trace: [...inferences.flatMap(i => i.trace), ...graph.trace, { ruleId: 'RESOURCE_ACCOUNTING', rule: 'RESOURCE_ACCOUNTING', message: '阶段按场景基础时长及晚间最小停留核算，活动在完整阶段内执行；转场及缓冲照常核算，费用使用整数分', inputFacts: [{ id: 'composition', value: schedule }], outputFacts: [{ id: 'costCents', value: costCents }, { id: 'minutes', value: minutes }], evidenceIds: [], assertionKind: 'designed' }], warnings: list(inferences.flatMap(i => i.warnings)), preparationIds: list([...(scene.preparationIds || []), ...acts.flatMap(a => a.preparationIds)]), manual, ...(anchor ? { anchorId: anchor.id } : {}), realWorldStatus: 'needs_confirmation' };
+    const features = { ...soft.contributions, preferenceA: matchA * 18, preferenceB: matchB * 18, sharedInterest, generalPreference, goalBonus, themeBonus, activityExperienceA: activityExperience[0], activityExperienceB: activityExperience[1], sharedActivityExperience, generalActivityExperience, comfort: fit - (comfortPenalty[0] + comfortPenalty[1]) / 2, transferPenalty: -transit * 0.12, extraActivityPenalty: -extraActivityPenalty, resourcePenalty: -resourcePenalty, repeatFunctionPenalty: -repeatFunctionPenalty, repeatScenePenalty: -repeatScenePenalty, unnecessaryRestPenalty: -unnecessaryRestPenalty, stageComplexityPenalty: -stageComplexityPenalty, novelty: novelty * exploration / 100 * 0.55, variety: newKind * (4 + exploration * 0.06), ruleBonus, fairnessFloor: Math.min(...values) * 0.3 };
+    const stage = { sceneId: scene.id, activityIds: ids, minutes, transfer: transit, wait: slot.wait, start: slot.start, end: slot.end, startMinute: slot.start, endMinute: slot.end, fixedStartMinute: exactStart ?? null, windowId: slot.windowId, cost: costCents.map(money), costCents, load: Math.max(...load), loadByPerson: { A: load[0], B: load[1] }, schedule: schedule, reserve: slot.reserve, uncertaintyMinutes: uncertainty, tags, featureContributions: features, trace: [...inferences.flatMap(i => i.trace), ...graph.trace, ...soft.trace, { ruleId: 'RESOURCE_ACCOUNTING', rule: 'RESOURCE_ACCOUNTING', message: '阶段按场景基础时长及晚间最小停留核算，活动在完整阶段内执行；转场及缓冲照常核算，费用使用整数分', inputFacts: [{ id: 'composition', value: schedule }], outputFacts: [{ id: 'costCents', value: costCents }, { id: 'minutes', value: minutes }], evidenceIds: [], assertionKind: 'designed' }], warnings: list([...inferences.flatMap(i => i.warnings), ...soft.warnings]), preparationIds: list([...(scene.preparationIds || []), ...acts.flatMap(a => a.preparationIds)]), manual, ...(anchor ? { anchorId: anchor.id } : {}), realWorldStatus: 'needs_confirmation' };
     if (scene.durationRange) stage.durationRange = [...scene.durationRange];
     if (choice.durationMinutes !== undefined) stage.fixedDurationMinutes = choice.durationMinutes;
+    if(slot.bundledMeals.length){
+      stage.bundledMeals=slot.bundledMeals.map(({latestEnd,...meal})=>meal);
+      stage.trace.push({ruleId:'BUNDLED_MEAL_ACCOUNTING',message:'完整行程内餐次已按饭点预留时间，费用包含在旅行卡内。',strength:'hard',assertionKind:'designed',inputFacts:[{id:'scene.bundledMeals',value:scene.bundledMeals}],outputFacts:stage.bundledMeals});
+    }
     if (mealRole) { stage.mealRole = mealRole; stage.mealId = mealRole; }
     const next = { ...st, time: slot.end, elapsed: slot.end - ctx.windows[0].startMinute, usedMinutes: st.usedMinutes + slot.used, windowIndex: slot.windowIndex, uncertaintyByWindow: { ...st.uncertaintyByWindow, [slot.windowId]: slot.uncertaintyCarry }, uncertaintyTotal: slot.uncertaintyTotal, costCents: st.costCents.map((n, i) => n + costCents[i]), cost: st.costCents.map((n, i) => money(n + costCents[i])), fatigue: fatigueAfter, resources, completed: list([...completed, scene.id]), visited: [...st.visited, scene.id], kinds: [...st.kinds, scene.kind], mealWindows: isMeal ? [...st.mealWindows, slot.windowId] : st.mealWindows, mealRoles: mealRole ? [...st.mealRoles, mealRole] : st.mealRoles, meal: st.meal || isMeal, hasRest: st.hasRest || scene.kind === 'rest', last: scene.id, lastKind: scene.kind, area: scene.area === 'current' ? st.area : scene.area, anchorIndex: st.anchorIndex + (anchor ? 1 : 0), utilities: st.utilities.map((v, i) => v + values[i] * discounted * durationWeight), novelty: st.novelty + novelty * discounted, variety: st.variety + newKind, ruleUtility: st.ruleUtility + ruleBonus * discounted, stages: [...st.stages, stage] };
     next.activeMinutes = st.activeMinutes + minutes;
+    next.mealRoles=list([...next.mealRoles,...bundledRoles]);next.meal=next.meal||bundledRoles.length>0;
     next.placeId = scene.kind === 'rest' ? st.placeId : scene.id;
     next.waitMinutes = st.waitMinutes + slot.wait;
     if (ctx.periodIds) { features.activeCoverage = minutes * 0.45; features.waitPenalty = -slot.wait * 0.35; }
@@ -524,7 +551,7 @@ function* searchDate(input = {}, catalog, options = {}) {
     ctx = normalize({ ...input, explorationSeed: options.explorationSeed ?? input.explorationSeed ?? input.context?.explorationSeed });
     ctx.explorationSeed ??= digest(ctx);
   } catch (error) { return errorResponse('invalid_input', [error.message], null, versions); }
-  try { compiled = compileCatalog(catalog); } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
+  try { compiled = compileCatalog(catalog, ctx); } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
   ctx.durationPolicy = compiled.scenes.some(scene => scene.durationRange) ? 'flexible' : 'fixed';
   if (ctx.requiredSceneIds.some(id => !compiled.byId.has(id) || ctx.bans.includes(id))) return errorResponse('invalid_input', [fail('H_REQUIRED_SCENE', '必去地点不存在或同时被排除。')], ctx, versions);
   if (ctx.requiredSceneIds.some(id => !isSceneInSchoolScope(compiled.byId.get(id), ctx))) return errorResponse('invalid_input', [fail('H_SCHOOL_SCOPE', '必去地点不适用于本次地点、学校或校区范围。')], ctx, versions);
@@ -806,7 +833,7 @@ function* searchDate(input = {}, catalog, options = {}) {
     const allEntries = [...byScene.values()].sort(orderEntries);
     // 展示与真实评分分离，未验证场景可以靠前展露，但仍只能带 pending 状态。
     const explorationDisplay = explorer.strength > 0 && !lockedStage;
-    let ordered = explorationDisplay ? explorer.display(allEntries, config.candidateLimit, { key: c => c.sceneId, confirmed: c => c.continuationFound, scope: `cards:${stateKey(before)}` }) : allEntries.slice(0, config.candidateLimit);
+    let ordered = explorationDisplay ? explorer.display(allEntries, config.candidateLimit, { key: c => c.sceneId, confirmed: c => c.continuationFound, dream: c => compiled.byId.get(c.sceneId)?.dreamOnly || compiled.byId.get(c.sceneId)?.tags.includes('dream'), scope: `cards:${stateKey(before)}` }) : allEntries.slice(0, config.candidateLimit);
     if (!ordered.some(c => c.sceneId === own.sceneId)) ordered = [...ordered.slice(0, config.candidateLimit - 1), own];
     if (!explorationDisplay) ordered.sort(orderEntries);
     ordered = ordered.map((candidate, rank) => ({ ...candidate, explorationRank: rank, displayOrderIndex: rank }));
@@ -816,6 +843,8 @@ function* searchDate(input = {}, catalog, options = {}) {
     return stage;
   });
   const mealRequirements = ctx.mealRequirements.map(meal => {
+    const bundledIndex=stages.findIndex(stage=>stage.bundledMeals?.some(item=>item.mealRole===meal.mealRole));
+    if(bundledIndex>=0)return {...meal,satisfied:true,bundled:true,sceneId:stages[bundledIndex].sceneId,stageIndex:bundledIndex,insertIndex:bundledIndex,activityIds:stages[bundledIndex].activityIds,candidates:[]};
     const actualIndex = stages.findIndex(s => s.mealRole === meal.mealRole);
     const stageIndex = actualIndex < 0 ? null : actualIndex;
     // 特殊餐次切回真实用餐时，释放跨越饭点的自动尾段；显式前缀仍不可回退。
@@ -848,7 +877,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   const measured = metrics(best, ctx, exploration);
   const departure = departureResult(ctx, best);
   const assumptions = ['时间、费用、负担和恢复量为教学设计参数；实际开放、交通与双方感受仍需确认。', '费用区间为双人总额，约束使用整数分的上界。'];
-  if (ctx.weather === 'unknown') assumptions.push('天气未提供，保留unknown；鲁棒模式对未知室外天气计入额外时间预留。');
+  if (ctx.weather === 'cloudy') assumptions.push('天气未提供或旧值unknown时按多云处理；天气偏好仅调整排序。');
   if (departure?.id === 'hotel') assumptions.push('酒店费用为所选城市等级的一间双人客房设计区间，并非实际房价；房源、交通和入住条件需确认。');
   const warnings = [...new Set(stages.flatMap(s => s.warnings))];
   const replay = { schema: 'datemate-replay-3.0', versions, context: ctx, exploration, explorationSeed: ctx.explorationSeed, explorationVersion: EXPLORATION_VERSION, prefix, anchors, search: config, ...(known && !known.errors.length ? { knownPlan: compactWitness(known.state) } : {}) };

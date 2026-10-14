@@ -1,5 +1,5 @@
 // 界面展示使用统一单位；算法与硬约束由 engine.mjs 负责。
-import {normalizePeriods} from './time-periods.mjs?v=d4f7f2e5b8714a6e';
+import {normalizePeriods} from './time-periods.mjs?v=f9ba8b25a44e98dd';
 export const formatTime = m => {
   const minute=Math.round(m),day=Math.floor(minute/1440),clock=((minute%1440)+1440)%1440;
   return `${day>0?'次日':''}${String(Math.floor(clock/60)).padStart(2,'0')}:${String(clock%60).padStart(2,'0')}`;
@@ -7,9 +7,17 @@ export const formatTime = m => {
 export const costLabel = cost => { const [a=0,b=a] = Array.isArray(cost) ? cost : [cost?.min ?? 0,cost?.max ?? 0]; return a === b ? `¥${a}` : `¥${a}–${b}`; };
 export const escapeHTML = value => String(value ?? '').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 export const interestLabels = {nature:'自然',culture:'文化',food:'美食',play:'游戏',creative:'手作',romantic:'氛围',quiet:'安静',indoor:'室内',exercise:'运动',learning:'学习',daily:'日常',photo:'拍照',music:'音乐'};
+export function excludedKeywordIds(catalog, text='') {
+  const words=text.split(/[,，、;；\n]+/).map(word=>word.trim().toLocaleLowerCase()).filter(Boolean);
+  const entities=[...catalog.scenes,...(catalog.activities||[]),...catalog.scenes.flatMap(scene=>scene.activities||[])];
+  return [...new Set(entities.filter(entity=>{
+    const searchable=[entity.id,entity.title,entity.name,...(entity.aliases||[]),...(entity.keywords||[])].filter(Boolean).join(' ').toLocaleLowerCase();
+    return words.some(word=>searchable.includes(word));
+  }).map(entity=>entity.id))];
+}
 export function defaultContext() {
   const {periodIds,windows,duration}=normalizePeriods(['afternoon']);
-  return {periodIds,windows,duration,mealChoices:{},departureChoice:'separate',cityTier:'tier1',budget:null,weather:'unknown',area:'near',school:'',campusArea:'',fatigueA:2,fatigueB:2,preferences:[],quietRequired:false,theme:'any',bans:[],preferencesA:[],preferencesB:[],preparedIds:[],dietaryRestrictions:[],robust:true,mealNeed:false,crowdAvoidance:false,anchors:[]};
+  return {periodIds,windows,duration,mealChoices:{},departureChoice:'separate',cityTier:'tier1',budget:null,weather:'cloudy',weekPart:'weekday',relationship:'any',reunion:false,cyclePhase:'none',mood:'normal',energy:'normal',season:'ordinary',mentalDemand:'any',occasion:'daily',personalityA:'',personalityB:'',planStyle:'steady',themes:[],area:'near',school:'',campusArea:'',fatigueA:2,fatigueB:2,preferences:[],quietRequired:false,theme:'any',bans:[],banKeywords:'',preferencesA:[],preferencesB:[],preparedIds:[],dietaryRestrictions:[],robust:true,mealNeed:false,crowdAvoidance:false,anchors:[]};
 }
 export function toggleActivity(scene, selected, id, mealRole = null) {
   const activity = scene.activities.find(a=>a.id===id);

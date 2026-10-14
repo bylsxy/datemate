@@ -1,22 +1,22 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=d4f7f2e5b8714a6e';
-import {createTimeline} from './timeline.mjs?v=d4f7f2e5b8714a6e';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=d4f7f2e5b8714a6e';
-import {createReasonView} from './reasons-view.mjs?v=d4f7f2e5b8714a6e';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=d4f7f2e5b8714a6e';
-import {createPlacePicker} from './place-picker.mjs?v=d4f7f2e5b8714a6e';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=d4f7f2e5b8714a6e';
-import {dietaryOptions} from './data/activities.mjs?v=d4f7f2e5b8714a6e';
-import * as reasoning from './reasoning.mjs?v=d4f7f2e5b8714a6e';
-import {normalizePeriods} from './time-periods.mjs?v=d4f7f2e5b8714a6e';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=d4f7f2e5b8714a6e';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=d4f7f2e5b8714a6e';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=f9ba8b25a44e98dd';
+import {createTimeline} from './timeline.mjs?v=f9ba8b25a44e98dd';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=f9ba8b25a44e98dd';
+import {createReasonView} from './reasons-view.mjs?v=f9ba8b25a44e98dd';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=f9ba8b25a44e98dd';
+import {createPlacePicker} from './place-picker.mjs?v=f9ba8b25a44e98dd';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=f9ba8b25a44e98dd';
+import {dietaryOptions} from './data/activities.mjs?v=f9ba8b25a44e98dd';
+import * as reasoning from './reasoning.mjs?v=f9ba8b25a44e98dd';
+import {normalizePeriods} from './time-periods.mjs?v=f9ba8b25a44e98dd';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=f9ba8b25a44e98dd';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=f9ba8b25a44e98dd';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=d4f7f2e5b8714a6e',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=f9ba8b25a44e98dd',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,onMerge:commitMerge,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
@@ -101,6 +101,13 @@ worker.onmessage=({data})=>{
 worker.onerror=event=>{note(`计算线程出错：${event.message}。请刷新后重试。`,true);$('#stages').setAttribute('aria-busy','false');active?.resolve(null);pending?.resolve(null);active=pending=null;busy=false;};
 function checked(name){return $$(`input[name="${name}"]:checked`).map(x=>x.value);}
 function selectedValue(name,fallback=''){return $(`input[name="${name}"]:checked`)?.value??fallback;}
+const contextSelects=['weather','weekPart','relationship','occasion','mood','energy','season','planStyle','mentalDemand','cyclePhase','personalityA','personalityB'];
+function paintExploration(value){
+  $('#exploration-value').innerHTML=`${value}<small>/ 100</small>`;
+  $('#dream-badge').hidden=value!==100;
+  $('.exploration').classList.toggle('dream-mode',value===100);
+  $('#exploration-note').textContent=value===100?'把今天借给一点不寻常。':'保留已选，为后面找灵感';
+}
 function readContext({strict=true}={}){
   const c=newContext(),ids=checked('slots'),raw=$('#budget').value;let periods;
   try{periods=normalizePeriods(ids);}catch(error){if(strict)throw error;}
@@ -108,14 +115,19 @@ function readContext({strict=true}={}){
   c.periodIds=periods?.periodIds||ids;c.mealChoices=clone(snapshot().context.mealChoices||{});
   if(periods){c.duration=periods.duration;c.windows=periods.windows;}else{delete c.duration;delete c.windows;}
   c.budget=$('#saving').checked?50:raw===''?null:Number(raw);
-  c.weather=$('#rain').checked?'rain':'unknown';Object.assign(c,scopeControls.read());placePicker.setScope(c);c.fatigueA=$('#tired-a').checked?6:2;c.fatigueB=$('#tired-b').checked?6:2;
+  for(const id of contextSelects)c[id]=$(`#${id}`).value;
+  c.reunion=$('#reunion').checked;c.themes=checked('themes');
+  Object.assign(c,scopeControls.read());placePicker.setScope(c);c.fatigueA=$('#tired-a').checked?6:2;c.fatigueB=$('#tired-b').checked?6:2;
   c.mealChoices=filterScopedMealChoices(c.mealChoices,catalog.scenes,c);
-  c.preferences=[$('#quiet').checked?'quiet':null,$('#indoor').checked?'indoor':null].filter(Boolean);c.quietRequired=$('#quiet-hard').checked;
-  c.crowdAvoidance=$('#crowd').checked;c.robust=$('#robust').checked;c.theme=selectedValue('theme','any');c.cityTier=selectedValue('cityTier','tier1');
+  c.preferences=[$('#quiet').checked?'quiet':null,$('#indoor').checked?'indoor':null].filter(Boolean);c.quietRequired=false;
+  c.crowdAvoidance=$('#crowd').checked;c.robust=c.planStyle==='steady';c.theme='any';c.cityTier=selectedValue('cityTier','tier1');
   c.departureChoice=snapshot().context.departureChoice||'separate';
-  if(periods&&periods.endMinute<=1440&&c.departureChoice==='hotel')c.departureChoice='separate';
+  if(periods&&periods.endMinute<=1440&&['hotel','camping'].includes(c.departureChoice))c.departureChoice='separate';
   c.preferencesA=checked('preferencesA').filter(Boolean);c.preferencesB=checked('preferencesB').filter(Boolean);c.dietaryRestrictions=checked('diet');
   Object.assign(c,placePicker.getChoices());
+  c.placeBans=[...c.bans];
+  c.banKeywords=$('#ban-keywords').value.trim();
+  c.bans=[...new Set([...c.bans,...excludedKeywordIds(catalog,c.banKeywords)])];
   c.explicitConsentIds=[...(snapshot().context.explicitConsentIds||[])];
   c.explorationSeed=snapshot().context.explorationSeed??0;
   return c;
@@ -123,12 +135,14 @@ function readContext({strict=true}={}){
 function syncControls(){
   const c=state.context=normalizeUIScope(state.context);
   $('#budget').value=c.budget===null?'':c.budget;$('#saving').checked=c.budget===50;$('#budget').disabled=$('#saving').checked;
-  $('#rain').checked=c.weather==='rain';$('#tired-a').checked=c.fatigueA>=6;$('#tired-b').checked=c.fatigueB>=6;
-  $('#quiet').checked=c.preferences.includes('quiet');$('#indoor').checked=c.preferences.includes('indoor');$('#quiet-hard').checked=c.quietRequired;
-  $('#crowd').checked=c.crowdAvoidance;$('#robust').checked=c.robust;
-  for(const [name,values]of [['preferencesA',c.preferencesA?.length?c.preferencesA:['']],['preferencesB',c.preferencesB?.length?c.preferencesB:['']],['diet',c.dietaryRestrictions],['slots',c.periodIds],['theme',[c.theme]],['area',[c.area]],['cityTier',[c.cityTier||'tier1']]])$$(`input[name="${name}"]`).forEach(x=>x.checked=(values||[]).includes(x.value));
-  scopeControls.set(c);placePicker.setChoices(c);refreshGraphScope(c);
-  $('#exploration').value=state.exploration;$('#exploration-value').innerHTML=`${state.exploration}<small>/ 100</small>`;
+  for(const id of contextSelects)$(`#${id}`).value=(id==='weather'&&c[id]==='unknown')?'cloudy':c[id]??defaultContext()[id];
+  $('#reunion').checked=!!c.reunion;$('#ban-keywords').value=c.banKeywords||'';
+  $('#tired-a').checked=c.fatigueA>=6;$('#tired-b').checked=c.fatigueB>=6;
+  $('#quiet').checked=c.preferences.includes('quiet');$('#indoor').checked=c.preferences.includes('indoor');
+  $('#crowd').checked=c.crowdAvoidance;
+  for(const [name,values]of [['preferencesA',c.preferencesA?.length?c.preferencesA:['']],['preferencesB',c.preferencesB?.length?c.preferencesB:['']],['diet',c.dietaryRestrictions],['slots',c.periodIds],['themes',c.themes],['area',[c.area]],['cityTier',[c.cityTier||'tier1']]])$$(`input[name="${name}"]`).forEach(x=>x.checked=(values||[]).includes(x.value));
+  scopeControls.set(c);placePicker.setChoices({...c,bans:c.placeBans??c.bans});refreshGraphScope(c);
+  $('#exploration').value=state.exploration;paintExploration(state.exploration);
 }
 function traceText(t){return t.message||t.text||t.title||rules.find(r=>r.id===t.ruleId)?.title||t.rule||'规则已触发';}
 function traceHTML(t){const ins=t.inputFacts||[],outs=t.outputFacts||[];return `<div class="trace-item"><span class="trace-id">${esc(t.ruleId||t.id||t.rule||'状态更新')}</span><p>${esc(traceText(t))}</p>${ins.length?`<p>输入：${esc(ins.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}${outs.length?`<p>推导：${esc(outs.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}</div>`;}
@@ -142,6 +156,7 @@ function pendingPanels(){
   $('#preparation-items').innerHTML=placeholder;$('#preparation-summary').setAttribute('aria-busy','true');
 }
 function render({preserveThrough=-1,preserveKey=null}={}){
+  $('#weather-note').hidden=!(result.ok&&state.context.weather==='clear'&&result.stages.some(stage=>{const scene=sceneById.get(stage.sceneId);return scene&&!scene.indoor&&!scene.sheltered;}));
   const preparations=result.ok?planPreparations(result.stages,catalog):[];
   $('#preparation-summary').hidden=!preparations.length;
   $('#preparation-summary').setAttribute('aria-busy','false');
@@ -234,6 +249,8 @@ function refreshGraphScope(context){
   graphQuery();
 }
 function initializeKnowledge(){
+  const types=['INTJ','INTP','ENTJ','ENTP','INFJ','INFP','ENFJ','ENFP','ISTJ','ISFJ','ESTJ','ESFJ','ISTP','ISFP','ESTP','ESFP'];
+  for(const id of ['personalityA','personalityB'])$(`#${id}`).innerHTML='<option value="">不填写</option>'+types.map(type=>`<option value="${type}">${type}</option>`).join('');
   const dietaryContainer=$('input[name="diet"]').closest('.choices');
   dietaryContainer.innerHTML=dietaryOptions.map(x=>`<label class="choice"><input name="diet" type="checkbox" value="${esc(x.id)}">${esc(x.label)}</label>`).join('');
   const interests=[['户外',['nature','exercise','photo']],['体验',['culture','play','creative','learning']],['氛围',['romantic','music','quiet','indoor']],['日常',['food','daily']]];
@@ -273,7 +290,7 @@ $('#conditions-form').addEventListener('change',ev=>{
   if(ev.target.id==='saving'){$('#budget').disabled=ev.target.checked;if(ev.target.checked)$('#budget').value=50;else $('#budget').value='';}applyConditions();
 });
 $('#budget').addEventListener('input',()=>{clearTimeout(conditionTimer);$('#export').disabled=true;conditionTimer=setTimeout(applyConditions,160);});
-$('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);$('#exploration-value').innerHTML=`${e}<small>/ 100</small>`;clearTimeout(sliderTimer);sliderTimer=setTimeout(()=>{const seed=crypto.getRandomValues(new Uint32Array(1))[0];const next=exploreIntent(snapshot(),e,seed);compute(next,'已保留你的选择，为后面换些灵感。',{selectionMode:'seeded_exploration',preserveThrough:next.prefix.length-1});},130);});
+$('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);paintExploration(e);clearTimeout(sliderTimer);sliderTimer=setTimeout(()=>{const seed=crypto.getRandomValues(new Uint32Array(1))[0];const next=exploreIntent(snapshot(),e,seed,catalog);compute(next,'已保留你的选择，为后面换些灵感。',{selectionMode:'seeded_exploration',preserveThrough:next.prefix.length-1});},130);});
 $('#restart-plan').addEventListener('click',()=>{if(!conditionsValid||busy)return;clearTimeout(sliderTimer);const next=restartIntent(snapshot(),crypto.getRandomValues(new Uint32Array(1))[0]);compute(next,'已重新推荐，仍可从上往下慢慢选。',{selectionMode:'utility_best'});});
 function closeMenu(){ $('#more-menu').hidden=true;$('#more-menu-toggle').setAttribute('aria-expanded','false'); }
 function showView(name){

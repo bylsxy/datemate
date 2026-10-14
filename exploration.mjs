@@ -1,5 +1,5 @@
 /** 探索只改变搜索和展露顺序；真实效用与硬约束仍由引擎计算。 */
-export const EXPLORATION_VERSION = 'seeded-exploration-1.1';
+export const EXPLORATION_VERSION = 'seeded-exploration-1.2';
 
 export function normalizeExplorationSeed(seed) {
   if (seed === undefined || seed === null) return null;
@@ -50,7 +50,7 @@ export function createExploration(exploration, seed) {
     }
     return selected;
   }
-  function display(ordered, limit, { key, confirmed, scope }) {
+  function display(ordered, limit, { key, confirmed, scope, dream = () => false }) {
     if (!strength) return ordered.slice(0, limit);
     // 展示采用共同的归一化序位，不直接混比完整 q 与局部效用。
     // 高探索仅保留一个已验证推荐位置，其余位置允许 pending 与已评候选混合。
@@ -59,7 +59,7 @@ export function createExploration(exploration, seed) {
     const denominator = Math.max(1, ordered.length - 1);
     const ranked = ordered.map((item, index) => ({
       item, index,
-      rank: (1 - 0.95 * strength) * (1 - index / denominator) + 0.95 * (noise(scope, key(item)) + strength) / 2,
+      rank: (1 - 0.95 * strength) * (1 - index / denominator) + 0.95 * (noise(scope, key(item)) + strength) / 2 + (exploration === 100 && dream(item) ? 0.6 : 0),
     })).filter(entry => !retained.has(entry.item)).sort((a, b) => b.rank - a.rank || a.index - b.index);
     return [...reserved, ...ranked.slice(0, Math.max(0, limit - reserved.length)).map(entry => entry.item)];
   }

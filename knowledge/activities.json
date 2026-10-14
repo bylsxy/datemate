@@ -30,7 +30,8 @@
         "supper"
       ],
       "dietaryTags": [],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "campus_budget_breakfast",
@@ -62,7 +63,8 @@
       "dietaryTags": [
         "gluten"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "campus_budget_meal",
@@ -95,7 +97,8 @@
       "dietaryTags": [
         "meat"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "aqua_observe",
@@ -115,7 +118,8 @@
       ],
       "evidenceIds": [
         "E-P009"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "aqua_photo",
@@ -137,7 +141,8 @@
       "requiresExplicitConsent": true,
       "evidenceIds": [
         "E-P009"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "arcade_basket",
@@ -156,7 +161,8 @@
       ],
       "evidenceIds": [
         "E-P006"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "arcade_claw",
@@ -175,7 +181,8 @@
       ],
       "evidenceIds": [
         "E-P006"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "arcade_race",
@@ -194,7 +201,8 @@
       ],
       "evidenceIds": [
         "E-P006"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "architecture_detail",
@@ -214,7 +222,8 @@
       ],
       "evidenceIds": [
         "E-citywalk"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "badminton_rally",
@@ -246,7 +255,8 @@
       "preparationIds": [
         "badminton_kit",
         "court_checked"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "bakery_share",
@@ -270,7 +280,8 @@
       "dietaryTags": [
         "gluten",
         "dairy"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "boardgame_cards",
@@ -290,7 +301,8 @@
       ],
       "evidenceIds": [
         "E-G001"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "boardgame_coop",
@@ -310,7 +322,8 @@
       ],
       "evidenceIds": [
         "E-shared-game"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "book_recommend",
@@ -331,7 +344,8 @@
       ],
       "evidenceIds": [
         "E-city-library"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "botany_shapes",
@@ -351,7 +365,8 @@
       ],
       "evidenceIds": [
         "E-campus-nature"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "botany_sketch",
@@ -383,7 +398,8 @@
       ],
       "evidenceIds": [
         "E-fiction-garden"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "breakfast_pack",
@@ -409,7 +425,8 @@
       ],
       "dietaryTags": [
         "gluten"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "bridge_view",
@@ -429,7 +446,8 @@
       ],
       "evidenceIds": [
         "E-campus-walk"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "cafe_focus",
@@ -450,7 +468,8 @@
       "requiresExplicitConsent": true,
       "evidenceIds": [
         "E-research-phone"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "cafe_warm",
@@ -473,7 +492,8 @@
       ],
       "dietaryTags": [
         "caffeine"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "campus_photo",
@@ -494,7 +514,8 @@
       "requiresExplicitConsent": true,
       "evidenceIds": [
         "E-P001"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "campus_watch",
@@ -514,7 +535,8 @@
       ],
       "evidenceIds": [
         "E-P001"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "canteen_pair",
@@ -546,7 +568,8 @@
       "dietaryTags": [
         "meat"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "craft_card",
@@ -578,7 +601,8 @@
       ],
       "evidenceIds": [
         "E-fiction-living"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "craft_clay",
@@ -599,7 +623,8 @@
       "evidenceIds": [
         "E-research-novelty"
       ],
-      "exclusiveKey": "craft_material"
+      "exclusiveKey": "craft_material",
+      "socialDemand": 0
     },
     {
       "id": "dessert_ice",
@@ -623,7 +648,8 @@
       "dietaryTags": [
         "dairy",
         "cold"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "dessert_warm",
@@ -647,7 +673,8 @@
       "dietaryTags": [
         "dairy",
         "gluten"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "exhib_fav",
@@ -669,7 +696,8 @@
       "evidenceIds": [
         "E-G001",
         "E-G003"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "film_exchange",
@@ -692,7 +720,8 @@
       ],
       "predecessorIds": [
         "film_pick"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "film_pick",
@@ -712,7 +741,8 @@
       ],
       "evidenceIds": [
         "E-P006"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "garden_photo",
@@ -734,7 +764,8 @@
       "requiresExplicitConsent": true,
       "evidenceIds": [
         "E-P008"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "garden_roles",
@@ -755,7 +786,8 @@
       ],
       "evidenceIds": [
         "E-P008"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "glass_burger",
@@ -787,7 +819,8 @@
       "mealRoles": [
         "lunch",
         "dinner"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "glass_noodle",
@@ -818,7 +851,8 @@
       "mealRoles": [
         "lunch",
         "dinner"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "ice_practice",
@@ -848,7 +882,8 @@
       ],
       "preparationIds": [
         "closed_shoes"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "ice_slow",
@@ -878,7 +913,8 @@
       ],
       "preparationIds": [
         "closed_shoes"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "mall_snacks",
@@ -900,7 +936,8 @@
         "E-P006",
         "E-P009",
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "mall_stores",
@@ -921,7 +958,8 @@
         "E-P006",
         "E-P009",
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "meal_style_c",
@@ -953,7 +991,8 @@
       "exclusiveKey": "main_meal",
       "dietaryTags": [
         "meat"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "meal_style_raw",
@@ -984,7 +1023,8 @@
         "lunch",
         "dinner"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "meal_style_spicy",
@@ -1015,7 +1055,8 @@
         "lunch",
         "dinner"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "meal_style_w",
@@ -1048,7 +1089,8 @@
       "dietaryTags": [
         "meat",
         "gluten"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "museum_pick",
@@ -1068,7 +1110,8 @@
       ],
       "evidenceIds": [
         "E-campus-museum"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "museum_tool",
@@ -1089,7 +1132,8 @@
       ],
       "evidenceIds": [
         "E-campus-museum"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "music_memory",
@@ -1111,7 +1155,8 @@
       "requiresExplicitConsent": true,
       "evidenceIds": [
         "E-research-phone"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "music_swap",
@@ -1141,7 +1186,8 @@
       ],
       "evidenceIds": [
         "E-lab-time"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "photo_color",
@@ -1161,7 +1207,8 @@
       ],
       "evidenceIds": [
         "E-citywalk"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "photo_pair",
@@ -1185,7 +1232,8 @@
       ],
       "evidenceIds": [
         "E-P007"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "photo_print",
@@ -1219,7 +1267,8 @@
       ],
       "evidenceIds": [
         "E-P007"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "picnic_cloud",
@@ -1240,7 +1289,8 @@
       ],
       "evidenceIds": [
         "E-fiction-garden"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "picnic_share",
@@ -1269,7 +1319,8 @@
       ],
       "evidenceIds": [
         "E-fiction-picnic"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "pingpong_rally",
@@ -1301,7 +1352,8 @@
       "preparationIds": [
         "racket",
         "ball"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "pingpong_teach",
@@ -1333,7 +1385,8 @@
       "preparationIds": [
         "racket",
         "ball"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "purchase_picnic",
@@ -1356,7 +1409,8 @@
       ],
       "evidenceIds": [
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "rainforest_leaf",
@@ -1376,7 +1430,8 @@
       ],
       "evidenceIds": [
         "E-P009"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "read_alone",
@@ -1399,7 +1454,8 @@
       "evidenceIds": [
         "E-C004",
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "read_share",
@@ -1422,7 +1478,8 @@
       "evidenceIds": [
         "E-C004",
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "script_mystery",
@@ -1450,7 +1507,8 @@
       ],
       "preparationIds": [
         "booking_checked"
-      ]
+      ],
+      "socialDemand": 3
     },
     {
       "id": "street_look",
@@ -1471,7 +1529,8 @@
       ],
       "evidenceIds": [
         "E-P007"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "street_style",
@@ -1492,7 +1551,8 @@
       ],
       "evidenceIds": [
         "E-P007"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "super_exchange",
@@ -1513,7 +1573,8 @@
       ],
       "evidenceIds": [
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "super_fruit",
@@ -1534,7 +1595,8 @@
       ],
       "evidenceIds": [
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "super_snacks",
@@ -1555,7 +1617,8 @@
       ],
       "evidenceIds": [
         "E-P010"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "switch_coop",
@@ -1574,7 +1637,8 @@
       ],
       "evidenceIds": [
         "E-user-switch"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "switch_race",
@@ -1593,7 +1657,8 @@
       ],
       "evidenceIds": [
         "E-user-switch"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "talk_highlight",
@@ -1614,7 +1679,8 @@
       "requiresExplicitConsent": true,
       "evidenceIds": [
         "E-research-phone"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "talk_next",
@@ -1634,7 +1700,8 @@
       ],
       "evidenceIds": [
         "E-research-novelty"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "tea_share",
@@ -1657,7 +1724,8 @@
       ],
       "dietaryTags": [
         "gluten"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "track_observe",
@@ -1677,7 +1745,8 @@
       ],
       "evidenceIds": [
         "E-campus-walk"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "track_stretch",
@@ -1698,7 +1767,8 @@
       "requiresExplicitConsent": true,
       "evidenceIds": [
         "E-campus-walk"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "waterside_sketch",
@@ -1727,7 +1797,8 @@
       ],
       "evidenceIds": [
         "E-fiction-paint"
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "cantonese_meal",
@@ -1760,7 +1831,8 @@
         "E-P003",
         "E-P010"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "western_meal",
@@ -1793,7 +1865,8 @@
       "evidenceIds": [
         "E-P004"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_eat",
@@ -1824,7 +1897,8 @@
         "E-campus-food",
         "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "supper_barbecue",
@@ -1855,7 +1929,8 @@
       "evidenceIds": [
         "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "supper_snacks",
@@ -1886,7 +1961,8 @@
       "evidenceIds": [
         "E-user-meal-periods"
       ],
-      "exclusiveKey": "main_meal"
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_shop_eat",
@@ -1919,7 +1995,8 @@
         "E-user-breakfast-choices"
       ],
       "assertionKind": "designed",
-      "evidenceStatus": "user_design_real_world_unverified"
+      "evidenceStatus": "user_design_real_world_unverified",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_mcdonalds_eat",
@@ -1952,7 +2029,8 @@
         "E-user-breakfast-choices"
       ],
       "assertionKind": "designed",
-      "evidenceStatus": "user_design_real_world_unverified"
+      "evidenceStatus": "user_design_real_world_unverified",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_supermarket_eat",
@@ -1985,7 +2063,8 @@
         "E-user-breakfast-choices"
       ],
       "assertionKind": "designed",
-      "evidenceStatus": "user_design_real_world_unverified"
+      "evidenceStatus": "user_design_real_world_unverified",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_prepared_eat",
@@ -2018,7 +2097,1901 @@
         "E-user-breakfast-choices"
       ],
       "assertionKind": "designed",
-      "evidenceStatus": "user_design_real_world_unverified"
+      "evidenceStatus": "user_design_real_world_unverified",
+      "socialDemand": 0
+    },
+    {
+      "id": "sushi_cooked",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "熟食寿司巡礼",
+      "description": "各挑两款熟食寿司和一份热菜，交换一口评价。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "japanese"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [
+        "gluten"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
+    },
+    {
+      "id": "sushi_raw",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "生食寿司小拼盘",
+      "description": "双方都愿意吃生食时，再选小份刺身与寿司组合。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "japanese"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [
+        "raw",
+        "cold"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
+    },
+    {
+      "id": "grill_pair",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "双人烤盘",
+      "description": "挑两三种肉和蔬菜，轮流照看烤盘，烤熟后分着吃。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 70,
+      "tags": [
+        "food",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [
+        "meat"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
+    },
+    {
+      "id": "grill_sauce",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "调一碟自己的蘸料",
+      "description": "先问对方口味，各调一小碟蘸料给烤好的食物配着尝。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "food",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "steak_pair",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "各选一份牛排",
+      "description": "按各自喜欢的熟度点牛排与配菜，留点时间慢慢吃。",
+      "cost": [
+        220,
+        500
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [
+        "meat",
+        "dairy"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
+    },
+    {
+      "id": "steak_menu_story",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "菜单里的旅行愿望",
+      "description": "用菜单上的一个地名聊聊想去的城市，不懂菜名也可以一起问。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "chinese_two_dishes",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "两菜一汤",
+      "description": "各选一道喜欢的菜，再一起选汤和米饭，按当天菜单确认配料。",
+      "cost": [
+        80,
+        180
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "chinese"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [
+        "meat"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
+    },
+    {
+      "id": "chinese_home_flavor",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "家乡味互荐",
+      "description": "用桌上的菜聊一味家乡口味，记下下次想一起吃的地方。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "chinese"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "japanese_cooked_set",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "熟食定食",
+      "description": "各点一份熟食定食与热汤，酱料和面衣按菜单确认。",
+      "cost": [
+        100,
+        240
+      ],
+      "load": 0,
+      "group": "meal_style",
+      "mode": "single",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "japanese"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [
+        "meat",
+        "gluten"
+      ],
+      "provides": [
+        "meal_completed"
+      ],
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "exclusiveKey": "main_meal",
+      "socialDemand": 0
+    },
+    {
+      "id": "japanese_menu_exchange",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "交换菜单推荐",
+      "description": "各找一道下次想试的菜，说说被名字、摆盘还是口味吸引。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "food",
+        "japanese"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "ktv_duet",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "唱一首双人歌",
+      "description": "各选一首都听过的歌合唱，音高不合就换调。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "music",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "ktv_soundtrack",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "给回忆配一首歌",
+      "description": "各唱一首和某次共同经历有关的歌，唱前讲讲为什么选它。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "music",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "arboretum_leaf_map",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "叶形寻宝",
+      "description": "各找三种不同叶形，拍在树上的叶子，回去再查名字。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "photo",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "arboretum_portrait",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "树影人像",
+      "description": "沿通行步道找自然光，轮流给对方拍一组树影人像。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "photo",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "requires": [
+        "phone_camera"
+      ],
+      "socialDemand": 0
+    },
+    {
+      "id": "firefly_observe",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "等一盏小灯",
+      "description": "在允许通行的位置安静观察，不追逐、不捕捉，不用强光照虫。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "night",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "firefly_evening_notes",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "记下这次傍晚",
+      "description": "各记一句当时的光、声音或心情，没见到萤火虫也照样留一条。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "night",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "exam_one_good_thing",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "只讲一件小事",
+      "description": "各说今天一件小事，听完就够，不把短会开成复习大会。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "daily",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "exam_next_break",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "约下一个空档",
+      "description": "对一下考程，挑下一个双方都有空的短时段。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "daily",
+        "quiet"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "route_new_detail",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "各找一个新细节",
+      "description": "在熟悉路线找一处以前没注意的招牌、纹理或小店门面。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "daily",
+        "shared_hobby",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "route_role_swap",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "今天换你带路",
+      "description": "平时带路的人休息一回，由另一方选两个近距离停留点。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "daily",
+        "shared_hobby",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "hobby_micro_lesson",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "爱好体验课",
+      "description": "各选一个能在桌边演示的小技巧，材料自备，轮流当老师。",
+      "cost": [
+        0,
+        30
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "shared_hobby",
+        "learning",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "hobby_try_again",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "互换一次练习",
+      "description": "照着对方刚示范的步骤做一次，告诉对方最想再学哪部分。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "shared_hobby",
+        "learning",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "birthday_cake_share",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "分一块生日蛋糕",
+      "description": "按双方口味选小蛋糕，留一块最喜欢的给寿星。",
+      "cost": [
+        40,
+        160
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "celebration",
+        "romantic",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [
+        "dairy",
+        "gluten"
+      ],
+      "socialDemand": 0
+    },
+    {
+      "id": "birthday_letter",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "读一段生日卡片",
+      "description": "写下这一年记得的一件事和一个祝福，愿意的话读给对方听。",
+      "cost": [
+        0,
+        15
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "celebration",
+        "romantic",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "requires": [
+        "paper_pen"
+      ],
+      "socialDemand": 0
+    },
+    {
+      "id": "confession_words",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "说出喜欢",
+      "description": "先确认对方愿意听，再用自己的话讲喜欢和期待，不安排围观。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "confession",
+        "romantic",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "requiresExplicitConsent": true,
+      "socialDemand": 0
+    },
+    {
+      "id": "confession_listen",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "认真听回答",
+      "description": "给对方时间表达想法；愿意继续聊就聊，不催一个当场答案。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "confession",
+        "romantic",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "requiresExplicitConsent": true,
+      "socialDemand": 0
+    },
+    {
+      "id": "amusement_pick_three",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "三项愿望清单",
+      "description": "各选一项想玩的项目，再一起选一项；当天看排队和开放调整。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play",
+        "travel",
+        "celebration"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "amusement_photo_challenge",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "园区主题合照",
+      "description": "各找一个有趣背景，拍两张不同风格的合照。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play",
+        "travel",
+        "celebration"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "ferris_view",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "找刚才的路线",
+      "description": "在座舱内找出刚才去过的项目和远处地标。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play",
+        "romantic",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0,
+      "predecessorIds": [
+        "amusement_park_day"
+      ]
+    },
+    {
+      "id": "ferris_future",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "一个小愿望",
+      "description": "轮流说一个下次想一起实现的小愿望。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play",
+        "romantic",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0,
+      "predecessorIds": [
+        "amusement_park_day"
+      ]
+    },
+    {
+      "id": "park_dock_check",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "看看码头安排",
+      "description": "确认当日船型、费用、停航天气与最晚还船时间，决定是否上船。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "travel"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "park_shore_map",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "岸边找路线",
+      "description": "沿开放岸线走一小段，记住码头和回程出口。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "travel"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "boat_row_pair",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "轮流划一段",
+      "description": "按工作人员说明穿好救生衣，在允许水域轮流划或蹬船。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "romantic",
+        "play"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0,
+      "predecessorIds": [
+        "park_lake_arrival"
+      ]
+    },
+    {
+      "id": "boat_shore_view",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "从水面看岸边",
+      "description": "在船稳妥停留时一起找岸边的树和建筑，按时回码头。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "romantic",
+        "play"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0,
+      "predecessorIds": [
+        "park_lake_arrival"
+      ]
+    },
+    {
+      "id": "district_theme_walk",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "给新街区一个主题",
+      "description": "围绕骑楼、书店或公园选一条短路线，现场看开放再调整。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "culture",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "district_local_note",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "记一张街区便签",
+      "description": "各记一个想再来的地方和回程线路。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "culture",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "intercity_window",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "往返车窗旅行",
+      "description": "往返邻城时轮流找车窗外有意思的景色，到了再慢走一条街。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "intercity_arrival_plan",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "邻城各挑一站",
+      "description": "各挑邻城一个想看的小地方，按往返车票时间慢慢逛，再一起吃饭。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "oldtown_detail",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "一条老街慢慢看",
+      "description": "往返老城的一天里找旧招牌，轮流介绍自己注意到的东西。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "culture",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "oldtown_postcard",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "口述旅行明信片",
+      "description": "各用三句话讲今天的新发现，把这张口述明信片带回家。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "culture",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "intercity_return_memory",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "列车往返选今日最佳",
+      "description": "往返列车上各选喜欢的一幕，把邻城照片放进同一个相册。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "intercity_return_rest",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "并肩看沿途",
+      "description": "往返列车上一起看沿途变化，到站吃顿饭再回来。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "coast_route_check",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "海边选一段慢走",
+      "description": "各选一段开放岸线慢走，留足晚餐和返程时间。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "nature"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "coast_dawn_song",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "日落的双人歌单",
+      "description": "各选一首适合黄昏的歌，在岸边轻声分享，驾驶者途中专心驾驶。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "nature"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "sunrise_color",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "看海岸换颜色",
+      "description": "在开放岸边看天空与海面换色，云多也可以收藏一片海色。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "nature",
+        "romantic",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "sunrise_photo_pair",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "同一海岸两张照片",
+      "description": "海岸慢游中从同一位置拍两张照片，吃饭后比较光线。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "nature",
+        "romantic",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "coast_return_album",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "海边列车小相册",
+      "description": "往返列车和岸边各拍喜欢的一幕，给海色相册起个名字。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "nature"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "coast_return_quiet",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "沿海列车并肩看",
+      "description": "坐往返沿海列车看风景，中途一起吃饭，给回家后的休息留余量。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "travel",
+        "nature"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "astronomy_star_map",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "对照星图找星",
+      "description": "在允许的观测点对照星图找亮星，云层遮挡就聊星图。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "learning",
+        "night"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "astronomy_telescope",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "轮流看望远镜",
+      "description": "有开放设备和工作人员指导时轮流观测，记录各自看到的细节。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "learning",
+        "night"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 1
+    },
+    {
+      "id": "outdoor_film_watch",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "看一场露天电影",
+      "description": "按已确认场次入座，把手机收好，专心看完这一场。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "culture",
+        "night",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "outdoor_film_line",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "散场交换一个片段",
+      "description": "各说一个记住的镜头或台词意思，听听对方看到的版本。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "culture",
+        "night",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "camp_setup_pair",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "搭好双人小基地",
+      "description": "用已备妥或租好的装备，按营地要求搭帐篷、整理座位和饮水。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "nature",
+        "travel",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "camp_map_walk",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "营地周边认路",
+      "description": "走一段允许的路线，认清洗手间、补水点和撤离出口。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "nature",
+        "travel",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "camp_evening_cloud",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "看晚霞换班",
+      "description": "在营地允许的区域坐着看云和晚霞，雨来就按营地安排撤入遮蔽处。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "night",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0,
+      "predecessorIds": [
+        "camp_day_setup"
+      ]
+    },
+    {
+      "id": "camp_story_circle",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "只属于两人的故事会",
+      "description": "各讲一个以前没讲过的小经历，愿意的话接着聊。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "nature",
+        "night",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0,
+      "predecessorIds": [
+        "camp_day_setup"
+      ]
+    },
+    {
+      "id": "pottery_shape",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "各做一个小器皿",
+      "description": "按店内指导完成一个小器皿，先问清烧制和领取安排。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "creative",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 1
+    },
+    {
+      "id": "pottery_pattern",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "留一个共同暗号",
+      "description": "在各自作品上留一个小图案，下次看到就知道是谁做的。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "creative",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "dance_basic_step",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "一起学基础步",
+      "description": "在老师指导下练一小段基础步，按各自舒适程度配合。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "music",
+        "exercise",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 2
+    },
+    {
+      "id": "dance_song_repeat",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "用喜欢的歌练一遍",
+      "description": "选课堂允许的一段音乐，再试一次刚学的动作。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 70,
+      "tags": [
+        "music",
+        "exercise",
+        "shared_hobby"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 2
+    },
+    {
+      "id": "party_team_quiz",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "搭档答题",
+      "description": "和朋友组队答一轮轻松主题题，每个人可以跳过不想答的题。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play",
+        "celebration",
+        "music"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 3
+    },
+    {
+      "id": "party_song_guess",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "猜歌接力",
+      "description": "轮流播放短歌段让大家猜，想听不想表演也可以。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "play",
+        "celebration",
+        "music"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 3
+    },
+    {
+      "id": "balloon_flight",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "一起体验系留热气球",
+      "description": "仅在运营方确认场次、天气和乘坐条件后，按指导体验系留升空。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 90,
+      "tags": [
+        "dream",
+        "travel",
+        "romantic",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 1
+    },
+    {
+      "id": "balloon_ground_memory",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "落地后的合照",
+      "description": "在允许的位置拍张落地照，再一起吃晚饭，把这段下午记下来。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 90,
+      "tags": [
+        "dream",
+        "travel",
+        "romantic",
+        "photo"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "island_ferry_walk",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "船程与海岛步行",
+      "description": "按已订船班往返，在允许通行的岛上慢走，预留登船时间。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 90,
+      "tags": [
+        "dream",
+        "travel",
+        "nature",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "island_shared_view",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "收藏一片海色",
+      "description": "在开放观景处各选最喜欢的一种海色，拍下来组成同页照片。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 90,
+      "tags": [
+        "dream",
+        "travel",
+        "nature",
+        "romantic"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "concert_trip_show",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "交通与现场演出",
+      "description": "按已订去回车票和演出票完成交通、入场与观看，具体时长依行程调整。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 90,
+      "tags": [
+        "dream",
+        "travel",
+        "music",
+        "celebration"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "concert_trip_song",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "给这趟旅行留首歌",
+      "description": "回程各挑一首现场听到的歌，说说那一刻看见了什么。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 90,
+      "tags": [
+        "dream",
+        "travel",
+        "music",
+        "celebration"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "memory_choose_three",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "选三张旧照片",
+      "description": "各选三张不同阶段的照片，说一件画面之外记得的事。",
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "creative",
+        "romantic",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "socialDemand": 0
+    },
+    {
+      "id": "memory_future_letter",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "title": "写给未来的小信",
+      "description": "写下现在喜欢的一件日常和一个小愿望，约定双方愿意的再读时间。",
+      "cost": [
+        0,
+        10
+      ],
+      "load": 0,
+      "group": "play",
+      "mode": "multi",
+      "novelty": 55,
+      "tags": [
+        "creative",
+        "romantic",
+        "private"
+      ],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "dietaryTags": [],
+      "requires": [
+        "paper_pen"
+      ],
+      "socialDemand": 0
     }
   ]
 }

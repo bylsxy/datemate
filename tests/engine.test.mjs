@@ -130,13 +130,16 @@ test('锚点无index按指定未来顺序保留，不能默默丢弃', () => {
 });
 
 test('鲁棒预留只能收紧可行域，探索不能抵消硬约束', () => {
-  const c = data([scene('outdoor', { indoor: false, minutes: 40, novelty: 100 }), scene('indoor', { minutes: 40 })]);
+  const c = data([scene('outdoor', { indoor: false, minutes: 40, novelty: 100, uncertaintyMinutes: 15 }), scene('indoor', { minutes: 40 })]);
   const flexible = planDate({ ...context, duration: 50, robust: false }, c, { maxStages: 1 });
   const robust = planDate({ ...context, duration: 50, robust: true }, c, { maxStages: 1 });
   assert.ok(flexible.stages[0].candidates.some(s => s.sceneId === 'outdoor'));
   assert.ok(!robust.stages[0].candidates.some(s => s.sceneId === 'outdoor'));
-  const rainy = planDate({ ...context, weather: 'rain', exploration: 100 }, c);
-  assert.ok(rainy.stages.every(s => s.sceneId !== 'outdoor'));
+  const rainy = planDate({ ...context, weather: 'rain', exploration: 100, fixedPrefix: [{ sceneId: 'outdoor', activityIds: [] }] }, c, { maxStages: 1 });
+  assert.equal(rainy.ok, true);
+  assert.ok(rainy.stages[0].featureContributions.SOFT_RAIN < 0);
+  assert.equal(normalize({}).weather, 'cloudy');
+  assert.equal(normalize({ weather: 'unknown' }).weather, 'cloudy');
 });
 
 test('图谱多跳实际进入双方偏好特征和排序，共享兴趣与公平性可解释', () => {

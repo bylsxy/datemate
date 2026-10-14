@@ -18,7 +18,17 @@
     "learning",
     "daily",
     "photo",
-    "music"
+    "music",
+    "dream",
+    "travel",
+    "celebration",
+    "confession",
+    "shared_hobby",
+    "private",
+    "night",
+    "japanese",
+    "chinese",
+    "outdoor"
   ],
   "interestOptions": [
     {
@@ -72,7 +82,17 @@
     {
       "id": "music",
       "label": "音乐"
-    }
+    },
+    {"id":"dream","label":"梦想清单"},
+    {"id":"travel","label":"旅行"},
+    {"id":"celebration","label":"庆祝"},
+    {"id":"confession","label":"告白"},
+    {"id":"shared_hobby","label":"共同爱好"},
+    {"id":"private","label":"私密氛围"},
+    {"id":"night","label":"夜间体验"},
+    {"id":"japanese","label":"日式体验"},
+    {"id":"chinese","label":"中式体验"},
+    {"id":"outdoor","label":"户外"}
   ],
   "preparationOptions": [
     {
@@ -199,7 +219,20 @@
     "departureChoice": "separate",
     "duration": 180,
     "budget": null,
-    "weather": "unknown",
+    "weather": "cloudy",
+    "weekPart": "weekday",
+    "relationship": "any",
+    "reunion": false,
+    "cyclePhase": "none",
+    "mood": "normal",
+    "energy": "normal",
+    "season": "ordinary",
+    "mentalDemand": "any",
+    "occasion": "daily",
+    "personalityA": "",
+    "personalityB": "",
+    "planStyle": "steady",
+    "themes": [],
     "area": "all",
     "school": "",
     "campusArea": "",

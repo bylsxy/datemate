@@ -69,7 +69,8 @@
         20,
         90
       ],
-      "activityOverrides": {}
+      "activityOverrides": {},
+      "socialDemand": 0
     },
     {
       "id": "dorm_downstairs_shelter",
@@ -136,7 +137,8 @@
         "talk_next": {
           "description": "各说一件下次想一起做的事，先记下来，有空再约。"
         }
-      }
+      },
+      "socialDemand": 0
     },
     {
       "id": "taishan_supermarket_front",
@@ -190,7 +192,8 @@
         30,
         180
       ],
-      "activityOverrides": {}
+      "activityOverrides": {},
+      "socialDemand": 0
     },
     {
       "id": "teaching4_study",
@@ -242,7 +245,8 @@
       "durationRange": [
         30,
         240
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "teaching4_slope",
@@ -288,7 +292,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "taishan_lab_garden",
@@ -339,11 +344,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "agriculture_museum",
-      "description": "一起看看农具和农业展品，挑感兴趣的慢慢逛。馆内只在部分日期开放，出发前先看当天安排。",
+      "description": "从农具逛到农业往事；开放日期需确认。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -417,11 +423,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "aquarium",
-      "description": "一起看鱼群和海洋动物，看到有趣的再聊几句。要买门票，也会站着走一阵。",
+      "description": "隔着玻璃，借一会儿海底的蓝。",
       "sheltered": true,
       "minutes": 90,
       "cost": [
@@ -474,11 +481,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "badminton",
-      "description": "在室内羽毛球场轻松打几轮，争取一起多接几个球。带好球拍和球，先确认有空场地。",
+      "description": "今天比连续接球，输赢先放一边。",
       "sheltered": true,
       "minutes": 30,
       "cost": [
@@ -530,11 +538,12 @@
       "durationRange": [
         30,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "boardgame",
-      "description": "找个桌游店坐下，玩熟悉的卡牌或合作游戏。先问清收费和有没有想玩的游戏。",
+      "description": "合作通关，或者友好地互相算计。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -588,7 +597,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "bridge_walk",
@@ -646,11 +656,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "cafe",
-      "description": "点杯喜欢的饮品，坐下聊聊天或安静待一会儿。想轻松相处就挑不太吵的座位。",
+      "description": "一杯喝慢一点，话也慢慢讲。",
       "sheltered": true,
       "minutes": 45,
       "cost": [
@@ -705,7 +716,8 @@
       "durationRange": [
         30,
         240
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "campus",
@@ -771,11 +783,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "campus_picnic",
-      "description": "带上备好的食物和野餐垫，在可以坐的草地上分着吃、看看天。下雨或草地湿了就换个地方。",
+      "description": "铺开野餐垫，把午后摊在草地上。",
       "sheltered": false,
       "minutes": 45,
       "cost": [
@@ -841,7 +854,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "campus_tabletennis",
@@ -898,12 +912,13 @@
       "durationRange": [
         30,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "campus_canteen",
       "scauOnly": false,
-      "description": "到学校食堂一起吃顿饭，按胃口选菜，也可以选平价套餐。留意窗口饭点和忌口，人多时找个空位再坐。",
+      "description": "两份饭，一段不用赶路的日常。",
       "sheltered": true,
       "minutes": 45,
       "cost": [
@@ -992,7 +1007,8 @@
       "durationRange": [
         20,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "canteen",
@@ -1069,11 +1085,12 @@
       "durationRange": [
         20,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "cantonese",
-      "description": "点几样茶点或饭菜，边吃边聊。按两个人的食量点，留意食材和忌口。",
+      "description": "点几笼茶点，一盅两件慢慢聊。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -1133,11 +1150,12 @@
       "durationRange": [
         20,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "cinema",
-      "description": "挑一部两个人都想看的电影，散场后聊聊喜欢的镜头。先看好场次、买好票。",
+      "description": "一起看一场电影，散场后交换结局。",
       "sheltered": true,
       "minutes": 120,
       "cost": [
@@ -1200,11 +1218,12 @@
       "durationRange": [
         90,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "craft",
-      "description": "一起做张卡片或捏个小物件，把成品带回去留念。先问材料和收费，留点时间收尾。",
+      "description": "做点能带走的东西，手艺随缘，纪念是真的。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -1258,11 +1277,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "dessert",
-      "description": "选份酸奶、双皮奶或小点心，坐下来歇歇。想吃冷的还是热的，按两个人的口味来。",
+      "description": "分一份甜品，交换最后一口的归属权。",
       "sheltered": true,
       "minutes": 30,
       "cost": [
@@ -1317,11 +1337,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "exhibition",
-      "description": "逛一小段展览，各挑一件喜欢的展品聊聊。出发前看好开放日期和门票，累了就早点结束。",
+      "description": "各挑一件最喜欢的，再听听TA为什么选它。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -1376,11 +1397,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "garden",
-      "description": "沿花园小路走走，看看灯光、花木和建筑，也可以拍几张照片。这里露天，下雨时换个地方。",
+      "description": "沿花木走一圈，轮流当对方的摄影师。",
       "sheltered": false,
       "minutes": 45,
       "cost": [
@@ -1433,11 +1455,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "ice",
-      "description": "在滑冰场慢慢滑几圈，累了就在场边休息。要租鞋或买票，初学时别勉强加速。",
+      "description": "牵手滑几圈，也可能是互相扶稳几圈。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -1490,11 +1513,12 @@
       "durationRange": [
         30,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "mall",
-      "description": "在商场逛几家感兴趣的店，想玩就选一两样电玩，累了找地方坐坐。购物和游玩另花钱。",
+      "description": "逛店、电玩、挑零食，把选择权轮流交给TA。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -1552,11 +1576,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "meal",
-      "description": "找家两个人都想吃的餐馆，好好吃顿饭、慢慢聊。先看看菜单、价格和忌口。",
+      "description": "好好吃顿饭，今天的事就着菜说。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -1622,7 +1647,8 @@
       "durationRange": [
         20,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "mystery_store",
@@ -1634,7 +1660,7 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "一起读线索、讨论猜想，玩一个喜欢的剧本。提前确认人数、题材和场次，怕吓就避开恐怖本。",
+      "description": "一起入戏，搭档也可能是嫌疑人。",
       "sheltered": true,
       "weather": [
         "clear",
@@ -1672,11 +1698,12 @@
       "durationRange": [
         90,
         180
-      ]
+      ],
+      "socialDemand": 3
     },
     {
       "id": "photo_printing",
-      "description": "挑一张两个人都喜欢的合照，印出来带走留念。先问好尺寸、价格和取件时间。",
+      "description": "把刚拍的合照变成一张能放进钱包的照片。",
       "sheltered": true,
       "minutes": 15,
       "cost": [
@@ -1735,11 +1762,12 @@
       "durationRange": [
         10,
         45
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "public_lounge",
-      "description": "找个允许停留的室内公共休息区，轻声聊聊天或戴耳机听歌。有空位再坐，别影响旁边的人。",
+      "description": "找两个空位，听同一首歌，坐一会儿。",
       "sheltered": true,
       "minutes": 30,
       "cost": [
@@ -1798,11 +1826,12 @@
       "durationRange": [
         30,
         240
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "rainforest",
-      "description": "一起看看雨林植物，找找不同的叶子和枝条。要买门票，也会走一阵，先看好开放时间。",
+      "description": "钻进一小片绿色，认不出名字的植物先拍下来。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -1855,11 +1884,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "reading",
-      "description": "在图书馆并排坐着各读各的，离开阅览区后再分享喜欢的内容。先看看入馆要求，阅读时保持安静。",
+      "description": "各读各的，出门再交换今天划下的一句话。",
       "sheltered": true,
       "minutes": 45,
       "cost": [
@@ -1919,11 +1949,12 @@
       "durationRange": [
         30,
         240
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "rest",
-      "description": "先在能安全停留的地方歇一会儿，喝口水，等缓过来再走。当前位置不合适就先找个休息处。",
+      "description": "原地歇一会儿，行程也可以按暂停。",
       "sheltered": false,
       "minutes": 20,
       "cost": [
@@ -1974,11 +2005,12 @@
       "durationRange": [
         10,
         60
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "street",
-      "description": "沿街看看小店和建筑，遇到喜欢的地方就停下拍张照。走累了早点返回，下雨时改去有盖的地方。",
+      "description": "沿街慢逛，给没见过的小店一个临时席位。",
       "sheltered": false,
       "minutes": 60,
       "cost": [
@@ -2034,7 +2066,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "supermarket",
@@ -2097,7 +2130,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "switch_store",
@@ -2109,7 +2143,7 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "找家Switch店玩几轮合作或赛车游戏，边玩边笑。提前问好收费、设备和想玩的游戏。",
+      "description": "分一个手柄，看看默契还是胜负欲先上线。",
       "sheltered": true,
       "weather": [
         "clear",
@@ -2148,7 +2182,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "taishan_glass",
@@ -2265,11 +2300,12 @@
       "durationRange": [
         30,
         240
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "tea",
-      "description": "点两样茶点，坐下分着吃、慢慢聊。按食量点，想清静就避开饭点高峰。",
+      "description": "一壶茶配两样点心，慢一点也算正经安排。",
       "sheltered": true,
       "minutes": 45,
       "cost": [
@@ -2324,7 +2360,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "track_walk",
@@ -2384,11 +2421,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "waterside",
-      "description": "沿水边步道走一小段，看看水面、画个小速写。别靠近湿滑的边缘，累了就返回。",
+      "description": "沿水边走走，画下今天的倒影。",
       "sheltered": false,
       "minutes": 30,
       "cost": [
@@ -2442,11 +2480,12 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "western",
-      "description": "一起吃份意面、扒类或焗饭，坐下来聊聊天。先看看菜单，按口味和忌口选。",
+      "description": "意面、牛排或焗饭，挑今晚想认真吃的那份。",
       "sheltered": true,
       "minutes": 60,
       "cost": [
@@ -2509,7 +2548,8 @@
       "durationRange": [
         20,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "barbecue_stall",
@@ -2521,7 +2561,7 @@
         "universityId": "",
         "campusArea": ""
       },
-      "description": "夜里找个烧烤摊，点些想吃的烤串，边吃边聊。先看看还开不开、有没有座位；下雨时选有盖的店。",
+      "description": "烤串慢慢上，今天的故事续个摊。",
       "sheltered": false,
       "minutes": 30,
       "cost": [
@@ -2568,7 +2608,8 @@
       "durationRange": [
         20,
         90
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "snack_street",
@@ -2580,7 +2621,7 @@
         "universityId": "scau",
         "campusArea": ""
       },
-      "description": "在小吃街挑两样热食当宵夜，吃完慢慢回去。先看营业和座位，下雨时换个有盖的地方。",
+      "description": "一人选一样，拼出今晚的宵夜地图。",
       "sheltered": false,
       "minutes": 30,
       "cost": [
@@ -2628,7 +2669,8 @@
         30,
         90
       ],
-      "scauOnly": true
+      "scauOnly": true,
+      "socialDemand": 0
     },
     {
       "id": "east_lab_stop",
@@ -2675,7 +2717,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "camellia_garden",
@@ -2722,7 +2765,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "orchid_garden",
@@ -2769,7 +2813,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "scauOnly": false,
@@ -2802,7 +2847,7 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "不赶着去下一个地方，在学校开放的校园道路上随意走走，看到喜欢的景物就停下来聊一会儿。",
+      "description": "在校园随意走走，暂时没有下一站。",
       "sheltered": false,
       "tags": [
         "nature",
@@ -2824,7 +2869,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "scauOnly": false,
@@ -2881,7 +2927,8 @@
       "durationRange": [
         30,
         180
-      ]
+      ],
+      "socialDemand": 0
     },
     {
       "id": "breakfast_shop",
@@ -2894,7 +2941,7 @@
         "verificationStatus": "awaiting_confirmation"
       },
       "scauOnly": false,
-      "description": "找一家近的早餐店，坐下来吃点热乎的。选两人都愿意吃的，不用一早赶远路。",
+      "description": "一起吃口热乎的，今天从早安开始。",
       "minutes": 30,
       "durationRange": [
         15,
@@ -2936,7 +2983,8 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。"
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_mcdonalds",
@@ -2949,7 +2997,7 @@
         "verificationStatus": "awaiting_confirmation"
       },
       "scauOnly": false,
-      "description": "一起去附近的麦麦吃早餐，边吃边商量今天想做什么。先看这家店的早餐供应时间。",
+      "description": "约一份麦麦早餐，顺便决定今天往哪走。",
       "minutes": 30,
       "durationRange": [
         15,
@@ -2991,7 +3039,8 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。"
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_supermarket",
@@ -3004,7 +3053,7 @@
         "verificationStatus": "awaiting_confirmation"
       },
       "scauOnly": false,
-      "description": "在校内超市买点面包和饮品，想简单吃一顿的时候很方便。",
+      "description": "面包配饮品，省下时间多见一会儿。",
       "minutes": 30,
       "durationRange": [
         15,
@@ -3046,7 +3095,8 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。"
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "socialDemand": 0
     },
     {
       "id": "breakfast_prepared",
@@ -3059,7 +3109,7 @@
         "verificationStatus": "awaiting_confirmation"
       },
       "scauOnly": false,
-      "description": "带上已经准备好的面包或其他早餐，在约好的有盖处一起吃，不再另外买一份。",
+      "description": "带上备好的早餐，在约好的有盖处碰头。",
       "minutes": 30,
       "durationRange": [
         15,
@@ -3101,7 +3151,2419 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。"
+      "availabilityNote": "早餐选择的规划允许时间；具体店铺的供应和价格以现场为准。",
+      "socialDemand": 0
+    },
+    {
+      "id": "sushi_buffet",
+      "place": {
+        "name": "自助寿司",
+        "kind": "ordinary",
+        "category": "双人餐饮地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "给彼此挑一盘想尝的寿司，吃喜欢的，不比赛回本。",
+      "scauOnly": false,
+      "minutes": 100,
+      "durationRange": [
+        70,
+        150
+      ],
+      "cost": [
+        160,
+        320
+      ],
+      "load": -1,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "food",
+        "japanese"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "sushi_cooked",
+        "sushi_raw"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "weekday/weekend 为两人自助餐示例区间，餐费只记在场景，活动不重复计费；具体套餐、工作日定义、节假日价与营业需确认。",
+      "activityOverrides": {},
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "costByWeekPart": {
+        "weekday": [
+          160,
+          320
+        ],
+        "weekend": [
+          200,
+          400
+        ]
+      },
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "grill_buffet",
+      "place": {
+        "name": "自助烤肉",
+        "kind": "ordinary",
+        "category": "双人餐饮地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "一个翻肉一个挑配菜，今天的烤盘也是双人合作关卡。",
+      "scauOnly": false,
+      "minutes": 110,
+      "durationRange": [
+        80,
+        160
+      ],
+      "cost": [
+        180,
+        360
+      ],
+      "load": -1,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "food",
+        "shared_hobby"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "grill_pair",
+        "grill_sauce"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "weekday/weekend 为两人自助餐示例区间，餐费只记在场景，活动不重复计费；具体套餐、工作日定义、节假日价与营业需确认。",
+      "activityOverrides": {},
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "costByWeekPart": {
+        "weekday": [
+          180,
+          360
+        ],
+        "weekend": [
+          220,
+          420
+        ]
+      },
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "steak_dinner",
+      "place": {
+        "name": "牛排晚餐",
+        "kind": "ordinary",
+        "category": "双人餐饮地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "认真选一份牛排，也认真听对方讲今天。",
+      "scauOnly": false,
+      "minutes": 90,
+      "durationRange": [
+        60,
+        140
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": -1,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "food",
+        "romantic"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "steak_pair",
+        "steak_menu_story"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "chinese_shared_table",
+      "place": {
+        "name": "中式小馆拼桌菜",
+        "kind": "ordinary",
+        "category": "双人餐饮地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "点两道拿手菜一碗汤，聊聊各自家的饭桌。",
+      "scauOnly": false,
+      "minutes": 80,
+      "durationRange": [
+        50,
+        130
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": -1,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "food",
+        "chinese"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "chinese_two_dishes",
+        "chinese_home_flavor"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "japanese_set_meal",
+      "place": {
+        "name": "日式定食小店",
+        "kind": "ordinary",
+        "category": "双人餐饮地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "一人一份定食，顺便偷看对方今天选了什么。",
+      "scauOnly": false,
+      "minutes": 75,
+      "durationRange": [
+        45,
+        120
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": -1,
+      "kind": "meal",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "food",
+        "japanese"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "japanese_cooked_set",
+        "japanese_menu_exchange"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "mealRoles": [
+        "lunch",
+        "dinner"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "private_duet_ktv",
+      "place": {
+        "name": "双人KTV包间",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "只有两个人，跑调也算现场限定版。",
+      "scauOnly": false,
+      "minutes": 120,
+      "durationRange": [
+        60,
+        180
+      ],
+      "cost": [
+        80,
+        240
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "music",
+        "private"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "ktv_duet",
+        "ktv_soundtrack"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 720,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "scau_arboretum_day",
+      "place": {
+        "name": "华农树木园白天散步拍照",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "趁白天逛树木园，轮流找树影和好看的光。",
+      "scauOnly": true,
+      "minutes": 75,
+      "durationRange": [
+        40,
+        120
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "nature",
+        "photo",
+        "quiet"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "arboretum_leaf_map",
+        "arboretum_portrait"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1050
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "按用户线索仅作白天散步拍照；晚上缺灯，不作为普通夜游候选；不安排捕捞，路线和入校条件须确认。",
+      "activityOverrides": {},
+      "availabilityClueSource": "user-provided",
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "scau_orchid_firefly",
+      "place": {
+        "name": "兰花园季节性傍晚观萤",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "scau",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "碰上有萤火虫的傍晚，就安静看一会儿；没遇到也有晚风。",
+      "scauOnly": true,
+      "minutes": 40,
+      "durationRange": [
+        20,
+        60
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "nature",
+        "night",
+        "romantic"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "firefly_observe",
+        "firefly_evening_notes"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 1080,
+          "endMinute": 1200
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "用户曾观察到季节性傍晚萤火虫，不保证全年或每晚出现；出发前确认当季观察线索、通行与天气，不捕捉。",
+      "activityOverrides": {},
+      "availabilityClueSource": "user-provided",
+      "requires": [
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "campus_exam_short_meet",
+      "place": {
+        "name": "校园临考短会",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "见十五分钟，交换一点近况，再各自回去复习。",
+      "scauOnly": false,
+      "minutes": 15,
+      "durationRange": [
+        10,
+        25
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "play",
+      "area": "campus",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "daily",
+        "quiet"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "exam_one_good_thing",
+        "exam_next_break"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "familiar_route_remix",
+      "place": {
+        "name": "熟悉路线的新鲜一小时",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "还是常去的街区，今天各带对方发现一个没留意的小角落。",
+      "scauOnly": false,
+      "minutes": 60,
+      "durationRange": [
+        40,
+        100
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "play",
+      "area": "near",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "daily",
+        "shared_hobby",
+        "photo"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "route_new_detail",
+        "route_role_swap"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "hobby_exchange_table",
+      "place": {
+        "name": "交换爱好小桌",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "你教我半小时，我教你半小时，先从各自最喜欢的一小步开始。",
+      "scauOnly": false,
+      "minutes": 75,
+      "durationRange": [
+        45,
+        120
+      ],
+      "cost": [
+        0,
+        40
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "shared_hobby",
+        "learning",
+        "private"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "hobby_micro_lesson",
+        "hobby_try_again"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "venue_checked"
+      ],
+      "preparationIds": [
+        "craft_kit"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "birthday_small_celebration",
+      "place": {
+        "name": "双人生日小庆祝",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "一个小蛋糕、一张卡片，把今天留给寿星。",
+      "scauOnly": false,
+      "minutes": 90,
+      "durationRange": [
+        60,
+        150
+      ],
+      "cost": [
+        0,
+        40
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "celebration",
+        "romantic",
+        "private"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "birthday_cake_share",
+        "birthday_letter"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 660,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "quiet_confession_corner",
+      "place": {
+        "name": "安静的表白角落",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "把想说的话说清楚，留一点安静给对方回答。",
+      "scauOnly": false,
+      "minutes": 40,
+      "durationRange": [
+        20,
+        70
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "play",
+      "area": "near",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "confession",
+        "romantic",
+        "private"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "confession_words",
+        "confession_listen"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 960,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "amusement_park_day",
+      "place": {
+        "name": "游乐园半日",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "选几项两个人都想玩的项目，中间留点时间坐下来。",
+      "scauOnly": false,
+      "minutes": 240,
+      "durationRange": [
+        180,
+        420
+      ],
+      "cost": [
+        240,
+        700
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 1,
+      "tags": [
+        "play",
+        "travel",
+        "celebration"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "amusement_pick_three",
+        "amusement_photo_challenge"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1080
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "ferris_wheel_ride",
+      "place": {
+        "name": "游乐园摩天轮",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "从高一点的地方看看刚才走过的路。",
+      "scauOnly": false,
+      "minutes": 40,
+      "durationRange": [
+        25,
+        70
+      ],
+      "cost": [
+        0,
+        0
+      ],
+      "load": 2,
+      "kind": "play",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "play",
+        "romantic",
+        "photo"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "ferris_view",
+        "ferris_future"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划10:00–21:00；必须先入游乐园，按当日项目开放和停运安排确认；场景费用为套票已含摩天轮时的设计值，另收费时手动调整。",
+      "activityOverrides": {},
+      "predecessorIds": [
+        "amusement_park_day"
+      ],
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "park_lake_arrival",
+      "place": {
+        "name": "公园湖区入园散步",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "先到公园湖区，走到码头看当天能不能划船。",
+      "scauOnly": false,
+      "minutes": 35,
+      "durationRange": [
+        20,
+        60
+      ],
+      "cost": [
+        0,
+        40
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "nature",
+        "travel"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "park_dock_check",
+        "park_shore_map"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 990
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "park_lake_boating",
+      "place": {
+        "name": "公园湖中划船",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "已经到湖边且船只运营时，再租一条适合两人的船。",
+      "scauOnly": false,
+      "minutes": 60,
+      "durationRange": [
+        40,
+        90
+      ],
+      "cost": [
+        60,
+        180
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "nature",
+        "romantic",
+        "play"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "boat_row_pair",
+        "boat_shore_view"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1020
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划10:00–17:00，不代表码头实际运营时间；先入园到码头，仅在船只运营、允许下水且能按时还船时安排。",
+      "activityOverrides": {},
+      "predecessorIds": [
+        "park_lake_arrival"
+      ],
+      "requires": [
+        "opening_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "cross_district_day",
+      "place": {
+        "name": "跨区探索半日",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "换一个城区，从交通到一段街区闲逛都留足时间。",
+      "scauOnly": false,
+      "minutes": 240,
+      "durationRange": [
+        180,
+        360
+      ],
+      "cost": [
+        30,
+        100
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 1,
+      "tags": [
+        "travel",
+        "culture",
+        "photo"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "district_theme_walk",
+        "district_local_note"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "intercity_outbound",
+      "place": {
+        "name": "邻城半日游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "坐车往返邻城，选一条小街慢走再吃顿饭，把来回路程也变成约会。",
+      "scauOnly": false,
+      "minutes": 360,
+      "durationRange": [
+        300,
+        480
+      ],
+      "cost": [
+        320,
+        1000
+      ],
+      "load": 0,
+      "kind": "explore",
+      "area": "off",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 1,
+      "tags": [
+        "travel"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "intercity_window",
+        "intercity_arrival_plan"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "lunch",
+        "dinner"
+      ]
+    },
+    {
+      "id": "intercity_oldtown",
+      "place": {
+        "name": "老城慢游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "往返一座老城，找旧招牌、说旅行明信片，午晚餐一起尝当地家常菜。",
+      "scauOnly": false,
+      "minutes": 540,
+      "durationRange": [
+        420,
+        660
+      ],
+      "cost": [
+        400,
+        1300
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 1,
+      "tags": [
+        "travel",
+        "culture",
+        "photo"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "oldtown_detail",
+        "oldtown_postcard"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "lunch",
+        "dinner"
+      ],
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ]
+    },
+    {
+      "id": "intercity_return",
+      "place": {
+        "name": "城际列车漫游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "搭城际列车往返看风景，在邻城吃顿饭，再带着今日最佳照片回来。",
+      "scauOnly": false,
+      "minutes": 360,
+      "durationRange": [
+        300,
+        480
+      ],
+      "cost": [
+        360,
+        1100
+      ],
+      "load": 0,
+      "kind": "explore",
+      "area": "off",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 1,
+      "tags": [
+        "travel"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "intercity_return_memory",
+        "intercity_return_rest"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "lunch",
+        "dinner"
+      ]
+    },
+    {
+      "id": "coast_outbound",
+      "place": {
+        "name": "海边日落往返游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "午后往返海边，慢走等天空换色，吃顿晚饭再回家；没有日落也能听海。",
+      "scauOnly": false,
+      "minutes": 480,
+      "durationRange": [
+        420,
+        600
+      ],
+      "cost": [
+        400,
+        1400
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 1,
+      "tags": [
+        "travel",
+        "nature",
+        "romantic"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "coast_route_check",
+        "coast_dawn_song"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 780,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "dinner"
+      ]
+    },
+    {
+      "id": "seaside_sunrise",
+      "place": {
+        "name": "海岸慢游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "把往返、午晚餐都排进海岸一日游，找一片喜欢的海色，边走边拍不赶路。",
+      "scauOnly": false,
+      "minutes": 540,
+      "durationRange": [
+        420,
+        660
+      ],
+      "cost": [
+        420,
+        1500
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "travel",
+        "nature",
+        "romantic",
+        "photo"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "sunrise_color",
+        "sunrise_photo_pair"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "lunch",
+        "dinner"
+      ],
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ]
+    },
+    {
+      "id": "coast_return",
+      "place": {
+        "name": "海边列车漫游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "坐海边列车往返看风景，中途吃顿饭，给两个人的小相册添一页海色。",
+      "scauOnly": false,
+      "minutes": 420,
+      "durationRange": [
+        360,
+        540
+      ],
+      "cost": [
+        400,
+        1300
+      ],
+      "load": 0,
+      "kind": "explore",
+      "area": "off",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 1,
+      "tags": [
+        "travel"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "coast_return_album",
+        "coast_return_quiet"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "lunch",
+        "dinner"
+      ]
+    },
+    {
+      "id": "astronomy_session",
+      "place": {
+        "name": "天文观测活动",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "找一场开放的观测活动，今晚先认识几颗星。",
+      "scauOnly": false,
+      "minutes": 120,
+      "durationRange": [
+        80,
+        180
+      ],
+      "cost": [
+        0,
+        160
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 1,
+      "tags": [
+        "nature",
+        "learning",
+        "night"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "astronomy_star_map",
+        "astronomy_telescope"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 1140,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "open_air_cinema",
+      "place": {
+        "name": "露天电影场次",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "带件薄外套，找一场已确认的露天放映。",
+      "scauOnly": false,
+      "minutes": 150,
+      "durationRange": [
+        100,
+        210
+      ],
+      "cost": [
+        0,
+        120
+      ],
+      "load": 2,
+      "kind": "play",
+      "area": "near",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 0,
+      "tags": [
+        "culture",
+        "night",
+        "romantic"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "outdoor_film_watch",
+        "outdoor_film_line"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 1080,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "camp_day_setup",
+      "place": {
+        "name": "营地日间搭营",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "在允许的营地搭个双人小基地，散步认路；这里只计日间活动，不含过夜住宿。",
+      "scauOnly": false,
+      "minutes": 240,
+      "durationRange": [
+        180,
+        360
+      ],
+      "cost": [
+        80,
+        240
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 1,
+      "tags": [
+        "nature",
+        "travel",
+        "shared_hobby"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "camp_setup_pair",
+        "camp_map_walk"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1080
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "日间费用仅含营地活动与日间装备使用，不含过夜住宿；过夜由明确选择的露营分别方式另计，实际费用与场地须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "camp_evening",
+      "place": {
+        "name": "营地傍晚闲坐",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "营地安顿好以后，坐着等天色变暗。",
+      "scauOnly": false,
+      "minutes": 180,
+      "durationRange": [
+        120,
+        240
+      ],
+      "cost": [
+        0,
+        40
+      ],
+      "load": 2,
+      "kind": "nature",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "nature",
+        "night",
+        "private"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "camp_evening_cloud",
+        "camp_story_circle"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 1020,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "规划17:00–23:00；须先完成搭营，仅在营地允许傍晚停留时安排，返程另留时间，不承诺过夜条件。",
+      "activityOverrides": {},
+      "predecessorIds": [
+        "camp_day_setup"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "pottery_pair",
+      "place": {
+        "name": "双人陶艺体验",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "做两个不必一模一样的小杯子，歪一点也各有姓名。",
+      "scauOnly": false,
+      "minutes": 120,
+      "durationRange": [
+        90,
+        180
+      ],
+      "cost": [
+        160,
+        360
+      ],
+      "load": 0,
+      "kind": "creative",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 1,
+      "tags": [
+        "creative",
+        "shared_hobby"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "pottery_shape",
+        "pottery_pattern"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1260
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "dance_intro_pair",
+      "place": {
+        "name": "双人舞入门课",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "选一节零基础课，跟着节拍把左右脚商量明白。",
+      "scauOnly": false,
+      "minutes": 90,
+      "durationRange": [
+        60,
+        120
+      ],
+      "cost": [
+        120,
+        300
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "high",
+      "seated": true,
+      "socialDemand": 2,
+      "tags": [
+        "music",
+        "exercise",
+        "shared_hobby"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "dance_basic_step",
+        "dance_song_repeat"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 600,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "friends_theme_party",
+      "place": {
+        "name": "朋友主题小聚",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "和愿意参加的朋友玩一轮主题游戏，两个人也有搭档位。",
+      "scauOnly": false,
+      "minutes": 150,
+      "durationRange": [
+        90,
+        240
+      ],
+      "cost": [
+        80,
+        240
+      ],
+      "load": 0,
+      "kind": "play",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "high",
+      "seated": true,
+      "socialDemand": 3,
+      "tags": [
+        "play",
+        "celebration",
+        "music"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "party_team_quiz",
+        "party_song_guess"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 960,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "requires": [
+        "opening_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
+    },
+    {
+      "id": "dream_balloon_trip",
+      "place": {
+        "name": "梦幻系留热气球下午",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "往返已确认的系留热气球场地，升到空中看风景，落地吃顿晚饭再回家。",
+      "scauOnly": false,
+      "minutes": 300,
+      "durationRange": [
+        240,
+        420
+      ],
+      "cost": [
+        2000,
+        4500
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 1,
+      "tags": [
+        "dream",
+        "travel",
+        "romantic",
+        "photo"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "balloon_flight",
+        "balloon_ground_memory"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 780,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。系留体验是否有下午场须向运营方确认，不代表真实运营时间。",
+      "activityOverrides": {},
+      "dreamOnly": true,
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "dinner"
+      ]
+    },
+    {
+      "id": "dream_island_day",
+      "place": {
+        "name": "梦幻海岛往返一日游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "坐船往返海岛，慢走收藏海色，午晚餐和返程船班都留在这一天里。",
+      "scauOnly": false,
+      "minutes": 600,
+      "durationRange": [
+        480,
+        780
+      ],
+      "cost": [
+        1500,
+        3600
+      ],
+      "load": 2,
+      "kind": "explore",
+      "area": "off",
+      "indoor": false,
+      "sheltered": false,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": false,
+      "socialDemand": 1,
+      "tags": [
+        "dream",
+        "travel",
+        "nature",
+        "romantic"
+      ],
+      "weather": [
+        "clear"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "island_ferry_walk",
+        "island_shared_view"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1380
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "dreamOnly": true,
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "lunch",
+        "dinner"
+      ]
+    },
+    {
+      "id": "dream_concert_trip",
+      "place": {
+        "name": "梦幻异地演唱会往返游",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "为了同一首歌去远方，把往返车票、演出票和午晚餐一起留足。",
+      "scauOnly": false,
+      "minutes": 660,
+      "durationRange": [
+        540,
+        900
+      ],
+      "cost": [
+        2000,
+        6000
+      ],
+      "load": 0,
+      "kind": "explore",
+      "area": "off",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "high",
+      "seated": true,
+      "socialDemand": 2,
+      "tags": [
+        "dream",
+        "travel",
+        "music",
+        "celebration"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "concert_trip_show",
+        "concert_trip_song"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 480,
+          "endMinute": 1440
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "原创两人行程设计；费用含往返交通、所列餐次与主体体验，时长含候车、接驳和返程。仅在实际覆盖的饭点安排所列餐次；地点、车船班次及预约须确认。",
+      "activityOverrides": {},
+      "dreamOnly": true,
+      "requires": [
+        "booking_checked",
+        "venue_checked"
+      ],
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation",
+      "bundledMeals": [
+        "lunch",
+        "dinner"
+      ]
+    },
+    {
+      "id": "memory_letter_table",
+      "place": {
+        "name": "回忆信件小桌",
+        "kind": "ordinary",
+        "category": "原创双人活动地点类型",
+        "universityId": "",
+        "campusArea": "",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "description": "翻几张旧照片，给以后的你们写一页信。",
+      "scauOnly": false,
+      "minutes": 60,
+      "durationRange": [
+        30,
+        100
+      ],
+      "cost": [
+        0,
+        30
+      ],
+      "load": 0,
+      "kind": "creative",
+      "area": "near",
+      "indoor": true,
+      "sheltered": true,
+      "quiet": true,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "seated": true,
+      "socialDemand": 0,
+      "tags": [
+        "creative",
+        "romantic",
+        "private"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "windows": [],
+      "provides": [],
+      "evidenceIds": [
+        "E-design-focus",
+        "E-design-timing"
+      ],
+      "activityIds": [
+        "memory_choose_three",
+        "memory_future_letter"
+      ],
+      "dailyWindows": [
+        {
+          "startMinute": 540,
+          "endMinute": 1320
+        }
+      ],
+      "availabilityBasis": "planning_default",
+      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "activityOverrides": {},
+      "assertionKind": "designed",
+      "evidenceStatus": "original_design_real_world_unverified",
+      "reviewStatus": "awaiting_confirmation"
     }
   ]
 }

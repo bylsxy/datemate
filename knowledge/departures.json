@@ -3,6 +3,20 @@
   "defaultId": "separate",
   "departures": [
     {
+      "id": "camping",
+      "title": "一起露营",
+      "description": "把晚安说给星星听，帐篷里再聊五分钟。",
+      "minutes": 30,
+      "cost": [120, 300],
+      "costUnit": "CNY_for_two_per_night",
+      "onlyOvernight": true,
+      "requiresExplicitChoice": true,
+      "assertionKind": "designed",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "evidenceIds": ["E-user-departures"]
+    },
+    {
       "id": "separate",
       "title": "各自回去",
       "description": "记得拥抱。真的不陪TA一起回去吗？",

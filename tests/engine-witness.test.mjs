@@ -15,7 +15,7 @@ test('每个已评候选有产生其真实q的完整compact见证，快捷验证
   const input = { ...context, preferencesA: ['play'], preferencesB: ['play'] };
   const result = planDate(input, data, { ...opts, exploration: 61 });
   assert.equal(result.ok, true, result.errors?.join(';'));
-  assert.equal(VERSION, 'datemate-engine-4.0.0');
+  assert.equal(VERSION, 'datemate-engine-4.1.0');
   assert.deepEqual(result.continuationWitness, result.stages.map(choice));
   let checked = 0;
   for (const stage of result.stages) for (const candidate of stage.candidates) {

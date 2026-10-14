@@ -3,7 +3,7 @@
     "id": "R-fatigue-derive",
     "title": "任意一方明显疲惫时推导恢复需求",
     "priority": 100,
-    "strength": "hard",
+    "strength": "soft",
     "when": {
       "all": [],
       "any": [
@@ -174,9 +174,9 @@
   },
   {
     "id": "R-fatigue-scene",
-    "title": "恢复需求过滤高负担场景",
+    "title": "恢复需求降低排序：高负担场景",
     "priority": 94,
-    "strength": "hard",
+    "strength": "soft",
     "when": {
       "all": [
         {
@@ -193,8 +193,8 @@
     },
     "then": [
       {
-        "action": "exclude_scene",
-        "reason": "任意一方疲惫，当前场景负担较高"
+        "action": "prefer_scene",
+        "amount": -12
       }
     ],
     "evidenceIds": [
@@ -209,9 +209,9 @@
   },
   {
     "id": "R-fatigue-activity",
-    "title": "恢复需求过滤高负担活动",
+    "title": "恢复需求降低排序：高负担活动",
     "priority": 93,
-    "strength": "hard",
+    "strength": "soft",
     "when": {
       "all": [
         {
@@ -228,8 +228,8 @@
     },
     "then": [
       {
-        "action": "exclude_activity",
-        "reason": "当前活动会增加较多累计负担"
+        "action": "prefer_activity",
+        "amount": -8
       }
     ],
     "evidenceIds": [
@@ -244,9 +244,9 @@
   },
   {
     "id": "R-rain-outdoor",
-    "title": "雨天过滤纯露天场景",
+    "title": "雨天降低排序：纯露天场景",
     "priority": 90,
-    "strength": "hard",
+    "strength": "soft",
     "when": {
       "all": [
         {
@@ -275,8 +275,8 @@
     },
     "then": [
       {
-        "action": "exclude_scene",
-        "reason": "雨天与露天场景冲突"
+        "action": "prefer_scene",
+        "amount": -12
       }
     ],
     "evidenceIds": [
@@ -328,9 +328,9 @@
   },
   {
     "id": "R-quiet-hard",
-    "title": "明确要求安静时过滤嘈杂候选",
+    "title": "明确要求安静时降低排序：嘈杂候选",
     "priority": 88,
-    "strength": "hard",
+    "strength": "soft",
     "when": {
       "all": [
         {
@@ -347,8 +347,8 @@
     },
     "then": [
       {
-        "action": "exclude_scene",
-        "reason": "场景与明确安静要求冲突"
+        "action": "prefer_scene",
+        "amount": -12
       }
     ],
     "evidenceIds": [
@@ -365,9 +365,9 @@
   },
   {
     "id": "R-crowd",
-    "title": "避人流时过滤高人流模型标签",
+    "title": "避人流时降低排序：高人流模型标签",
     "priority": 87,
-    "strength": "hard",
+    "strength": "soft",
     "when": {
       "all": [
         {
@@ -384,8 +384,8 @@
     },
     "then": [
       {
-        "action": "exclude_scene",
-        "reason": "避人流要求与高人流候选冲突"
+        "action": "prefer_scene",
+        "amount": -12
       }
     ],
     "evidenceIds": [
@@ -912,6 +912,297 @@
     "enabled": true
   },
   {
+    "id": "R-exam-campus-short",
+    "title": "考试季鼓励校园内短会",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "derived.examShortMeeting",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "scene.area",
+          "op": "eq",
+          "value": "campus"
+        },
+        {
+          "fact": "scene.minutes",
+          "op": "lte",
+          "value": 60
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "prefer_scene",
+        "amount": 7
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-exam-derive",
+    "title": "考试季推导短距离短会目标",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "context.season",
+          "op": "eq",
+          "value": "exam"
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "set_fact",
+        "fact": "derived.examShortMeeting",
+        "value": true
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-longterm-derive",
+    "title": "长期关系推导更新共同体验的目标",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "context.relationship",
+          "op": "eq",
+          "value": "longterm"
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "set_fact",
+        "fact": "derived.seekFreshTogether",
+        "value": true
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-longterm-familiar",
+    "title": "长期关系对高重复日常地点轻度降分",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "derived.seekFreshTogether",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "scene.novelty",
+          "op": "lt",
+          "value": 40
+        }
+      ],
+      "any": [
+        {
+          "fact": "scene.tags",
+          "op": "contains",
+          "value": "daily"
+        },
+        {
+          "fact": "scene.id",
+          "op": "contains",
+          "value": "dorm"
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "prefer_scene",
+        "amount": -4
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-longterm-novelty",
+    "title": "长期关系适度鼓励高新颖度体验",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "derived.seekFreshTogether",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "scene.novelty",
+          "op": "gte",
+          "value": 65
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "prefer_scene",
+        "amount": 8
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-reunion-activity",
+    "title": "重逢适度鼓励亲密共享玩法，仍需明确同意",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "derived.reunionSharedExperience",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "activity.tags",
+          "op": "intersects",
+          "value": [
+            "shared_hobby",
+            "private"
+          ]
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "prefer_activity",
+        "amount": 4
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-reunion-derive",
+    "title": "久别重逢推导共享体验目标而非推断同意",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "context.reunion",
+          "op": "eq",
+          "value": true
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "set_fact",
+        "fact": "derived.reunionSharedExperience",
+        "value": true
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-reunion-scene",
+    "title": "重逢适度鼓励私密或共享爱好地点",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "derived.reunionSharedExperience",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "graph.matchedPreferenceTags",
+          "op": "intersects",
+          "value": [
+            "private",
+            "shared_hobby"
+          ]
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "prefer_scene",
+        "amount": 6
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
     "id": "R-short-near",
     "title": "短时间优先附近与校内",
     "priority": 65,
@@ -945,6 +1236,138 @@
     ],
     "evidence": [
       "E-lab-time"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-weekday-derive",
+    "title": "周中推导错峰安静会面目标",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "context.weekPart",
+          "op": "eq",
+          "value": "weekday"
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "set_fact",
+        "fact": "derived.weekdayUncrowded",
+        "value": true
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-weekday-uncrowded",
+    "title": "周中适度鼓励明确人少的体验",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "derived.weekdayUncrowded",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "scene.uncrowded",
+          "op": "eq",
+          "value": true
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "prefer_scene",
+        "amount": 4
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-weekend-derive",
+    "title": "周末推导排队留意目标",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "context.weekPart",
+          "op": "eq",
+          "value": "weekend"
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "set_fact",
+        "fact": "derived.weekendQueueAware",
+        "value": true
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
+    ],
+    "assertionKind": "designed",
+    "parameterStatus": "designed_not_measured",
+    "enabled": true
+  },
+  {
+    "id": "R-weekend-queue",
+    "title": "周末对有排队的体验轻度降分",
+    "priority": 65,
+    "strength": "soft",
+    "when": {
+      "all": [
+        {
+          "fact": "derived.weekendQueueAware",
+          "op": "eq",
+          "value": true
+        },
+        {
+          "fact": "scene.queueMinutes",
+          "op": "gte",
+          "value": 15
+        }
+      ]
+    },
+    "then": [
+      {
+        "action": "prefer_scene",
+        "amount": -5
+      }
+    ],
+    "evidenceIds": [
+      "E-G006"
+    ],
+    "evidence": [
+      "E-G006"
     ],
     "assertionKind": "designed",
     "parameterStatus": "designed_not_measured",
@@ -1683,8 +2106,8 @@
     "enabled": true
   },
   {
-    "id": "R-weather-unknown",
-    "title": "天气未知时提示核对露天计划",
+    "id": "R-weather-cloudy",
+    "title": "多云天气沿用常规体验并保持天气偏好为软约束",
     "priority": 40,
     "strength": "hint",
     "when": {
@@ -1692,7 +2115,7 @@
         {
           "fact": "context.weather",
           "op": "eq",
-          "value": "unknown"
+          "value": "cloudy"
         },
         {
           "fact": "scene.indoor",
@@ -1704,7 +2127,7 @@
     "then": [
       {
         "action": "add_warning",
-        "message": "露天阶段需要出发前确认天气"
+        "message": "多云天气可按常规安排，出发前确认天气。"
       }
     ],
     "evidenceIds": [

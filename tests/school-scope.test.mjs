@@ -54,9 +54,13 @@ test('全部场景显式声明学校属性，名称类别描述中的华农地�
   assert.equal(catalog.scenes.length, loaded.documents.scenes.scenes.length);
   assert.ok(catalog.scenes.filter(s => s.place.universityId === '').length >= 29);
   const schoolIds = catalog.scenes.filter(s => s.place.universityId === 'scau').map(s => s.id);
-  assert.equal(schoolIds.length, 16);
-  assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 5);
-  assert.equal(catalog.scenes.filter(s => s.place.campusArea === 'taishan').length, 11);
+  assert.equal(schoolIds.length, 18);
+  assert.equal(catalog.scenes.filter(s => s.place.universityId === 'scau' && s.place.campusArea === '').length, 8);
+  assert.equal(catalog.scenes.filter(s => s.place.campusArea === 'taishan').length, 10);
+  for (const id of ['scau_arboretum_day', 'scau_orchid_firefly']) {
+    assert.ok(schoolIds.includes(id), id);
+    assert.equal(catalog.scenes.find(s => s.id === id).place.campusArea, '');
+  }
   for (const scene of catalog.scenes) {
     assert.ok(['', 'scau'].includes(scene.place.universityId), scene.id);
     assert.ok(['', 'taishan'].includes(scene.place.campusArea), scene.id);
@@ -71,7 +75,7 @@ test('全部场景显式声明学校属性，名称类别描述中的华农地�
   assert.equal(isSceneInSchoolScope(museum, { area: 'campus', school: 'scau' }), true);
 });
 
-test('校内游荡保留稳定ID并适用于通用校园，院楼顶楼看星星仍为学校级', () => {
+test('校内游荡和院楼顶楼看星星保留稳定ID，均适用于通用校园', () => {
   const wandering = catalog.scenes.find(s => s.id === 'scau_wandering');
   assert.ok(wandering);
   assert.equal(wandering.title, '校内游荡');
@@ -85,15 +89,16 @@ test('校内游荡保留稳定ID并适用于通用校园，院楼顶楼看星星
   for (const id of ['faculty_rooftop_stars']) {
     const scene = catalog.scenes.find(s => s.id === id);
     assert.ok(scene, id);
-    assert.equal(scene.place.universityId, 'scau', id);
+    assert.equal(scene.place.universityId, '', id);
+    assert.equal(scene.scauOnly, false, id);
     assert.equal(scene.place.campusArea, '', id);
     for (const area of ['campus', 'near']) {
       for (const campusArea of ['', 'taishan', 'other']) {
-        assert.equal(isSceneInSchoolScope(scene, { area, campusArea }), false, `${id}/${area}/${campusArea}`);
+        assert.equal(isSceneInSchoolScope(scene, { area, campusArea }), true, `${id}/${area}/${campusArea}`);
         assert.equal(isSceneInSchoolScope(scene, { area, school: 'scau', campusArea }), true, `${id}/${area}/${campusArea}`);
       }
     }
-    assert.equal(isSceneInSchoolScope(scene, { area: 'all', school: 'scau', campusArea: 'taishan' }), false, id);
+    assert.equal(isSceneInSchoolScope(scene, { area: 'all', school: 'scau', campusArea: 'taishan' }), true, id);
   }
 });
 
@@ -103,7 +108,7 @@ test('未选华农的真实目录在校内及周边night自动规划包含通用
     assert.equal(result.ok, true, `${area}/${school}: ${result.errors.join(';')}`);
     assert.ok(result.stages.some(s => ['scau_wandering', 'dorm_downstairs_shelter'].includes(s.sceneId)), `${area}/${school}`);
     assert.ok(choices(result).every(id => isSceneInSchoolScope(catalog.scenes.find(s => s.id === id), result.context)));
-    assert.ok(!choices(result).includes('faculty_rooftop_stars'));
+    assert.ok(choices(result).every(id => catalog.scenes.find(s => s.id === id).place.universityId === ''));
     assert.equal(result.metrics.periodCoverageSatisfied, true);
     assert.equal(result.metrics.endingCoverageSatisfied, true);
   }
@@ -188,7 +193,10 @@ test('未选华农的真实目录在校内及校内周边均可规划早餐、�
       assert.ok(stage.activityIds.some(id => scene.activities.some(a => a.id === id && a.provides.includes('meal_completed') && a.mealRoles.includes(meal.mealRole))));
     }
     const breakfast = result.mealRequirements.find(m => m.mealRole === 'breakfast');
-    assert.ok(['campus_canteen', 'dorm_takeaway_meal'].includes(breakfast.sceneId));
+    const breakfastScene = catalog.scenes.find(s => s.id === breakfast.sceneId);
+    assert.equal(breakfastScene.place.universityId, '');
+    assert.ok(breakfastScene.mealRoles.includes('breakfast'));
+    assert.ok(area === 'near' || breakfastScene.area === 'campus');
     assert.ok(choices(result).every(id => isSceneInSchoolScope(catalog.scenes.find(s => s.id === id), result.context)));
     assert.equal(result.metrics.mealSatisfied, true);
     assert.equal(result.metrics.periodCoverageSatisfied, true);

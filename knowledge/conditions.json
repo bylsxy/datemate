@@ -1,6 +1,19 @@
 {
   "schemaVersion": "manual-knowledge-1.0",
   "conditions": [
+    {"key":"weekPart","type":"enum","allowedValues":["weekday","weekend"],"default":"weekday","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"relationship","type":"enum","allowedValues":["any","first","flirting","passionate","stable","longterm"],"default":"any","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"reunion","type":"boolean","allowedValues":null,"default":false,"subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"cyclePhase","type":"enum","allowedValues":["none","before","during","after"],"default":"none","subjectTypes":["couple","environment","plan"],"sensitive":true,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"mood","type":"enum","allowedValues":["normal","happy","low"],"default":"normal","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"energy","type":"enum","allowedValues":["normal","tired","tense","relax"],"default":"normal","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"season","type":"enum","allowedValues":["ordinary","holiday","exam"],"default":"ordinary","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"mentalDemand","type":"enum","allowedValues":["any","low","medium","high"],"default":"any","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"occasion","type":"enum","allowedValues":["daily","birthday","anniversary","confession"],"default":"daily","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"personalityA","type":"enum","allowedValues":["","INTJ","INTP","ENTJ","ENTP","INFJ","INFP","ENFJ","ENFP","ISTJ","ISFJ","ESTJ","ESFJ","ISTP","ISFP","ESTP","ESFP"],"default":"","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"personalityB","type":"enum","allowedValues":["","INTJ","INTP","ENTJ","ENTP","INFJ","INFP","ENFJ","ENFP","ISTJ","ISFJ","ESTJ","ESFJ","ISTP","ISFP","ESTP","ESFP"],"default":"","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"planStyle","type":"enum","allowedValues":["flexible","steady"],"default":"flexible","subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
+    {"key":"themes","type":"set","allowedValues":["chinese","japanese","romantic","fresh"],"default":[],"subjectTypes":["couple","environment","plan"],"sensitive":false,"defaultStrength":"soft","schemaVersion":"creative-context-1.0","unit":null},
     {
       "key": "cityTier",
       "type": "enum",
@@ -24,7 +37,8 @@
       "allowedValues": [
         "separate",
         "walk_together",
-        "hotel"
+        "hotel",
+        "camping"
       ],
       "default": "separate",
       "subjectTypes": [
@@ -41,6 +55,7 @@
       "allowedValues": [
         "unknown",
         "clear",
+        "cloudy",
         "rain"
       ],
       "subjectTypes": [
@@ -218,7 +233,17 @@
         "learning",
         "daily",
         "photo",
-        "music"
+        "music",
+        "dream",
+        "travel",
+        "celebration",
+        "confession",
+        "shared_hobby",
+        "private",
+        "night",
+        "japanese",
+        "chinese",
+        "outdoor"
       ],
       "subjectTypes": [
         "couple",
@@ -246,7 +271,17 @@
         "learning",
         "daily",
         "photo",
-        "music"
+        "music",
+        "dream",
+        "travel",
+        "celebration",
+        "confession",
+        "shared_hobby",
+        "private",
+        "night",
+        "japanese",
+        "chinese",
+        "outdoor"
       ],
       "subjectTypes": [
         "couple",
@@ -274,7 +309,17 @@
         "learning",
         "daily",
         "photo",
-        "music"
+        "music",
+        "dream",
+        "travel",
+        "celebration",
+        "confession",
+        "shared_hobby",
+        "private",
+        "night",
+        "japanese",
+        "chinese",
+        "outdoor"
       ],
       "subjectTypes": [
         "couple",
@@ -330,6 +375,7 @@
         "raw",
         "cold",
         "spicy",
+        "heaty",
         "dairy",
         "gluten",
         "meat",

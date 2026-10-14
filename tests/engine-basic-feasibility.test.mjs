@@ -12,13 +12,15 @@ const fixture = (scenes, extra = {}) => ({ scenes, rules, departures: [{ id: 'se
 const ctx = { periodIds: ['night'], reserve: 15, robust: true, fatigueA: 8, fatigueB: 8, weather: 'rain', quietRequired: true, crowdAvoidance: true, mentalLow: true, budget: 0 };
 const choice = (sceneId, startMinute) => ({ sceneId, activityIds: [], ...(startMinute !== undefined ? { startMinute } : {}) });
 
-test('内置和手工雨天规则均仅排除无遮蔽室外，缺省遮蔽等价false', () => {
+test('内置和手工雨天规则提醒或降分无遮蔽室外，不硬排除，缺省遮蔽等价false', () => {
   for (const ruleSet of [DEFAULT_RULES, rules]) {
     for (const environment of [{ indoor: true }, { indoor: false, sheltered: true }]) {
       assert.deepEqual(forwardChain({ context: { weather: 'rain' }, scene: { id: 's', ...environment } }, ruleSet).excludedSceneIds, []);
     }
     for (const environment of [{ indoor: false }, { indoor: false, sheltered: false }]) {
-      assert.deepEqual(forwardChain({ context: { weather: 'rain' }, scene: { id: 's', ...environment } }, ruleSet).excludedSceneIds, ['s']);
+      const rainy = forwardChain({ context: { weather: 'rain' }, scene: { id: 's', ...environment } }, ruleSet);
+      assert.deepEqual(rainy.excludedSceneIds, []);
+      assert.ok(rainy.warnings.length > 0 || rainy.scenePreferences.s < 0);
       assert.deepEqual(forwardChain({ context: { weather: 'unknown' }, scene: { id: 's', ...environment } }, ruleSet).excludedSceneIds, []);
     }
   }
@@ -29,35 +31,38 @@ test('有遮蔽户外支持雨夜零预算安静疲劳组合，候选及见证�
   const data = fixture([source, scene('open-air', { sheltered: false })]);
   const result = planDate(ctx, data);
   assert.equal(result.ok, true, result.errors.join(';'));
-  assert.ok(result.stages.every(s => s.sceneId === 'dorm' && s.minutes >= 60));
-  assert.ok(result.stages.flatMap(s => s.candidates).every(c => c.sceneId === 'dorm'));
+  assert.ok(result.stages.every(s => s.minutes >= 60));
+  assert.ok(result.stages[0].candidates.some(c => c.sceneId === 'open-air'));
+  assert.equal(result.stages[0].sceneId, 'dorm');
   assert.equal(result.totalCostCents[1], 0);
   assert.equal(result.metrics.reserveSatisfied, true);
   assert.equal(verifyPlanWitness(ctx, data, { knownPlan: result.continuationWitness }).ok, true);
   assert.equal(source.indoor, false);
 });
 
-test('显式非空天气限制在已知天气下为硬条件，unknown与空数组不假定天气', () => {
+test('天气适配仅降分，固定选择与完整见证接受不适配场景，默认阴天', () => {
   const data = fixture([scene('clear-only', { weather: ['clear'] }), scene('rain-only', { weather: ['rain'] })]);
   for (const weather of ['clear', 'rain']) {
     const result = planDate({ ...ctx, weather }, data);
     assert.equal(result.ok, true, result.errors.join(';'));
-    assert.ok(result.stages.every(s => s.sceneId === `${weather}-only`));
+    assert.equal(result.stages[0].sceneId, `${weather}-only`);
     const banned = weather === 'rain' ? 'clear-only' : 'rain-only';
     for (const checked of [planDate({ ...ctx, weather, fixedPrefix: [choice(banned)] }, data), verifyPlanWitness({ ...ctx, weather }, data, { knownPlan: [choice(banned, 1450)] })]) {
-      assert.equal(checked.ok, false);
-      assert.ok(checked.errors.some(e => e.startsWith('H_WEATHER:')));
+      assert.equal(checked.ok, true, checked.errors.join(';'));
+      assert.ok(checked.stages[0].featureContributions.SOFT_WEATHER_MATCH < 0);
     }
   }
   assert.equal(planDate({ ...ctx, weather: 'unknown', fixedPrefix: [choice('clear-only', 1450)] }, data, { maxStages: 1 }).ok, true);
   for (const weather of [undefined, []]) assert.equal(planDate(ctx, fixture([scene('s', { weather })])).ok, true);
-  assert.equal(planDate(ctx, fixture([scene('exposed', { sheltered: false, weather: ['rain'] })])).ok, false);
+  assert.equal(planDate(ctx, fixture([scene('exposed', { sheltered: false, weather: ['rain'] })])).ok, true);
 });
 
-test('避人流直接校验crowdRisk high，不依赖知识规则是否载入', () => {
-  const result = planDate({ ...ctx, fixedPrefix: [choice('busy')] }, fixture([scene('busy', { crowdRisk: 'high' })], { rules: [] }));
-  assert.equal(result.ok, false);
-  assert.ok(result.errors.some(e => e.startsWith('H_CROWD:')));
+test('安静、人少、低脑力偏好在未载入知识规则时仍降分，不拒绝固定选择或见证', () => {
+  const data = fixture([scene('busy', { quiet: false, crowdRisk: 'high', mental: 5 })], { rules: [] });
+  for (const result of [planDate({ ...ctx, fixedPrefix: [choice('busy')] }, data), verifyPlanWitness(ctx, data, { knownPlan: [choice('busy', 1450)] })]) {
+    assert.equal(result.ok, true, result.errors.join(';'));
+    for (const key of ['SOFT_QUIET', 'SOFT_CROWD', 'SOFT_MENTAL']) assert.ok(result.stages[0].featureContributions[key] < 0);
+  }
 });
 
 test('同一地点连续停留及休息后继续停留不产生虚假转场，重复仍有软罚', () => {
@@ -92,7 +97,7 @@ test('非period模式的真实绝对开放窗仍约束连续休息，旧引擎�
   assert.ok(old.errors.some(e => e.startsWith('H_VERSION:')));
 });
 
-test('低疲劳连续原地休息可补足真实停留，但仍受统一天气、安静及开放窗约束', () => {
+test('低疲劳原地休息可补足停留，天气安静为软偏好，开放窗与校区仍为硬约束', () => {
   const data = fixture([scene('room', { indoor: true, dailyWindows: [{ startMinute: 1380, endMinute: 1440 }] }), scene('rest', { kind: 'rest', area: 'current', minutes: 20, load: -6, indoor: true })]);
   const input = { ...ctx, fatigueA: 0, fatigueB: 0, reserve: 0, fixedPrefix: [choice('room', 1380)] };
   // 窗口晚于房间关门时，休息绝不能补到所选跨度尾部。
@@ -101,10 +106,12 @@ test('低疲劳连续原地休息可补足真实停留，但仍受统一天气�
   const result = planDate({ ...input, fixedPrefix: [choice('room')] }, alwaysOpen, { maxStages: 3 });
   assert.equal(result.ok, true, result.errors.join(';'));
   assert.ok(result.stages.some(s => s.sceneId === 'rest'));
-  for (const extra of [{ quiet: false }, { indoor: false, sheltered: false }, { weather: ['clear'] }, { place: { universityId: 'scau' } }]) {
+  for (const extra of [{ quiet: false }, { indoor: false, sheltered: false }, { weather: ['clear'] }]) {
     const restricted = fixture([scene('room', extra), scene('rest', { kind: 'rest', area: 'current', indoor: true, minutes: 20, load: -6 })]);
-    assert.equal(planDate({ ...ctx, fixedPrefix: [choice('room'), choice('rest')] }, restricted).ok, false);
+    assert.equal(planDate({ ...ctx, fixedPrefix: [choice('room'), choice('rest')] }, restricted).ok, true);
   }
+  const wrongSchool = fixture([scene('room', { place: { universityId: 'scau' } }), scene('rest', { kind: 'rest', area: 'current', indoor: true, minutes: 20, load: -6 })]);
+  assert.equal(planDate({ ...ctx, fixedPrefix: [choice('room'), choice('rest')] }, wrongSchool).ok, false);
 });
 
 test('长跨度多餐仍履行硬用餐要求，重复住宿基础地点不会挤出饭点', () => {

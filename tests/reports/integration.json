@@ -1,10 +1,10 @@
 {
   "dataVersion": "knowledge-4.1.0",
-  "contentRevision": "22a32385a85047d3",
+  "contentRevision": "461e854b4b191b9a",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 207.98370000000003,
+      "elapsedMs": 358.2744,
       "status": "feasible",
       "stages": [
         {
@@ -12,39 +12,39 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 89.74
+          "fitScore": 89.82
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "5ca19dcd"
+      "digest": "3cf1f1a2"
     },
     {
       "label": "exploration90",
-      "elapsedMs": 397.0209,
+      "elapsedMs": 523.7109,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "dorm_downstairs_shelter",
+          "sceneId": "public_lounge",
           "activityIds": [
             "talk_next"
           ],
-          "start": 850,
+          "start": 860,
           "end": 1050,
-          "fitScore": 89.05
+          "fitScore": 88.79
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "4798e5c7"
+      "digest": "2de34b24"
     },
     {
       "label": "replayed",
-      "elapsedMs": 128.76080000000002,
+      "elapsedMs": 302.33230000000003,
       "status": "feasible",
       "stages": [
         {
@@ -52,18 +52,18 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 89.74
+          "fitScore": 89.82
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "5ca19dcd"
+      "digest": "3cf1f1a2"
     },
     {
       "label": "mall-0",
-      "elapsedMs": 119.78359999999998,
+      "elapsedMs": 263.6232,
       "status": "feasible",
       "stages": [
         {
@@ -71,18 +71,18 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 89.74
+          "fitScore": 89.82
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "5ca19dcd"
+      "digest": "3cf1f1a2"
     },
     {
       "label": "mall-1",
-      "elapsedMs": 122.72750000000008,
+      "elapsedMs": 308.6200000000001,
       "status": "feasible",
       "stages": [
         {
@@ -92,18 +92,18 @@
           ],
           "start": 860,
           "end": 1040,
-          "fitScore": 88.88
+          "fitScore": 88.97
         }
       ],
       "cost": [
         5,
         10
       ],
-      "digest": "f434d6c1"
+      "digest": "f734d47b"
     },
     {
       "label": "mall-2",
-      "elapsedMs": 159.72580000000016,
+      "elapsedMs": 385.9028999999998,
       "status": "feasible",
       "stages": [
         {
@@ -115,46 +115,46 @@
           ],
           "start": 860,
           "end": 1040,
-          "fitScore": 78.26
+          "fitScore": 78.93
         },
         {
           "sceneId": "rest",
           "activityIds": [],
           "start": 1040,
           "end": 1050,
-          "fitScore": 62.35
+          "fitScore": 63.38
         }
       ],
       "cost": [
         20,
         40
       ],
-      "digest": "8cd6dbe9"
+      "digest": "1d40014e"
     },
     {
       "label": "shared-play",
-      "elapsedMs": 204.61239999999998,
+      "elapsedMs": 473.9761000000003,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "mall",
+          "sceneId": "dessert",
           "activityIds": [
-            "arcade_race"
+            "dessert_ice"
           ],
-          "start": 860,
-          "end": 1040,
-          "fitScore": 92.15
+          "start": 850,
+          "end": 1030,
+          "fitScore": 91.95
         }
       ],
       "cost": [
         10,
-        15
+        35
       ],
-      "digest": "5b07d649"
+      "digest": "b1747da6"
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 130.36400000000003,
+      "elapsedMs": 241.62999999999965,
       "status": "feasible",
       "stages": [
         {
@@ -162,18 +162,18 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 90.24
+          "fitScore": 90.49
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "e78072f2"
+      "digest": "22d2fc8e"
     },
     {
       "label": "nature-play",
-      "elapsedMs": 242.67579999999998,
+      "elapsedMs": 426.49800000000005,
       "status": "feasible",
       "stages": [
         {
@@ -181,18 +181,18 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 89.74
+          "fitScore": 89.82
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "5ca19dcd"
+      "digest": "3cf1f1a2"
     },
     {
       "label": "play-nature",
-      "elapsedMs": 232.0376000000001,
+      "elapsedMs": 444.8798999999999,
       "status": "feasible",
       "stages": [
         {
@@ -200,18 +200,18 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 89.74
+          "fitScore": 89.82
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "5ca19dcd"
+      "digest": "3cf1f1a2"
     },
     {
       "label": "revision",
-      "elapsedMs": 162.6554000000001,
+      "elapsedMs": 183.86550000000034,
       "status": "feasible",
       "stages": [
         {
@@ -219,14 +219,14 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 89.74
+          "fitScore": 89.82
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "5ca19dcd"
+      "digest": "3cf1f1a2"
     }
   ]
 }

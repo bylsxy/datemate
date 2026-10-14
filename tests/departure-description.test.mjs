@@ -21,11 +21,12 @@ class Element {
   getBoundingClientRect(){return {left:0,right:500,top:0,bottom:100,width:500,height:100};}
 }
 
-test('别离卡使用目录全文，酒店提醒不截断，更新时不回退到硬编码',async()=>{
+test('四种别离卡使用目录全文，酒店提醒和露营文案不截断，更新时不回退到硬编码',async()=>{
   const catalog=JSON.parse(await readFile(new URL('../data/catalog.json',import.meta.url),'utf8'));
   const knowledge=JSON.parse(await readFile(new URL('../knowledge/departures.json',import.meta.url),'utf8'));
   const descriptions=departures=>Object.fromEntries(departures.map(({id,description})=>[id,description]));
   assert.deepEqual(descriptions(catalog.departures),descriptions(knowledge.departures));
+  assert.deepEqual(catalog.departures.map(({id})=>id),['camping','hotel','separate','walk_together']);
   const oldDocument=globalThis.document,dependencyKey=Symbol.for('datemate.departure.description.test');
   const win={requestAnimationFrame:()=>1,cancelAnimationFrame(){},setTimeout:()=>1,clearTimeout(){},addEventListener(){},removeEventListener(){},innerWidth:500,innerHeight:500};
   const doc={defaultView:win,documentElement:{clientWidth:500,clientHeight:500},createElement:()=>new Element(doc),activeElement:null};
@@ -50,6 +51,7 @@ test('别离卡使用目录全文，酒店提醒不截断，更新时不回退�
     };
     render();check();
     assert.match(root.querySelector('.scene-strip').children.find(card=>card.dataset.departure==='hotel').querySelector('.scene-desc').textContent,/忌电竞酒店$/);
+    assert.equal(root.querySelector('.scene-strip').children.find(card=>card.dataset.departure==='camping').querySelector('.scene-desc').textContent,knowledge.departures.find(({id})=>id==='camping').description);
     // 注入新目录文案和摘要字段，证明更新始终使用 description 唯一内容源。
     for(const departure of catalog.departures){departure.description=`更新：${departure.description}。补充提醒`;departure.cardDescription='不应使用的摘要';}
     render();check();

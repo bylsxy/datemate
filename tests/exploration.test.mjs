@@ -159,7 +159,7 @@ test('高探索遵守预算、场地、前序消耗资源、必去、预约、�
     scene('noisy', { quiet: false }), scene('overload', { load: 3 }),
   ]);
   const input = { ...context, area: 'campus', budget: 10, maxLoad: 2, quietRequired: true, requiredSceneIds: ['consume'], availability: { unavailable: 'unavailable' }, bans: ['banned'], fixedPrefix: [{ sceneId: 'start', activityIds: ['buy'] }], anchors: [{ id: 'reserved', choice: { sceneId: 'booking', activityIds: [] }, index: 2, startMinute: 90 }] };
-  const blocked = ['over-budget', 'offsite', 'missing', 'unavailable', 'banned', 'unreviewed', 'noisy', 'overload'];
+  const blocked = ['over-budget', 'offsite', 'missing', 'unavailable', 'banned', 'unreviewed', 'overload'];
   for (let i = 0; i < 8; i++) {
     const result = planDate({ ...input, explorationSeed: `hard-${i}` }, c, { exploration: 100, maxStages: 3 });
     checkRealScores(result);

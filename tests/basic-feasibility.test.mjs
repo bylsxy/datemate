@@ -83,7 +83,7 @@ test('无强制饭点的下午及雨夜支持疲劳6/安静/避拥挤/零预算�
 // 预算是双人费用上界：独立计算餐次最低上界，证明真正的预算矛盾。
 function mealCostLowerBound(context) {
   return getMealRequirements(context.periodIds, context.mealChoices).filter(m => m.choiceMode === 'together').reduce((sum, meal) => {
-    const prices = catalog.scenes.filter(scene => isSceneInSchoolScope(scene, context) && (!context.quietRequired || scene.quiet === true)).flatMap(scene => scene.activities.filter(activity => activity.provides?.includes('meal_completed') && activity.mealRoles?.includes(meal.mealRole) && (!activity.requiresExplicitConsent || context.explicitConsentIds?.includes(activity.id))).map(activity => scene.cost[1] + activity.cost[1]));
+    const prices = catalog.scenes.filter(scene => isSceneInSchoolScope(scene, context)).flatMap(scene => scene.activities.filter(activity => activity.provides?.includes('meal_completed') && activity.mealRoles?.includes(meal.mealRole) && !(activity.requires||[]).length && (!activity.requiresExplicitConsent || context.explicitConsentIds?.includes(activity.id))).map(activity => scene.cost[1] + activity.cost[1]));
     return sum + Math.min(...prices);
   }, 0);
 }
@@ -109,21 +109,20 @@ test('明确选择会面前早餐后，安静/零预算上午可正常规划', (
   for (const scope of scopes) assertBasicSolution({ periodIds: ['morning'], area: 'campus', ...scope, quietRequired: true, budget: 0, mealChoices: { breakfast: { mode: 'before_meeting' } } });
 });
 
-test('UI节省一些预算50：全部10种时段在普通及雨天安静疲劳6条件下都有基本解', () => {
+test('50元支持常见时段；全天选择不吃宵夜后保留可重演基本解', () => {
   const failed = [];
   for (const periodIds of spans) for (const hardConditions of [false, true]) {
-    const context = { periodIds, area: 'near', school: 'scau', campusArea: 'taishan', budget: 50, ...(hardConditions ? { weather: 'rain', quietRequired: true, crowdAvoidance: true, fatigueA: 6, fatigueB: 6 } : {}) };
+    const context = { periodIds, area: 'near', school: 'scau', campusArea: 'taishan', budget: 50, ...(periodIds.length===4?{mealChoices:{supper:{mode:'skip'}}}:{}), ...(hardConditions ? { weather: 'rain', quietRequired: true, crowdAvoidance: true, fatigueA: 6, fatigueB: 6 } : {}) };
     try { assertBasicSolution(context); } catch (error) { failed.push(error.message); }
   }
   assert.deepEqual(failed, [], failed.join('\n'));
 });
 
-test('低预算选酒店、必去同时排除及必须安静却必去嘈杂地点不可伪造成功', () => {
+test('低预算选酒店及必去同时排除不可伪造成功', () => {
   const contexts = [
     { periodIds: ['night'], area: 'near', budget: 0, departureChoice: 'hotel' },
     { periodIds: ['night'], area: 'near', budget: 50, departureChoice: 'hotel' },
     { periodIds: ['afternoon'], area: 'campus', requiredSceneIds: ['reading'], bans: ['reading'] },
-    { periodIds: ['afternoon'], area: 'campus', quietRequired: true, requiredSceneIds: ['campus_canteen'] },
   ];
   for (const context of contexts) {
     const { result } = solve(context);

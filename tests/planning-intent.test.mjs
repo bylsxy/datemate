@@ -125,7 +125,7 @@ test('只有全部重新推荐才清空已选；改变软偏好保留选择，�
   assert.deepEqual(restarted.context.mealChoices,{});assert.equal(restarted.context.departureChoice,'separate');
   const soft=updateContextIntent(input,{...input.context,preferencesA:['nature']});
   assert.equal(soft.hardChanged,false);assert.deepEqual(soft.next.prefix,input.prefix);
-  const hard=updateContextIntent(input,{...input.context,weather:'rain'});
+  const hard=updateContextIntent(input,{...input.context,budget:20});
   assert.equal(hard.hardChanged,true);assert.deepEqual(hard.next.prefix,[]);
 });
 

@@ -1,10 +1,10 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=d4f7f2e5b8714a6e';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=d4f7f2e5b8714a6e';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=d4f7f2e5b8714a6e';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=d4f7f2e5b8714a6e';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=f9ba8b25a44e98dd';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=f9ba8b25a44e98dd';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=f9ba8b25a44e98dd';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=f9ba8b25a44e98dd';
 
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=d4f7f2e5b8714a6e';
-import {mealModeCard,mealOptions} from './meal-options.mjs?v=d4f7f2e5b8714a6e';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=f9ba8b25a44e98dd';
+import {mealModeCard,mealOptions} from './meal-options.mjs?v=f9ba8b25a44e98dd';
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));
@@ -435,6 +435,10 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       view.splitButton=view.meta.querySelector('button[data-split]');
       view.mergeButton=view.meta.querySelector('button[data-merge]');view.mergeNote=view.meta.querySelector('[data-merge-note]');
       if(view.mergeButton&&view.mergeOption.error)view.mergeButton.title=view.mergeOption.error;
+    }
+    if(stage.bundledMeals?.length){
+      view.meta.hidden=false;
+      view.meta.insertAdjacentHTML('beforeend',`<p class="field-hint">含${stage.bundledMeals.map(meal=>`${esc(meal.label)} ${formatTime(meal.startMinute)}–${formatTime(meal.endMinute)}`).join(' · ')}与往返</p>`);
     }
   }
   function sameStageContent(previous,next){

@@ -6,9 +6,9 @@ const input = await loadKnowledge();
 const scenes = compileKnowledge(input).catalog.scenes;
 const allows = (scene, minute) => scene.dailyWindows.some(w => w.startMinute <= minute && minute < w.endMinute);
 
-test('全部场景显式登记规划默认时段，凌晨仅校园线索地点、宵夜和原地休息', () => {
+test('全部场景显式登记规划默认时段，午夜与凌晨候选使用明确时窗', () => {
   assert.ok(scenes.every(s => s.dailyWindows.length && s.availabilityBasis === 'planning_default' && s.availabilityNote));
-  assert.deepEqual(scenes.filter(s => allows(s, 1410)).map(s => s.id).sort(), ['barbecue_stall', 'breakfast_prepared', 'camellia_garden', 'dorm_downstairs_shelter', 'dorm_takeaway_meal', 'east_lab_stop', 'faculty_rooftop_stars', 'orchid_garden', 'rest', 'scau_wandering', 'snack_street', 'taishan_supermarket_front']);
+  assert.deepEqual(scenes.filter(s => allows(s, 1410)).map(s => s.id).sort(), ['astronomy_session', 'barbecue_stall', 'breakfast_prepared', 'camellia_garden', 'dorm_downstairs_shelter', 'dorm_takeaway_meal', 'dream_concert_trip', 'east_lab_stop', 'faculty_rooftop_stars', 'open_air_cinema', 'orchid_garden', 'rest', 'scau_wandering', 'snack_street', 'taishan_supermarket_front']);
   assert.deepEqual(scenes.filter(s => allows(s, 60)).map(s => s.id).sort(), ['breakfast_prepared', 'camellia_garden', 'dorm_downstairs_shelter', 'dorm_takeaway_meal', 'east_lab_stop', 'faculty_rooftop_stars', 'orchid_garden', 'rest', 'scau_wandering', 'taishan_supermarket_front']);
   for (const id of ['barbecue_stall', 'snack_street']) {
     const scene = scenes.find(s => s.id === id);
@@ -17,10 +17,10 @@ test('全部场景显式登记规划默认时段，凌晨仅校园线索地点�
   }
 });
 
-test('用户新增华农夜间停留地是学校级归属，未冒用泰山或官方开放结论', () => {
+test('华农夜间停留地保留手工学校及校区归属，不冒用官方开放结论', () => {
   for (const id of ['east_lab_stop', 'camellia_garden', 'orchid_garden']) {
     const scene = scenes.find(s => s.id === id);
-    assert.equal(scene.place.universityId, 'scau'); assert.equal(scene.place.campusArea, '');
+    assert.equal(scene.place.universityId, 'scau'); assert.equal(scene.place.campusArea, id === 'east_lab_stop' ? 'taishan' : '');
     assert.equal(scene.scauOnly, true); assert.equal(scene.minutes, 60);
     assert.equal(scene.availabilityClueSource, 'user-provided');
     assert.equal(scene.place.verificationStatus, 'awaiting_confirmation');

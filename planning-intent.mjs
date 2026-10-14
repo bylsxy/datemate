@@ -1,5 +1,5 @@
 // 用户意图与求解结果分离：仅投影显式选择，不把自动排程变成预约。
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=d4f7f2e5b8714a6e';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=f9ba8b25a44e98dd';
 const clone = value => structuredClone(value);
 const mealRoles = ['breakfast', 'lunch', 'dinner', 'supper'];
 
@@ -199,12 +199,19 @@ export function selectDepartureIntent(state, result, id, catalog) {
   return next;
 }
 
-export function exploreIntent(state, exploration, seed) {
+export function exploreIntent(state, exploration, seed, catalog = null) {
   if (!Number.isInteger(exploration) || exploration < 0 || exploration > 100) throw new RangeError('探索度必须为0到100的整数。');
   if (!Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new RangeError('探索种子必须为uint32。');
   const next = clone(state), mealChoices = state.context.mealChoices || {};
   next.exploration = exploration;
   next.prefix = clone(state.prefix || []);
+  // 梦幻专属地点退出模式后释放，从第一个失效选择向后重排。
+  if(exploration<100&&catalog){
+    const dreamIds=new Set(catalog.scenes.filter(scene=>scene.dreamOnly).map(scene=>scene.id));
+    const firstDream=next.prefix.findIndex(choice=>dreamIds.has(choice.sceneId));
+    if(firstDream>=0){next.prefix=next.prefix.slice(0,firstDream);delete next.context.endAfterStage;delete next.context.minimumStageCount;}
+    next.context.requiredSceneIds=(next.context.requiredSceneIds||[]).filter(id=>!dreamIds.has(id));
+  }
   if(state.splitStageIndexes)next.splitStageIndexes=state.splitStageIndexes.filter(i=>i<=next.prefix.length);
   next.context.mealChoices = {};
   const fixedRoles=new Set(next.prefix.map(choice=>choice.mealRole).filter(Boolean));
@@ -230,7 +237,7 @@ export function restartIntent(state, seed) {
 }
 
 export function updateContextIntent(state,context) {
-  const hard=['periodIds','budget','weather','area','school','campusArea','fatigueA','fatigueB','quietRequired','crowdAvoidance','dietaryRestrictions','preparedIds','resources','bans','requiredSceneIds','anchors','robust','mealNeed'];
+  const hard=['periodIds','budget','weekPart','area','school','campusArea','fatigueA','fatigueB','dietaryRestrictions','preparedIds','resources','bans','requiredSceneIds','anchors','robust','mealNeed'];
   const changed=hard.some(key=>JSON.stringify(state.context[key]??null)!==JSON.stringify(context[key]??null));
   const next=clone(state);next.context=clone(context);
   if(changed){next.prefix=[];delete next.splitStageIndexes;delete next.context.endAfterStage;delete next.context.minimumStageCount;}

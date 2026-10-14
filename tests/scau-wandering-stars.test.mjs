@@ -52,7 +52,7 @@ test('看星星19点至次日06点连续开放，18:59和白天拒绝且停留�
   for (const period of ['evening', 'night']) assert.equal(isSceneAvailableInContext(scene, { periodIds: [period] }), true, period);
 });
 
-test('真实引擎夜晚固定前缀允许校内游荡和学校级看星星且不限定宿舍区', () => {
+test('真实引擎夜晚固定前缀允许通用校内游荡和看星星且不限定宿舍区', () => {
   // 夜晚结束于1560；跨午夜停留至1495，加各自回去5分钟恰好满足末段覆盖。
   for (const id of ids) for (const campusArea of ['', 'taishan', 'other']) {
     const result = planDate({ ...context, campusArea, periodIds: ['night'], fixedPrefix: [fixed(id, 1435)] }, catalog, { maxStages: 1 });
@@ -74,19 +74,19 @@ test('通用校内游荡的真实夜晚前缀不要求华农权限', () => {
   assert.equal(scene.scauOnly, false);
   assert.equal(scene.place.universityId, '');
   assert.equal(scene.place.campusArea, '');
-  for (const area of ['campus', 'near']) for (const school of ['', 'other']) {
-    const result = planDate({ ...context, area, school, periodIds: ['night'], fixedPrefix: [fixed(ids[0], 1435)] }, catalog, { maxStages: 1 });
+  for (const id of ids) for (const area of ['campus', 'near']) for (const school of ['', 'other']) {
+    const result = planDate({ ...context, area, school, periodIds: ['night'], fixedPrefix: [fixed(id, 1435)] }, catalog, { maxStages: 1 });
     assert.equal(result.ok, true, `${area}/${school}: ${result.errors.join(';')}`);
-    assert.equal(result.stages[0].sceneId, ids[0]);
+    assert.equal(result.stages[0].sceneId, id);
     assert.equal(result.stages[0].minutes, 60);
     assert.equal(result.metrics.endingCoverageSatisfied, true);
   }
 });
 
-test('真实引擎固定前缀不能绕过看星星的华农权限或下午关闭时段', () => {
+test('真实引擎固定前缀不能绕过东区实验楼学校权限或看星星下午关闭时段', () => {
   for (const school of ['', 'other']) {
-    const id = ids[1];
-    const result = planDate({ ...context, school, campusArea: 'taishan', periodIds: ['night'], fixedPrefix: [fixed(id, 1430)] }, catalog, { maxStages: 1 });
+    const id = 'east_lab_stop';
+    const result = planDate({ ...context, school, campusArea: 'taishan', periodIds: ['night'], fixedPrefix: [fixed(id, 1435)] }, catalog, { maxStages: 1 });
     assert.equal(result.ok, false, id);
     assert.ok(result.errors.some(e => e.startsWith('H_SCHOOL_SCOPE:')), `${id}: ${result.errors.join(';')}`);
   }

@@ -33,12 +33,15 @@ test('规则行动按当前场景活动执行，偏好、准备、警告均有�
   assert.equal(result.trace[0].outputFacts.length, 4);
 });
 
-test('内置雨天规则实际分两步推导并排除室外，天气未知不排除', () => {
+test('内置雨天规则分两步推导淋雨风险与警告，阴天不触发且不硬排除', () => {
   const rain = forwardChain({ context: { weather: 'rain' }, scene: { id: 'walk', indoor: false }, state: { maxLoad: 2 } }, DEFAULT_RULES);
-  assert.deepEqual(rain.excludedSceneIds, ['walk']);
-  assert.ok(rain.trace.some(t => t.ruleId === 'CORE_EXCLUDE_WET' && t.round === 2));
-  const unknown = forwardChain({ context: { weather: 'unknown' }, scene: { id: 'walk', indoor: false }, state: { maxLoad: 2 } }, DEFAULT_RULES);
-  assert.deepEqual(unknown.excludedSceneIds, []);
+  assert.deepEqual(rain.excludedSceneIds, []);
+  assert.equal(rain.facts['derived.wetRisk'], true);
+  assert.ok(rain.trace.some(t => t.ruleId === 'CORE_WET_WARNING' && t.round === 2));
+  assert.equal(rain.warnings.length, 1);
+  const cloudy = forwardChain({ context: { weather: 'cloudy' }, scene: { id: 'walk', indoor: false }, state: { maxLoad: 2 } }, DEFAULT_RULES);
+  assert.deepEqual(cloudy.excludedSceneIds, []);
+  assert.equal(cloudy.warnings.length, 0);
 });
 
 test('图谱支持多跳、证据合并、深度界限和有环图终止', () => {
