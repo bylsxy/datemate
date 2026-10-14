@@ -119,7 +119,8 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
   assert.ok(sources.every(s => !s.rawTextIncluded && /^[a-f0-9]{64}$/.test(s.sha256)));
   assert.ok(evidence.every(e => !e.publicExcerptAllowed && !Object.hasOwn(e, 'originalExcerpt')));
   const userEvidence = evidence.filter(e => e.sourceKind === 'user_design');
-  assert.equal(userEvidence.length, 6);
+  assert.equal(userEvidence.length, 7);
+  assert.ok(userEvidence.some(e => e.id === 'E-user-campus-canteen'));
   assert.ok(userEvidence.every(e => e.sourceDocumentId === null && e.reviewStatus === 'awaiting_confirmation'));
   for (const id of ['switch_store', 'mystery_store', 'public_lounge', 'barbecue_stall', 'snack_street']) {
     assert.equal(scene(id).place.verificationStatus, 'awaiting_confirmation');
@@ -128,7 +129,7 @@ test('151份来源元数据与原创摘要保留，用户设计证据明确待�
 });
 
 test('四餐角色均有实际用餐活动，早餐与宵夜适用语义独立', () => {
-  const expected = { breakfast: ['canteen', 'taishan_glass'], lunch: ['canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], dinner: ['canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'snack_street'] };
+  const expected = { breakfast: ['campus_canteen', 'canteen', 'taishan_glass'], lunch: ['campus_canteen', 'canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], dinner: ['campus_canteen', 'canteen', 'cantonese', 'meal', 'taishan_glass', 'western'], supper: ['barbecue_stall', 'snack_street'] };
   for (const [role, ids] of Object.entries(expected)) {
     assert.deepEqual(catalog.scenes.filter(s => s.mealRoles.includes(role)).map(s => s.id).sort(), ids.sort());
     for (const id of ids) {
@@ -164,7 +165,7 @@ test('非法餐次、无用餐活动和空场馆用餐目标在构建前被拒�
 });
 
 test('华农自述地点具有校内与泰山区属性，引用本地定位证据', () => {
-  const expected = { canteen: '芷园食堂', campus_tabletennis: '泰山区12、15、16栋乒乓球桌', campus: '泰山区宿舍间步道', bridge_walk: '综合体育馆后桥', track_walk: '东区运动场外圈', supermarket: '泰山超市', taishan_glass: '泰山十栋玻璃房', taishan_supermarket_front: '泰山超市门口', teaching4_study: '教四自习区', teaching4_slope: '教四后坡路', taishan_lab_garden: '泰山实验楼下花园' };
+  const expected = { canteen: '芷园食堂', campus_tabletennis: '泰山区12、15、16栋乒乓球桌', campus: '泰山区宿舍间步道', bridge_walk: '综合体育馆后桥', track_walk: '东区运动场外圈', supermarket: '泰山超市', taishan_glass: '泰山十栋玻璃房', taishan_supermarket_front: '泰山超市门口', teaching4_study: '教四教室', teaching4_slope: '教四后坡路', taishan_lab_garden: '泰山实验楼架空层花园' };
   for (const [id, name] of Object.entries(expected)) {
     const s = scene(id);
     assert.equal(s.title, name); assert.equal(s.scauOnly, true); assert.equal(s.area, 'campus');
@@ -190,8 +191,8 @@ test('离开目录独立于地点，默认各自回去且酒店须过夜并明�
     assert.ok(!graph.edges.some(e => e.subject === d.id && e.predicate === 'allows_activity'));
   }
   const byId = Object.fromEntries(catalog.departures.map(d => [d.id, d]));
-  assert.equal(byId.separate.minutes, 10); assert.deepEqual(byId.separate.cost, [0, 0]);
-  assert.equal(byId.walk_together.minutes, 20); assert.deepEqual(byId.walk_together.cost, [0, 0]);
+  assert.equal(byId.separate.minutes, 5); assert.deepEqual(byId.separate.cost, [0, 0]);
+  assert.equal(byId.walk_together.minutes, 30); assert.deepEqual(byId.walk_together.cost, [0, 0]);
   assert.equal(byId.hotel.minutes, 15); assert.equal(byId.hotel.onlyOvernight, true); assert.equal(byId.hotel.requiresExplicitChoice, true);
   assert.equal(byId.hotel.costUnit, 'CNY_per_room_for_two_per_night');
   assert.deepEqual(byId.hotel.costByCityTier, { tier1: [200, 400], tier2: [150, 300], tier3: [100, 250] });

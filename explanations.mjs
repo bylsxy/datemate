@@ -1,5 +1,5 @@
-import {interestLabels} from './planner.mjs?v=1d081a6265958465';
-import {dietaryOptions} from './data/activities.mjs?v=1d081a6265958465';
+import {interestLabels} from './planner.mjs?v=babb8dc4a6cd6ec1';
+import {dietaryOptions} from './data/activities.mjs?v=babb8dc4a6cd6ec1';
 
 // 简短理由保留原调用方式；详细决策与原始规则轨迹由 explainDecision 提供。
 export function explainStage(stage,place,context={}) {
@@ -67,7 +67,7 @@ export function explainDecision(stage,place,context={}) {
   const anchor=anchored?(context.anchors||[]).find(a=>a.id===stage.anchorId):undefined;
   const scoreMessage=score===null?'本次初始搜索中，当前选择尚无可用的完整后续方案得分。':
     `本次初始搜索中，当前选择的方案契合分为 ${formatFact(score)}；${evaluated.length?`在本次初始搜索返回的 ${evaluated.length} 个已评分候选中列第 ${rank} 位（按高于该分数的候选数计）`:'本次初始搜索没有已评分候选可用于排名'}。`;
-  const selectionMessage=[locked?'当前选择由手动锁定，保留指定地点和活动组合。':'当前选择来自本次初始搜索的有界规划。',
+  const selectionMessage=[locked?'当前选择由手动锁定，保留指定地点和活动组合。':stage.decisionMode==='seeded_exploration'?'当前选择来自本次初始探索搜索，在满足硬约束的完整方案中尝试不同路线；卡片按探索顺序展露，契合分仍使用真实计算值。':'当前选择来自本次初始搜索的有界规划。',
     requiredScene?'当前地点满足必去地点要求；访问次序由引擎安排。':null,
     anchored?`本阶段受预约锚点 ${formatFact(stage.anchorId)} 约束。`:null,
     context.requiredSceneIds?.length?`本次输入包含 ${context.requiredSceneIds.length} 项必去地点要求，完整内容见约束记录。`:null,

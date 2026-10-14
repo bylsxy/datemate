@@ -1,9 +1,10 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=1d081a6265958465';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=1d081a6265958465';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=1d081a6265958465';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=babb8dc4a6cd6ec1';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=babb8dc4a6cd6ec1';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=babb8dc4a6cd6ec1';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=babb8dc4a6cd6ec1';
 
-export { canonical, digest } from './reasoning.mjs?v=1d081a6265958465';
-export const VERSION = 'datemate-engine-3.3.0';
+export { canonical, digest } from './reasoning.mjs?v=babb8dc4a6cd6ec1';
+export const VERSION = 'datemate-engine-3.3.1';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
@@ -61,6 +62,7 @@ export function normalize(input = {}) {
     facts: copy(raw.facts || {}), energy: raw.energy ?? ((Math.max(number(raw.fatigueA, 2), number(raw.fatigueB, 2)) >= 6) ? 'low' : 'normal'),
     explorationSeed: normalizeExplorationSeed(raw.explorationSeed),
   };
+  Object.assign(ctx, normalizeSchoolScope({ ...raw, area: ctx.area }));
   if (ctx.budget !== null && (!Number.isFinite(ctx.budget) || ctx.budget < 0)) throw Error(fail('H_BUDGET', '预算必须为非负金额或未指定。'));
   if (periods && (!['separate', 'walk_together', 'hotel'].includes(ctx.departureChoice) || !['tier1', 'tier2', 'tier3'].includes(ctx.cityTier))) throw Error(fail('H_DEPARTURE_CHOICE', '请选择有效的分别方式与城市等级。'));
   if (periods && ctx.departureChoice === 'hotel' && periods.endMinute <= 1440) throw Error(fail('H_DEPARTURE_OVERNIGHT', '只有跨午夜的约会时段可以选择酒店。'));
@@ -282,6 +284,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (scene.publicAllowed === false || scene.reviewStatus === 'rejected' || scene.reviewStatus === 'draft') errors.push(fail('H_REVIEW', '场景未通过公开使用审核。'));
     if (ctx.availability[scene.id] === 'unavailable') errors.push(fail('H_AVAILABILITY', '场景明确不可用。'));
     if (ctx.area === 'campus' && !['campus', 'current'].includes(scene.area) || ctx.area === 'near' && scene.area === 'off') errors.push(fail('H_RANGE', '超出本次地点范围。'));
+    else if (!isSceneInSchoolScope(scene, ctx)) errors.push(fail('H_SCHOOL_SCOPE', '地点不适用于本次学校或校区范围。'));
     if (ctx.quietRequired && scene.quiet !== true) errors.push(fail('H_QUIET', '与明示安静要求不符。'));
     if (ctx.mentalLow && number(scene.mental, 0) >= 4) errors.push(fail('H_MENTAL', '超过本次认知负担上限。'));
     if (ctx.crowdAvoidance && (scene.crowded === true || scene.uncrowded === false)) errors.push(fail('H_CROWD', '与避开拥挤要求不符。'));
@@ -462,6 +465,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   } catch (error) { return errorResponse('invalid_input', [error.message], null, versions); }
   try { compiled = compileCatalog(catalog); } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
   if (ctx.requiredSceneIds.some(id => !compiled.byId.has(id) || ctx.bans.includes(id))) return errorResponse('invalid_input', [fail('H_REQUIRED_SCENE', '必去地点不存在或同时被排除。')], ctx, versions);
+  if (ctx.requiredSceneIds.some(id => !isSceneInSchoolScope(compiled.byId.get(id), ctx))) return errorResponse('invalid_input', [fail('H_SCHOOL_SCOPE', '必去地点不适用于本次地点、学校或校区范围。')], ctx, versions);
   try { ctx.departures = compileDepartures(catalog, ctx); ctx.departure = ctx.departures.find(d => d.id === ctx.departureChoice) ?? null; } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
   try {
     const rawPrefix = options.fixedPrefix ?? input.fixedPrefix ?? input.prefix ?? [];
@@ -471,11 +475,13 @@ function* searchDate(input = {}, catalog, options = {}) {
       if (!meal.sceneId) continue;
       const choice = normalizeChoice({ sceneId: meal.sceneId, activityIds: meal.activityIds ?? [] }, compiled);
       const scene = compiled.byId.get(choice.sceneId);
+      if (!isSceneInSchoolScope(scene, ctx)) throw Error(fail('H_SCHOOL_SCOPE', '固定餐馆不适用于本次地点、学校或校区范围。'));
       if (!scene.mealRoles?.includes(meal.mealRole)) throw Error(fail('H_MEAL_ROLE', '固定餐馆不支持当前饭点。'));
       if (meal.activityIds !== null && (!choice.activityIds.some(id => scene.activities.find(a => a.id === id)?.provides.meal_completed > 0) || choice.activityIds.some(id => { const a = scene.activities.find(a => a.id === id); return a.provides.meal_completed > 0 && !a.mealRoles?.includes(meal.mealRole); }))) throw Error(fail('H_MEAL_ACTIVITY', '固定餐卡必须选择适用于该餐的实际用餐活动。'));
     }
     const rawAnchors = input.anchors || (input.anchorSceneId ? [{ choice: { sceneId: input.anchorSceneId, activityIds: [] } }] : []);
     anchors = normalizeAnchors(rawAnchors, compiled, ctx); ctx.anchors = anchors;
+    if (anchors.some(a => !isSceneInSchoolScope(compiled.byId.get(a.choice.sceneId), ctx))) throw Error(fail('H_SCHOOL_SCOPE', '锚点不适用于本次地点、学校或校区范围。'));
   } catch (error) { return errorResponse('invalid_input', [error.message], ctx, versions); }
   const exploration = integer(options.exploration ?? input.exploration ?? input.context?.exploration, 0, 0, 100);
   // 独立候选验证只求最高真实效用；探索度仍影响真实目标函数，不施加搜索噪声。
@@ -487,7 +493,8 @@ function* searchDate(input = {}, catalog, options = {}) {
   if (prefix.length > config.maxStages) return errorResponse('invalid_input', [fail('H_PREFIX_LENGTH', '固定前缀超过主动结束位置或阶段上限。')], ctx, versions);
   if (ctx.requiredSceneIds.length > config.maxStages) return errorResponse('invalid_input', [fail('H_REQUIRED_LENGTH', '必去地点数量超过当前阶段上限。')], ctx, versions);
   const stats = { ...config, explorationVersion: EXPLORATION_VERSION, explorationSeed: ctx.explorationSeed, explorationStrength: explorer.strength, expandedNodes: 0, candidateExpandedNodes: 0, candidateNodeBudgetReached: false, generatedNodes: 0, feasibleNodes: 0, terminalPlans: 0, constraintRejections: {}, beamPruned: 0, activitySubsetsTruncated: false, nodeBudgetReached: false, maxDepthReached: false, provedOptimal: false, proofScope: '未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。' };
-  const subsets = new Map(compiled.scenes.map(s => [s.id, enumerateSubsets(s, config.activitySubsetLimit, stats)]));
+  const scopedScenes = compiled.scenes.filter(scene => isSceneInSchoolScope(scene, ctx));
+  const subsets = new Map(scopedScenes.map(s => [s.id, enumerateSubsets(s, config.activitySubsetLimit, stats)]));
   const evaluator = createEvaluator(ctx, compiled, catalog, exploration);
   let start = initial(ctx), candidatePrefixUtility = 0;
   const reject = errors => { for (const error of errors) { const code = error.split(':')[0]; stats.constraintRejections[code] = (stats.constraintRejections[code] || 0) + 1; } };
@@ -504,8 +511,8 @@ function* searchDate(input = {}, catalog, options = {}) {
   }
   const requiredCovered = st => ctx.requiredSceneIds.filter(id => st.visited.includes(id));
   const isComplete = st => st.stages.length > 0 && st.anchorIndex === anchors.length && requiredCovered(st).length === ctx.requiredSceneIds.length && mealsSatisfied(st, ctx) && periodsCovered(st, ctx) && nearEnd(st, ctx) && (!ctx.mealNeed || st.meal || ctx.mealRequirements.some(m => m.choiceMode === 'before_meeting'));
-  const automaticChoices = compiled.scenes.filter(scene => !ctx.periodIds || !dedicatedMealScene(scene)).flatMap(scene => subsets.get(scene.id).filter(ids => !ctx.periodIds || !ids.some(id => scene.activities.find(a => a.id === id).provides.meal_completed > 0)).map(activityIds => ({ choice: { sceneId: scene.id, activityIds }, anchor: null })));
-  const mealChoices = new Map(ctx.mealRequirements.map(meal => [meal.mealRole, compiled.scenes.filter(scene => !meal.sceneId || meal.sceneId === scene.id).flatMap(scene => (meal.activityIds !== null ? scene.mealRoles?.includes(meal.mealRole) ? [meal.activityIds] : [] : mealActivityChoices(scene, meal.mealRole, subsets.get(scene.id))).map(activityIds => ({ choice: { sceneId: scene.id, activityIds, mealRole: meal.mealRole }, anchor: null })))]));
+  const automaticChoices = scopedScenes.filter(scene => !ctx.periodIds || !dedicatedMealScene(scene)).flatMap(scene => subsets.get(scene.id).filter(ids => !ctx.periodIds || !ids.some(id => scene.activities.find(a => a.id === id).provides.meal_completed > 0)).map(activityIds => ({ choice: { sceneId: scene.id, activityIds }, anchor: null })));
+  const mealChoices = new Map(ctx.mealRequirements.map(meal => [meal.mealRole, scopedScenes.filter(scene => !meal.sceneId || meal.sceneId === scene.id).flatMap(scene => (meal.activityIds !== null ? scene.mealRoles?.includes(meal.mealRole) ? [meal.activityIds] : [] : mealActivityChoices(scene, meal.mealRole, subsets.get(scene.id))).map(activityIds => ({ choice: { sceneId: scene.id, activityIds, mealRole: meal.mealRole }, anchor: null })))]));
   function choicesFor(st, extra) {
     const depth = st.stages.length, pending = anchors[st.anchorIndex];
     if (pending?.index !== undefined && pending.index < depth) return [];
@@ -669,12 +676,9 @@ function* searchDate(input = {}, catalog, options = {}) {
     byScene.set(own.sceneId, own);
     const orderEntries = (a, b) => Number(b.continuationFound) - Number(a.continuationFound) || (a.continuationFound ? b.q - a.q : 0) || cmp(a.sceneId, b.sceneId);
     const allEntries = [...byScene.values()].sort(orderEntries);
-    // 已有完整后续的卡片优先展露；未验证的场景只能带 pending 状态出现。
-    const completedEntries = allEntries.filter(c => c.continuationFound);
-    const pendingEntries = allEntries.filter(c => !c.continuationFound);
-    const sampleEntries = (entries, limit, scope) => explorer.select(entries, limit, { key: c => c.sceneId, value: c => c.q ?? c.localUtility, scope: `${scope}:${stateKey(before)}`, temperature: 80, reorder: true });
+    // 展示与真实评分分离，未验证场景可以靠前展露，但仍只能带 pending 状态。
     const explorationDisplay = explorer.strength > 0 && !lockedStage;
-    let ordered = explorationDisplay ? [...sampleEntries(completedEntries, config.candidateLimit, 'cards-complete'), ...sampleEntries(pendingEntries, Math.max(0, config.candidateLimit - completedEntries.length), 'cards-pending')] : allEntries.slice(0, config.candidateLimit);
+    let ordered = explorationDisplay ? explorer.display(allEntries, config.candidateLimit, { key: c => c.sceneId, confirmed: c => c.continuationFound, scope: `cards:${stateKey(before)}` }) : allEntries.slice(0, config.candidateLimit);
     if (!ordered.some(c => c.sceneId === own.sceneId)) ordered = [...ordered.slice(0, config.candidateLimit - 1), own];
     if (!explorationDisplay) ordered.sort(orderEntries);
     ordered = ordered.map((candidate, rank) => ({ ...candidate, explorationRank: rank, displayOrderIndex: rank }));
@@ -686,14 +690,16 @@ function* searchDate(input = {}, catalog, options = {}) {
   const mealRequirements = ctx.mealRequirements.map(meal => {
     const actualIndex = stages.findIndex(s => s.mealRole === meal.mealRole);
     const stageIndex = actualIndex < 0 ? null : actualIndex;
-    const insertion = stages.findIndex(s => s.start >= meal.targetMinute);
-    const insertIndex = stageIndex ?? (insertion < 0 ? stages.length : insertion);
+    // 特殊餐次切回真实用餐时，释放跨越饭点的自动尾段；显式前缀仍不可回退。
+    const specialMeal = meal.choiceMode !== 'together';
+    const insertion = stages.findIndex(s => specialMeal ? s.end > meal.targetMinute : s.start >= meal.targetMinute);
+    const insertIndex = stageIndex ?? Math.max(specialMeal ? prefix.length : 0, insertion < 0 ? stages.length : insertion);
     const menuState = beforeByIndex[insertIndex] ?? best;
     // 菜单替换只释放当前饭点选择，沿用前序资源、疲劳、费用和全部其他硬约束。
     const menuContext = { ...ctx, mealRequirements: ctx.mealRequirements.map(m => m.mealRole === meal.mealRole ? { ...m, choiceMode: 'together', mode: 'together', sceneId: null, activityIds: null } : m) };
     const menuEvaluator = createEvaluator(menuContext, compiled, catalog, exploration);
     const candidates = new Map((stageIndex === null ? [] : stages[stageIndex].candidates).map(c => [c.sceneId, c]));
-    for (const scene of compiled.scenes) {
+    for (const scene of scopedScenes) {
       if (candidates.has(scene.id)) continue;
       for (const activityIds of mealActivityChoices(scene, meal.mealRole, subsets.get(scene.id))) {
         const checked = menuEvaluator.evaluate(menuState, { sceneId: scene.id, activityIds, mealRole: meal.mealRole }, null, true, true);
@@ -704,9 +710,8 @@ function* searchDate(input = {}, catalog, options = {}) {
       }
     }
     const exploredMenu = explorer.strength > 0 && stageIndex !== null && stages[stageIndex].decisionMode === 'seeded_exploration';
-    const ordered = [...candidates.values()].sort((a, b) => exploredMenu
-      ? (a.displayOrderIndex ?? Infinity) - (b.displayOrderIndex ?? Infinity) || explorer.noise(`meal-cards:${meal.mealRole}`, b.sceneId) - explorer.noise(`meal-cards:${meal.mealRole}`, a.sceneId) || cmp(a.sceneId, b.sceneId)
-      : Number(b.continuationFound) - Number(a.continuationFound) || (b.fitScore ?? -Infinity) - (a.fitScore ?? -Infinity) || cmp(a.sceneId, b.sceneId))
+    const menuEntries = [...candidates.values()].sort((a, b) => Number(b.continuationFound) - Number(a.continuationFound) || (b.fitScore ?? -Infinity) - (a.fitScore ?? -Infinity) || cmp(a.sceneId, b.sceneId));
+    const ordered = (exploredMenu ? explorer.display(menuEntries, menuEntries.length, { key: c => c.sceneId, confirmed: c => c.continuationFound, scope: `meal-cards:${meal.mealRole}:${stateKey(menuState)}` }) : menuEntries)
       .map((candidate, rank) => ({ ...candidate, explorationRank: rank, displayOrderIndex: rank }));
     if (stageIndex !== null) stages[stageIndex].candidates = ordered;
     return { ...meal, satisfied: meal.choiceMode !== 'together' || stageIndex !== null, sceneId: stageIndex === null ? null : stages[stageIndex].sceneId, activityIds: stageIndex === null ? [] : stages[stageIndex].activityIds, stageIndex, insertIndex, candidates: ordered };

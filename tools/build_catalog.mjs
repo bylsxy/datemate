@@ -71,6 +71,7 @@ function normalizeScene(raw) {
   delete scene.activityIds;
   delete scene.activityOverrides;
   scene.title = scene.place.name;
+  scene.scauOnly = scene.place.universityId === 'scau';
   scene.typeId ??= scene.id;
   scene.quiet ??= scene.tags.includes('quiet');
   scene.seated ??= scene.load <= 0;
@@ -275,6 +276,10 @@ export function compileKnowledge(input) {
     const path = `scenes.${raw.id}`;
     ensure(raw.place && typeof raw.place === 'object', `${path}.place 缺失`);
     text(raw.place.name, `${path}.place.name`); text(raw.place.category, `${path}.place.category`);
+    ensure(['', 'scau'].includes(raw.place.universityId), `${path}.place.universityId 须为通用空值或 scau`);
+    ensure(['', 'taishan'].includes(raw.place.campusArea), `${path}.place.campusArea 须为空值或 taishan`);
+    ensure(!raw.place.campusArea || raw.place.universityId === 'scau', `${path} 校区属性须从属于学校`);
+    ensure(!raw.place.universityId || raw.area === 'campus', `${path} 华农泰山区属性须位于校内`);
     ensure(['ordinary', '休息'].includes(raw.place.kind), `${path}.place.kind 须为 ordinary 或 休息`);
     ensure(['awaiting_confirmation', 'current_location', 'verified'].includes(raw.place.verificationStatus), `${path}.place.verificationStatus 无效`);
     if (raw.place.verificationStatus === 'awaiting_confirmation') ensure(!raw.place.address && !raw.place.openingHours, `${path} 待确认地点不能填入未核实的地址或营业时间`);
@@ -294,7 +299,7 @@ export function compileKnowledge(input) {
     const scene = normalizeScene(raw);
     if (Object.hasOwn(raw, 'scauOnly')) {
       ensure(typeof raw.scauOnly === 'boolean', `${path}.scauOnly 须为布尔值`);
-      if (raw.scauOnly) ensure(raw.area === 'campus' && raw.place.universityId === 'scau' && raw.place.campusArea === 'taishan', `${path} 华农泰山区属性须一致`);
+      ensure(raw.scauOnly === (raw.place.universityId === 'scau'), `${path} 华农学校属性须与 scauOnly 一致`);
     }
     ensure(typeof scene.indoor === 'boolean' && typeof scene.quiet === 'boolean', `${path} indoor/quiet 须为布尔值`);
     ensure(['campus', 'near', 'off', 'current'].includes(scene.area), `${path}.area 无效`);

@@ -161,7 +161,7 @@ test('多用途地点只有所选meal_completed活动才完成正餐，并正确
   assert.deepEqual(result.stages[0].activityIds, ['meal']);
   assert.equal(result.metrics.mealSatisfied, true);
   assert.equal(result.stages[0].after.meal, true);
-  const glass = planDate({ ...context, mealNeed: true, fixedPrefix: [{ sceneId: 'taishan_glass', activityIds: ['glass_noodle'] }] }, catalog, { maxStages: 1 });
+  const glass = planDate({ ...context, area: 'near', school: 'scau', campusArea: 'taishan', mealNeed: true, fixedPrefix: [{ sceneId: 'taishan_glass', activityIds: ['glass_noodle'] }] }, catalog, { maxStages: 1 });
   assert.equal(glass.ok, true);
   assert.equal(glass.metrics.mealSatisfied, true);
 });

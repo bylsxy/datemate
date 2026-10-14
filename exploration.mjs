@@ -1,5 +1,5 @@
 /** 探索只改变搜索和展露顺序；真实效用与硬约束仍由引擎计算。 */
-export const EXPLORATION_VERSION = 'seeded-exploration-1.0';
+export const EXPLORATION_VERSION = 'seeded-exploration-1.1';
 
 export function normalizeExplorationSeed(seed) {
   if (seed === undefined || seed === null) return null;
@@ -50,6 +50,19 @@ export function createExploration(exploration, seed) {
     }
     return selected;
   }
+  function display(ordered, limit, { key, confirmed, scope }) {
+    if (!strength) return ordered.slice(0, limit);
+    // 展示采用共同的归一化序位，不直接混比完整 q 与局部效用。
+    // 高探索仅保留一个已验证推荐位置，其余位置允许 pending 与已评候选混合。
+    const reservedCount = Math.min(limit, strength >= 0.64 ? 1 : 2);
+    const reserved = ordered.filter(confirmed).slice(0, reservedCount), retained = new Set(reserved);
+    const denominator = Math.max(1, ordered.length - 1);
+    const ranked = ordered.map((item, index) => ({
+      item, index,
+      rank: (1 - 0.95 * strength) * (1 - index / denominator) + 0.95 * (noise(scope, key(item)) + strength) / 2,
+    })).filter(entry => !retained.has(entry.item)).sort((a, b) => b.rank - a.rank || a.index - b.index);
+    return [...reserved, ...ranked.slice(0, Math.max(0, limit - reserved.length)).map(entry => entry.item)];
+  }
   function choose(ordered, { key, value, scope }) {
     const highest = ordered[0], top = value(highest);
     const maxGap = strength * Math.max(50, Math.abs(top) * 0.24);
@@ -63,5 +76,5 @@ export function createExploration(exploration, seed) {
     }
     return { selected, searchNoise: selectedNoise, bestDiscoveredObjective: top, utilityGap: top - value(selected), maxUtilityGap: maxGap };
   }
-  return { strength, noise, select, choose };
+  return { strength, noise, select, display, choose };
 }

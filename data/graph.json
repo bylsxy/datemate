@@ -257,6 +257,11 @@
       "label": "公开自述中出现电影后组队游戏的休闲安排，可作为协作游戏灵感；价格不转用到当前目录。"
     },
     {
+      "id": "E-user-campus-canteen",
+      "type": "evidence",
+      "label": "用户要求通用学校范围可安排早餐、午餐和晚餐，新增校园食堂作为不绑定学校或宿舍区的用餐地点类型。场景预留45分钟；早餐两人10至20元、午晚餐两人40至70元沿用项目设计区间，不表示任何真实食堂的实测价格或供应。"
+    },
+    {
       "id": "E-user-departures",
       "type": "evidence",
       "label": "行程默认各自回去，告别预留10分钟；明确选择一起走预留20分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。"
@@ -1277,6 +1282,16 @@
       "label": "冷酷的月城同学只对我可爱地撒娇"
     },
     {
+      "id": "activity-at:campus_canteen:breakfast_eat",
+      "type": "activity_variant",
+      "label": "校园食堂：吃一份早餐面包"
+    },
+    {
+      "id": "activity-at:campus_canteen:canteen_pair",
+      "type": "activity_variant",
+      "label": "校园食堂：各选一道菜并用餐"
+    },
+    {
       "id": "activity-at:taishan_glass:boardgame_cards",
       "type": "activity_variant",
       "label": "泰山十栋玻璃房：玩一轮轻量卡牌"
@@ -1431,6 +1446,13 @@
       "label": "泰山区宿舍间步道",
       "placeKind": "ordinary",
       "category": "校园步道"
+    },
+    {
+      "id": "campus_canteen",
+      "type": "scene",
+      "label": "校园食堂",
+      "placeKind": "ordinary",
+      "category": "校园食堂"
     },
     {
       "id": "campus_photo",
@@ -2092,6 +2114,11 @@
     },
     {
       "id": "user:2026-10-14-departure-design",
+      "type": "user_design",
+      "label": "用户项目设计；现实信息待确认"
+    },
+    {
+      "id": "user:2026-10-14-generic-school-scope-design",
       "type": "user_design",
       "label": "用户项目设计；现实信息待确认"
     },
@@ -3349,6 +3376,16 @@
       "assertionKind": "observed"
     },
     {
+      "id": "EDGE-2c72c74a3be8d9",
+      "subject": "campus_canteen",
+      "predicate": "allows_activity",
+      "object": "breakfast_eat",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-2d208f96b9ece7",
       "subject": "arcade_claw",
       "predicate": "supported_by",
@@ -3820,6 +3857,16 @@
       "object": "E-G001",
       "evidenceIds": [
         "E-G001"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-3a32ebdfedd875",
+      "subject": "activity-at:campus_canteen:breakfast_eat",
+      "predicate": "supported_by",
+      "object": "E-user-campus-canteen",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -4655,6 +4702,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-5947ac5cbd4e03",
+      "subject": "activity-at:campus_canteen:breakfast_eat",
+      "predicate": "specializes",
+      "object": "breakfast_eat",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-59a6820e9075fd",
       "subject": "track_stretch",
       "predicate": "has_feature",
@@ -4917,6 +4974,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-63029fa8899bb5",
+      "subject": "E-user-campus-canteen",
+      "predicate": "derived_from",
+      "object": "user:2026-10-14-generic-school-scope-design",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-63a8516b664a99",
       "subject": "E-P001",
       "predicate": "derived_from",
@@ -4925,6 +4992,16 @@
         "E-P001"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-63ae037d42cab3",
+      "subject": "activity-at:campus_canteen:canteen_pair",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-63d6807391e9d5",
@@ -6192,6 +6269,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-8fb6b77a8f1008",
+      "subject": "campus_canteen",
+      "predicate": "allows_activity",
+      "object": "canteen_pair",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-904890128a9925",
       "subject": "agriculture_museum",
       "predicate": "preconditions",
@@ -6234,6 +6321,16 @@
       "object": "tag:learning",
       "evidenceIds": [
         "E-shared-game"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-92aa704cb4a392",
+      "subject": "activity-at:campus_canteen:breakfast_eat",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -7558,6 +7655,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-b9484b2cd97b1f",
+      "subject": "campus_canteen",
+      "predicate": "has_activity_variant",
+      "object": "activity-at:campus_canteen:canteen_pair",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-b98eaab07da5e1",
       "subject": "R-shared-photo",
       "predicate": "supported_by",
@@ -7865,6 +7972,16 @@
         "E-game-ec909165"
       ],
       "assertionKind": "observed"
+    },
+    {
+      "id": "EDGE-c5292e000d2d3b",
+      "subject": "campus_canteen",
+      "predicate": "has_activity_variant",
+      "object": "activity-at:campus_canteen:breakfast_eat",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
     },
     {
       "id": "EDGE-c54f28f06ce57a",
@@ -8329,6 +8446,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-d16243fef6a31e",
+      "subject": "activity-at:campus_canteen:canteen_pair",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-d17431fe714e78",
       "subject": "boardgame",
       "predicate": "supported_by",
@@ -8409,6 +8536,16 @@
         "E-G001",
         "E-G003",
         "E-game-c73b126a"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-d365fcf3903cbd",
+      "subject": "activity-at:campus_canteen:breakfast_eat",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -8807,6 +8944,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-e2f0c526b7e436",
+      "subject": "campus_canteen",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-e3115f947c911f",
       "subject": "music_swap",
       "predicate": "requires",
@@ -8844,6 +8991,16 @@
       "object": "garden_photo",
       "evidenceIds": [
         "E-P008"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-e33aff9fa4d59c",
+      "subject": "activity-at:campus_canteen:canteen_pair",
+      "predicate": "supported_by",
+      "object": "E-user-campus-canteen",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -8894,6 +9051,16 @@
       "object": "tag:nature",
       "evidenceIds": [
         "E-fiction-garden"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-e54e763fcb2963",
+      "subject": "activity-at:campus_canteen:canteen_pair",
+      "predicate": "provides",
+      "object": "resource:meal_completed",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -9002,6 +9169,16 @@
       "assertionKind": "designed"
     },
     {
+      "id": "EDGE-e6cf57b301d826",
+      "subject": "campus_canteen",
+      "predicate": "supported_by",
+      "object": "E-user-campus-canteen",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "assertionKind": "designed"
+    },
+    {
       "id": "EDGE-e6dd3ca318838e",
       "subject": "agriculture_museum",
       "predicate": "supported_by",
@@ -9049,6 +9226,16 @@
       "object": "E-G001",
       "evidenceIds": [
         "E-G001"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-e89f2099097f30",
+      "subject": "campus_canteen",
+      "predicate": "has_feature",
+      "object": "tag:daily",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -9157,6 +9344,16 @@
       "object": "E-P004",
       "evidenceIds": [
         "E-P004"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-ec577aafdfdd7f",
+      "subject": "campus_canteen",
+      "predicate": "has_feature",
+      "object": "tag:indoor",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -9383,6 +9580,16 @@
       "object": "E-G006",
       "evidenceIds": [
         "E-G006"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-f2fcefd467cec5",
+      "subject": "activity-at:campus_canteen:breakfast_eat",
+      "predicate": "has_feature",
+      "object": "tag:food",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },
@@ -9634,6 +9841,16 @@
       "object": "tag:learning",
       "evidenceIds": [
         "E-city-library"
+      ],
+      "assertionKind": "designed"
+    },
+    {
+      "id": "EDGE-fa554ece7e68cf",
+      "subject": "activity-at:campus_canteen:canteen_pair",
+      "predicate": "specializes",
+      "object": "canteen_pair",
+      "evidenceIds": [
+        "E-user-campus-canteen"
       ],
       "assertionKind": "designed"
     },

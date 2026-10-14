@@ -80,8 +80,11 @@
         "name": "农业博物馆",
         "kind": "ordinary",
         "category": "华农特色",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "scau",
+        "campusArea": ""
       },
+      "scauOnly": true,
       "title": "农业博物馆",
       "typeId": "agriculture_museum",
       "default": [],
@@ -236,9 +239,12 @@
         "name": "水族馆",
         "kind": "ordinary",
         "category": "水族馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "水族馆",
+      "scauOnly": false,
       "typeId": "aquarium",
       "default": [],
       "mealRoles": [],
@@ -394,9 +400,12 @@
         "name": "校园羽毛球场",
         "kind": "ordinary",
         "category": "校园羽毛球场",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "校园羽毛球场",
+      "scauOnly": false,
       "typeId": "badminton",
       "default": [],
       "mealRoles": [],
@@ -491,7 +500,9 @@
         "name": "烧烤摊",
         "kind": "ordinary",
         "category": "烧烤摊",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
       "minutes": 45,
@@ -522,6 +533,7 @@
         "E-user-meal-periods"
       ],
       "title": "烧烤摊",
+      "scauOnly": false,
       "typeId": "barbecue_stall",
       "default": [],
       "source": [
@@ -640,9 +652,12 @@
         "name": "桌游店",
         "kind": "ordinary",
         "category": "桌游店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "桌游店",
+      "scauOnly": false,
       "typeId": "boardgame",
       "default": [],
       "mealRoles": [],
@@ -916,9 +931,12 @@
         "name": "咖啡店",
         "kind": "ordinary",
         "category": "咖啡店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "咖啡店",
+      "scauOnly": false,
       "typeId": "cafe",
       "default": [],
       "mealRoles": [],
@@ -1304,6 +1322,196 @@
       "mealActivityIds": []
     },
     {
+      "fit": 82,
+      "novelty": 20,
+      "mental": 1,
+      "bold": false,
+      "crowdRisk": "unknown",
+      "reviewStatus": "reviewed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "publicAllowed": true,
+      "id": "campus_canteen",
+      "scauOnly": false,
+      "description": "选择所在学校允许进入的校园食堂，核对窗口供应、饭点开放、座位和双方忌口后一起用餐。早餐、午餐和晚餐均为通用规划候选，具体食堂与供应需要现场确认。",
+      "minutes": 45,
+      "cost": [
+        0,
+        0
+      ],
+      "load": 0,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": true,
+      "quiet": false,
+      "tags": [
+        "food",
+        "indoor",
+        "daily"
+      ],
+      "weather": [
+        "clear",
+        "rain",
+        "unknown"
+      ],
+      "provides": [],
+      "seated": true,
+      "assertionKind": "designed",
+      "evidenceIds": [
+        "E-user-campus-canteen"
+      ],
+      "place": {
+        "name": "校园食堂",
+        "universityId": "",
+        "campusArea": "",
+        "kind": "ordinary",
+        "category": "校园食堂",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "mealRoles": [
+        "breakfast",
+        "lunch",
+        "dinner"
+      ],
+      "title": "校园食堂",
+      "typeId": "campus_canteen",
+      "default": [],
+      "source": [
+        "user-campus-canteen"
+      ],
+      "predecessorIds": [],
+      "requires": [],
+      "preconditions": [],
+      "consumes": [],
+      "preparationIds": [],
+      "windows": [],
+      "dietaryTags": [],
+      "featureValues": {
+        "quiet": 0,
+        "indoor": 1,
+        "novelty": 20,
+        "physicalLoad": 0,
+        "mentalLoad": 1
+      },
+      "activities": [
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "breakfast_eat",
+          "title": "吃一份早餐面包",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            10,
+            20
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "breakfast"
+          ],
+          "dietaryTags": [
+            "gluten"
+          ],
+          "evidenceIds": [
+            "E-user-campus-canteen"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "allowedSceneIds": [
+            "campus_canteen"
+          ],
+          "allowedSceneTypes": [
+            "campus_canteen"
+          ],
+          "sceneOverride": true
+        },
+        {
+          "group": "meal_style",
+          "mode": "single",
+          "novelty": 30,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "canteen_pair",
+          "title": "各选一道菜并用餐",
+          "description": "核对双方食量、明确忌口与食材后购买并实际用餐；费用为两人设计区间，实际供应与价格待确认。",
+          "cost": [
+            40,
+            70
+          ],
+          "load": -2,
+          "tags": [
+            "food",
+            "daily"
+          ],
+          "evidenceIds": [
+            "E-user-campus-canteen"
+          ],
+          "provides": [
+            "meal_completed"
+          ],
+          "mealRoles": [
+            "lunch",
+            "dinner"
+          ],
+          "dietaryTags": [
+            "meat"
+          ],
+          "exclusiveKey": "main_meal",
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "featureValues": {
+            "novelty": 30,
+            "physicalLoad": -2
+          },
+          "assertionKind": "designed",
+          "evidenceStatus": "user_design_real_world_unverified",
+          "allowedSceneIds": [
+            "campus_canteen"
+          ],
+          "allowedSceneTypes": [
+            "campus_canteen"
+          ],
+          "sceneOverride": true
+        }
+      ],
+      "mealActivityIds": [
+        "breakfast_eat",
+        "canteen_pair"
+      ]
+    },
+    {
       "fit": 78,
       "novelty": 45,
       "mental": 1,
@@ -1355,9 +1563,12 @@
         "name": "校园草地",
         "kind": "ordinary",
         "category": "校园草地",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "校园草地",
+      "scauOnly": false,
       "typeId": "campus_picnic",
       "default": [],
       "mealRoles": [],
@@ -1887,13 +2098,16 @@
         "name": "粤式茶楼",
         "kind": "ordinary",
         "category": "粤式茶楼",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "mealRoles": [
         "lunch",
         "dinner"
       ],
       "title": "粤式茶楼",
+      "scauOnly": false,
       "typeId": "cantonese",
       "default": [],
       "source": [
@@ -2016,7 +2230,9 @@
         "name": "电影院",
         "kind": "ordinary",
         "category": "电影院",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "requires": [
         "opening_checked"
@@ -2028,6 +2244,7 @@
         "opening_checked"
       ],
       "title": "电影院",
+      "scauOnly": false,
       "typeId": "cinema",
       "default": [],
       "mealRoles": [],
@@ -2183,9 +2400,12 @@
         "name": "手作店",
         "kind": "ordinary",
         "category": "手作店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "手作店",
+      "scauOnly": false,
       "typeId": "craft",
       "default": [],
       "mealRoles": [],
@@ -2352,9 +2572,12 @@
         "name": "校园甜品店",
         "kind": "ordinary",
         "category": "校园甜品店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "校园甜品店",
+      "scauOnly": false,
       "typeId": "dessert",
       "default": [],
       "mealRoles": [],
@@ -2519,9 +2742,12 @@
         "name": "展览馆",
         "kind": "ordinary",
         "category": "展览馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "展览馆",
+      "scauOnly": false,
       "typeId": "exhibition",
       "default": [],
       "mealRoles": [],
@@ -2635,9 +2861,12 @@
         "name": "花园",
         "kind": "ordinary",
         "category": "花园",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "花园",
+      "scauOnly": false,
       "typeId": "garden",
       "default": [],
       "mealRoles": [],
@@ -2794,9 +3023,12 @@
         "name": "滑冰场",
         "kind": "ordinary",
         "category": "滑冰场",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "滑冰场",
+      "scauOnly": false,
       "typeId": "ice",
       "default": [],
       "mealRoles": [],
@@ -2967,9 +3199,12 @@
         "name": "商场",
         "kind": "ordinary",
         "category": "商场",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "商场",
+      "scauOnly": false,
       "typeId": "mall",
       "default": [],
       "mealRoles": [],
@@ -3264,13 +3499,16 @@
         "name": "餐馆",
         "kind": "ordinary",
         "category": "餐馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "mealRoles": [
         "lunch",
         "dinner"
       ],
       "title": "餐馆",
+      "scauOnly": false,
       "typeId": "meal",
       "default": [],
       "source": [
@@ -3530,7 +3768,9 @@
         "name": "剧本杀店",
         "kind": "ordinary",
         "category": "剧本杀店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "剧本杀店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
       "minutes": 90,
@@ -3551,6 +3791,7 @@
         "E-user-mystery"
       ],
       "title": "剧本杀店",
+      "scauOnly": false,
       "typeId": "mystery_store",
       "seated": true,
       "weather": [
@@ -3679,9 +3920,12 @@
         "name": "照片冲印店",
         "kind": "ordinary",
         "category": "照片冲印店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "照片冲印店",
+      "scauOnly": false,
       "typeId": "photo_printing",
       "default": [],
       "mealRoles": [],
@@ -3803,9 +4047,12 @@
         "name": "公共休息区",
         "kind": "ordinary",
         "category": "公共休息区",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "公共休息区",
+      "scauOnly": false,
       "typeId": "public_lounge",
       "default": [],
       "mealRoles": [],
@@ -4062,9 +4309,12 @@
         "name": "雨林馆",
         "kind": "ordinary",
         "category": "雨林馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "雨林馆",
+      "scauOnly": false,
       "typeId": "rainforest",
       "default": [],
       "mealRoles": [],
@@ -4180,9 +4430,12 @@
         "name": "图书馆",
         "kind": "ordinary",
         "category": "图书馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "图书馆",
+      "scauOnly": false,
       "typeId": "reading",
       "default": [],
       "mealRoles": [],
@@ -4394,9 +4647,12 @@
         "name": "休息",
         "kind": "休息",
         "category": "原地休息",
-        "verificationStatus": "current_location"
+        "verificationStatus": "current_location",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "休息",
+      "scauOnly": false,
       "typeId": "rest",
       "default": [],
       "mealRoles": [],
@@ -4437,7 +4693,9 @@
         "name": "小吃街",
         "kind": "ordinary",
         "category": "小吃街",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
       "minutes": 45,
@@ -4468,6 +4726,7 @@
         "E-user-meal-periods"
       ],
       "title": "小吃街",
+      "scauOnly": false,
       "typeId": "snack_street",
       "default": [],
       "source": [
@@ -4585,9 +4844,12 @@
         "name": "街区",
         "kind": "ordinary",
         "category": "街区",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "街区",
+      "scauOnly": false,
       "typeId": "street",
       "default": [],
       "mealRoles": [],
@@ -5118,7 +5380,9 @@
         "name": "Switch店",
         "kind": "ordinary",
         "category": "游戏体验店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "Switch店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
       "minutes": 60,
@@ -5139,6 +5403,7 @@
         "E-user-switch"
       ],
       "title": "Switch店",
+      "scauOnly": false,
       "typeId": "switch_store",
       "seated": true,
       "weather": [
@@ -6022,9 +6287,12 @@
         "name": "校园茶点店",
         "kind": "ordinary",
         "category": "校园茶点店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "校园茶点店",
+      "scauOnly": false,
       "typeId": "tea",
       "default": [],
       "mealRoles": [],
@@ -6535,9 +6803,12 @@
         "name": "水边公共步道",
         "kind": "ordinary",
         "category": "水边公共步道",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "title": "水边公共步道",
+      "scauOnly": false,
       "typeId": "waterside",
       "default": [],
       "mealRoles": [],
@@ -6657,13 +6928,16 @@
         "name": "校内西式餐馆",
         "kind": "ordinary",
         "category": "校内西式餐馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "mealRoles": [
         "lunch",
         "dinner"
       ],
       "title": "校内西式餐馆",
+      "scauOnly": false,
       "typeId": "western",
       "default": [],
       "source": [
@@ -7402,10 +7676,12 @@
         "physicalLoad": -2
       },
       "allowedSceneIds": [
+        "campus_canteen",
         "canteen",
         "taishan_glass"
       ],
       "allowedSceneTypes": [
+        "campus_canteen",
         "canteen",
         "taishan_glass"
       ]
@@ -7738,9 +8014,11 @@
         "physicalLoad": -2
       },
       "allowedSceneIds": [
+        "campus_canteen",
         "canteen"
       ],
       "allowedSceneTypes": [
+        "campus_canteen",
         "canteen"
       ]
     },
@@ -12363,6 +12641,11 @@
         "label": "公开自述中出现电影后组队游戏的休闲安排，可作为协作游戏灵感；价格不转用到当前目录。"
       },
       {
+        "id": "E-user-campus-canteen",
+        "type": "evidence",
+        "label": "用户要求通用学校范围可安排早餐、午餐和晚餐，新增校园食堂作为不绑定学校或宿舍区的用餐地点类型。场景预留45分钟；早餐两人10至20元、午晚餐两人40至70元沿用项目设计区间，不表示任何真实食堂的实测价格或供应。"
+      },
+      {
         "id": "E-user-departures",
         "type": "evidence",
         "label": "行程默认各自回去，告别预留10分钟；明确选择一起走预留20分钟。过夜且明确选择酒店时预留15分钟入住，双人一间客房一晚按tier1为200至400元、tier2为150至300元、tier3为100至250元设计。"
@@ -13383,6 +13666,16 @@
         "label": "冷酷的月城同学只对我可爱地撒娇"
       },
       {
+        "id": "activity-at:campus_canteen:breakfast_eat",
+        "type": "activity_variant",
+        "label": "校园食堂：吃一份早餐面包"
+      },
+      {
+        "id": "activity-at:campus_canteen:canteen_pair",
+        "type": "activity_variant",
+        "label": "校园食堂：各选一道菜并用餐"
+      },
+      {
         "id": "activity-at:taishan_glass:boardgame_cards",
         "type": "activity_variant",
         "label": "泰山十栋玻璃房：玩一轮轻量卡牌"
@@ -13537,6 +13830,13 @@
         "label": "泰山区宿舍间步道",
         "placeKind": "ordinary",
         "category": "校园步道"
+      },
+      {
+        "id": "campus_canteen",
+        "type": "scene",
+        "label": "校园食堂",
+        "placeKind": "ordinary",
+        "category": "校园食堂"
       },
       {
         "id": "campus_photo",
@@ -14198,6 +14498,11 @@
       },
       {
         "id": "user:2026-10-14-departure-design",
+        "type": "user_design",
+        "label": "用户项目设计；现实信息待确认"
+      },
+      {
+        "id": "user:2026-10-14-generic-school-scope-design",
         "type": "user_design",
         "label": "用户项目设计；现实信息待确认"
       },
@@ -15455,6 +15760,16 @@
         "assertionKind": "observed"
       },
       {
+        "id": "EDGE-2c72c74a3be8d9",
+        "subject": "campus_canteen",
+        "predicate": "allows_activity",
+        "object": "breakfast_eat",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-2d208f96b9ece7",
         "subject": "arcade_claw",
         "predicate": "supported_by",
@@ -15926,6 +16241,16 @@
         "object": "E-G001",
         "evidenceIds": [
           "E-G001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-3a32ebdfedd875",
+        "subject": "activity-at:campus_canteen:breakfast_eat",
+        "predicate": "supported_by",
+        "object": "E-user-campus-canteen",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -16761,6 +17086,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-5947ac5cbd4e03",
+        "subject": "activity-at:campus_canteen:breakfast_eat",
+        "predicate": "specializes",
+        "object": "breakfast_eat",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-59a6820e9075fd",
         "subject": "track_stretch",
         "predicate": "has_feature",
@@ -17023,6 +17358,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-63029fa8899bb5",
+        "subject": "E-user-campus-canteen",
+        "predicate": "derived_from",
+        "object": "user:2026-10-14-generic-school-scope-design",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-63a8516b664a99",
         "subject": "E-P001",
         "predicate": "derived_from",
@@ -17031,6 +17376,16 @@
           "E-P001"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-63ae037d42cab3",
+        "subject": "activity-at:campus_canteen:canteen_pair",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-63d6807391e9d5",
@@ -18298,6 +18653,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-8fb6b77a8f1008",
+        "subject": "campus_canteen",
+        "predicate": "allows_activity",
+        "object": "canteen_pair",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-904890128a9925",
         "subject": "agriculture_museum",
         "predicate": "preconditions",
@@ -18340,6 +18705,16 @@
         "object": "tag:learning",
         "evidenceIds": [
           "E-shared-game"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-92aa704cb4a392",
+        "subject": "activity-at:campus_canteen:breakfast_eat",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -19664,6 +20039,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-b9484b2cd97b1f",
+        "subject": "campus_canteen",
+        "predicate": "has_activity_variant",
+        "object": "activity-at:campus_canteen:canteen_pair",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-b98eaab07da5e1",
         "subject": "R-shared-photo",
         "predicate": "supported_by",
@@ -19971,6 +20356,16 @@
           "E-game-ec909165"
         ],
         "assertionKind": "observed"
+      },
+      {
+        "id": "EDGE-c5292e000d2d3b",
+        "subject": "campus_canteen",
+        "predicate": "has_activity_variant",
+        "object": "activity-at:campus_canteen:breakfast_eat",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
       },
       {
         "id": "EDGE-c54f28f06ce57a",
@@ -20435,6 +20830,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-d16243fef6a31e",
+        "subject": "activity-at:campus_canteen:canteen_pair",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-d17431fe714e78",
         "subject": "boardgame",
         "predicate": "supported_by",
@@ -20515,6 +20920,16 @@
           "E-G001",
           "E-G003",
           "E-game-c73b126a"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-d365fcf3903cbd",
+        "subject": "activity-at:campus_canteen:breakfast_eat",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -20913,6 +21328,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-e2f0c526b7e436",
+        "subject": "campus_canteen",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-e3115f947c911f",
         "subject": "music_swap",
         "predicate": "requires",
@@ -20950,6 +21375,16 @@
         "object": "garden_photo",
         "evidenceIds": [
           "E-P008"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e33aff9fa4d59c",
+        "subject": "activity-at:campus_canteen:canteen_pair",
+        "predicate": "supported_by",
+        "object": "E-user-campus-canteen",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -21000,6 +21435,16 @@
         "object": "tag:nature",
         "evidenceIds": [
           "E-fiction-garden"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e54e763fcb2963",
+        "subject": "activity-at:campus_canteen:canteen_pair",
+        "predicate": "provides",
+        "object": "resource:meal_completed",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -21108,6 +21553,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-e6cf57b301d826",
+        "subject": "campus_canteen",
+        "predicate": "supported_by",
+        "object": "E-user-campus-canteen",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-e6dd3ca318838e",
         "subject": "agriculture_museum",
         "predicate": "supported_by",
@@ -21155,6 +21610,16 @@
         "object": "E-G001",
         "evidenceIds": [
           "E-G001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-e89f2099097f30",
+        "subject": "campus_canteen",
+        "predicate": "has_feature",
+        "object": "tag:daily",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -21263,6 +21728,16 @@
         "object": "E-P004",
         "evidenceIds": [
           "E-P004"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-ec577aafdfdd7f",
+        "subject": "campus_canteen",
+        "predicate": "has_feature",
+        "object": "tag:indoor",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -21489,6 +21964,16 @@
         "object": "E-G006",
         "evidenceIds": [
           "E-G006"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-f2fcefd467cec5",
+        "subject": "activity-at:campus_canteen:breakfast_eat",
+        "predicate": "has_feature",
+        "object": "tag:food",
+        "evidenceIds": [
+          "E-user-campus-canteen"
         ],
         "assertionKind": "designed"
       },
@@ -21744,6 +22229,16 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-fa554ece7e68cf",
+        "subject": "activity-at:campus_canteen:canteen_pair",
+        "predicate": "specializes",
+        "object": "canteen_pair",
+        "evidenceIds": [
+          "E-user-campus-canteen"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-fb153e1a17f3d6",
         "subject": "switch_coop",
         "predicate": "has_feature",
@@ -21918,5 +22413,5 @@
       }
     ]
   },
-  "contentRevision": "04df1928a4555d6f"
+  "contentRevision": "9b2dd31d366bbf39"
 }

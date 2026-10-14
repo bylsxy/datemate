@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {isSceneInSchoolScope} from '../school-scope.mjs';
 
 // 只替换轮播和格式化依赖；实际执行 timeline 的渲染、事件与后台更新逻辑。
 class Element {
@@ -36,7 +37,7 @@ function fixture(){
   const win={requestAnimationFrame:fn=>{frames.set(++next,fn);return next;},cancelAnimationFrame:id=>frames.delete(id),setTimeout:fn=>{timers.set(++next,fn);return next;},clearTimeout:id=>timers.delete(id),addEventListener(){},removeEventListener(){},innerWidth:500,innerHeight:500};
   const doc={defaultView:win,documentElement:{clientWidth:500,clientHeight:500},createElement:tag=>new Element(doc,tag)};
   const root=new Element(doc);doc.querySelector=()=>root;doc.activeElement=null;
-  const deps={esc:value=>value,formatTime:String,toggleActivity:(_scene,ids,id)=>ids.includes(id)?ids.filter(item=>item!==id):[...ids,id],syncCarousel(){},centerCard:(strip,id)=>centers.push([strip,id]),attachCarousel:strip=>({update({selectedId}){for(const card of strip.children){card.classList.toggle('selected',card.dataset.scene===selectedId);card.setAttribute('aria-checked',String(card.dataset.scene===selectedId));}},destroy(){}})};
+  const deps={isSceneInSchoolScope,esc:value=>value,formatTime:String,toggleActivity:(_scene,ids,id)=>ids.includes(id)?ids.filter(item=>item!==id):[...ids,id],syncCarousel(){},centerCard:(strip,id)=>centers.push([strip,id]),attachCarousel:strip=>({update({selectedId}){for(const card of strip.children){card.classList.toggle('selected',card.dataset.scene===selectedId);card.setAttribute('aria-checked',String(card.dataset.scene===selectedId));}},destroy(){}})};
   const scenes=['a','b','c','d'].map(id=>({id,title:id,description:id,activities:[{id:`${id}-act`,title:id,description:id,group:'玩法',mealRoles:['breakfast']}],mealRoles:['breakfast'],default:[`${id}-act`]}));
   let intent={prefix:[],context:{dietaryRestrictions:[]}};
   return {doc,root,deps,centers,catalog:{scenes},getIntent:()=>intent,setIntent:value=>intent=value,flush(){for(const queue of [timers,frames])for(const [id,fn]of [...queue]){queue.delete(id);fn();}},emit(type,target){for(const fn of root.listeners[type]||[])fn({target});}};
@@ -53,7 +54,7 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
   let timeline;
   try{
     const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
-    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity}=globalThis[Symbol.for('datemate.timeline.order.test')];\n${source}`).toString('base64')}`);
+    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.timeline.order.test')];\n${source}`).toString('base64')}`);
     timeline=createTimeline({...f,onScene(){},onActivities(){},onMeal(){}});
     timeline.render(result([stage('a',0),stage('a',1),stage('a',2)]));
     const [first,current,later]=f.root.children;
@@ -118,9 +119,29 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     timeline.render(result([stage('d',0,['d']),stage('b',1,['b'])]),{preserveThrough:-1,preserveKey:'stage-1'});
     assert.deepEqual(order(current),['b']);
     f.setIntent({prefix:[],exploration:1,context:{dietaryRestrictions:[]}});
-    timeline.render(result([stage('d',0,['d']),stage('b',1,['b','a'])]),{preserveThrough:-1});
-    timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999,fitScore:99}});f.flush();
+    // 排名字段在普通和人工阶段也存在，只有明确探索 mode 才使用展示排名。
+    const ranked=id=>({...candidate(id),displayOrderIndex:id==='b'?0:1,explorationRank:id==='b'?0:1});
+    for(const mode of ['utility_best','manual']){
+      timeline.render({...result([stage('d',0,['d']),{...stage('b',1,['b','a']),decisionMode:mode,candidates:['b','a'].map(ranked)}]),exploration:1},{preserveThrough:-1});
+      timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999,fitScore:99}});f.flush();
+      assert.deepEqual(order(current),['a','b']);
+    }
+    for(const field of ['decisionMode','choiceMode']){
+      timeline.render({...result([stage('d',0,['d']),{...stage('b',1,['a','b']),[field]:'seeded_exploration',candidates:['a','b'].map(ranked)}]),exploration:0},{preserveThrough:-1});
+      assert.deepEqual(order(current),['b','a']);
+      timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999,fitScore:99,displayOrderIndex:-1,explorationRank:-1}});f.flush();
+      assert.deepEqual(order(current),['b','a']);
+      assert.match(current.querySelector('.scene-strip').children[1].querySelector('.scene-score').innerHTML,/<b>99<\/b>/);
+    }
+    timeline.render(result([stage('d',0,['d']),{...stage('b',1,['b','a']),decisionMode:'seeded_exploration'}]),{preserveThrough:-1});
+    timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999}});f.flush();
     assert.deepEqual(order(current),['b','a']);
+    const virtualMenu={mealRole:'breakfast',choiceMode:'before_meeting',targetMinute:550,insertIndex:0,candidates:['a','b','c'].map((id,index)=>({...candidate(id),displayOrderIndex:2-index,explorationRank:2-index}))};
+    timeline.render({...result([{...stage('a',0),decisionMode:'utility_best'}]),exploration:1,mealRequirements:[virtualMenu]},{preserveThrough:-1});
+    const virtualView=f.root.children[0];
+    assert.deepEqual(order(virtualView),['c','b','a','__breakfast_before_meeting']);
+    timeline.updateCandidate({stageIndex:0,mealRole:'breakfast',sceneId:'a',candidate:{q:999,fitScore:99}});f.flush();
+    assert.deepEqual(order(virtualView),['c','b','a','__breakfast_before_meeting']);
     const meal={mealRole:'breakfast',choiceMode:'before_meeting',targetMinute:550,insertIndex:0,candidates:['a','b','c'].map(candidate)};
     timeline.render({...result([stage('a',0)]),mealRequirements:[meal]},{preserveThrough:-1});
     const mealView=f.root.children[0];
@@ -161,5 +182,15 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     const unchangedInput=earlier.querySelector('input[data-activity="b-act"]');
     timeline.render(structuredClone(latest),{preserveThrough:2,preserveKey:'stage-2'});
     assert.equal(earlier.querySelector('input[data-activity="b-act"]'),unchangedInput);
+    // 失败用餐回退和旧候选保留不能泄漏专属校园场景。
+    Object.assign(f.catalog.scenes[1],{scauOnly:true,area:'campus',place:{universityId:'scau',campusArea:'taishan'}});
+    f.setIntent({prefix:[],context:{area:'near',school:'scau',campusArea:'taishan',dietaryRestrictions:[]}});
+    timeline.render({...result([stage('a',0)]),mealRequirements:[meal]},{preserveThrough:-1});
+    const scopeMeal=f.root.children[0];assert.ok(order(scopeMeal).includes('b'));
+    f.setIntent({prefix:[],context:{area:'near',school:'',campusArea:'',dietaryRestrictions:[]}});
+    timeline.render({...result([stage('a',0)]),mealRequirements:[meal]},{preserveThrough:0,preserveKey:'meal-breakfast'});
+    assert.ok(!order(scopeMeal).includes('b'));
+    timeline.render({ok:false,stages:[],mealRequirements:[{...meal,candidates:[]}]},{preserveThrough:-1});
+    assert.ok(!order(f.root.children[0]).includes('b'));
   }finally{timeline?.dispose();globalThis.document=oldDocument;globalThis.CSS=oldCSS;delete globalThis[dependencyKey];}
 });

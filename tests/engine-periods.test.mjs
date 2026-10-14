@@ -3,6 +3,8 @@ import assert from 'node:assert/strict';
 import { planDate, normalize, canonical } from '../engine.mjs';
 import { TIME_PERIODS, normalizePeriods, normalizePeriodIds, getMealRequirements } from '../time-periods.mjs';
 import { catalog } from '../data/catalog.mjs';
+import { selectMealIntent } from '../planning-intent.mjs';
+import { buildCandidateJobs } from '../candidate-validation.mjs';
 
 const scene = (id, extra = {}) => ({ id, minutes: 30, cost: [0, 0], load: 0, kind: 'ordinary', area: 'campus', indoor: true, quiet: true, fit: 70, activities: [], ...extra });
 const eating = (role, extra = {}) => ({ id: `eat-${role}`, minutes: 999, cost: [0, 0], load: 0, group: 'meal', mode: 'single', exclusiveKey: 'main_meal', provides: ['meal_completed'], mealRoles: [role], ...extra });
@@ -105,6 +107,43 @@ test('同一餐馆同一合并窗口可吃不同餐次，main_meal不成为全�
   assert.ok(result.stages.filter(s => !s.mealRole).every(s => s.sceneId !== 'food'));
 });
 
+test('跳过宵夜可释放跨饭点自动尾段，菜单切换和候选续算均产生合法真实用餐', () => {
+  const context = { ...input, periodIds: allPeriods, area: 'near', mealChoices: { breakfast: { mode: 'before_meeting' }, supper: { mode: 'skip' } } };
+  const skipped = planDate(context, catalog);
+  assertMealIntegrity(skipped, catalog);
+  const supper = skipped.mealRequirements.find(m => m.mealRole === 'supper');
+  const boundary = skipped.stages.findIndex(s => s.end > supper.targetMinute);
+  assert.equal(supper.insertIndex, boundary);
+  assert.ok(supper.insertIndex < skipped.stages.length);
+  assert.ok(skipped.stages[supper.insertIndex].start < supper.targetMinute, '原自动阶段确实跨越宵夜目标时间');
+  assert.ok(supper.candidates.length > 0);
+  assert.equal(skipped.context.school, '');
+  assert.equal(skipped.context.campusArea, '');
+  const state = { context, prefix: [], exploration: 0 };
+  const jobs = buildCandidateJobs(skipped, state).filter(job => job.mealRole === 'supper');
+  assert.equal(jobs.length, supper.candidates.length);
+  for (const candidate of supper.candidates) {
+    assert.ok(candidate.start >= supper.startMinute && candidate.end <= supper.endMinute);
+    assert.equal(candidate.fitScore, null);
+    assert.equal(candidate.continuationFound, false);
+    const choice = { sceneId: candidate.sceneId, activityIds: candidate.activityIds };
+    const intent = selectMealIntent(state, skipped, 'supper', choice, supper.insertIndex, catalog);
+    const switched = planDate({ ...intent.context, fixedPrefix: intent.prefix }, catalog);
+    assertMealIntegrity(switched, catalog);
+    assert.equal(switched.mealRequirements.find(m => m.mealRole === 'supper').sceneId, candidate.sceneId);
+    const job = jobs.find(j => j.sceneId === candidate.sceneId);
+    const continuation = planDate(job.context, catalog, { ...job.search, exploration: job.exploration, fixedPrefix: job.prefix, continuationOnly: true });
+    assert.equal(continuation.ok, true, continuation.errors?.join(';'));
+    assert.ok(continuation.stages.some(s => s.mealRole === 'supper' && s.sceneId === candidate.sceneId && s.start >= supper.startMinute && s.end <= supper.endMinute));
+  }
+  const locked = skipped.stages.map(s => ({ sceneId: s.sceneId, activityIds: s.activityIds, ...(s.mealRole ? { mealRole: s.mealRole } : {}) }));
+  const fixed = planDate({ ...context, fixedPrefix: locked }, catalog);
+  assertMealIntegrity(fixed, catalog);
+  const fixedSupper = fixed.mealRequirements.find(m => m.mealRole === 'supper');
+  assert.equal(fixedSupper.insertIndex, locked.length);
+  assert.deepEqual(fixedSupper.candidates, [], '完整固定前缀不能被菜单回退或伪造可行候选');
+});
+
 test('没有实际吃饭活动、错误餐次及仅提供场景资源均不能伪装完成饭点', () => {
   const c = fixture([mealScene('food', ['breakfast'], { provides: ['meal_completed'] }), scene('walk')]);
   for (const fixedPrefix of [[{ sceneId: 'food', activityIds: [], mealRole: 'breakfast' }], [{ sceneId: 'food', activityIds: ['eat-breakfast'], mealRole: 'lunch' }]]) {
@@ -204,7 +243,7 @@ test('上午下午真实覆盖优于提前结束和长等待，午间间隔允�
 });
 
 test('纯餐饮和多用途地点分开：玻璃房桌游仍可作为普通阶段，不偷吃一顿饭', () => {
-  const result = planDate({ ...input, periodIds: ['afternoon'], area: 'near', preparedIds: ['boardgame_kit', 'venue_checked'], fixedPrefix: [{ sceneId: 'taishan_glass', activityIds: ['boardgame_coop'] }] }, catalog);
+  const result = planDate({ ...input, periodIds: ['afternoon'], area: 'near', school: 'scau', campusArea: 'taishan', preparedIds: ['boardgame_kit', 'venue_checked'], fixedPrefix: [{ sceneId: 'taishan_glass', activityIds: ['boardgame_coop'] }] }, catalog);
   assertMealIntegrity(result, catalog);
   assert.equal(result.stages[0].sceneId, 'taishan_glass');
   assert.equal(result.stages[0].mealRole, undefined);

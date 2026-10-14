@@ -726,6 +726,18 @@
       "verificationBoundary": "用户提供的地点或玩法设计；具体地址、营业、价格及设施许可尚待确认。"
     },
     {
+      "id": "E-user-campus-canteen",
+      "sourceDocumentId": null,
+      "sourceLocator": "user:2026-10-14-generic-school-scope-design",
+      "sourceKind": "user_design",
+      "assertionKind": "designed",
+      "summary": "用户要求通用学校范围可安排早餐、午餐和晚餐，新增校园食堂作为不绑定学校或宿舍区的用餐地点类型。场景预留45分钟；早餐两人10至20元、午晚餐两人40至70元沿用项目设计区间，不表示任何真实食堂的实测价格或供应。",
+      "reviewStatus": "awaiting_confirmation",
+      "publicExcerptAllowed": false,
+      "rightsStatus": "original_user_design",
+      "verificationBoundary": "校园食堂与用餐活动是原创通用设计；不引用芷园或泰山地点事实，具体进入许可、窗口、饭点、座位、菜单、过敏原与价格均待现实确认。"
+    },
+    {
       "id": "E-user-meal-periods",
       "sourceDocumentId": null,
       "sourceLocator": "user:2026-10-14-meal-period-design",

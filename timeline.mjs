@@ -1,11 +1,8 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=1d081a6265958465';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=1d081a6265958465';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=babb8dc4a6cd6ec1';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=babb8dc4a6cd6ec1';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=babb8dc4a6cd6ec1';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
-const cardDescription=scene=>{
-  const full=scene.cardDescription||scene.description||'',short=full.split(/[。；]/)[0];
-  return short.length>32?`${short.slice(0,32)}…`:short;
-};
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));
 // 特殊用餐选择没有地点对象；先分支处理，再读取真实餐馆的活动。
@@ -111,14 +108,18 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       if(view.needsSort)queueCandidateSort(view);
     },120);
   }
+  function isExplorationView(view){
+    const stage=view.entry?.stage;
+    return stage?.decisionMode==='seeded_exploration'||stage?.choiceMode==='seeded_exploration'||!!stage?.virtualMeal&&stage.decisionMode==null&&stage.choiceMode==null&&result?.exploration>0;
+  }
+  const displayIndex=candidate=>Number.isFinite(candidate?.displayOrderIndex)?candidate.displayOrderIndex:Number.isFinite(candidate?.explorationRank)?candidate.explorationRank:Infinity;
   function queueCandidateSort(view) {
-    // 探索排序由引擎决定，后台补分不能用 q 覆盖已经生成的探索顺序。
-    if(view.orderLocked||getIntent()?.exploration>0)return;
+    if(view.orderLocked)return;
     view.needsSort=true;
     if(view.sortFrame||view.scrollTimer!=null)return;
     view.sortFrame=window.requestAnimationFrame(()=>{
       view.sortFrame=0;
-      if(view.orderLocked||getIntent()?.exploration>0){view.needsSort=false;return;}
+      if(view.orderLocked){view.needsSort=false;return;}
       if(view.scrollTimer!=null||view.strip.classList.contains('is-dragging')||view.activePointers.size)return;
       view.needsSort=false;
       const cards=[...view.strip.children],bounds=view.strip.getBoundingClientRect(),viewport=window.visualViewport;
@@ -136,8 +137,13 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       },null)?.card;
       const offset=anchor?.offsetLeft,scroll=view.strip.scrollLeft;
       const rank=card=>{const c=view.candidates.get(card.dataset.scene);return c?.scoreStatus==='evaluated'&&Number.isFinite(c.q)?c.q:-Infinity;};
+      const exploration=isExplorationView(view);
+      const compare=(a,b)=>{
+        if(exploration){const ai=displayIndex(view.candidates.get(a.dataset.scene)),bi=displayIndex(view.candidates.get(b.dataset.scene));return ai>bi?1:ai<bi?-1:0;}
+        return rank(b)>rank(a)?1:rank(b)<rank(a)?-1:0;
+      };
       // 同分保留现有顺序；虚拟选择始终排在真实候选之后。
-      const ordered=[...cards].sort((a,b)=>Number(!view.candidates.has(a.dataset.scene))-Number(!view.candidates.has(b.dataset.scene))||(rank(b)>rank(a)?1:rank(b)<rank(a)?-1:0));
+      const ordered=[...cards].sort((a,b)=>Number(!view.candidates.has(a.dataset.scene))-Number(!view.candidates.has(b.dataset.scene))||compare(a,b));
       if(ordered.every((card,index)=>card===cards[index]))return;
       // 当前焦点卡不搬动，其余节点围绕它移动，避免 DOM 移动丢失焦点。
       // 重排会触发浏览器重新吸附；直到下一次用户滚动意图才恢复 snap，避免覆盖补偿。
@@ -157,7 +163,10 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     if(!view||view.index!==stageIndex||view.departure||view.mealRole!==(mealRole||null)||!candidate||typeof candidate!=='object'||view.element.classList.contains('is-recomputing'))return false;
     const card=view.cards.get(sceneId),previous=view.candidates.get(sceneId);
     if(!card||!previous||card.querySelector('.scene-score').hidden||(candidate.sceneId!=null&&candidate.sceneId!==sceneId)||(candidate.id!=null&&candidate.id!==sceneId))return false;
-    const next={...previous,...candidate};view.candidates.set(sceneId,next);
+    const next={...previous,...candidate};
+    // 补分属于同一展示轮次，沿用初始探索排名，不接收续算结果中的其它排名。
+    if(isExplorationView(view))for(const key of ['displayOrderIndex','explorationRank'])if(Number.isFinite(previous[key]))next[key]=previous[key];
+    view.candidates.set(sceneId,next);
     card.dataset.validationPriority=String(!!next.validation?.visiblePriority);
     if(next.validation?.computeMs!=null)card.dataset.validationMs=String(next.validation.computeMs);else delete card.dataset.validationMs;
     if(next.validation?.attempts!=null)card.dataset.validationAttempts=String(next.validation.attempts);else delete card.dataset.validationAttempts;
@@ -189,7 +198,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       const acts=available.filter(a=>a.group===group);
       return `<div class="activity-row">${acts.map(a=>{
         const selected=ids.includes(a.id);
-        return `<label class="activity-card${selected?' selected':''}" title="${esc(a.description)}"><input type="checkbox" data-stage="${view.index}" data-scene="${scene.id}" data-activity="${a.id}" ${selected?'checked':''} aria-label="${esc(a.title)}，${esc(a.description)}"><span>${esc(a.title)}</span></label>`;
+        const description=a.description??'';
+        return `<label class="activity-card${selected?' selected':''}" title="${esc(description)}"><input type="checkbox" data-stage="${view.index}" data-scene="${scene.id}" data-activity="${a.id}" ${selected?'checked':''} aria-label="${esc(a.title)}，${esc(description)}"><span class="activity-content"><span class="activity-title">${esc(a.title)}</span><span class="activity-desc">${esc(description)}</span></span></label>`;
       }).join('')}</div>`;
     }).join('');
   }
@@ -214,20 +224,24 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     view.strip.dataset.index=index;view.strip.setAttribute('aria-label',`阶段${index+1}地点`);views.set(key,view);return view;
   }
   function updateCards(view,stage,meal=null,{preserve=false,center=false}={}) {
+    const context=getIntent()?.context||{};
+    const allowed=scene=>isSceneInSchoolScope(scene,context);
     const incoming=new Map((meal?.candidates?.length?meal.candidates:stage.candidates||[]).map(c=>[c.sceneId||c.id,c]));
     // 新一轮候选可能截断；保留视图必须继续展示用户已经刷到的全部卡片。
     const candidates=preserve?new Map([...view.candidates,...incoming]):incoming;
     if(meal&&!result.ok&&!candidates.size){
-      for(const scene of catalog.scenes.filter(s=>s.mealRoles?.includes(meal.mealRole))){
+      for(const scene of catalog.scenes.filter(s=>allowed(s)&&s.mealRoles?.includes(meal.mealRole))){
         const ids=mealActivityIds(scene,meal.mealRole),diet=getIntent()?.context?.dietaryRestrictions||[];
         const activity=scene.activities.find(a=>ids.includes(a.id)&&!(a.dietaryTags||[]).some(t=>diet.includes(t)));
         if(activity)candidates.set(scene.id,{sceneId:scene.id,activityIds:[activity.id],fitScore:null,scoreStatus:'pending'});
       }
     }
     if(scenes.has(stage.sceneId)&&!candidates.has(stage.sceneId))candidates.set(stage.sceneId,stage);
+    // 失败餐卡及保留候选也遵守当前学校条件，避免旧场景重新出现在界面。
+    if(!view.departure)for(const id of candidates.keys())if(scenes.has(id)&&!allowed(scenes.get(id)))candidates.delete(id);
     view.candidates=candidates;
-    const departureDescriptions={separate:'各自回去，给今天一个轻松的收尾。',walk_together:'一起走一段，再各自返程。',hotel:'今晚留宿，房费按所选城市档位预留。'};
-    let ordered=view.departure?(catalog.departures||[]).filter(d=>candidates.has(d.id)).map(d=>({...d,title:d.id==='hotel'?'酒店':d.title,description:departureDescriptions[d.id]})):[...candidates.keys()].map(id=>scenes.get(id)).filter(s=>s&&(!view.mealRole||s.mealRoles?.includes(view.mealRole)));
+    let ordered=view.departure?(catalog.departures||[]).filter(d=>candidates.has(d.id)):[...candidates.keys()].map(id=>scenes.get(id)).filter(s=>s&&(!view.mealRole||s.mealRoles?.includes(view.mealRole)));
+    if(isExplorationView(view))ordered.sort((a,b)=>{const ai=displayIndex(candidates.get(a.id)),bi=displayIndex(candidates.get(b.id));return ai>bi?1:ai<bi?-1:0;});
     const special=specialFor(view.mealRole);if(special)ordered.push(special);
     if(preserve){
       const byId=new Map(ordered.map(scene=>[scene.id,scene]));
@@ -245,7 +259,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       if(view.mealRole)card.dataset.meal=view.mealRole;else delete card.dataset.meal;
       if(view.departure)card.dataset.departure=scene.id;else delete card.dataset.departure;
       card.classList.toggle('meal-card',!!view.mealRole);
-      const c=candidates.get(scene.id),isSpecial=scene===special||view.departure;card.querySelector('.scene-title').textContent=scene.title;card.querySelector('.scene-desc').textContent=cardDescription(scene);card.title=scene.description||'';
+      // 所有地点及别离卡直接展示目录全文，手工说明不经过摘要或长度截断。
+      const c=candidates.get(scene.id),isSpecial=scene===special||view.departure;card.querySelector('.scene-title').textContent=scene.title;card.querySelector('.scene-desc').textContent=scene.description??'';card.title=scene.description??'';
       card.querySelector('.scene-score').hidden=isSpecial;card.querySelector('.scene-score').classList.remove('is-pending','is-validating');card.classList.remove('is-pending');
       if(isSpecial){card.querySelector('.scene-score').innerHTML='';card.querySelector('.scene-score').title='';card.setAttribute('aria-label',scene.title);}
       else updateScore(view,card,c);

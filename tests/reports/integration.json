@@ -1,10 +1,10 @@
 {
   "dataVersion": "knowledge-4.1.0",
-  "contentRevision": "374d68c345225430",
+  "contentRevision": "9b2dd31d366bbf39",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 332.7451,
+      "elapsedMs": 239.74879999999996,
       "status": "feasible",
       "stages": [
         {
@@ -33,11 +33,11 @@
         0,
         0
       ],
-      "digest": "99a12843"
+      "digest": "4a5f9935"
     },
     {
       "label": "exploration90",
-      "elapsedMs": 309.5394,
+      "elapsedMs": 346.2563,
       "status": "feasible",
       "stages": [
         {
@@ -50,7 +50,7 @@
           "fitScore": 91.25
         },
         {
-          "sceneId": "boardgame",
+          "sceneId": "craft",
           "activityIds": [],
           "start": 930,
           "end": 990,
@@ -75,11 +75,11 @@
         10,
         15
       ],
-      "digest": "5395d9ac"
+      "digest": "f258085f"
     },
     {
       "label": "replayed",
-      "elapsedMs": 202.6828999999999,
+      "elapsedMs": 474.4561000000001,
       "status": "feasible",
       "stages": [
         {
@@ -108,11 +108,11 @@
         0,
         0
       ],
-      "digest": "99a12843"
+      "digest": "4a5f9935"
     },
     {
       "label": "mall-0",
-      "elapsedMs": 221.7514,
+      "elapsedMs": 183.2545,
       "status": "feasible",
       "stages": [
         {
@@ -141,11 +141,11 @@
         0,
         0
       ],
-      "digest": "99a12843"
+      "digest": "4a5f9935"
     },
     {
       "label": "mall-1",
-      "elapsedMs": 209.02199999999993,
+      "elapsedMs": 175.6603,
       "status": "feasible",
       "stages": [
         {
@@ -176,11 +176,11 @@
         5,
         10
       ],
-      "digest": "26d0222e"
+      "digest": "5044d07c"
     },
     {
       "label": "mall-2",
-      "elapsedMs": 320.0761,
+      "elapsedMs": 184.65049999999997,
       "status": "feasible",
       "stages": [
         {
@@ -220,11 +220,11 @@
         20,
         40
       ],
-      "digest": "df3a7482"
+      "digest": "3563228d"
     },
     {
       "label": "shared-play",
-      "elapsedMs": 186.22939999999994,
+      "elapsedMs": 152.18049999999994,
       "status": "feasible",
       "stages": [
         {
@@ -259,11 +259,11 @@
         40,
         90
       ],
-      "digest": "8fbc325c"
+      "digest": "38a67a02"
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 163.34410000000025,
+      "elapsedMs": 121.03970000000004,
       "status": "feasible",
       "stages": [
         {
@@ -299,11 +299,11 @@
         0,
         0
       ],
-      "digest": "3ffcaba0"
+      "digest": "1577f563"
     },
     {
       "label": "nature-play",
-      "elapsedMs": 154.76229999999987,
+      "elapsedMs": 124.84760000000006,
       "status": "feasible",
       "stages": [
         {
@@ -311,34 +311,34 @@
           "activityIds": [],
           "start": 860,
           "end": 920,
-          "fitScore": 89.64
+          "fitScore": 89.63
         },
         {
           "sceneId": "boardgame",
           "activityIds": [],
           "start": 930,
           "end": 990,
-          "fitScore": 85.5
+          "fitScore": 85.48
         },
         {
-          "sceneId": "bridge_walk",
+          "sceneId": "dessert",
           "activityIds": [
-            "bridge_view"
+            "dessert_ice"
           ],
           "start": 1010,
           "end": 1040,
-          "fitScore": 77.04
+          "fitScore": 76.98
         }
       ],
       "cost": [
-        0,
-        0
+        10,
+        35
       ],
-      "digest": "5a7f12d3"
+      "digest": "88ed2280"
     },
     {
       "label": "play-nature",
-      "elapsedMs": 154.7213999999999,
+      "elapsedMs": 136.04030000000012,
       "status": "feasible",
       "stages": [
         {
@@ -346,34 +346,34 @@
           "activityIds": [],
           "start": 860,
           "end": 920,
-          "fitScore": 89.64
+          "fitScore": 89.63
         },
         {
           "sceneId": "boardgame",
           "activityIds": [],
           "start": 930,
           "end": 990,
-          "fitScore": 85.5
+          "fitScore": 85.48
         },
         {
-          "sceneId": "bridge_walk",
+          "sceneId": "dessert",
           "activityIds": [
-            "bridge_view"
+            "dessert_ice"
           ],
           "start": 1010,
           "end": 1040,
-          "fitScore": 77.04
+          "fitScore": 76.98
         }
       ],
       "cost": [
-        0,
-        0
+        10,
+        35
       ],
-      "digest": "8f75eeb1"
+      "digest": "dd9acce8"
     },
     {
       "label": "revision",
-      "elapsedMs": 124.64980000000014,
+      "elapsedMs": 105.26389999999992,
       "status": "feasible",
       "stages": [
         {
@@ -402,7 +402,7 @@
         0,
         0
       ],
-      "digest": "99a12843"
+      "digest": "4a5f9935"
     }
   ]
 }

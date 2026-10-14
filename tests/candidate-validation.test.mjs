@@ -382,3 +382,65 @@ test('单卡创建搜索或迭代错误隔离，其他卡继续完成且错误�
   assert.equal(results.find(r=>r.key==='healthy').candidate.scoreStatus,'evaluated');
   assert.ok(results.every(r=>r.generation==='g'));
 });
+
+test('冻结列表中被base截断的冷门候选仍生成任务，阶段和餐次沿用实际前序及各自参考尺', () => {
+  const stageReference={prefixUtility:12,referenceUtility:76.8};
+  const frozenReference={prefixUtility:20,referenceUtility:70};
+  const base=freeze({ok:true,fingerprint:'input-before',outputFingerprint:'output-before',stages:[
+    {sceneId:'prepare',activityIds:['kit'],startMinute:90,fixedStartMinute:40,candidates:[]},
+    {sceneId:'selected-food',activityIds:['eat-lunch'],mealRole:'lunch',startMinute:120,fixedStartMinute:null,scoreReference:stageReference,candidates:[
+      {sceneId:'selected-food',activityIds:['eat-lunch'],fitScore:75},
+    ]},
+    {sceneId:'walk',activityIds:[],startMinute:180,fixedStartMinute:null,candidates:[]},
+  ],mealRequirements:[
+    {mealRole:'lunch',stageIndex:1,insertIndex:1,candidates:[]},
+    {mealRole:'supper',stageIndex:null,insertIndex:3,candidates:[]},
+  ],replay:{search:{...options}}});
+  const intent=freeze({context:{...context,explorationSeed:123,mealChoices:{
+    lunch:{sceneId:'selected-food',activityIds:['eat-lunch']},dinner:{sceneId:'kept-dinner',activityIds:['eat-dinner']},supper:{mode:'skip'},
+  }},exploration:97,prefix:[{sceneId:'stale-intent',activityIds:[]}]});
+  const pending=freeze([
+    {stageIndex:2,candidate:{sceneId:'cold-stage',activityIds:['play'],fitScore:null},reference:frozenReference},
+    {stageIndex:99,mealRole:'lunch',candidate:{sceneId:'cold-lunch',activityIds:['eat-lunch'],fitScore:null}},
+    {stageIndex:0,mealRole:'supper',candidate:{sceneId:'cold-supper',activityIds:['eat-supper'],fitScore:null}},
+  ]);
+  const before=JSON.stringify({base,intent,pending});
+  const jobs=buildCandidateJobs(base,intent,{pendingCandidates:pending});
+  assert.deepEqual(jobs.map(job=>job.key),['stage-2:cold-stage','meal-lunch:cold-lunch','meal-supper:cold-supper']);
+  const regular=jobs[0],lunch=jobs[1],supper=jobs[2];
+  assert.deepEqual(regular.prefix,[
+    {sceneId:'prepare',activityIds:['kit'],startMinute:40},
+    {sceneId:'selected-food',activityIds:['eat-lunch'],mealRole:'lunch'},
+    {sceneId:'cold-stage',activityIds:['play']},
+  ]);
+  assert.equal(regular.reference,frozenReference);
+  assert.equal(validatedCandidate(regular,success(90)).fitScore,75,'应使用冻结卡参考尺，而非新base或continuation默认参考尺');
+  assert.equal(lunch.stageIndex,1,'真实餐次位置覆盖冻结条目中的过期索引');
+  assert.deepEqual(lunch.prefix,[{sceneId:'prepare',activityIds:['kit'],startMinute:40},{sceneId:'cold-lunch',activityIds:['eat-lunch'],mealRole:'lunch'}]);
+  assert.equal(lunch.reference,stageReference);
+  assert.deepEqual(lunch.context.mealChoices.lunch,{sceneId:'cold-lunch',activityIds:['eat-lunch']});
+  assert.deepEqual(lunch.context.mealChoices.dinner,intent.context.mealChoices.dinner);
+  assert.equal(supper.stageIndex,3,'虚拟餐次使用实际insertIndex');
+  assert.equal(supper.reference,null,'虚拟餐次不得借用普通阶段参考尺');
+  assert.deepEqual(supper.prefix.slice(0,3),[...regular.prefix.slice(0,2),{sceneId:'walk',activityIds:[]}]);
+  assert.deepEqual(supper.prefix.at(-1),{sceneId:'cold-supper',activityIds:['eat-supper'],mealRole:'supper'});
+  for(const job of jobs){assert.equal(job.exploration,97);assert.equal(job.context.explorationSeed,123);}
+  lunch.context.mealChoices.dinner.activityIds.push('job-only');
+  regular.prefix[0].activityIds.push('job-only');
+  assert.equal(JSON.stringify({base,intent,pending}),before,'任务构建、评分和独立任务修改不得污染base、意图或冻结列表');
+});
+
+test('显式空pending列表停止base回退，finite卡不排任务且重复冻结候选只排一次', () => {
+  const candidate={sceneId:'base-pending',activityIds:[],fitScore:null};
+  const base=freeze({ok:true,stages:[{sceneId:'selected',activityIds:[],candidates:[candidate,{sceneId:'finite',activityIds:[],fitScore:0}],scoreReference:{prefixUtility:0,referenceUtility:80}}],mealRequirements:[],replay:{search:{...options}}});
+  const intent=freeze({context:{...context},exploration:0,prefix:[]});
+  assert.equal(buildCandidateJobs(base,intent).length,1,'未提供冻结列表仍支持原base候选入口');
+  assert.deepEqual(buildCandidateJobs(base,intent,{pendingCandidates:[]}),[],'空列表表示当前没有待补分卡，不应重新启动base任务');
+  assert.deepEqual(buildCandidateJobs(base,intent,{pendingCandidates:[{stageIndex:0,candidate:{sceneId:'finite',activityIds:[],fitScore:0}}]}),[],'零分也是已经评分的finite卡');
+  const extra=freeze({stageIndex:0,candidate:{sceneId:'cold-only',activityIds:[],fitScore:null}});
+  const jobs=buildCandidateJobs(base,intent,{pendingCandidates:[extra,extra,{stageIndex:0,candidate:{sceneId:'finite',activityIds:[],fitScore:80}}]});
+  assert.equal(jobs.length,1);
+  assert.equal(jobs[0].key,'stage-0:cold-only');
+  assert.equal(base.stages[0].candidates.length,2);
+  assert.equal(base.stages[0].candidates[0].fitScore,null);
+});

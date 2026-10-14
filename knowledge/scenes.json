@@ -191,12 +191,15 @@
         "name": "农业博物馆",
         "kind": "ordinary",
         "category": "华农特色",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "scau",
+        "campusArea": ""
       },
       "activityIds": [
         "museum_tool",
         "museum_pick"
-      ]
+      ],
+      "scauOnly": true
     },
     {
       "id": "aquarium",
@@ -233,7 +236,9 @@
         "name": "水族馆",
         "kind": "ordinary",
         "category": "水族馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "aqua_photo",
@@ -275,7 +280,9 @@
         "name": "校园羽毛球场",
         "kind": "ordinary",
         "category": "校园羽毛球场",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "badminton_rally"
@@ -317,7 +324,9 @@
         "name": "桌游店",
         "kind": "ordinary",
         "category": "桌游店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "boardgame_coop",
@@ -406,7 +415,9 @@
         "name": "咖啡店",
         "kind": "ordinary",
         "category": "咖啡店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "cafe_warm",
@@ -514,7 +525,9 @@
         "name": "校园草地",
         "kind": "ordinary",
         "category": "校园草地",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "picnic_share",
@@ -564,6 +577,45 @@
         "pingpong_rally",
         "pingpong_teach"
       ]
+    },
+    {
+      "id": "campus_canteen",
+      "scauOnly": false,
+      "description": "选择所在学校允许进入的校园食堂，核对窗口供应、饭点开放、座位和双方忌口后一起用餐。早餐、午餐和晚餐均为通用规划候选，具体食堂与供应需要现场确认。",
+      "minutes": 45,
+      "cost": [0, 0],
+      "load": 0,
+      "kind": "meal",
+      "area": "campus",
+      "indoor": true,
+      "fit": 82,
+      "novelty": 20,
+      "quiet": false,
+      "mental": 1,
+      "bold": false,
+      "tags": ["food", "indoor", "daily"],
+      "weather": ["clear", "rain", "unknown"],
+      "provides": [],
+      "crowdRisk": "unknown",
+      "seated": true,
+      "assertionKind": "designed",
+      "evidenceStatus": "user_design_real_world_unverified",
+      "parameterStatus": "designed_not_measured",
+      "evidenceIds": ["E-user-campus-canteen"],
+      "place": {
+        "name": "校园食堂",
+        "universityId": "",
+        "campusArea": "",
+        "kind": "ordinary",
+        "category": "校园食堂",
+        "verificationStatus": "awaiting_confirmation"
+      },
+      "activityIds": ["breakfast_eat", "canteen_pair"],
+      "activityOverrides": {
+        "breakfast_eat": { "evidenceIds": ["E-user-campus-canteen"], "assertionKind": "designed", "evidenceStatus": "user_design_real_world_unverified" },
+        "canteen_pair": { "evidenceIds": ["E-user-campus-canteen"], "assertionKind": "designed", "evidenceStatus": "user_design_real_world_unverified" }
+      },
+      "mealRoles": ["breakfast", "lunch", "dinner"]
     },
     {
       "id": "canteen",
@@ -658,7 +710,9 @@
         "name": "粤式茶楼",
         "kind": "ordinary",
         "category": "粤式茶楼",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "cantonese_meal"
@@ -704,7 +758,9 @@
         "name": "电影院",
         "kind": "ordinary",
         "category": "电影院",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "film_pick",
@@ -756,7 +812,9 @@
         "name": "手作店",
         "kind": "ordinary",
         "category": "手作店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "craft_card",
@@ -800,7 +858,9 @@
         "name": "校园甜品店",
         "kind": "ordinary",
         "category": "校园甜品店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "dessert_warm",
@@ -845,7 +905,9 @@
         "name": "展览馆",
         "kind": "ordinary",
         "category": "展览馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "exhib_fav"
@@ -886,7 +948,9 @@
         "name": "花园",
         "kind": "ordinary",
         "category": "花园",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "garden_photo",
@@ -928,7 +992,9 @@
         "name": "滑冰场",
         "kind": "ordinary",
         "category": "滑冰场",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "ice_slow",
@@ -972,7 +1038,9 @@
         "name": "商场",
         "kind": "ordinary",
         "category": "商场",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "mall_stores",
@@ -1020,7 +1088,9 @@
         "name": "餐馆",
         "kind": "ordinary",
         "category": "餐馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "meal_style_w",
@@ -1039,7 +1109,9 @@
         "name": "剧本杀店",
         "kind": "ordinary",
         "category": "剧本杀店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "剧本杀店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
       "minutes": 90,
@@ -1105,7 +1177,9 @@
         "name": "照片冲印店",
         "kind": "ordinary",
         "category": "照片冲印店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "photo_print"
@@ -1150,7 +1224,9 @@
         "name": "公共休息区",
         "kind": "ordinary",
         "category": "公共休息区",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "talk_highlight",
@@ -1195,7 +1271,9 @@
         "name": "雨林馆",
         "kind": "ordinary",
         "category": "雨林馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "rainforest_leaf"
@@ -1242,7 +1320,9 @@
         "name": "图书馆",
         "kind": "ordinary",
         "category": "图书馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "read_alone",
@@ -1286,7 +1366,9 @@
         "name": "休息",
         "kind": "休息",
         "category": "原地休息",
-        "verificationStatus": "current_location"
+        "verificationStatus": "current_location",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": []
     },
@@ -1325,7 +1407,9 @@
         "name": "街区",
         "kind": "ordinary",
         "category": "街区",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "street_look",
@@ -1391,7 +1475,9 @@
         "name": "Switch店",
         "kind": "ordinary",
         "category": "游戏体验店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "Switch店为用户提供的地点类型；具体店铺、营业和服务需要先确认。",
       "minutes": 60,
@@ -1558,7 +1644,9 @@
         "name": "校园茶点店",
         "kind": "ordinary",
         "category": "校园茶点店",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "tea_share"
@@ -1648,7 +1736,9 @@
         "name": "水边公共步道",
         "kind": "ordinary",
         "category": "水边公共步道",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "waterside_sketch"
@@ -1692,7 +1782,9 @@
         "name": "校内西式餐馆",
         "kind": "ordinary",
         "category": "校内西式餐馆",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "activityIds": [
         "western_meal"
@@ -1708,7 +1800,9 @@
         "name": "烧烤摊",
         "kind": "ordinary",
         "category": "烧烤摊",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
       "minutes": 45,
@@ -1748,7 +1842,9 @@
         "name": "小吃街",
         "kind": "ordinary",
         "category": "小吃街",
-        "verificationStatus": "awaiting_confirmation"
+        "verificationStatus": "awaiting_confirmation",
+        "universityId": "",
+        "campusArea": ""
       },
       "description": "用户指定的宵夜地点类型；具体位置、营业、供应、座位和雨天遮蔽需确认，宵夜时段由规划器生成。",
       "minutes": 45,

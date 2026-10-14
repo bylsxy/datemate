@@ -4,7 +4,8 @@ import { planDate } from '../engine.mjs';
 import { catalog } from '../data/catalog.mjs';
 
 test('食堂仅固定地点的必去锚点联合选择实际早餐，不能空场馆冒充用餐', () => {
-  const result = planDate({ periodIds: ['morning'], anchors: [{ id: 'must-eat', sceneId: 'canteen', sceneOnly: true, index: 0 }] }, catalog);
+  // 芷园食堂属于华农泰山区；此用餐锚点案例明确具备对应权限。
+  const result = planDate({ area: 'near', school: 'scau', campusArea: 'taishan', periodIds: ['morning'], anchors: [{ id: 'must-eat', sceneId: 'canteen', sceneOnly: true, index: 0 }] }, catalog);
   assert.equal(result.ok, true, result.errors.join(';'));
   const stage = result.stages[0];
   assert.equal(stage.anchorId, 'must-eat');
@@ -33,7 +34,7 @@ test('Switch店仅固定地点仍按双方play兴趣择优玩法，旧精确空�
 });
 
 test('sceneOnly锚点匹配人工前缀时只比地点，但人工活动仍精确校验且不被清空', () => {
-  const input = { periodIds: ['morning'], anchors: [{ id: 'must-eat', sceneId: 'canteen', sceneOnly: true, index: 0 }], fixedPrefix: [{ sceneId: 'canteen', activityIds: ['breakfast_eat'], mealRole: 'breakfast' }] };
+  const input = { area: 'near', school: 'scau', campusArea: 'taishan', periodIds: ['morning'], anchors: [{ id: 'must-eat', sceneId: 'canteen', sceneOnly: true, index: 0 }], fixedPrefix: [{ sceneId: 'canteen', activityIds: ['breakfast_eat'], mealRole: 'breakfast' }] };
   const result = planDate(input, catalog);
   assert.equal(result.ok, true, result.errors.join(';'));
   assert.equal(result.stages[0].anchorId, 'must-eat');

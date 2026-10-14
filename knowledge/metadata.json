@@ -201,6 +201,8 @@
     "budget": null,
     "weather": "unknown",
     "area": "all",
+    "school": "",
+    "campusArea": "",
     "fatigueA": 2,
     "fatigueB": 2,
     "preferences": [],

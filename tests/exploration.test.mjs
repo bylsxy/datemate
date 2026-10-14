@@ -56,6 +56,17 @@ test('同seed和默认上下文hash确定复现；seed优先级、导出复盘�
   assert.equal(canonical(input), snapshot); assert.equal(canonical(coverageCatalog), catalogSnapshot);
 });
 
+test('rootWorker携带recorded search复盘，默认及显式搜索设置输出hash一致', () => {
+  for (const exploration of [0, 37, 80, 100]) for (const search of [{}, { ...coverageOptions, candidateLimit: 7 }]) {
+    const input = { ...coverageContext, explorationSeed: `recorded-${exploration}` };
+    const original = planDate(input, coverageCatalog, { ...search, exploration });
+    const replayed = planDate(input, coverageCatalog, { ...original.replay.search, exploration, fixedPrefix: original.replay.prefix, expectedVersions: original.versions });
+    assert.equal(replayed.outputFingerprint, original.outputFingerprint);
+    assert.equal(replayed.inputDigest, original.inputDigest);
+    assert.deepEqual(replayed.stages, original.stages);
+  }
+});
+
 test('错误seed拒绝输入；零探索不受seed影响且仍取真实最高分', () => {
   for (const explorationSeed of [{}, [], Infinity, true]) {
     const result = planDate(context, coverageCatalog, { explorationSeed });
@@ -187,9 +198,12 @@ test('多seed真实目录覆盖餐次、预约前缀和鲁棒结束缓冲，卡�
 });
 
 test('真实目录多seed覆盖和耗时对比（报告实测，不用易波动时钟作为通过门槛）', { timeout: 60000 }, t => {
-  const input = { periodIds: ['afternoon'], area: 'near', fatigueA: 2, fatigueB: 2 };
+  // 此项测量完整适配目录的探索覆盖；通用学校权限另由 school-scope 专测验证。
+  const input = { periodIds: ['afternoon'], area: 'near', school: 'scau', campusArea: 'taishan', fatigueA: 2, fatigueB: 2 };
   planDate(input, catalog); planDate({ ...input, explorationSeed: 'warm' }, catalog, { exploration: 100 });
   const times = { low: [], high: [] }, nodes = { low: [], high: [] }, routes = new Set(), lowCards = new Set(), highCards = new Set();
+  const lowTopFive = new Set(), highTopFive = new Set();
+  let seedsWithProminentPending = 0;
   for (let i = 0; i < 8; i++) for (const mode of i % 2 ? ['high', 'low'] : ['low', 'high']) {
     const begin = performance.now();
     const result = planDate({ ...input, explorationSeed: `real-${i}` }, catalog, { exploration: mode === 'high' ? 100 : 0 });
@@ -197,12 +211,39 @@ test('真实目录多seed覆盖和耗时对比（报告实测，不用易波动�
     assert.equal(result.ok, true);
     const cards = mode === 'high' ? highCards : lowCards;
     result.stages[0].candidates.forEach(c => cards.add(c.sceneId));
-    if (mode === 'high') routes.add(route(result));
+    const front = result.stages[0].candidates.slice(0, 5);
+    front.forEach(c => (mode === 'high' ? highTopFive : lowTopFive).add(c.sceneId));
+    if (mode === 'high') {
+      routes.add(route(result));
+      checkRealScores(result);
+      assert.equal(front[0].continuationFound, true, '保留一个已验证推荐位置');
+      if (front.some(c => c.scoreStatus === 'pending')) seedsWithProminentPending++;
+      if (i === 0 || i === 7) {
+        const replayed = planDate(result.replay.context, catalog, { ...result.replay.search, exploration: 100, fixedPrefix: result.replay.prefix });
+        assert.equal(replayed.outputFingerprint, result.outputFingerprint);
+        assert.deepEqual(replayed.stages, result.stages);
+      }
+    }
   }
   const median = values => values.toSorted((a, b) => a - b)[Math.floor(values.length / 2)];
   assert.ok(routes.size >= 5);
   assert.ok([...highCards].some(id => !lowCards.has(id)), '真实目录首阶段展露原20张之外的场景');
-  t.diagnostic(JSON.stringify({ seeds: 8, routes: routes.size, lowCoverage: lowCards.size, highCoverage: highCards.size, newScenes: [...highCards].filter(id => !lowCards.has(id)), medianMs: { low: +median(times.low).toFixed(2), high: +median(times.high).toFixed(2) }, medianNodes: { low: median(nodes.low), high: median(nodes.high) } }));
+  assert.equal(lowTopFive.size, 5);
+  assert.ok(highTopFive.size >= lowTopFive.size * 3, '多seed真实目录前5覆盖至少扩大三倍');
+  assert.ok(seedsWithProminentPending >= 6, '待评冷门场景应在多数seed进入前5，而非永远追加在尾部');
+  t.diagnostic(JSON.stringify({ seeds: 8, routes: routes.size, lowCoverage: lowCards.size, highCoverage: highCards.size, topFiveCoverage: { low: lowTopFive.size, high: highTopFive.size }, seedsWithProminentPending, newScenes: [...highCards].filter(id => !lowCards.has(id)), medianMs: { low: +median(times.low).toFixed(2), high: +median(times.high).toFixed(2) }, medianNodes: { low: median(nodes.low), high: median(nodes.high) } }));
+});
+
+test('展示混排仅使用统一基础序位，q和localUtility尺度不进入展示噪声', () => {
+  const explorer = createExploration(100, 'display-scale');
+  const entries = Array.from({ length: 24 }, (_, i) => ({ id: `card-${i}`, continuationFound: i < 3, q: i < 3 ? 1000 - i : null, localUtility: 100 - i }));
+  const options = { key: c => c.id, confirmed: c => c.continuationFound, scope: 'display' };
+  const first = explorer.display(entries, 20, options);
+  const scaled = explorer.display(entries.map(c => ({ ...c, q: c.q === null ? null : c.q * 100000, localUtility: c.localUtility * 0.00001 })), 20, options);
+  assert.deepEqual(first.map(c => c.id), scaled.map(c => c.id));
+  assert.equal(first[0].id, 'card-0');
+  assert.ok(first.slice(1, 5).some(c => !c.continuationFound));
+  assert.deepEqual(createExploration(0, 'display-scale').display(entries, 20, options), entries.slice(0, 20));
 });
 
 test('显式卡片上限仍生效，探索噪声独立于真实效用及调用顺序', () => {
