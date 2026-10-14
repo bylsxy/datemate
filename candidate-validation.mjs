@@ -1,5 +1,5 @@
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,projectStageChoice,setStageDurationIntent,splitStageIntent} from './planning-intent.mjs?v=644ec13f68f75c23';
-import {splitDuration} from './duration-policy.mjs?v=644ec13f68f75c23';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,projectStageChoice,setStageDurationIntent,splitStageIntent,mergeStageIntent} from './planning-intent.mjs?v=36f4e0d02f4b2a0b';
+import {splitDuration} from './duration-policy.mjs?v=36f4e0d02f4b2a0b';
 // 候选验证与当前安排分开：只补全卡片评分，不改选中地点、时间线或复盘输出。
 export const candidateKey = ({stageIndex, sceneId, mealRole}) => `${mealRole ? `meal-${mealRole}` : `stage-${stageIndex}`}:${sceneId}`;
 
@@ -15,6 +15,7 @@ export function buildActionJobs(result, state, catalog, actions = []) {
     else if (actionType === 'meal_mode') next = selectMealIntent(state, result, mealRole, action.choice, stageIndex, catalog);
     else if (actionType === 'duration') next = setStageDurationIntent(state,result,stageIndex,action.durationMinutes,catalog);
     else if (actionType === 'split') next = splitStageIntent(state,result,stageIndex,catalog);
+    else if (actionType === 'merge') next = mergeStageIntent(state,result,stageIndex,catalog);
     else if (actionType === 'scene' || actionType === 'activity' || actionType === 'meal_option') {
       next = mealRole
         ? selectMealIntent(state, result, mealRole, {sceneId, activityIds}, stageIndex, catalog)
@@ -36,12 +37,17 @@ export function buildActionJobs(result, state, catalog, actions = []) {
         const parts=splitDuration(scene,stage.minutes);
         knownPlan.splice(stageIndex,1,{...knownPlan[stageIndex],durationMinutes:parts[0]},
           {sceneId:stage.sceneId,activityIds:[],durationMinutes:parts[1]});
+      } else if (actionType === 'merge') {
+        knownPlan.splice(stageIndex,2,structuredClone(next.prefix.at(-1)));
       }
     }
     const meal = mealRole ? result.mealRequirements?.find(item => item.mealRole === mealRole) : null;
     const reference = action.reference ?? (meal?.stageIndex === null ? null : result.stages[stageIndex]?.scoreReference);
     const candidate = {...structuredClone(action.candidate), ...(sceneId !== undefined ? {sceneId} : {}), ...(activityIds !== undefined ? {activityIds:[...activityIds]} : {})};
-    jobs.set(key, {...structuredClone(action), actionFields:structuredClone(action), candidate, key, context:next.context, prefix:next.prefix, exploration:next.exploration, reference, knownPlan:structuredClone(knownPlan), search:{...structuredClone(result.replay?.search ?? {}), method:'bounded', maxCandidateExpandedNodes:0}});
+    const search={...structuredClone(result.replay?.search ?? {}),method:'bounded',maxCandidateExpandedNodes:0};
+    // 结束位置会把复盘的搜索上限压成当前段数；再次拆分时恢复默认上限。
+    if(actionType==='split')delete search.maxStages;
+    jobs.set(key, {...structuredClone(action), actionFields:structuredClone(action), candidate, key, context:next.context, prefix:next.prefix, exploration:next.exploration, reference, knownPlan:structuredClone(knownPlan), search});
   }
   return [...jobs.values()];
 }

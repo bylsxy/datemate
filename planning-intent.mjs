@@ -1,5 +1,5 @@
 // 用户意图与求解结果分离：仅投影显式选择，不把自动排程变成预约。
-import {durationBounds,splitDuration} from './duration-policy.mjs?v=644ec13f68f75c23';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=36f4e0d02f4b2a0b';
 const clone = value => structuredClone(value);
 const mealRoles = ['breakfast', 'lunch', 'dinner', 'supper'];
 
@@ -164,6 +164,20 @@ export function splitStageIntent(state, result, index, catalog) {
   const next=setStageDurationIntent(state,result,index,parts[0],catalog);
   next.context.minimumStageCount=next.prefix.length+1;
   delete next.context.endAfterStage;
+  return next;
+}
+
+export function mergeStageIntent(state, result, index, catalog) {
+  validateIndex(result,index);
+  const stage=result.stages[index],scene=catalog.scenes.find(s=>s.id===stage.sceneId);
+  const merge=mergeStayOption(scene,stage,result.stages[index+1]);
+  if(!merge || merge.error)throw new RangeError(merge?.error || '只能合并相邻的普通安排，不能跨过餐次或预约。');
+  const next=selectStageIntent(state,result,index,stage.sceneId,stage.activityIds,catalog,{durationMinutes:merge.minutes});
+  // 撤销一次拆分的阶段下限，避免求解器立即把刚合并的时间再次拆开。
+  const minimum=Math.max(0,(next.context.minimumStageCount??0)-1);
+  if(minimum)next.context.minimumStageCount=minimum;else delete next.context.minimumStageCount;
+  if(index+2===result.stages.length)next.context.endAfterStage=index;
+  else if(Number.isInteger(next.context.endAfterStage)&&next.context.endAfterStage>index)next.context.endAfterStage--;
   return next;
 }
 

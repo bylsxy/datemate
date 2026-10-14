@@ -26,3 +26,13 @@ export function splitDuration(scene, minutes) {
   const first = Math.floor(minutes / 10) * 5, second = minutes - first;
   return first >= min && second >= min && first <= max && second <= max ? [first,second] : null;
 }
+
+// 合并保留前一地点及活动，累加停留时间；取消的转场不再占用时间。
+export function mergeStayOption(scene, first, following) {
+  if (!first || !following || ['meal','rest'].includes(scene.kind) ||
+      [first,following].some(stage => stage.mealRole || stage.virtualMeal || stage.departure || stage.anchorId !== undefined) ||
+      Number.isFinite(following.fixedStartMinute)) return null;
+  if (![first.minutes,following.minutes].every(minutes => Number.isInteger(minutes) && minutes > 0)) return null;
+  const minutes = first.minutes + following.minutes, {min,max} = durationBounds(scene);
+  return {minutes, error:minutes < min || minutes > max ? `合并后为 ${minutes} 分钟，超出这个场景允许的 ${min}–${max} 分钟。` : null};
+}

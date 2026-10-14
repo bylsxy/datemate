@@ -1,10 +1,10 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=644ec13f68f75c23';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=644ec13f68f75c23';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=644ec13f68f75c23';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=644ec13f68f75c23';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=36f4e0d02f4b2a0b';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=36f4e0d02f4b2a0b';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=36f4e0d02f4b2a0b';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=36f4e0d02f4b2a0b';
 
-import {durationBounds,splitDuration} from './duration-policy.mjs?v=644ec13f68f75c23';
-import {mealModeCard,mealOptions} from './meal-options.mjs?v=644ec13f68f75c23';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=36f4e0d02f4b2a0b';
+import {mealModeCard,mealOptions} from './meal-options.mjs?v=36f4e0d02f4b2a0b';
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));
@@ -26,7 +26,7 @@ export function scoreMarkup(candidate,{planningFailed=false}={}) {
 }
 
 /** 卡片按地点 ID 复用；保留阶段按稳定 view.key 关联，只有后续推荐允许重排。 */
-export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,onDuration,onSplit,getIntent,onCandidateVisible,onActionsChanged}) {
+export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,onDuration,onSplit,onMerge,getIntent,onCandidateVisible,onActionsChanged}) {
   const root=document.querySelector('#stages');
   const window=root.ownerDocument.defaultView;
   const scenes=new Map(catalog.scenes.map(s=>[s.id,s]));
@@ -44,9 +44,11 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       const label=input.closest('.activity-card');label.hidden=action.validationStatus==='hard_rejected'&&!action.selected;label.classList.toggle('selected',action.selected);label.classList.toggle('is-unselectable',!enabled);label.title=enabled?'选择这个吃法，后面重新安排':actionStatus(action.validationStatus);
       return;
     }
-    if(action.actionType==='duration'||action.actionType==='split'){
-      const control=action.actionType==='duration'?view.durationOptions?.get(action.durationMinutes):view.splitButton;
-      if(control){control.dataset.actionKey=action.actionKey;control.disabled=!enabled;control.hidden=action.validationStatus==='hard_rejected';control.title=enabled?'只调整这一段，后面重新安排':actionStatus(action.validationStatus);}
+    if(['duration','split','merge'].includes(action.actionType)){
+      const merging=action.actionType==='merge';
+      const control=action.actionType==='duration'?view.durationOptions?.get(action.durationMinutes):merging?view.mergeButton:view.splitButton;
+      if(control){control.dataset.actionKey=action.actionKey;control.disabled=!enabled;control.hidden=!merging&&action.validationStatus==='hard_rejected';control.title=enabled?merging?'保留本段地点与活动，取消后一段及中间转场':'只调整这一段，后面重新安排':actionStatus(action.validationStatus);}
+      if(merging&&view.mergeNote)view.mergeNote.textContent=enabled?`合并后保留本段地点与活动，停留 ${action.durationMinutes} 分钟。`:`合并：${actionStatus(action.validationStatus)}`;
       return;
     }
     const element=action.actionType!=='activity'?view.cards.get(action.sceneId):[...view.activities.querySelectorAll('input[data-activity]')].find(input=>input.dataset.activity===action.activityId);
@@ -101,6 +103,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       if(scene&&current?.durationRange&&!current.virtualMeal){
         for(const minutes of view.durationOptions?.keys()||[])if(minutes!==current.minutes)add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'duration',sceneId:scene.id,activityIds:[...ids],durationMinutes:minutes});
         if(view.splitButton)add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'split',sceneId:scene.id,activityIds:[...ids]});
+        if(view.mergeButton&&!view.mergeOption.error)add({viewKey:view.key,stageIndex:view.index,mealRole:view.mealRole,actionType:'merge',sceneId:scene.id,activityIds:[...ids],durationMinutes:view.mergeOption.minutes});
       }
     }
   }
@@ -182,7 +185,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       for(const input of view.mealInputs?.values()||[])notify(input,clip);
       if(view.durationSelect){
         const bounds=view.durationSelect.getBoundingClientRect();
-        if(bounds.bottom>0&&bounds.top<window.innerHeight)for(const action of actions.values())if(action.viewKey===view.key&&['duration','split'].includes(action.actionType)&&action.validationStatus==='pending')onCandidateVisible?.(structuredClone(action));
+        if(bounds.bottom>0&&bounds.top<window.innerHeight)for(const action of actions.values())if(action.viewKey===view.key&&['duration','split','merge'].includes(action.actionType)&&action.validationStatus==='pending')onCandidateVisible?.(structuredClone(action));
       }
     }
     const queue=()=>{if(!stopped&&!frame)frame=window.requestAnimationFrame(scan);};
@@ -405,16 +408,22 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     view.transfer.hidden=!stage.transfer;
     view.transfer.innerHTML=`<span>${formatTime(start-(stage.transfer||0))}-${formatTime(start)}</span><span>转场</span>`;
     if(groupedMode(view))setMealOptionContent(view,stage);else {view.activities.hidden=false;setActivityContent(view,scenes.get(stage.sceneId),stage.activityIds||[]);}
-    view.meta.innerHTML='';view.meta.hidden=true;view.durationOptions=new Map();view.durationSelect=null;view.splitButton=null;
+    updateDurationContent(view,stage);
+  }
+  function updateDurationContent(view,stage){
+    view.meta.innerHTML='';view.meta.hidden=true;view.durationOptions=new Map();view.durationSelect=null;view.splitButton=null;view.mergeButton=null;view.mergeNote=null;view.mergeOption=null;
     const scene=scenes.get(stage.sceneId);
     if(scene?.durationRange&&!stage.virtualMeal&&!stage.departure&&(!groupedMode(view)||view.mealExpanded)){
-      const {min,max}=durationBounds(scene),current=stage.minutes??end-start;
+      const {min,max}=durationBounds(scene),current=stage.minutes??(stage.end??stage.endMinute)-(stage.start??stage.startMinute);
       const values=[...new Set([min,max,current,20,30,45,60,90,120,150,180,210,240].filter(n=>n>=min&&n<=max))].sort((a,b)=>a-b);
       const canSplit=!stage.mealRole&&scene.kind!=='rest'&&result.stages.length<24&&splitDuration(scene,current);
+      view.mergeOption=mergeStayOption(scene,stage,result.stages[view.index+1]);
       view.meta.hidden=false;
-      view.meta.innerHTML=`<div class="duration-controls"><label>停留多久 <select data-duration-control data-view="${esc(view.key)}" aria-label="阶段${view.index+1}停留时间">${values.map(n=>`<option value="${n}"${n===current?' selected':' disabled'}>${n} 分钟</option>`).join('')}</select></label>${canSplit?`<button type="button" data-split data-view="${esc(view.key)}" disabled>拆成两段</button>`:''}<span>${stage.manual?'已按你的选择保留':'先在这里慢慢待着'} · 可调 ${min}–${max} 分钟</span></div>`;
+      view.meta.innerHTML=`<div class="duration-controls"><label>停留多久 <select data-duration-control data-view="${esc(view.key)}" aria-label="阶段${view.index+1}停留时间">${values.map(n=>`<option value="${n}"${n===current?' selected':' disabled'}>${n} 分钟</option>`).join('')}</select></label>${canSplit?`<button type="button" data-split data-view="${esc(view.key)}" disabled>拆成两段</button>`:''}${view.mergeOption?`<button type="button" data-merge data-view="${esc(view.key)}" disabled>与后一段合并</button>`:''}<span>${stage.manual?'已按你的选择保留':'先在这里慢慢待着'} · 可调 ${min}–${max} 分钟</span>${view.mergeOption?`<span data-merge-note>${esc(view.mergeOption.error||'合并后保留本段地点与活动。')}</span>`:''}</div>`;
       view.durationSelect=view.meta.querySelector('select');view.durationOptions=new Map([...view.durationSelect.options].map(option=>[Number(option.value),option]));
       view.splitButton=view.meta.querySelector('button[data-split]');
+      view.mergeButton=view.meta.querySelector('button[data-merge]');view.mergeNote=view.meta.querySelector('[data-merge-note]');
+      if(view.mergeButton&&view.mergeOption.error)view.mergeButton.title=view.mergeOption.error;
     }
   }
   function sameStageContent(previous,next){
@@ -475,6 +484,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
         for(const card of view.cards.values())card.dataset.stage=index;
         for(const input of view.activities.querySelectorAll('input[data-activity]'))input.dataset.stage=index;
         updateCards(view,stage,meal,{preserve:true,center:false});
+        // 前段卡片继续保留；合并资格取决于最新后一段，不能沿用上轮控件。
+        updateDurationContent(view,stage);
         if(centerSelected)centerSelection(view,true);
         watchVisibility(view);return;
       }
@@ -546,8 +557,8 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   root.addEventListener('click',guardActivation,true);
   root.addEventListener('keydown',guardActivation,true);
   root.addEventListener('click',event=>{
-    const split=event.target.closest('button[data-split]');
-    if(split){const action=enabledAction(split),view=views.get(split.dataset.view);if(action&&view){lockThrough(view);onSplit?.(view.index,{knownPlan:action.continuationWitness});}return;}
+    const adjustment=event.target.closest('button[data-split],button[data-merge]');
+    if(adjustment){const action=enabledAction(adjustment),view=views.get(adjustment.dataset.view);if(action&&view){lockThrough(view);(action.actionType==='merge'?onMerge:onSplit)?.(view.index,{knownPlan:action.continuationWitness});}return;}
     const card=event.target.closest('.scene-card');if(!card||card.dataset.dragged==='1')return;
     const view=views.get(card.dataset.view);if(!view)return;
     if(modeToggler(card)){

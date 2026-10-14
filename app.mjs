@@ -1,25 +1,25 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=644ec13f68f75c23';
-import {createTimeline} from './timeline.mjs?v=644ec13f68f75c23';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=644ec13f68f75c23';
-import {createReasonView} from './reasons-view.mjs?v=644ec13f68f75c23';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=644ec13f68f75c23';
-import {createPlacePicker} from './place-picker.mjs?v=644ec13f68f75c23';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=644ec13f68f75c23';
-import {dietaryOptions} from './data/activities.mjs?v=644ec13f68f75c23';
-import * as reasoning from './reasoning.mjs?v=644ec13f68f75c23';
-import {normalizePeriods} from './time-periods.mjs?v=644ec13f68f75c23';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=644ec13f68f75c23';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=644ec13f68f75c23';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=36f4e0d02f4b2a0b';
+import {createTimeline} from './timeline.mjs?v=36f4e0d02f4b2a0b';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=36f4e0d02f4b2a0b';
+import {createReasonView} from './reasons-view.mjs?v=36f4e0d02f4b2a0b';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=36f4e0d02f4b2a0b';
+import {createPlacePicker} from './place-picker.mjs?v=36f4e0d02f4b2a0b';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=36f4e0d02f4b2a0b';
+import {dietaryOptions} from './data/activities.mjs?v=36f4e0d02f4b2a0b';
+import * as reasoning from './reasoning.mjs?v=36f4e0d02f4b2a0b';
+import {normalizePeriods} from './time-periods.mjs?v=36f4e0d02f4b2a0b';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=36f4e0d02f4b2a0b';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=36f4e0d02f4b2a0b';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=644ec13f68f75c23',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=36f4e0d02f4b2a0b',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
-const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
+const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,onMerge:commitMerge,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
 const placePicker=createPlacePicker({root:$('.place-choice'),scenes:catalog.scenes,onChange:applyConditions});
 const scopeControls=createSchoolScopeControls($('#conditions-form'));
 const reasonView=createReasonView({container:$('#reason-content'),scenes:catalog.scenes,rules});
@@ -191,6 +191,10 @@ async function commitDuration(index,minutes,{knownPlan=null}={}){
 async function commitSplit(index,{knownPlan=null}={}){
   if(!result?.ok||busy)return false;
   return commitAdjustment(index,splitStageIntent(snapshot(),result,index,catalog),'已拆成两段，可以为后面那段换个安排。',knownPlan);
+}
+async function commitMerge(index,{knownPlan=null}={}){
+  if(!result?.ok||busy)return false;
+  return commitAdjustment(index,mergeStageIntent(snapshot(),result,index,catalog),'已合并，保留前一段的地点与活动，后面重新安排。',knownPlan);
 }
 async function commitDeparture(id,{knownPlan=null}={}){
   if(!result||!conditionsValid||busy||(result.ok&&!knownPlan?.length))return false;
