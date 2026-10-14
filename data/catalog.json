@@ -1134,7 +1134,7 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "学校报定位为教三草坪与5号楼校史馆之间；夜间停留线索由用户提供，官方资料未证实夜间开放。",
+      "description": "在教三草坪与5号楼校史馆之间，沿茶花园慢慢走，找一处适合停留的位置聊天，夜深后放轻声音。",
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -2990,7 +2990,7 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "官方教学信息列有东区实验楼；夜间停留线索由用户提供，具体可进入区域及夜间开放未由官方证实。",
+      "description": "在开放的公共区域找一处能停留的位置，慢慢聊天或安静待一会儿；不进入实验室和办公区域。",
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -4339,7 +4339,7 @@
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "名称及夜间停留线索由用户提供；具体位置、可进入区域与夜间开放待确认。",
+      "description": "看看花木，在开放区域找一处能安静停留的位置聊天，给彼此留出一段不赶路的时间。",
       "scauOnly": true,
       "minutes": 60,
       "cost": [
@@ -23304,5 +23304,5 @@
       }
     ]
   },
-  "contentRevision": "599942b35ffab2b0"
+  "contentRevision": "a7d9c95c35fd224c"
 }

@@ -52,7 +52,7 @@
     "knowledge/departures.json"
   ],
   "sourceHashes": {
-    "scenes.json": "a4a281ed1e2cd4b3c8881129e7f742bdd52ac689fca1e5597151da054630d437",
+    "scenes.json": "a270e7082eb6b2ac24498dc044bef3c6f91026d49bba22da92bf1ecc5fde234d",
     "activities.json": "04dd33865b3075f92853e2755a89259756bce6c3ce18308092ce1a2af8602b1d",
     "rules.json": "304735ebc6a9fc98371cafed6a0f0b262efb2d89b13ff4e145bf6a660f31d923",
     "metadata.json": "3fbeb73f33627e5881737c59f39c460e0efec7aa9328d8799b762d47d4aa005c",
@@ -61,7 +61,7 @@
     "conditions.json": "ee592cb574465d89cf2781415a3098cb66abef24a7f26b7d5515d85e313d0830",
     "departures.json": "36a62a3349badb1764c9f365b0d23cbccbb428777dbe2ab164315ad604935684"
   },
-  "catalogContentSha256": "ddb389c3ac2d8d536951604bf88772ded5be27168c267374604acc366304161f",
+  "catalogContentSha256": "f80c54843df1bb2b92a4e52442b4343cbb33efcc2635b7d2b0fe2906f4716959",
   "defaultContext": {
     "cityTier": "tier1",
     "departureChoice": "separate",
