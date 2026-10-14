@@ -30,6 +30,18 @@ test('真实默认下午自动推荐包含体验；用户固定裸商场仍合�
   assert.equal(manual.stages[0].minutes, 175);
 });
 
+test('明确生日和纪念日保留主题分支，完整收益出现前不被长停留淘汰',()=>{
+  for(const occasion of ['birthday','anniversary']){
+    const input=context({occasion,budget:500});
+    const result=checked(input);
+    assert.ok(result.stages.some(stage=>stage.tags.includes(occasion)),`${occasion}: ${route(result)}`);
+    assert.ok(result.totalCost[1]<=500);
+    assert.equal(verifyPlanWitness(input,catalog,{...fast,knownPlan:result.continuationWitness}).ok,true);
+  }
+  const limited=checked(context({occasion:'birthday',budget:0}));
+  assert.equal(limited.totalCost[1],0,'场合仍为软目标，不能绕过预算');
+});
+
 test('真实停留效用递减，不能把地点匹配按小时重复计分', () => {
   const base = { ...context(), endAfterStage: 0 };
   const short = checked({ ...base, fixedPrefix: [{ sceneId: 'mall', activityIds: ['arcade_claw'], durationMinutes: 60 }] });
@@ -72,8 +84,8 @@ test('考试季单时段可提前结束，多时段和明确预约不放宽覆�
   assert.match(multi.errors.join(';'), /H_PERIOD_COVERAGE/);
 });
 
-test('真实夜间自动停留保留分别选择空间，切换露营和一起走不修改阶段', () => {
-  const ctx = context({ periodIds: ['evening', 'night'], reunion: true, relationship: 'passionate', occasion: 'anniversary', budget: 500 });
+test('预算不限时夜间自动停留保留分别空间，切换露营和一起走不修改阶段', () => {
+  const ctx = context({ periodIds: ['evening', 'night'], reunion: true, relationship: 'passionate', occasion: 'anniversary', budget: null });
   const state = { context: ctx, exploration: 100, prefix: [], anchors: [] };
   const result = checked({ ...ctx, exploration: 100 });
   for (const id of ['camping', 'walk_together']) {

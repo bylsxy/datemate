@@ -1,13 +1,13 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=70d76ccc0868cf19';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=70d76ccc0868cf19';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=70d76ccc0868cf19';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=70d76ccc0868cf19';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=70d76ccc0868cf19';
-import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=70d76ccc0868cf19';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=30719f63b23a80fd';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=30719f63b23a80fd';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=30719f63b23a80fd';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=30719f63b23a80fd';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=30719f63b23a80fd';
+import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=30719f63b23a80fd';
 
-export { canonical, digest } from './reasoning.mjs?v=70d76ccc0868cf19';
-import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=70d76ccc0868cf19';
-export const VERSION = 'datemate-engine-4.2.0';
+export { canonical, digest } from './reasoning.mjs?v=30719f63b23a80fd';
+import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=30719f63b23a80fd';
+export const VERSION = 'datemate-engine-4.2.1';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-4.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
@@ -753,10 +753,11 @@ function* searchDate(input = {}, catalog, options = {}) {
       const width = config.method === 'exact' && !counterfactual ? unique.length : config.beamWidth;
       if (!counterfactual) stats.beamPruned += Math.max(0, unique.length - width);
       if ((ctx.periodIds || ctx.requiredSceneIds.length) && width < unique.length) {
-        // 以饭点、预约、必去地点与末段覆盖进度分桶，保留仍可完成全部硬要求的分支。
+        // 场合是软目标；单独保留已匹配的分支，避免短庆祝在完整收益出现前被长停留挤掉。
         const groups = new Map();
         for (const child of unique) {
-          const key = `${child.mealRoles.length}:${child.anchorIndex}:${coveredPeriodIds(child, ctx).join(',')}:${requiredCovered(child).join(',')}`;
+          const occasionCovered=ctx.occasion!=='daily'&&child.stages.some(stage=>stage.tags.includes(ctx.occasion));
+          const key = `${child.mealRoles.length}:${child.anchorIndex}:${coveredPeriodIds(child, ctx).join(',')}:${requiredCovered(child).join(',')}:${occasionCovered}`;
           if (!groups.has(key)) groups.set(key, []);
           groups.get(key).push(child);
         }

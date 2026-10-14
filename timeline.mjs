@@ -1,10 +1,10 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=70d76ccc0868cf19';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=70d76ccc0868cf19';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=70d76ccc0868cf19';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=70d76ccc0868cf19';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=30719f63b23a80fd';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=30719f63b23a80fd';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=30719f63b23a80fd';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=30719f63b23a80fd';
 
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=70d76ccc0868cf19';
-import {mealModeCard,mealOptions} from './meal-options.mjs?v=70d76ccc0868cf19';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=30719f63b23a80fd';
+import {mealModeCard,mealOptions} from './meal-options.mjs?v=30719f63b23a80fd';
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:role==='supper'?{id:'__supper_skip',title:'不吃宵夜',description:'这一餐不安排，前后的活动继续相连。',mode:'skip'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));
