@@ -1,5 +1,5 @@
 // 用户意图与求解结果分离：仅投影显式选择，不把自动排程变成预约。
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=36f4e0d02f4b2a0b';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=e9569bc880ec2643';
 const clone = value => structuredClone(value);
 const mealRoles = ['breakfast', 'lunch', 'dinner', 'supper'];
 
@@ -101,6 +101,7 @@ export function selectStageIntent(state, result, index, sceneId, activityIds, ca
   if (previous.sceneId === sceneId && Number.isFinite(previous.startMinute)) current.startMinute = previous.startMinute;
   else if (stage.sceneId === sceneId && Number.isFinite(stage.fixedStartMinute)) current.startMinute = stage.fixedStartMinute;
   next.prefix = [...precedingChoices(state, result, index), current];
+  if(state.splitStageIndexes)next.splitStageIndexes=state.splitStageIndexes.filter(i=>i<=index+1);
   releaseLaterMeals(next, result, index, stage.mealRole || null);
   if (stage.mealRole) {
     next.context.mealChoices = {...next.context.mealChoices, [stage.mealRole]: {sceneId, activityIds: [...activityIds]}};
@@ -124,6 +125,7 @@ export function selectMealIntent(state, result, role, choice, fromStage, catalog
   // 失败餐菜单用于恢复时，只沿用结果中真实已有的前序，不重带造成失败的待提交前缀。
   next.prefix = result.ok === true ? precedingChoices(state, result, fromStage)
     : result.stages.slice(0, fromStage).map(projectStageChoice);
+  if(state.splitStageIndexes)next.splitStageIndexes=state.splitStageIndexes.filter(i=>i<fromStage);
   if (next.prefix.some(stage => stage.mealRole === role)) throw new RangeError('用餐边界位于当前餐次之后。');
   if (!special) {
     const current = {sceneId: choice.sceneId, activityIds: [...choice.activityIds], mealRole: role};
@@ -163,6 +165,8 @@ export function splitStageIntent(state, result, index, catalog) {
   if(!parts)throw new RangeError('这段安排太短，暂时不能再拆分。');
   const next=setStageDurationIntent(state,result,index,parts[0],catalog);
   next.context.minimumStageCount=next.prefix.length+1;
+  // 记录拆分新增的后一段；重新推荐更远的阶段时不沿用旧位置。
+  next.splitStageIndexes=[...(state.splitStageIndexes||[]).filter(i=>i<=index),index+1];
   delete next.context.endAfterStage;
   return next;
 }
@@ -173,6 +177,7 @@ export function mergeStageIntent(state, result, index, catalog) {
   const merge=mergeStayOption(scene,stage,result.stages[index+1]);
   if(!merge || merge.error)throw new RangeError(merge?.error || '只能合并相邻的普通安排，不能跨过餐次或预约。');
   const next=selectStageIntent(state,result,index,stage.sceneId,stage.activityIds,catalog,{durationMinutes:merge.minutes});
+  if(state.splitStageIndexes)next.splitStageIndexes=state.splitStageIndexes.filter(i=>i!==index+1).map(i=>i>index+1?i-1:i);
   // 撤销一次拆分的阶段下限，避免求解器立即把刚合并的时间再次拆开。
   const minimum=Math.max(0,(next.context.minimumStageCount??0)-1);
   if(minimum)next.context.minimumStageCount=minimum;else delete next.context.minimumStageCount;
@@ -197,6 +202,7 @@ export function exploreIntent(state, exploration, seed) {
   const next = clone(state), mealChoices = state.context.mealChoices || {};
   next.exploration = exploration;
   next.prefix = clone(state.prefix || []);
+  if(state.splitStageIndexes)next.splitStageIndexes=state.splitStageIndexes.filter(i=>i<=next.prefix.length);
   next.context.mealChoices = {};
   const fixedRoles=new Set(next.prefix.map(choice=>choice.mealRole).filter(Boolean));
   for(const [role,choice] of Object.entries(mealChoices))if(fixedRoles.has(role))next.context.mealChoices[role]=clone(choice);
@@ -213,6 +219,7 @@ export function exploreIntent(state, exploration, seed) {
 export function restartIntent(state, seed) {
   const next=clone(state);
   next.prefix=[];next.context.explicitConsentIds=[];
+  delete next.splitStageIndexes;
   delete next.context.endAfterStage;delete next.context.minimumStageCount;
   next.context.mealChoices=Object.fromEntries(Object.entries(next.context.mealChoices||{}).map(([role,choice])=>[role,specialMealMode(role,choice)?clone(choice):{mode:'together'}]));
   return exploreIntent(next,next.exploration,seed);
@@ -222,7 +229,7 @@ export function updateContextIntent(state,context) {
   const hard=['periodIds','budget','weather','area','school','campusArea','fatigueA','fatigueB','quietRequired','crowdAvoidance','dietaryRestrictions','preparedIds','resources','bans','requiredSceneIds','anchors','robust','mealNeed'];
   const changed=hard.some(key=>JSON.stringify(state.context[key]??null)!==JSON.stringify(context[key]??null));
   const next=clone(state);next.context=clone(context);
-  if(changed){next.prefix=[];delete next.context.endAfterStage;delete next.context.minimumStageCount;}
+  if(changed){next.prefix=[];delete next.splitStageIndexes;delete next.context.endAfterStage;delete next.context.minimumStageCount;}
   else for(const key of ['endAfterStage','minimumStageCount'])if(state.context[key]!==undefined)next.context[key]=state.context[key];
   return {next,hardChanged:changed};
 }

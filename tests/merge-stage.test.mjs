@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {catalog} from '../data/catalog.mjs';
 import {planDate,verifyPlanWitness} from '../engine.mjs';
-import {mergeStageIntent,splitStageIntent,projectStageChoice} from '../planning-intent.mjs';
+import {mergeStageIntent,splitStageIntent,projectStageChoice,selectStageIntent,exploreIntent,restartIntent,updateContextIntent} from '../planning-intent.mjs';
 import {mergeStayOption} from '../duration-policy.mjs';
 import {buildActionJobs} from '../candidate-validation.mjs';
 
@@ -33,9 +33,11 @@ test('雨夜拆分后能合回原来一段，连续操作不遗留强制拆分�
   for(let i=0;i<2;i++){
     current=split(current.input,current.result,0);
     assert.equal(current.result.stages.length,2);
+    assert.deepEqual(current.input.splitStageIndexes,[1]);
     const before=structuredClone(current);
     current=merge(current.input,current.result,0);
     assert.equal(current.result.stages.length,1);
+    assert.deepEqual(current.input.splitStageIndexes,[]);
     assert.deepEqual(details(current.result.stages[0]),details(original.stages[0]));
     assert.equal(current.result.totalCost[1],0);
     assert.equal(before.result.stages.length,2,'意图操作不能修改旧结果');
@@ -59,11 +61,26 @@ test('拆成三段后可以逐次合并，剩余段数要求随之减少',()=>{
   let current=split(state(night),checked(night),0);
   current=split(current.input,current.result,1);
   assert.equal(current.result.stages.length,3);
+  assert.deepEqual(current.input.splitStageIndexes,[1,2]);
   current=merge(current.input,current.result,0);
   assert.equal(current.result.stages.length,2);
+  assert.deepEqual(current.input.splitStageIndexes,[1]);
   current=merge(current.input,current.result,0);
   assert.equal(current.result.stages.length,1);
   assert.equal(current.result.stages[0].minutes,140);
+});
+
+test('拆分来源随选择保留，全部重选或改变硬条件后清除，不给普通阶段加合并入口',()=>{
+  const current=split(state(night),checked(night),0);
+  for(const index of [0,1]){
+    const stage=current.result.stages[index];
+    const next=selectStageIntent(current.input,current.result,index,stage.sceneId,stage.activityIds,catalog);
+    assert.deepEqual(next.splitStageIndexes,[1]);
+  }
+  assert.deepEqual(exploreIntent(current.input,10,123).splitStageIndexes,[1]);
+  assert.equal(restartIntent(current.input,123).splitStageIndexes,undefined);
+  assert.equal(updateContextIntent(current.input,{...current.input.context,weather:'clear'}).next.splitStageIndexes,undefined);
+  assert.equal(state(night).splitStageIndexes,undefined);
 });
 
 test('中间两段合并保留已确认早餐及前序时间，后面午餐仍然安排',()=>{

@@ -1,5 +1,5 @@
-import {isSceneInSchoolScope} from './school-scope.mjs?v=36f4e0d02f4b2a0b';
-import {isSceneAvailableInContext} from './scene-time.mjs?v=36f4e0d02f4b2a0b';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=e9569bc880ec2643';
+import {isSceneAvailableInContext} from './scene-time.mjs?v=e9569bc880ec2643';
 
 export function mealModeCard(role) {
   if(role==='breakfast')return {id:'__breakfast_together',title:'一起吃早餐'};
