@@ -1,5 +1,5 @@
 // 界面展示使用统一单位；算法与硬约束由 engine.mjs 负责。
-import {normalizePeriods} from './time-periods.mjs?v=f9ba8b25a44e98dd';
+import {normalizePeriods} from './time-periods.mjs?v=70d76ccc0868cf19';
 export const formatTime = m => {
   const minute=Math.round(m),day=Math.floor(minute/1440),clock=((minute%1440)+1440)%1440;
   return `${day>0?'次日':''}${String(Math.floor(clock/60)).padStart(2,'0')}:${String(clock%60).padStart(2,'0')}`;

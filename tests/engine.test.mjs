@@ -203,12 +203,14 @@ test('新目录0→90→0可复现，前缀保持、输入不变，mall可浏览
   assert.ok(selected.trace.some(t => /^R-/.test(t.ruleId)));
 });
 
-test('低探索无匹配兴趣时允许空组合，低负担不靠休息或无限填满', () => {
+test('低探索自动推荐实际玩法，手工空选仍合法，低负担不靠无限休息', () => {
   const planner = createPlanner(fullCatalog);
   const input = { duration: 180, windows: [{ id: 'pm', startMinute: 840, endMinute: 1020 }], area: 'near', robust: true, fatigueA: 2, fatigueB: 2 };
   const initial = planner.plan(input, 0);
   assert.notEqual(catalog.scenes.find(sc => sc.id === initial.stages[0].sceneId).kind, 'rest');
-  assert.deepEqual(initial.stages[0].activityIds, []);
+  assert.ok(initial.stages[0].activityIds.length>0);
+  const empty=planner.plan(input,0,[{sceneId:'mall',activityIds:[]}]);
+  assert.equal(empty.ok,true);assert.deepEqual(empty.stages[0].activityIds,[]);
   assert.ok(initial.stages.length < 5);
   assert.ok(initial.stages.every(s => catalog.scenes.find(sc => sc.id === s.sceneId).kind !== 'rest'));
   const three = ['arcade_basket', 'mall_stores', 'mall_snacks'];

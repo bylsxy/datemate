@@ -70,7 +70,8 @@
         90
       ],
       "activityOverrides": {},
-      "socialDemand": 0
+      "socialDemand": 0,
+      "novelty": 15
     },
     {
       "id": "dorm_downstairs_shelter",
@@ -138,7 +139,8 @@
           "description": "各说一件下次想一起做的事，先记下来，有空再约。"
         }
       },
-      "socialDemand": 0
+      "socialDemand": 0,
+      "novelty": 20
     },
     {
       "id": "taishan_supermarket_front",
@@ -3761,7 +3763,8 @@
       "socialDemand": 0,
       "tags": [
         "daily",
-        "quiet"
+        "quiet",
+        "exam"
       ],
       "weather": [
         "clear"
@@ -3958,7 +3961,8 @@
       "tags": [
         "celebration",
         "romantic",
-        "private"
+        "private",
+        "birthday"
       ],
       "weather": [
         "clear",
@@ -4099,7 +4103,9 @@
       ],
       "activityIds": [
         "amusement_pick_three",
-        "amusement_photo_challenge"
+        "amusement_photo_challenge",
+        "ferris_view",
+        "ferris_future"
       ],
       "dailyWindows": [
         {
@@ -4108,7 +4114,7 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "availabilityNote": "游园时长含园内项目与摩天轮，费用按含摩天轮的套票设计；实际票种、排队和开放须确认。",
       "activityOverrides": {},
       "requires": [
         "opening_checked"
@@ -4120,14 +4126,14 @@
     {
       "id": "ferris_wheel_ride",
       "place": {
-        "name": "游乐园摩天轮",
+        "name": "城市观景摩天轮",
         "kind": "ordinary",
-        "category": "原创双人活动地点类型",
+        "category": "城市观景",
         "universityId": "",
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "从高一点的地方看看刚才走过的路。",
+      "description": "坐一轮独立城市摩天轮，从高一点的地方看看城市。",
       "scauOnly": false,
       "minutes": 40,
       "durationRange": [
@@ -4135,10 +4141,10 @@
         70
       ],
       "cost": [
-        0,
-        0
+        80,
+        200
       ],
-      "load": 2,
+      "load": 0,
       "kind": "play",
       "area": "off",
       "indoor": false,
@@ -4147,7 +4153,7 @@
       "mental": 1,
       "bold": false,
       "crowdRisk": "unknown",
-      "seated": false,
+      "seated": true,
       "socialDemand": 0,
       "tags": [
         "play",
@@ -4174,11 +4180,9 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "规划10:00–21:00；必须先入游乐园，按当日项目开放和停运安排确认；场景费用为套票已含摩天轮时的设计值，另收费时手动调整。",
+      "availabilityNote": "独立城市设施，费用为双人单轮设计区间，时长含入场与一轮乘坐；不需先游乐园，具体票价和运营须确认。",
       "activityOverrides": {},
-      "predecessorIds": [
-        "amusement_park_day"
-      ],
+      "predecessorIds": [],
       "requires": [
         "opening_checked"
       ],
@@ -5535,7 +5539,8 @@
       "tags": [
         "creative",
         "romantic",
-        "private"
+        "private",
+        "anniversary"
       ],
       "weather": [
         "clear",

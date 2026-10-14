@@ -1,22 +1,22 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=f9ba8b25a44e98dd';
-import {createTimeline} from './timeline.mjs?v=f9ba8b25a44e98dd';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=f9ba8b25a44e98dd';
-import {createReasonView} from './reasons-view.mjs?v=f9ba8b25a44e98dd';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=f9ba8b25a44e98dd';
-import {createPlacePicker} from './place-picker.mjs?v=f9ba8b25a44e98dd';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=f9ba8b25a44e98dd';
-import {dietaryOptions} from './data/activities.mjs?v=f9ba8b25a44e98dd';
-import * as reasoning from './reasoning.mjs?v=f9ba8b25a44e98dd';
-import {normalizePeriods} from './time-periods.mjs?v=f9ba8b25a44e98dd';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=f9ba8b25a44e98dd';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=f9ba8b25a44e98dd';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=70d76ccc0868cf19';
+import {createTimeline} from './timeline.mjs?v=70d76ccc0868cf19';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=70d76ccc0868cf19';
+import {createReasonView} from './reasons-view.mjs?v=70d76ccc0868cf19';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=70d76ccc0868cf19';
+import {createPlacePicker} from './place-picker.mjs?v=70d76ccc0868cf19';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=70d76ccc0868cf19';
+import {dietaryOptions} from './data/activities.mjs?v=70d76ccc0868cf19';
+import * as reasoning from './reasoning.mjs?v=70d76ccc0868cf19';
+import {normalizePeriods} from './time-periods.mjs?v=70d76ccc0868cf19';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=70d76ccc0868cf19';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=70d76ccc0868cf19';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=f9ba8b25a44e98dd',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=70d76ccc0868cf19',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,onMerge:commitMerge,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
@@ -58,6 +58,8 @@ function revealError(element){
 function note(text,error=false){$('#status').textContent=text;$('#status').classList.toggle('error',error);$('#status').classList.toggle('sr-only',!error);if(error)revealError($('#status'));}
 function planningError(r,context){
   const errors=(r?.errors||[]).join(' '),departure=catalog.departures?.find(d=>d.id===context.departureChoice);
+  const unavailable=(context.requiredSceneIds||[]).map(id=>sceneById.get(id)).filter(scene=>scene&&!isSceneInUIScope(scene,context));
+  if(unavailable.length)return `${unavailable.map(scene=>scene.title).join('、')}在这个时段或范围不可用，请调整条件或移除必去。`;
   const departureHigh=(departure?.costByCityTier?.[context.cityTier]||departure?.cost||[0,0])[1];
   if(errors.includes('H_BUDGET')||(context.budget!==null&&departureHigh>context.budget))return '所选活动和分别方式超出当前预算，可以调整预算、取消活动或改选分别方式。';
   if(errors.includes('H_PREPARATION')||errors.includes('H_PREDECESSOR'))return '这项玩法还缺前序活动产生的物品或成果，请先安排前面的活动。';
@@ -67,6 +69,11 @@ function planningError(r,context){
   return '当前条件还没有可行安排，请调整条件或用餐选择。';
 }
 function snapshot(){return clone(pending?.next || active?.next || state);}
+function displayedIntent(){
+  const current=snapshot(),exploration=Number($('#exploration').value);
+  // 提交表单时立即承接滑块草稿，不等待130ms防抖完成。
+  return exploration===current.exploration?current:exploreIntent(current,exploration,crypto.getRandomValues(new Uint32Array(1))[0],catalog);
+}
 function dispatch(job){busy=true;active=job;worker.postMessage({id:job.id,state:job.next,search:job.search,knownPlan:job.knownPlan,selectionMode:job.selectionMode});}
 function compute(next,message='安排已更新。横滑找灵感，点击才会选择。',{expectedDigest=null,search=null,selectionMode=search?.selectionMode??'utility_best',knownPlan=null,fromStage=0,choice=null,mealChoice=null,departureChoice=null,preserveThrough=-1,preserveKey=null}={}){
   next={...next,context:normalizeUIScope(next.context)};
@@ -114,7 +121,7 @@ function readContext({strict=true}={}){
   if(strict&&raw!==''&&(!Number.isFinite(Number(raw))||Number(raw)<0))throw Error('请填写0或更大的有效预算。');
   c.periodIds=periods?.periodIds||ids;c.mealChoices=clone(snapshot().context.mealChoices||{});
   if(periods){c.duration=periods.duration;c.windows=periods.windows;}else{delete c.duration;delete c.windows;}
-  c.budget=$('#saving').checked?50:raw===''?null:Number(raw);
+  c.saving=$('#saving').checked;c.budget=c.saving?50:raw===''?null:Number(raw);
   for(const id of contextSelects)c[id]=$(`#${id}`).value;
   c.reunion=$('#reunion').checked;c.themes=checked('themes');
   Object.assign(c,scopeControls.read());placePicker.setScope(c);c.fatigueA=$('#tired-a').checked?6:2;c.fatigueB=$('#tired-b').checked?6:2;
@@ -133,8 +140,10 @@ function readContext({strict=true}={}){
   return c;
 }
 function syncControls(){
+  // 用户正在输入的草稿优先，旧计算结果不能在防抖期间把文字擦掉。
+  if(conditionTimer!=null||sliderTimer!=null)return;
   const c=state.context=normalizeUIScope(state.context);
-  $('#budget').value=c.budget===null?'':c.budget;$('#saving').checked=c.budget===50;$('#budget').disabled=$('#saving').checked;
+  $('#budget').value=c.budget===null?'':c.budget;$('#saving').checked=c.saving===true;$('#budget').disabled=$('#saving').checked;
   for(const id of contextSelects)$(`#${id}`).value=(id==='weather'&&c[id]==='unknown')?'cloudy':c[id]??defaultContext()[id];
   $('#reunion').checked=!!c.reunion;$('#ban-keywords').value=c.banKeywords||'';
   $('#tired-a').checked=c.fatigueA>=6;$('#tired-b').checked=c.fatigueB>=6;
@@ -179,7 +188,7 @@ function render({preserveThrough=-1,preserveKey=null}={}){
 async function commitStage(index,sceneId,activityIds,{knownPlan=null}={}){
   if(!result?.ok||!conditionsValid||busy||!knownPlan?.length)return false;
   if(!isSceneInUIScope(sceneById.get(sceneId),snapshot().context))return false;
-  clearTimeout(sliderTimer);
+  clearTimeout(sliderTimer);sliderTimer=null;
   const next=selectStageIntent(snapshot(),result,index,sceneId,activityIds,catalog,{durationMinutes:knownPlan[index]?.durationMinutes});
   const r=await compute(next,'当前及之前阶段的卡片顺序保留，后续安排已更新。',{knownPlan,fromStage:index,choice:{index,sceneId,activityIds},preserveThrough:index,preserveKey:`stage-${index}`});
   return !!r?.ok;
@@ -187,7 +196,7 @@ async function commitStage(index,sceneId,activityIds,{knownPlan=null}={}){
 async function commitMeal(role,choice,{fromStage=0,knownPlan=null}={}){
   if(!result||!conditionsValid||busy||(result.ok&&!knownPlan?.length))return false;
   if(choice.sceneId&&!isSceneInUIScope(sceneById.get(choice.sceneId),snapshot().context))return false;
-  clearTimeout(sliderTimer);
+  clearTimeout(sliderTimer);sliderTimer=null;
   if(choice.sceneId&&knownPlan?.[fromStage]?.sceneId===choice.sceneId&&Number.isInteger(knownPlan[fromStage].durationMinutes))choice={...choice,durationMinutes:knownPlan[fromStage].durationMinutes};
   const next=selectMealIntent(snapshot(),result,role,choice,fromStage,catalog);
   const r=await compute(next,'餐卡顺序保留，后续用餐安排已更新。',{knownPlan,fromStage,mealChoice:{role,choice},preserveThrough:fromStage,preserveKey:`meal-${role}`});
@@ -213,7 +222,7 @@ async function commitMerge(index,{knownPlan=null}={}){
 }
 async function commitDeparture(id,{knownPlan=null}={}){
   if(!result||!conditionsValid||busy||(result.ok&&!knownPlan?.length))return false;
-  clearTimeout(sliderTimer);const next=selectDepartureIntent(snapshot(),result,id,catalog);
+  clearTimeout(sliderTimer);sliderTimer=null;const next=selectDepartureIntent(snapshot(),result,id,catalog);
   const r=await compute(next,'分别方式已更新。',{knownPlan,departureChoice:id,preserveThrough:result.stages.length,preserveKey:'departure'});return !!r?.ok;
 }
 const nodeById=new Map(graph.nodes.map(n=>[n.id,n]));
@@ -273,8 +282,8 @@ function conditionsError(message=''){
   if(message){++sequence;stopValidation();pending?.resolve(null);pending=null;$('#export').disabled=true;note('');$('#conditions').open=true;revealError(error);}
 }
 async function applyConditions({restart=false}={}){
-  clearTimeout(sliderTimer);clearTimeout(conditionTimer);conditionTimer=null;
-  try{const updated=updateContextIntent(snapshot(),readContext()),next=restart?restartIntent(updated.next,crypto.getRandomValues(new Uint32Array(1))[0]):updated.next;const reset=restart||updated.hardChanged;conditionsError();await compute(next,restart?'已按当前条件重新择优规划。':updated.hardChanged?'条件已更新。':'偏好已更新，你选好的安排保留。',{preserveThrough:reset?-1:next.prefix.length-1,knownPlan:reset?null:result?.continuationWitness,selectionMode:'utility_best'});}
+  clearTimeout(sliderTimer);sliderTimer=null;clearTimeout(conditionTimer);conditionTimer=null;
+  try{const updated=updateContextIntent(displayedIntent(),readContext()),next=restart?restartIntent(updated.next,crypto.getRandomValues(new Uint32Array(1))[0]):updated.next;const reset=restart||updated.hardChanged;conditionsError();await compute(next,restart?'已按当前条件重新择优规划。':updated.hardChanged?'条件已更新。':'偏好已更新，你选好的安排保留。',{preserveThrough:reset?-1:next.prefix.length-1,knownPlan:reset?null:result?.continuationWitness,selectionMode:next.exploration>0?'seeded_exploration':'utility_best'});}
   catch(e){conditionsError(e.message.replace(/^H_[A-Z_]+:\s*/,''));}
 }
 $('#conditions-form').addEventListener('change',ev=>{
@@ -290,8 +299,9 @@ $('#conditions-form').addEventListener('change',ev=>{
   if(ev.target.id==='saving'){$('#budget').disabled=ev.target.checked;if(ev.target.checked)$('#budget').value=50;else $('#budget').value='';}applyConditions();
 });
 $('#budget').addEventListener('input',()=>{clearTimeout(conditionTimer);$('#export').disabled=true;conditionTimer=setTimeout(applyConditions,160);});
-$('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);paintExploration(e);clearTimeout(sliderTimer);sliderTimer=setTimeout(()=>{const seed=crypto.getRandomValues(new Uint32Array(1))[0];const next=exploreIntent(snapshot(),e,seed,catalog);compute(next,'已保留你的选择，为后面换些灵感。',{selectionMode:'seeded_exploration',preserveThrough:next.prefix.length-1});},130);});
-$('#restart-plan').addEventListener('click',()=>{if(!conditionsValid||busy)return;clearTimeout(sliderTimer);const next=restartIntent(snapshot(),crypto.getRandomValues(new Uint32Array(1))[0]);compute(next,'已重新推荐，仍可从上往下慢慢选。',{selectionMode:'utility_best'});});
+$('#ban-keywords').addEventListener('input',()=>{clearTimeout(conditionTimer);$('#export').disabled=true;conditionTimer=setTimeout(applyConditions,160);});
+$('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);paintExploration(e);clearTimeout(sliderTimer);sliderTimer=null;sliderTimer=setTimeout(()=>{sliderTimer=null;const seed=crypto.getRandomValues(new Uint32Array(1))[0];const next=exploreIntent(snapshot(),e,seed,catalog);compute(next,'已保留你的选择，为后面换些灵感。',{selectionMode:'seeded_exploration',preserveThrough:next.prefix.length-1});},130);});
+$('#restart-plan').addEventListener('click',()=>{if(!conditionsValid||busy)return;clearTimeout(sliderTimer);sliderTimer=null;const next=restartIntent(displayedIntent(),crypto.getRandomValues(new Uint32Array(1))[0]);compute(next,'已重新推荐，仍可从上往下慢慢选。',{selectionMode:next.exploration>0?'seeded_exploration':'utility_best'});});
 function closeMenu(){ $('#more-menu').hidden=true;$('#more-menu-toggle').setAttribute('aria-expanded','false'); }
 function showView(name){
   closeMenu();$$('.view').forEach(x=>x.hidden=x.id!==`view-${name}`);

@@ -1,5 +1,5 @@
 /** 探索只改变搜索和展露顺序；真实效用与硬约束仍由引擎计算。 */
-export const EXPLORATION_VERSION = 'seeded-exploration-1.2';
+export const EXPLORATION_VERSION = 'seeded-exploration-1.3';
 
 export function normalizeExplorationSeed(seed) {
   if (seed === undefined || seed === null) return null;
@@ -25,12 +25,24 @@ export function createExploration(exploration, seed) {
   const strength = (Math.max(0, Math.min(100, exploration)) / 100) ** 2;
   const noise = (scope, key) => (2 * unitHash(JSON.stringify([seed, scope, key])) - 1) * strength;
   function select(ordered, limit, { key, value, bucket = key, scope, temperature = 60, elite = 0.25, reorder = false } = {}) {
+    if (!ordered.length || limit <= 0) return [];
     if (!strength || !reorder && ordered.length <= limit) return ordered.slice(0, limit);
     limit = Math.min(limit, ordered.length);
     // 保留择优槽位，剩余槽位在不同场景间轮转；重复仍合法，不作硬禁止。
     const keep = Math.min(limit, Math.max(1, Math.ceil(limit * (1 - strength * (1 - elite)))));
-    const selected = ordered.slice(0, keep), retained = new Set(selected);
-    const ranked = ordered.slice(keep).map((item, index) => ({ item, index, rank: value(item) + temperature * noise(scope, key(item)) }))
+    const selected = [ordered[0]], retained = new Set(selected);
+    const counts = new Map([[bucket(ordered[0]), 1]]);
+    // 择优槽也软减同地点的组合重复，避免活动排列独占有限束宽；最高真实效用仍保留。
+    while (selected.length < keep) {
+      let chosen, bestRank = -Infinity;
+      for (const item of ordered) if (!retained.has(item)) {
+        const rank = value(item) - temperature * strength * (counts.get(bucket(item)) || 0);
+        if (rank > bestRank) { chosen = item; bestRank = rank; }
+      }
+      selected.push(chosen); retained.add(chosen);
+      counts.set(bucket(chosen), (counts.get(bucket(chosen)) || 0) + 1);
+    }
+    const ranked = ordered.filter(item => !retained.has(item)).map((item, index) => ({ item, index, rank: value(item) + temperature * noise(scope, key(item)) }))
       .sort((a, b) => b.rank - a.rank || a.index - b.index);
     const groups = new Map();
     for (const { item } of ranked) {

@@ -49,8 +49,10 @@ test('树木园仅白天，观萤保留季节与不保证出现的限制', () =>
   assert.match(scene('scau_orchid_firefly').availabilityNote, /不保证全年或每晚/);
 });
 
-test('园区划船、摩天轮和营地晚间保留真实前置，旅行卡独立包含往返与餐食', () => {
-  for (const [next, prior] of [['park_lake_boating', 'park_lake_arrival'], ['ferris_wheel_ride', 'amusement_park_day'], ['camp_evening', 'camp_day_setup']]) {
+test('园区划船与营地保留前置，城市摩天轮及旅行卡可独立安排', () => {
+  assert.deepEqual(scene('ferris_wheel_ride').predecessorIds??[],[]);
+  assert.ok(scene('ferris_wheel_ride').cost[0]>0);
+  for (const [next, prior] of [['park_lake_boating', 'park_lake_arrival'], ['camp_evening', 'camp_day_setup']]) {
     assert.ok(scene(next).predecessorIds.includes(prior));
     for (const aid of scene(next).activityIds) assert.ok(activity(aid).predecessorIds.includes(prior));
     assert.ok(compiled.graph.edges.some(e => e.subject === next && e.predicate === 'follows' && e.object === prior));

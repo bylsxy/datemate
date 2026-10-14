@@ -23,11 +23,11 @@ export function normalizePreferences(raw) {
 export function preferencePolicy(ctx, scene, place, tags, graphMatches, exploration, activities = []) {
   const contributions = {}, trace = [], warnings = [];
   const factKeys = {
-    SOFT_RAIN: ['weather'], SOFT_WEATHER_MATCH: ['weather'], SOFT_QUIET: ['quietRequired'], SOFT_CROWD: ['crowdAvoidance'],
+    SOFT_RAIN: ['weather'], SOFT_CLEAR_OUTDOOR: ['weather'], SOFT_WEATHER_MATCH: ['weather'], SOFT_QUIET: ['quietRequired'], SOFT_CROWD: ['crowdAvoidance'],
     SOFT_QUEUE: ['weekPart'], SOFT_INDOOR: ['preferences'], SOFT_MENTAL: ['mentalDemand'], SOFT_RECOVERY: ['energy', 'mood', 'season'],
     SOFT_CYCLE_COMFORT: ['cyclePhase'], SOFT_FIRST_MEETING: ['relationship'], SOFT_RELATIONSHIP: ['relationship', 'reunion'],
     SOFT_HOBBY_EXCHANGE: ['mood', 'preferencesA', 'preferencesB'], SOFT_OCCASION: ['occasion'], SOFT_HOLIDAY: ['season'],
-    SOFT_THEMES: ['themes'], SOFT_PERSONALITY: ['personalityA', 'personalityB'], SOFT_STEADY: ['planStyle'],
+    SOFT_THEMES: ['themes'], SOFT_PERSONALITY: ['personalityA', 'personalityB'], SOFT_STEADY: ['planStyle'], SOFT_EXAM_CONTEXT: ['season'],
   };
   const add = (id, amount, message, inputs = []) => {
     if (!amount) return;
@@ -39,6 +39,7 @@ export function preferencePolicy(ctx, scene, place, tags, graphMatches, explorat
   // 所选玩法可以改变同一地点的社交性；未选拼桌活动不会增加双人玩法的负担。
   const social = Math.max(scene.socialDemand ?? 1, ...activities.map(a => a.socialDemand ?? 0));
   if (ctx.weather === 'rain') add('SOFT_RAIN', place.indoor || place.sheltered ? 8 : -12, '雨天优先有遮蔽的体验，露天候选仍可选择');
+  if (ctx.weather === 'clear' && place.indoor === false && place.weather?.includes('clear')) add('SOFT_CLEAR_OUTDOOR', 4, '晴天温和优先适合晴日的户外体验');
   if (ctx.weather === 'clear' && place.indoor === false) warnings.push('晴天户外记得防晒、补水。');
   if (ctx.weather !== 'cloudy' && place.weather?.length && !place.weather.includes(ctx.weather)) add('SOFT_WEATHER_MATCH', -6, '天气适配作为排序参考');
   if (ctx.quietRequired) add('SOFT_QUIET', place.quiet === true ? 10 : place.quiet === false ? -10 : -3, '安静偏好影响排序');
@@ -56,7 +57,14 @@ export function preferencePolicy(ctx, scene, place, tags, graphMatches, explorat
     const matches = [...ctx.preferencesA, ...ctx.preferencesB].filter(t => graphMatches.has(t) || tags.includes(t));
     add('SOFT_HOBBY_EXCHANGE', Math.min(12, matches.length * 4) + (tags.includes('shared_hobby') ? 5 : 0), '开心时鼓励体验一方兴趣或交换爱好');
   }
-  if (ctx.occasion !== 'daily') add('SOFT_OCCASION', tags.includes(ctx.occasion === 'confession' ? 'confession' : 'celebration') ? 8 : 0, '纪念场合与明确主题匹配');
+  const occasionMismatch = tags.includes('birthday') && ctx.occasion !== 'birthday' || tags.includes('confession') && ctx.occasion !== 'confession';
+  if (occasionMismatch) add('SOFT_OCCASION', -8, '专属场合与本次目的不同时降低倾向', [{ id: 'selected.tags', value: tags }]);
+  else if (ctx.occasion !== 'daily') {
+    const exact = tags.includes(ctx.occasion);
+    const general = ctx.occasion !== 'confession' && tags.includes('celebration');
+    add('SOFT_OCCASION', exact ? 16 : general ? 8 : 0, '专属场合优先于通用庆祝体验', [{ id: 'selected.tags', value: tags }]);
+  }
+  if (tags.includes('exam')) add('SOFT_EXAM_CONTEXT', ctx.season === 'exam' ? 8 : -8, '临考短会随考试时期调整倾向');
   if (ctx.season === 'holiday') add('SOFT_HOLIDAY', tags.includes('travel') || tags.includes('celebration') ? 5 : 0, '假期温和鼓励旅行和庆祝体验');
   add('SOFT_THEMES', ctx.themes.filter(t => tags.includes(t)).length * 6, '明示主题匹配');
   const personalities = [ctx.personalityA, ctx.personalityB].filter(Boolean);

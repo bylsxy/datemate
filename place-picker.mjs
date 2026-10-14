@@ -1,5 +1,6 @@
-import {escapeHTML as esc} from './planner.mjs?v=f9ba8b25a44e98dd';
-import {isSceneInUIScope,normalizeUIScope} from './scope-ui.mjs?v=f9ba8b25a44e98dd';
+import {escapeHTML as esc} from './planner.mjs?v=70d76ccc0868cf19';
+import {isSceneInUIScope,normalizeUIScope} from './scope-ui.mjs?v=70d76ccc0868cf19';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=70d76ccc0868cf19';
 
 const searchable = scene => [scene.title, scene.id, ...(Array.isArray(scene.aliases) ? scene.aliases : []), ...(Array.isArray(scene.keywords) ? scene.keywords : [])].filter(Boolean).join(' ').toLocaleLowerCase();
 export function searchPlaces(scenes, query = '', context = {}) {
@@ -24,7 +25,8 @@ export function createPlacePicker({root, scenes, onChange}) {
   let choices = {bans:[], requiredSceneIds:[]};
   let scope = normalizeUIScope();
   function prune() {
-    for (const kind of Object.keys(choices)) choices[kind] = choices[kind].filter(id => scenes.some(scene => scene.id === id && scene.kind !== 'rest' && isSceneInUIScope(scene, scope)));
+    // 换时段只影响候选供应；显式必去仍保留，让引擎说明时间冲突。
+    for (const kind of Object.keys(choices)) choices[kind] = choices[kind].filter(id => scenes.some(scene => scene.id === id && scene.kind !== 'rest' && isSceneInSchoolScope(scene, scope)));
   }
   function options() {
     const previous = select.value, matches = searchPlaces(scenes, search.value, scope);

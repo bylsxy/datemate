@@ -46,16 +46,16 @@ test('夜间图谱移除关闭场景及专属活动和边，保留共享活动�
 });
 
 function element(){return {value:'',innerHTML:'',textContent:'',disabled:false,addEventListener(){}};}
-test('时段切换及导入旧必去清理关闭地点，下拉同步且不额外提交规划',()=>{
+test('时段切换保留显式必去以报告冲突，关闭地点从新增下拉移除',()=>{
   const elements=new Map(['place-search','place-select','place-choice-error','add-exclude','add-anchor','excluded-places','anchored-places'].map(id=>[`#${id}`,element()]));
   const picker=createPlacePicker({root:{querySelector:id=>elements.get(id),addEventListener(){}},scenes:[closed,open],onChange(){assert.fail('同步筛选不应提交规划');}});
   picker.setChoices({area:'near',periodIds:['morning'],requiredSceneIds:[closed.id]});
   assert.deepEqual(picker.getChoices().requiredSceneIds,[closed.id]);
   picker.setScope(night);
-  assert.deepEqual(picker.getChoices().requiredSceneIds,[]);
+  assert.deepEqual(picker.getChoices().requiredSceneIds,[closed.id]);
   assert.doesNotMatch(elements.get('#place-select').innerHTML,/day-only/);
   picker.setChoices({...night,anchors:[{sceneOnly:true,choice:{sceneId:closed.id}}]});
-  assert.deepEqual(picker.getChoices().requiredSceneIds,[]);
+  assert.deepEqual(picker.getChoices().requiredSceneIds,[closed.id]);
 });
 
 test('宵夜餐馆以30分钟连续开放窗筛选，29分钟排除',()=>{

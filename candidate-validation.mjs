@@ -1,5 +1,5 @@
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,projectStageChoice,setStageDurationIntent,splitStageIntent,mergeStageIntent} from './planning-intent.mjs?v=f9ba8b25a44e98dd';
-import {splitDuration} from './duration-policy.mjs?v=f9ba8b25a44e98dd';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,projectStageChoice,setStageDurationIntent,splitStageIntent,mergeStageIntent} from './planning-intent.mjs?v=70d76ccc0868cf19';
+import {splitDuration} from './duration-policy.mjs?v=70d76ccc0868cf19';
 // 候选验证与当前安排分开：只补全卡片评分，不改选中地点、时间线或复盘输出。
 export const candidateKey = ({stageIndex, sceneId, mealRole}) => `${mealRole ? `meal-${mealRole}` : `stage-${stageIndex}`}:${sceneId}`;
 

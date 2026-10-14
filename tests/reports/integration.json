@@ -1,69 +1,83 @@
 {
   "dataVersion": "knowledge-4.1.0",
-  "contentRevision": "461e854b4b191b9a",
+  "contentRevision": "aa0983edd347e558",
   "observations": [
     {
       "label": "baseline",
-      "elapsedMs": 358.2744,
+      "elapsedMs": 491.63009999999997,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "mall",
-          "activityIds": [],
-          "start": 860,
-          "end": 1040,
-          "fitScore": 89.82
+          "sceneId": "reading",
+          "activityIds": [
+            "book_recommend"
+          ],
+          "start": 850,
+          "end": 1035,
+          "fitScore": 84.36
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "3cf1f1a2"
+      "digest": "f4bd594e"
     },
     {
       "label": "exploration90",
-      "elapsedMs": 523.7109,
+      "elapsedMs": 665.3394999999999,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "public_lounge",
+          "sceneId": "scau_wandering",
           "activityIds": [
-            "talk_next"
+            "bridge_view",
+            "campus_watch"
           ],
-          "start": 860,
+          "start": 850,
+          "end": 1030,
+          "fitScore": 84.88
+        },
+        {
+          "sceneId": "campus_exam_short_meet",
+          "activityIds": [
+            "exam_one_good_thing"
+          ],
+          "start": 1040,
           "end": 1050,
-          "fitScore": 88.79
+          "fitScore": 50.46
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "2de34b24"
+      "digest": "7cb7ccf3"
     },
     {
       "label": "replayed",
-      "elapsedMs": 302.33230000000003,
+      "elapsedMs": 386.71389999999997,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "mall",
-          "activityIds": [],
-          "start": 860,
-          "end": 1040,
-          "fitScore": 89.82
+          "sceneId": "reading",
+          "activityIds": [
+            "book_recommend"
+          ],
+          "start": 850,
+          "end": 1035,
+          "fitScore": 84.36
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "3cf1f1a2"
+      "digest": "f4bd594e"
     },
     {
       "label": "mall-0",
-      "elapsedMs": 263.6232,
+      "elapsedMs": 609.3034000000002,
       "status": "feasible",
       "stages": [
         {
@@ -71,18 +85,18 @@
           "activityIds": [],
           "start": 860,
           "end": 1040,
-          "fitScore": 89.82
+          "fitScore": 84.27
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "3cf1f1a2"
+      "digest": "8f5d06aa"
     },
     {
       "label": "mall-1",
-      "elapsedMs": 308.6200000000001,
+      "elapsedMs": 511.6701000000003,
       "status": "feasible",
       "stages": [
         {
@@ -92,18 +106,18 @@
           ],
           "start": 860,
           "end": 1040,
-          "fitScore": 88.97
+          "fitScore": 84.42
         }
       ],
       "cost": [
         5,
         10
       ],
-      "digest": "f734d47b"
+      "digest": "4637bcf6"
     },
     {
       "label": "mall-2",
-      "elapsedMs": 385.9028999999998,
+      "elapsedMs": 624.6590000000001,
       "status": "feasible",
       "stages": [
         {
@@ -115,7 +129,7 @@
           ],
           "start": 860,
           "end": 1040,
-          "fitScore": 78.93
+          "fitScore": 80.66
         },
         {
           "sceneId": "rest",
@@ -129,104 +143,119 @@
         20,
         40
       ],
-      "digest": "1d40014e"
+      "digest": "b36ac573"
     },
     {
       "label": "shared-play",
-      "elapsedMs": 473.9761000000003,
+      "elapsedMs": 515.1125000000002,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "dessert",
+          "sceneId": "mall",
           "activityIds": [
-            "dessert_ice"
+            "arcade_basket"
           ],
-          "start": 850,
-          "end": 1030,
-          "fitScore": 91.95
+          "start": 860,
+          "end": 1035,
+          "fitScore": 87.8
+        },
+        {
+          "sceneId": "rest",
+          "activityIds": [],
+          "start": 1035,
+          "end": 1050,
+          "fitScore": 64.17
         }
       ],
       "cost": [
-        10,
-        35
+        5,
+        15
       ],
-      "digest": "b1747da6"
+      "digest": "21ecd037"
     },
     {
       "label": "rain-budget",
-      "elapsedMs": 241.62999999999965,
+      "elapsedMs": 368.96959999999945,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "mall",
-          "activityIds": [],
-          "start": 860,
-          "end": 1040,
-          "fitScore": 90.49
+          "sceneId": "reading",
+          "activityIds": [
+            "book_recommend"
+          ],
+          "start": 850,
+          "end": 1035,
+          "fitScore": 85.9
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "22d2fc8e"
+      "digest": "7a2d1647"
     },
     {
       "label": "nature-play",
-      "elapsedMs": 426.49800000000005,
+      "elapsedMs": 543.0331999999999,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
-          "activityIds": [],
+          "activityIds": [
+            "arcade_claw"
+          ],
           "start": 860,
-          "end": 1040,
-          "fitScore": 89.82
+          "end": 1035,
+          "fitScore": 85.22
         }
       ],
       "cost": [
-        0,
-        0
+        5,
+        10
       ],
-      "digest": "3cf1f1a2"
+      "digest": "ded07806"
     },
     {
       "label": "play-nature",
-      "elapsedMs": 444.8798999999999,
+      "elapsedMs": 514.0929999999998,
       "status": "feasible",
       "stages": [
         {
           "sceneId": "mall",
-          "activityIds": [],
+          "activityIds": [
+            "arcade_claw"
+          ],
           "start": 860,
-          "end": 1040,
-          "fitScore": 89.82
+          "end": 1035,
+          "fitScore": 85.22
         }
       ],
       "cost": [
-        0,
-        0
+        5,
+        10
       ],
-      "digest": "3cf1f1a2"
+      "digest": "f84c8d40"
     },
     {
       "label": "revision",
-      "elapsedMs": 183.86550000000034,
+      "elapsedMs": 322.96250000000055,
       "status": "feasible",
       "stages": [
         {
-          "sceneId": "mall",
-          "activityIds": [],
-          "start": 860,
-          "end": 1040,
-          "fitScore": 89.82
+          "sceneId": "reading",
+          "activityIds": [
+            "book_recommend"
+          ],
+          "start": 850,
+          "end": 1035,
+          "fitScore": 84.36
         }
       ],
       "cost": [
         0,
         0
       ],
-      "digest": "3cf1f1a2"
+      "digest": "f4bd594e"
     }
   ]
 }

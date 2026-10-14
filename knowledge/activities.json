@@ -2586,7 +2586,8 @@
       "novelty": 55,
       "tags": [
         "daily",
-        "quiet"
+        "quiet",
+        "exam"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -2611,7 +2612,8 @@
       "novelty": 55,
       "tags": [
         "daily",
-        "quiet"
+        "quiet",
+        "exam"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -2741,7 +2743,8 @@
       "tags": [
         "celebration",
         "romantic",
-        "private"
+        "private",
+        "birthday"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -2770,7 +2773,8 @@
       "tags": [
         "celebration",
         "romantic",
-        "private"
+        "private",
+        "birthday"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -2892,8 +2896,8 @@
       "id": "ferris_view",
       "assertionKind": "designed",
       "evidenceStatus": "original_design_real_world_unverified",
-      "title": "找刚才的路线",
-      "description": "在座舱内找出刚才去过的项目和远处地标。",
+      "title": "高处找地标",
+      "description": "在座舱内找出眼前的景色和远处地标。",
       "cost": [
         0,
         0
@@ -2913,9 +2917,7 @@
       ],
       "dietaryTags": [],
       "socialDemand": 0,
-      "predecessorIds": [
-        "amusement_park_day"
-      ]
+      "predecessorIds": []
     },
     {
       "id": "ferris_future",
@@ -2942,9 +2944,7 @@
       ],
       "dietaryTags": [],
       "socialDemand": 0,
-      "predecessorIds": [
-        "amusement_park_day"
-      ]
+      "predecessorIds": []
     },
     {
       "id": "park_dock_check",
@@ -3955,7 +3955,8 @@
       "tags": [
         "creative",
         "romantic",
-        "private"
+        "private",
+        "anniversary"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -3981,7 +3982,8 @@
       "tags": [
         "creative",
         "romantic",
-        "private"
+        "private",
+        "anniversary"
       ],
       "evidenceIds": [
         "E-design-focus",

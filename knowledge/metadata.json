@@ -28,7 +28,10 @@
     "night",
     "japanese",
     "chinese",
-    "outdoor"
+    "outdoor",
+    "birthday",
+    "anniversary",
+    "exam"
   ],
   "interestOptions": [
     {

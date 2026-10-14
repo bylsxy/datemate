@@ -1,5 +1,5 @@
-import {interestLabels} from './planner.mjs?v=f9ba8b25a44e98dd';
-import {dietaryOptions} from './data/activities.mjs?v=f9ba8b25a44e98dd';
+import {interestLabels} from './planner.mjs?v=70d76ccc0868cf19';
+import {dietaryOptions} from './data/activities.mjs?v=70d76ccc0868cf19';
 
 // 简短理由保留原调用方式；详细决策与原始规则轨迹由 explainDecision 提供。
 export function explainStage(stage,place,context={}) {
@@ -44,6 +44,7 @@ const featureLabels={
   repeatScenePenalty:'同地点重复扣分',unnecessaryRestPenalty:'非必要休息扣分',
   stageComplexityPenalty:'阶段复杂度扣分',novelty:'新鲜度',variety:'多样性',
   ruleBonus:'规则综合项',fairnessFloor:'双方体验最低值项',activeCoverage:'活动覆盖',waitPenalty:'等待扣分',
+  activityParticipation:'实际玩法参与',repeatedActivityPenalty:'相同玩法重复扣分',durationWeight:'停留收益权重',shortMeetingTimePenalty:'临考短会时间成本',
 };
 const traceTitles={KG_PREFERENCE_PATH:'图谱偏好匹配',RESOURCE_ACCOUNTING:'时间、费用与资源核算'};
 const scoreOf=value=>value.scoreStatus==='pending'||value.continuationFound===false?null:

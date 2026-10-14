@@ -32,7 +32,10 @@
     "night",
     "japanese",
     "chinese",
-    "outdoor"
+    "outdoor",
+    "birthday",
+    "anniversary",
+    "exam"
   ],
   "scenes": [
     {
@@ -306,7 +309,7 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "此为规划允许时段与两人费用设计区间；具体地点、开放、预约、交通与现场条件须确认。",
+      "availabilityNote": "游园时长含园内项目与摩天轮，费用按含摩天轮的套票设计；实际票种、排队和开放须确认。",
       "requires": [
         "opening_checked"
       ],
@@ -428,6 +431,108 @@
           "compositionMode": "included",
           "durationMode": "within_scene",
           "predecessorIds": [],
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 55,
+            "physicalLoad": 0,
+            "socialDemand": 0
+          },
+          "allowedSceneIds": [
+            "amusement_park_day"
+          ],
+          "allowedSceneTypes": [
+            "amusement_park_day"
+          ]
+        },
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 55,
+          "socialDemand": 0,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "ferris_view",
+          "assertionKind": "designed",
+          "evidenceStatus": "original_design_real_world_unverified",
+          "title": "高处找地标",
+          "description": "在座舱内找出眼前的景色和远处地标。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "tags": [
+            "play",
+            "romantic",
+            "photo"
+          ],
+          "evidenceIds": [
+            "E-design-focus",
+            "E-design-timing"
+          ],
+          "dietaryTags": [],
+          "predecessorIds": [],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
+          "requires": [],
+          "preconditions": [],
+          "provides": [],
+          "consumes": [],
+          "preparationIds": [],
+          "windows": [],
+          "mealRoles": [],
+          "featureValues": {
+            "novelty": 55,
+            "physicalLoad": 0,
+            "socialDemand": 0
+          },
+          "allowedSceneIds": [
+            "amusement_park_day"
+          ],
+          "allowedSceneTypes": [
+            "amusement_park_day"
+          ]
+        },
+        {
+          "group": "play",
+          "mode": "multi",
+          "novelty": 55,
+          "socialDemand": 0,
+          "requiresExplicitConsent": false,
+          "parameterStatus": "designed_not_measured",
+          "publicAllowed": true,
+          "id": "ferris_future",
+          "assertionKind": "designed",
+          "evidenceStatus": "original_design_real_world_unverified",
+          "title": "一个小愿望",
+          "description": "轮流说一个下次想一起实现的小愿望。",
+          "cost": [
+            0,
+            0
+          ],
+          "load": 0,
+          "tags": [
+            "play",
+            "romantic",
+            "photo"
+          ],
+          "evidenceIds": [
+            "E-design-focus",
+            "E-design-timing"
+          ],
+          "dietaryTags": [],
+          "predecessorIds": [],
+          "minutes": 0,
+          "compositionMode": "included",
+          "durationMode": "within_scene",
           "requires": [],
           "preconditions": [],
           "provides": [],
@@ -1205,7 +1310,8 @@
       "tags": [
         "celebration",
         "romantic",
-        "private"
+        "private",
+        "birthday"
       ],
       "weather": [
         "clear",
@@ -1283,7 +1389,8 @@
           "tags": [
             "celebration",
             "romantic",
-            "private"
+            "private",
+            "birthday"
           ],
           "evidenceIds": [
             "E-design-focus",
@@ -1337,7 +1444,8 @@
           "tags": [
             "celebration",
             "romantic",
-            "private"
+            "private",
+            "birthday"
           ],
           "evidenceIds": [
             "E-design-focus",
@@ -3788,7 +3896,8 @@
       "seated": false,
       "tags": [
         "daily",
-        "quiet"
+        "quiet",
+        "exam"
       ],
       "weather": [
         "clear"
@@ -3863,7 +3972,8 @@
           "load": 0,
           "tags": [
             "daily",
-            "quiet"
+            "quiet",
+            "exam"
           ],
           "evidenceIds": [
             "E-design-focus",
@@ -3913,7 +4023,8 @@
           "load": 0,
           "tags": [
             "daily",
-            "quiet"
+            "quiet",
+            "exam"
           ],
           "evidenceIds": [
             "E-design-focus",
@@ -6517,7 +6628,7 @@
     },
     {
       "fit": 78,
-      "novelty": 45,
+      "novelty": 20,
       "mental": 0,
       "socialDemand": 0,
       "dreamOnly": false,
@@ -6605,7 +6716,7 @@
       "featureValues": {
         "quiet": 1,
         "indoor": 0,
-        "novelty": 45,
+        "novelty": 20,
         "physicalLoad": -1,
         "mentalLoad": 0,
         "socialDemand": 0,
@@ -6713,7 +6824,7 @@
     },
     {
       "fit": 78,
-      "novelty": 45,
+      "novelty": 15,
       "mental": 0,
       "socialDemand": 0,
       "dreamOnly": false,
@@ -6808,7 +6919,7 @@
       "featureValues": {
         "quiet": 0,
         "indoor": 0,
-        "novelty": 45,
+        "novelty": 15,
         "physicalLoad": 0,
         "mentalLoad": 0,
         "socialDemand": 0,
@@ -8287,14 +8398,14 @@
       "publicAllowed": true,
       "id": "ferris_wheel_ride",
       "place": {
-        "name": "游乐园摩天轮",
+        "name": "城市观景摩天轮",
         "kind": "ordinary",
-        "category": "原创双人活动地点类型",
+        "category": "城市观景",
         "universityId": "",
         "campusArea": "",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "从高一点的地方看看刚才走过的路。",
+      "description": "坐一轮独立城市摩天轮，从高一点的地方看看城市。",
       "scauOnly": false,
       "minutes": 40,
       "durationRange": [
@@ -8302,16 +8413,16 @@
         70
       ],
       "cost": [
-        0,
-        0
+        80,
+        200
       ],
-      "load": 2,
+      "load": 0,
       "kind": "play",
       "area": "off",
       "indoor": false,
       "sheltered": false,
       "quiet": true,
-      "seated": false,
+      "seated": true,
       "tags": [
         "play",
         "romantic",
@@ -8333,24 +8444,22 @@
         }
       ],
       "availabilityBasis": "planning_default",
-      "availabilityNote": "规划10:00–21:00；必须先入游乐园，按当日项目开放和停运安排确认；场景费用为套票已含摩天轮时的设计值，另收费时手动调整。",
-      "predecessorIds": [
-        "amusement_park_day"
-      ],
+      "availabilityNote": "独立城市设施，费用为双人单轮设计区间，时长含入场与一轮乘坐；不需先游乐园，具体票价和运营须确认。",
+      "predecessorIds": [],
       "requires": [
         "opening_checked"
       ],
       "assertionKind": "designed",
-      "title": "游乐园摩天轮",
+      "title": "城市观景摩天轮",
       "typeId": "ferris_wheel_ride",
       "costByWeekPart": {
         "weekday": [
-          0,
-          0
+          80,
+          200
         ],
         "weekend": [
-          0,
-          0
+          80,
+          200
         ]
       },
       "default": [],
@@ -8368,7 +8477,7 @@
         "quiet": 1,
         "indoor": 0,
         "novelty": 45,
-        "physicalLoad": 2,
+        "physicalLoad": 0,
         "mentalLoad": 1,
         "socialDemand": 0,
         "dreamOnly": 0
@@ -8385,8 +8494,8 @@
           "id": "ferris_view",
           "assertionKind": "designed",
           "evidenceStatus": "original_design_real_world_unverified",
-          "title": "找刚才的路线",
-          "description": "在座舱内找出刚才去过的项目和远处地标。",
+          "title": "高处找地标",
+          "description": "在座舱内找出眼前的景色和远处地标。",
           "cost": [
             0,
             0
@@ -8402,9 +8511,7 @@
             "E-design-timing"
           ],
           "dietaryTags": [],
-          "predecessorIds": [
-            "amusement_park_day"
-          ],
+          "predecessorIds": [],
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
@@ -8455,9 +8562,7 @@
             "E-design-timing"
           ],
           "dietaryTags": [],
-          "predecessorIds": [
-            "amusement_park_day"
-          ],
+          "predecessorIds": [],
           "minutes": 0,
           "compositionMode": "included",
           "durationMode": "within_scene",
@@ -11061,7 +11166,8 @@
       "tags": [
         "creative",
         "romantic",
-        "private"
+        "private",
+        "anniversary"
       ],
       "weather": [
         "clear",
@@ -11139,7 +11245,8 @@
           "tags": [
             "creative",
             "romantic",
-            "private"
+            "private",
+            "anniversary"
           ],
           "evidenceIds": [
             "E-design-focus",
@@ -11190,7 +11297,8 @@
           "tags": [
             "creative",
             "romantic",
-            "private"
+            "private",
+            "anniversary"
           ],
           "evidenceIds": [
             "E-design-focus",
@@ -18612,7 +18720,8 @@
       "tags": [
         "celebration",
         "romantic",
-        "private"
+        "private",
+        "birthday"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -18666,7 +18775,8 @@
       "tags": [
         "celebration",
         "romantic",
-        "private"
+        "private",
+        "birthday"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -21078,7 +21188,8 @@
       "load": 0,
       "tags": [
         "daily",
-        "quiet"
+        "quiet",
+        "exam"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -21128,7 +21239,8 @@
       "load": 0,
       "tags": [
         "daily",
-        "quiet"
+        "quiet",
+        "exam"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -21235,9 +21347,7 @@
         "E-design-timing"
       ],
       "dietaryTags": [],
-      "predecessorIds": [
-        "amusement_park_day"
-      ],
+      "predecessorIds": [],
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
@@ -21254,9 +21364,11 @@
         "socialDemand": 0
       },
       "allowedSceneIds": [
+        "amusement_park_day",
         "ferris_wheel_ride"
       ],
       "allowedSceneTypes": [
+        "amusement_park_day",
         "ferris_wheel_ride"
       ]
     },
@@ -21271,8 +21383,8 @@
       "id": "ferris_view",
       "assertionKind": "designed",
       "evidenceStatus": "original_design_real_world_unverified",
-      "title": "找刚才的路线",
-      "description": "在座舱内找出刚才去过的项目和远处地标。",
+      "title": "高处找地标",
+      "description": "在座舱内找出眼前的景色和远处地标。",
       "cost": [
         0,
         0
@@ -21288,9 +21400,7 @@
         "E-design-timing"
       ],
       "dietaryTags": [],
-      "predecessorIds": [
-        "amusement_park_day"
-      ],
+      "predecessorIds": [],
       "minutes": 0,
       "compositionMode": "included",
       "durationMode": "within_scene",
@@ -21307,9 +21417,11 @@
         "socialDemand": 0
       },
       "allowedSceneIds": [
+        "amusement_park_day",
         "ferris_wheel_ride"
       ],
       "allowedSceneTypes": [
+        "amusement_park_day",
         "ferris_wheel_ride"
       ]
     },
@@ -22886,7 +22998,8 @@
       "tags": [
         "creative",
         "romantic",
-        "private"
+        "private",
+        "anniversary"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -22937,7 +23050,8 @@
       "tags": [
         "creative",
         "romantic",
-        "private"
+        "private",
+        "anniversary"
       ],
       "evidenceIds": [
         "E-design-focus",
@@ -32635,25 +32749,25 @@
       {
         "id": "ferris_view",
         "type": "activity",
-        "label": "找刚才的路线",
+        "label": "高处找地标",
         "socialDemand": 0
       },
       {
         "id": "ferris_wheel_ride",
         "type": "scene",
-        "label": "游乐园摩天轮",
+        "label": "城市观景摩天轮",
         "placeKind": "ordinary",
-        "category": "原创双人活动地点类型",
+        "category": "城市观景",
         "socialDemand": 0,
         "dreamOnly": false,
         "costByWeekPart": {
           "weekday": [
-            0,
-            0
+            80,
+            200
           ],
           "weekend": [
-            0,
-            0
+            80,
+            200
           ]
         },
         "weather": [
@@ -34636,6 +34750,16 @@
         ]
       },
       {
+        "id": "tag:anniversary",
+        "type": "feature",
+        "label": "anniversary"
+      },
+      {
+        "id": "tag:birthday",
+        "type": "feature",
+        "label": "birthday"
+      },
+      {
         "id": "tag:celebration",
         "type": "feature",
         "label": "celebration"
@@ -34669,6 +34793,11 @@
         "id": "tag:dream",
         "type": "feature",
         "label": "dream"
+      },
+      {
+        "id": "tag:exam",
+        "type": "feature",
+        "label": "exam"
       },
       {
         "id": "tag:exercise",
@@ -35284,6 +35413,16 @@
         ]
       },
       {
+        "id": "value:weekdayCost:[80,200]",
+        "type": "design_value",
+        "label": "weekdayCost: [80,200]",
+        "field": "weekdayCost",
+        "value": [
+          80,
+          200
+        ]
+      },
+      {
         "id": "value:weekdayCost:[80,240]",
         "type": "design_value",
         "label": "weekdayCost: [80,240]",
@@ -35541,6 +35680,16 @@
         "value": [
           80,
           100
+        ]
+      },
+      {
+        "id": "value:weekendCost:[80,200]",
+        "type": "design_value",
+        "label": "weekendCost: [80,200]",
+        "field": "weekendCost",
+        "value": [
+          80,
+          200
         ]
       },
       {
@@ -38208,6 +38357,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-1e8bef8dcd3cdd",
+        "subject": "amusement_park_day",
+        "predicate": "allows_activity",
+        "object": "ferris_view",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-1e8e4ac7e87423",
         "subject": "E-C003",
         "predicate": "derived_from",
@@ -39441,6 +39601,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-2c8b0f06a798f0",
+        "subject": "memory_choose_three",
+        "predicate": "has_feature",
+        "object": "tag:anniversary",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-2cccae38fd1cf1",
         "subject": "meal_style_c",
         "predicate": "has_socialDemand",
@@ -39806,6 +39977,17 @@
           "E-campus-nature",
           "E-campus-walk",
           "E-fiction-garden"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-30b1729f3a8798",
+        "subject": "birthday_small_celebration",
+        "predicate": "has_feature",
+        "object": "tag:birthday",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
         ],
         "assertionKind": "designed"
       },
@@ -40973,6 +41155,17 @@
         "object": "value:socialDemand:0",
         "evidenceIds": [
           "E-campus-evening"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-3d6c4719c39be6",
+        "subject": "exam_next_break",
+        "predicate": "has_feature",
+        "object": "tag:exam",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
         ],
         "assertionKind": "designed"
       },
@@ -42540,6 +42733,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-4f3626a56f5cfd",
+        "subject": "ferris_wheel_ride",
+        "predicate": "has_weekendCost",
+        "object": "value:weekendCost:[80,200]",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-4f687f08765d13",
         "subject": "park_dock_check",
         "predicate": "supported_by",
@@ -42785,17 +42989,6 @@
         "object": "value:dreamOnly:false",
         "evidenceIds": [
           "E-user-scau-night-stops"
-        ],
-        "assertionKind": "designed"
-      },
-      {
-        "id": "EDGE-519b1cdf4e2ee6",
-        "subject": "ferris_wheel_ride",
-        "predicate": "follows",
-        "object": "amusement_park_day",
-        "evidenceIds": [
-          "E-design-focus",
-          "E-design-timing"
         ],
         "assertionKind": "designed"
       },
@@ -43333,6 +43526,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-553e75e6055e88",
+        "subject": "memory_future_letter",
+        "predicate": "has_feature",
+        "object": "tag:anniversary",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-556ceeb3638f34",
         "subject": "activity-at:taishan_glass:boardgame_coop",
         "predicate": "requires",
@@ -43844,6 +44048,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-5b6a365929d58b",
+        "subject": "memory_letter_table",
+        "predicate": "has_feature",
+        "object": "tag:anniversary",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-5b7d4a91b88c14",
         "subject": "photo_color",
         "predicate": "has_feature",
@@ -43976,17 +44191,6 @@
         "subject": "intercity_oldtown",
         "predicate": "includes_meal",
         "object": "meal:dinner",
-        "evidenceIds": [
-          "E-design-focus",
-          "E-design-timing"
-        ],
-        "assertionKind": "designed"
-      },
-      {
-        "id": "EDGE-5da79ef9961ce3",
-        "subject": "ferris_future",
-        "predicate": "follows",
-        "object": "amusement_park_day",
         "evidenceIds": [
           "E-design-focus",
           "E-design-timing"
@@ -45820,6 +46024,17 @@
         "assertionKind": "designed"
       },
       {
+        "id": "EDGE-71e503293b6f4e",
+        "subject": "birthday_letter",
+        "predicate": "has_feature",
+        "object": "tag:birthday",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
         "id": "EDGE-72190217c627cf",
         "subject": "camp_setup_pair",
         "predicate": "supported_by",
@@ -46818,17 +47033,6 @@
         "object": "E-P009",
         "evidenceIds": [
           "E-P009"
-        ],
-        "assertionKind": "designed"
-      },
-      {
-        "id": "EDGE-7ce76a5c13cde5",
-        "subject": "ferris_wheel_ride",
-        "predicate": "has_weekendCost",
-        "object": "value:weekendCost:[0,0]",
-        "evidenceIds": [
-          "E-design-focus",
-          "E-design-timing"
         ],
         "assertionKind": "designed"
       },
@@ -50220,17 +50424,6 @@
         "assertionKind": "designed"
       },
       {
-        "id": "EDGE-a0d3abea8271bb",
-        "subject": "ferris_wheel_ride",
-        "predicate": "has_weekdayCost",
-        "object": "value:weekdayCost:[0,0]",
-        "evidenceIds": [
-          "E-design-focus",
-          "E-design-timing"
-        ],
-        "assertionKind": "designed"
-      },
-      {
         "id": "EDGE-a0d841a4badfce",
         "subject": "R-prepare-campus_tabletennis-racket",
         "predicate": "supported_by",
@@ -52461,17 +52654,6 @@
         "assertionKind": "designed"
       },
       {
-        "id": "EDGE-b95837cc3ccff8",
-        "subject": "ferris_view",
-        "predicate": "follows",
-        "object": "amusement_park_day",
-        "evidenceIds": [
-          "E-design-focus",
-          "E-design-timing"
-        ],
-        "assertionKind": "designed"
-      },
-      {
         "id": "EDGE-b96d07de3f3dfd",
         "subject": "super_snacks",
         "predicate": "has_socialDemand",
@@ -53214,6 +53396,28 @@
         "evidenceIds": [
           "E-P001",
           "E-fiction-picnic"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-c1c143fdd50dcc",
+        "subject": "ferris_wheel_ride",
+        "predicate": "has_weekdayCost",
+        "object": "value:weekdayCost:[80,200]",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-c1cad111ec4138",
+        "subject": "birthday_cake_share",
+        "predicate": "has_feature",
+        "object": "tag:birthday",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
         ],
         "assertionKind": "designed"
       },
@@ -53977,6 +54181,17 @@
         "predicate": "supported_by",
         "object": "E-design-timing",
         "evidenceIds": [
+          "E-design-timing"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-ca25d148d35fa2",
+        "subject": "campus_exam_short_meet",
+        "predicate": "has_feature",
+        "object": "tag:exam",
+        "evidenceIds": [
+          "E-design-focus",
           "E-design-timing"
         ],
         "assertionKind": "designed"
@@ -55030,6 +55245,17 @@
         "evidenceIds": [
           "E-C004",
           "E-P007"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-d59eb9065ae1c8",
+        "subject": "exam_one_good_thing",
+        "predicate": "has_feature",
+        "object": "tag:exam",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
         ],
         "assertionKind": "designed"
       },
@@ -56990,6 +57216,17 @@
         "evidenceIds": [
           "E-C004",
           "E-P001"
+        ],
+        "assertionKind": "designed"
+      },
+      {
+        "id": "EDGE-ec628dc9d432a7",
+        "subject": "amusement_park_day",
+        "predicate": "allows_activity",
+        "object": "ferris_future",
+        "evidenceIds": [
+          "E-design-focus",
+          "E-design-timing"
         ],
         "assertionKind": "designed"
       },
@@ -59216,5 +59453,5 @@
       }
     ]
   },
-  "contentRevision": "461e854b4b191b9a"
+  "contentRevision": "aa0983edd347e558"
 }

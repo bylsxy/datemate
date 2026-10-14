@@ -41,7 +41,8 @@ function assertBasicSolution(context) {
   assert.ok(result.stages.length > 0);
   assert.ok(result.stages.every(stage => isSceneInSchoolScope(catalog.scenes.find(s => s.id === stage.sceneId), result.context)));
   if (context.budget !== undefined) assert.ok(result.totalCostCents[1] <= context.budget * 100);
-  const witness = result.stages.map(stage => ({ sceneId: stage.sceneId, activityIds: stage.activityIds, ...(Number.isFinite(stage.fixedStartMinute) ? { startMinute: stage.fixedStartMinute } : {}), ...(stage.mealRole ? { mealRole: stage.mealRole } : {}) }));
+  const witness = result.continuationWitness;
+  assert.ok(witness.every(choice=>Number.isInteger(choice.durationMinutes)),'可变停留的完整见证必须带上实际时长');
   // 成功必须可由真实目录独立重演，不能只相信搜索器的 ok 标记。
   const verified = planDate(input, catalog, { ...retry, knownPlan: witness, verifyKnownPlanOnly: true });
   assert.equal(verified.ok, true, `${label(context)}: witness ${verified.errors?.join(';')}`);

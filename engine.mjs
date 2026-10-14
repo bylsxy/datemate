@@ -1,14 +1,14 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=f9ba8b25a44e98dd';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=f9ba8b25a44e98dd';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=f9ba8b25a44e98dd';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=f9ba8b25a44e98dd';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=f9ba8b25a44e98dd';
-import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=f9ba8b25a44e98dd';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=70d76ccc0868cf19';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=70d76ccc0868cf19';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=70d76ccc0868cf19';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=70d76ccc0868cf19';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=70d76ccc0868cf19';
+import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=70d76ccc0868cf19';
 
-export { canonical, digest } from './reasoning.mjs?v=f9ba8b25a44e98dd';
-import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=f9ba8b25a44e98dd';
-export const VERSION = 'datemate-engine-4.1.0';
-export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-4.0.0', tieBreak: 'stable-id' });
+export { canonical, digest } from './reasoning.mjs?v=70d76ccc0868cf19';
+import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=70d76ccc0868cf19';
+export const VERSION = 'datemate-engine-4.2.0';
+export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-4.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
 const clamp = (value, low, high) => Math.min(high, Math.max(low, value));
 const copy = value => JSON.parse(JSON.stringify(value));
@@ -194,7 +194,9 @@ const pendingMealFor = (st, ctx) => ctx.mealRequirements.find(m => m.choiceMode 
 const mealsSatisfied = (st, ctx) => ctx.mealRequirements.every(m => m.choiceMode !== 'together' || st.mealRoles.includes(m.mealRole));
 const coveredPeriodIds = (st, ctx) => (ctx.periodIds || []).filter(id => { const p = TIME_PERIODS.find(p => p.id === id); return st.stages.some(s => s.start < p.endMinute && s.end > p.startMinute); });
 const periodsCovered = (st, ctx) => !ctx.periodIds || coveredPeriodIds(st, ctx).length === ctx.periodIds.length;
-const nearEnd = (st, ctx) => !ctx.periodIds || ctx.endAfterStage !== null || st.time + departureMinutes(ctx) >= ctx.windows.at(-1).endMinute - 60;
+// 考试季单时段的短会允许提前分别；多时段、预约和必需饭点仍完整履行。
+const shortExamMeeting = ctx => ctx.season === 'exam' && ctx.periodIds?.length === 1 && !ctx.anchors?.length && !ctx.mealRequirements.some(m => m.choiceMode === 'together');
+const nearEnd = (st, ctx) => !ctx.periodIds || ctx.endAfterStage !== null || shortExamMeeting(ctx) || st.time + departureMinutes(ctx) >= ctx.windows.at(-1).endMinute - 60;
 function mealActivityChoices(scene, role, subsets) {
   if (!scene.mealRoles?.includes(role)) return [];
   const eating = scene.activities.filter(a => a.provides.meal_completed > 0 && a.mealRoles?.includes(role));
@@ -231,14 +233,20 @@ function permittedGroups(scene, acts) {
   return true;
 }
 function enumerateSubsets(scene, limit, stats) {
-  const out = [], acts = scene.activities;
-  function visit(i, selected) {
-    if (out.length >= limit) { stats.activitySubsetsTruncated = true; return; }
-    if (i === acts.length) { if (permittedGroups(scene, selected)) out.push(selected.map(a => a.id)); return; }
-    visit(i + 1, selected);
-    if (permittedGroups(scene, [...selected, acts[i]])) visit(i + 1, [...selected, acts[i]]);
-  }
-  visit(0, []);
+  const out = [[]], acts = scene.activities, seen = new Set(['[]']);
+  let truncated = false;
+  // 先覆盖每项玩法及其场景内前置，再扩展组合；深度优先的尾部子集会挤掉前半活动。
+  const add = selected => {
+    const ids = new Set(selected.map(a => a.id));
+    for (const id of ids) for (const predecessor of acts.find(a => a.id === id)?.predecessorIds || []) if (acts.some(a => a.id === predecessor)) ids.add(predecessor);
+    const ordered = acts.filter(a => ids.has(a.id)), key = canonical(ordered.map(a => a.id));
+    if (seen.has(key) || !permittedGroups(scene, ordered)) return;
+    seen.add(key);
+    if (out.length >= limit) { truncated = true; stats.activitySubsetsTruncated = true; return; }
+    out.push(ordered.map(a => a.id));
+  };
+  for (const activity of acts) add([activity]);
+  for (let i = 1; i < out.length && !truncated; i++) for (const activity of acts) add([...acts.filter(a => out[i].includes(a.id)), activity]);
   return out;
 }
 
@@ -385,8 +393,13 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
           ctx.periodIds && !mealRole && blockingMeal ? blockingMeal.targetMinute - carry : Infinity, nextAppointment);
         const bounds = durationBounds(scene);
         const automaticMinimum = ctx.minimumStageCount > st.stages.length ? bounds.min : sceneStayMinutes({...scene,minutes:bounds.min}, start, mealRole, Boolean(ctx.periodIds));
-        const minutes = chooseStayDuration(scene, {available:stop-start, requested:choice.durationMinutes,
-          automaticMinimum, relaxed:Boolean(ctx.periodIds && scene.durationRange), mealRole, short:choice.durationStrategy === 'minimum'});
+        const durationOptions = {requested:choice.durationMinutes, automaticMinimum, relaxed:Boolean(ctx.periodIds && scene.durationRange), mealRole, short:choice.durationStrategy === 'minimum'};
+        // 自动停留优先留下其他有效分别方式的时间；短窗口仍退回所选方式，不增加硬门槛。
+        const alternativeReserve = !manual && !anchor && choice.durationMinutes === undefined
+          ? Math.max(departureReservedMinutes(ctx), ...(ctx.departures || []).filter(d => !['hotel', 'camping'].includes(d.id) || ctx.windows.at(-1).endMinute > 1440).map(d => d.reservedMinutes)) : departureReservedMinutes(ctx);
+        const preferredStop = Math.min(stop, window.endMinute - ctx.reserve - alternativeReserve - carry);
+        const minutes = chooseStayDuration(scene, { ...durationOptions, available:preferredStop-start })
+          ?? chooseStayDuration(scene, { ...durationOptions, available:stop-start });
         return {start,minutes,openEnd,openStart:Math.max(w.startMinute,mealSlot?.startMinute ?? 0)};
       }).find(s => s.minutes !== null && s.start >= earliest && (exactStart === undefined || s.start >= earliest + priorUncertainty) && s.start >= s.openStart && s.start + s.minutes <= s.openEnd && s.start + s.minutes + ctx.reserve + departureReservedMinutes(ctx) + Math.max(0, priorUncertainty - (s.start - earliest)) + uncertainty <= window.endMinute);
       const possible = possibleSlot(sceneWindows);
@@ -438,9 +451,13 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const activityExperience = [experienceFor(ctx.preferencesA), experienceFor(ctx.preferencesB)];
     const sharedActivityExperience = ctx.preferencesA.filter(tag => ctx.preferencesB.includes(tag) && activityMatches.has(tag)).length * 8;
     const generalActivityExperience = ctx.preferences.filter(tag => activityMatches.has(tag)).length * 5 + ctx.goals.filter(tag => activityMatches.has(tag)).length * 6;
-    const extraActivityPenalty = (2 * acts.length * (acts.length - 1) + acts.reduce((sum, a) => sum + 4 + Math.max(0, a.load) * 2 + a.costCents[1] * 0.003, 0)) * (1 - exploration / 100 * 0.7);
+    // 有实际玩法的共同体验具备基础收益；未知兴趣不应让所有活动只有成本。
+    const distinctActivities = acts.filter(a => !st.completed.includes(a.id)).length;
+    const activityParticipation = acts.length ? 14 + 6 * Math.min(2, Math.max(0, distinctActivities - 1)) : 0;
+    const repeatedActivityPenalty = acts.filter(a => st.completed.includes(a.id)).length * 10;
+    const extraActivityPenalty = (2 * acts.length * (acts.length - 1) + acts.reduce((sum, a) => sum + 4 + Math.max(0, a.load) * 4 + a.costCents[1] * 0.003, 0)) * (1 - exploration / 100 * 0.7) + repeatedActivityPenalty;
     const resourcePenalty = costCents[1] * 0.001 + minutes * 0.05;
-    const values = [matchA, matchB].map((matches, i) => Math.max(0, fit + matches * 18 + sharedInterest + generalPreference + goalBonus + themeBonus + activityExperience[i] + sharedActivityExperience + generalActivityExperience - comfortPenalty[i] - transit * 0.12 - extraActivityPenalty - resourcePenalty));
+    const values = [matchA, matchB].map((matches, i) => Math.max(0, fit + matches * 18 + sharedInterest + generalPreference + goalBonus + themeBonus + activityExperience[i] + sharedActivityExperience + generalActivityExperience + activityParticipation - comfortPenalty[i] - transit * 0.12 - extraActivityPenalty - resourcePenalty));
     const novelty = Math.max(scene.novelty, ...acts.map(a => number(a.novelty, 0)));
     const repeatFunctionPenalty = st.kinds.includes(scene.kind) ? 18 : 0;
     const repeatScenePenalty = st.visited.includes(scene.id) ? 36 : 0;
@@ -448,8 +465,9 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     const ruleBonus = soft.score + (sceneInference.scenePreferences[scene.id] || 0) + acts.reduce((sum, a, i) => sum + (inferences[i + 1].activityPreferences[a.id] || 0), 0) - repeatFunctionPenalty - repeatScenePenalty - unnecessaryRestPenalty;
     const newKind = st.kinds.includes(scene.kind) ? 0 : 1;
     const discounted = (ctx.periodIds ? 0.96 : 0.88) ** st.stages.length;
-    const durationWeight = ctx.periodIds && scene.durationRange ? minutes / 60 : 1;
-    const stageComplexityPenalty = (ctx.periodIds ? scene.durationRange ? 15 : 1.5 : 8) * (2 * st.stages.length + 1);
+    // 连续停留的收益递减，不能用三小时裸地点把一次地点匹配重复计分三次。
+    const durationWeight = ctx.periodIds && scene.durationRange && !shortExamMeeting(ctx) ? Math.min(1, minutes / 60) + 0.15 * Math.log2(Math.max(1, minutes / 60)) : 1;
+    const stageComplexityPenalty = (shortExamMeeting(ctx) ? 40 : ctx.periodIds ? scene.durationRange ? 15 : 1.5 : 8) * (2 * st.stages.length + 1);
     const features = { ...soft.contributions, preferenceA: matchA * 18, preferenceB: matchB * 18, sharedInterest, generalPreference, goalBonus, themeBonus, activityExperienceA: activityExperience[0], activityExperienceB: activityExperience[1], sharedActivityExperience, generalActivityExperience, comfort: fit - (comfortPenalty[0] + comfortPenalty[1]) / 2, transferPenalty: -transit * 0.12, extraActivityPenalty: -extraActivityPenalty, resourcePenalty: -resourcePenalty, repeatFunctionPenalty: -repeatFunctionPenalty, repeatScenePenalty: -repeatScenePenalty, unnecessaryRestPenalty: -unnecessaryRestPenalty, stageComplexityPenalty: -stageComplexityPenalty, novelty: novelty * exploration / 100 * 0.55, variety: newKind * (4 + exploration * 0.06), ruleBonus, fairnessFloor: Math.min(...values) * 0.3 };
     const stage = { sceneId: scene.id, activityIds: ids, minutes, transfer: transit, wait: slot.wait, start: slot.start, end: slot.end, startMinute: slot.start, endMinute: slot.end, fixedStartMinute: exactStart ?? null, windowId: slot.windowId, cost: costCents.map(money), costCents, load: Math.max(...load), loadByPerson: { A: load[0], B: load[1] }, schedule: schedule, reserve: slot.reserve, uncertaintyMinutes: uncertainty, tags, featureContributions: features, trace: [...inferences.flatMap(i => i.trace), ...graph.trace, ...soft.trace, { ruleId: 'RESOURCE_ACCOUNTING', rule: 'RESOURCE_ACCOUNTING', message: '阶段按场景基础时长及晚间最小停留核算，活动在完整阶段内执行；转场及缓冲照常核算，费用使用整数分', inputFacts: [{ id: 'composition', value: schedule }], outputFacts: [{ id: 'costCents', value: costCents }, { id: 'minutes', value: minutes }], evidenceIds: [], assertionKind: 'designed' }], warnings: list([...inferences.flatMap(i => i.warnings), ...soft.warnings]), preparationIds: list([...(scene.preparationIds || []), ...acts.flatMap(a => a.preparationIds)]), manual, ...(anchor ? { anchorId: anchor.id } : {}), realWorldStatus: 'needs_confirmation' };
     if (scene.durationRange) stage.durationRange = [...scene.durationRange];
@@ -464,7 +482,14 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     next.mealRoles=list([...next.mealRoles,...bundledRoles]);next.meal=next.meal||bundledRoles.length>0;
     next.placeId = scene.kind === 'rest' ? st.placeId : scene.id;
     next.waitMinutes = st.waitMinutes + slot.wait;
-    if (ctx.periodIds) { features.activeCoverage = minutes * 0.45; features.waitPenalty = -slot.wait * 0.35; }
+    features.activityParticipation = activityParticipation;
+    features.repeatedActivityPenalty = -repeatedActivityPenalty;
+    features.durationWeight = durationWeight;
+    next.shortMeeting = shortExamMeeting(ctx);
+    if (ctx.periodIds) {
+      if (next.shortMeeting) features.shortMeetingTimePenalty = -slot.used * 0.25;
+      else { features.activeCoverage = minutes * 0.45; features.waitPenalty = -slot.wait * 0.35; }
+    }
     stage.localUtility = objective(next, exploration) - objective(st, exploration);
     stage.before = stateSnapshot(st, ctx); stage.after = stateSnapshot(next, ctx); stage.stateBefore = stage.before; stage.stateAfter = stage.after;
     return { next, stage, errors: [] };
@@ -474,7 +499,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
 
 function objective(st, exploration) {
   const mean = (st.utilities[0] + st.utilities[1]) / 2;
-  return mean * (0.7 - exploration * 0.002) + Math.min(...st.utilities) * 0.3 + st.novelty * exploration / 100 * 0.55 + st.variety * (4 + exploration * 0.06) + st.ruleUtility - (st.relaxedMode ? 15 : st.periodMode ? 1.5 : 8) * st.stages.length ** 2 + (st.periodMode ? st.activeMinutes * 0.45 - st.waitMinutes * 0.35 : 0);
+  return mean * (0.7 - exploration * 0.002) + Math.min(...st.utilities) * 0.3 + st.novelty * exploration / 100 * 0.55 + st.variety * (4 + exploration * 0.06) + st.ruleUtility - (st.shortMeeting ? 40 : st.relaxedMode ? 15 : st.periodMode ? 1.5 : 8) * st.stages.length ** 2 + (st.periodMode ? st.shortMeeting ? -st.usedMinutes * 0.25 : st.activeMinutes * 0.45 - st.waitMinutes * 0.35 : 0);
 }
 function planKey(st) { return st.stages.map(s => `${s.sceneId}[${s.activityIds.join(',')}]@${s.start}+${s.minutes ?? s.end-s.start}`).join('/'); }
 function stateKey(st) { return `${planKey(st)}#${st.anchorIndex}#${st.placeId}`; }
@@ -659,7 +684,9 @@ function* searchDate(input = {}, catalog, options = {}) {
   const subsets = new Map(scopedScenes.map(s => [s.id, enumerateSubsets(s, config.activitySubsetLimit, stats)]));
   const automaticChoices = scopedScenes.filter(scene => !ctx.periodIds || !dedicatedMealScene(scene)).flatMap(scene => subsets.get(scene.id).filter(ids => !ctx.periodIds || !ids.some(id => scene.activities.find(a => a.id === id).provides.meal_completed > 0)).flatMap(activityIds => {
     const choice = {sceneId:scene.id,activityIds};
-    return [{choice,anchor:null}, ...(scene.durationRange && (ctx.requiredSceneIds.length || anchors.length) ? [{choice:{...choice,durationStrategy:'minimum'},anchor:null}] : [])];
+    // 长跨度普通规划优先推进饭点和时段覆盖，避免每个玩法翻倍成短停留后耗尽节点。
+    // 单时段、探索或明确预约/必去仍搜索短停留；人工固定分钟始终直接校验。
+    return [{choice,anchor:null}, ...(scene.durationRange && (ctx.periodIds?.length === 1 || exploration > 0 || ctx.requiredSceneIds.length || anchors.length) ? [{choice:{...choice,durationStrategy:'minimum'},anchor:null}] : [])];
   }));
   const mealChoices = new Map(ctx.mealRequirements.map(meal => [meal.mealRole, scopedScenes.filter(scene => !meal.sceneId || meal.sceneId === scene.id).flatMap(scene => (meal.activityIds !== null ? scene.mealRoles?.includes(meal.mealRole) ? [meal.activityIds] : [] : mealActivityChoices(scene, meal.mealRole, subsets.get(scene.id))).map(activityIds => ({ choice: { sceneId: scene.id, activityIds, mealRole: meal.mealRole }, anchor: null })))]));
   function choicesFor(st, extra) {

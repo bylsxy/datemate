@@ -112,13 +112,13 @@ test('整轮人工候选后续求解共用固定计算预算，复盘显式校�
   assert.match(stale.errors[0], /^H_VERSION:/);
 });
 
-test('零探索仍联合择优地点与活动：双方play兴趣可选商场电玩，无兴趣保留空组合', () => {
+test('零探索联合择优地点与实际玩法，双方play兴趣增加匹配体验', () => {
   const input = { ...context, duration: 90, area: 'near' };
   const plain = planDate(input, catalog, { maxStages: 1 });
   const shared = planDate({ ...input, preferencesA: ['play'], preferencesB: ['play'] }, catalog, { maxStages: 1 });
   checkScores(plain); checkScores(shared);
   assert.equal(plain.stages[0].sceneId, 'mall');
-  assert.deepEqual(plain.stages[0].activityIds, []);
+  assert.ok(plain.stages[0].activityIds.length>0);
   assert.equal(shared.stages[0].sceneId, 'mall');
   assert.ok(shared.stages[0].activityIds.some(id => /^arcade_/.test(id)));
   assert.ok(shared.stages[0].activityIds.length < catalog.scenes.find(s => s.id === 'mall').activities.length);

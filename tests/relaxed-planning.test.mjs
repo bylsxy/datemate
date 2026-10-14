@@ -11,19 +11,20 @@ const state=context=>({context,exploration:0,prefix:[]});
 const checked=(context,options={})=>{const r=planDate(context,catalog,options);assert.equal(r.ok,true,r.errors.join(';'));return r;};
 const selected=stage=>({sceneId:stage.sceneId,activityIds:stage.activityIds,start:stage.start,end:stage.end});
 
-test('默认雨夜是一个连续停留，不靠每小时转场或反复休息填时间',()=>{
+test('默认雨夜保留少量长停留，不靠反复休息填时间',()=>{
   const r=checked(night);
-  assert.equal(r.stages.length,1);
-  assert.equal(r.stages[0].sceneId,'dorm_downstairs_shelter');
-  assert.ok(r.stages[0].minutes>=120);
-  assert.equal(r.metrics.transferMinutes,10);
+  assert.ok(r.stages.length<=3);
+  assert.ok(r.stages.some(stage=>stage.minutes>=60));
+  assert.ok(r.stages.filter(stage=>stage.sceneId==='rest').length<=1);
+  assert.ok(r.metrics.transferMinutes<=30);
 });
 
 test('手调最后一段时长按个人选择结束，不再自动追加地点填满时间',()=>{
-  const original=checked(night),next=setStageDurationIntent(state(night),original,0,60,catalog);
+  const original=checked(night),index=original.stages.length-1,next=setStageDurationIntent(state(night),original,index,60,catalog);
   const changed=checked(next.context,{fixedPrefix:next.prefix});
-  assert.equal(changed.stages.length,1);
-  assert.equal(changed.stages[0].minutes,60);
+  assert.equal(changed.stages.length,original.stages.length);
+  assert.deepEqual(changed.stages.slice(0,index).map(selected),original.stages.slice(0,index).map(selected));
+  assert.equal(changed.stages[index].minutes,60);
   const invalid=verifyPlanWitness(next.context,catalog,{fixedPrefix:next.prefix,knownPlan:original.continuationWitness});
   assert.equal(invalid.ok,false);
   assert.ok(invalid.errors.some(e=>e.startsWith('H_KNOWN_PREFIX:')));

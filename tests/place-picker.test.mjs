@@ -70,7 +70,7 @@ test('缺省两类列表可初始化，非法类别明确拒绝', () => {
 });
 
 // 只模拟事件与控件状态，验证提交边界；不加载浏览器或第三方 DOM。
-function pickerFixture() {
+function pickerFixture(catalogScenes=scenes) {
   const elements = new Map();
   const listeners = new Map();
   for (const id of ['place-search', 'place-select', 'place-choice-error', 'add-exclude', 'add-anchor', 'excluded-places', 'anchored-places']) {
@@ -84,7 +84,7 @@ function pickerFixture() {
   }
   const root = { querySelector: id => elements.get(id), addEventListener: (event, handler) => listeners.set(event, handler) };
   let changes = 0;
-  const picker = createPlacePicker({ root, scenes, onChange: () => changes++ });
+  const picker = createPlacePicker({ root, scenes:catalogScenes, onChange: () => changes++ });
   return { picker, element: id => elements.get(`#${id}`), changes: () => changes,
     remove: (kind, id) => listeners.get('click')({ target: { closest: () => ({ dataset: { kind, removePlace: id } }) } }) };
 }
@@ -134,4 +134,15 @@ test('恢复多个地点及旧 sceneOnly 数据不提交，读写结果与调用
   ] });
   assert.deepEqual(f.picker.getChoices(), { bans: [], requiredSceneIds: ['lake_walk'] });
   assert.equal(f.changes(), 0);
+});
+
+test('更换时段保留白天必去项以报告冲突，切换学校仍释放范围外地点',()=>{
+  const day={id:'trees',title:'树木园',area:'campus',place:{universityId:'scau',campusArea:''},minutes:60,durationRange:[30,90],dailyWindows:[{startMinute:480,endMinute:1050}]};
+  const f=pickerFixture([day]);
+  f.picker.setChoices({area:'campus',school:'scau',periodIds:['afternoon'],requiredSceneIds:['trees']});
+  f.picker.setScope({area:'campus',school:'scau',periodIds:['evening']});
+  assert.deepEqual(f.picker.getChoices().requiredSceneIds,['trees']);
+  assert.equal(f.element('place-select').disabled,true);
+  f.picker.setScope({area:'campus',school:'',periodIds:['afternoon']});
+  assert.deepEqual(f.picker.getChoices().requiredSceneIds,[]);
 });
