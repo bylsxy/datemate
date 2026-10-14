@@ -1,6 +1,6 @@
-import { createPlanner, createContinuationSearch } from './engine.mjs?v=155eb055b486c4e0';
-import { catalog, rules, graph } from './data/catalog.mjs?v=155eb055b486c4e0';
-import { createCandidateScheduler } from './candidate-validation.mjs?v=155eb055b486c4e0';
+import { createPlanner, createContinuationSearch, planDate } from './engine.mjs?v=1d081a6265958465';
+import { catalog, rules, graph } from './data/catalog.mjs?v=1d081a6265958465';
+import { createCandidateScheduler } from './candidate-validation.mjs?v=1d081a6265958465';
 
 const knowledge = { ...catalog, rules, graph };
 const planner = createPlanner(knowledge);
@@ -16,7 +16,7 @@ self.onmessage = ({ data }) => {
   if (data.type === 'pauseValidation') {validation.pause(data.paused);return;}
   try {
     const started = performance.now();
-    const result = planner.plan(data.state.context, data.state.exploration, data.state.prefix);
+    const result = data.search ? planDate(data.state.context, knowledge, {...data.search, exploration:data.state.exploration, fixedPrefix:data.state.prefix}) : planner.plan(data.state.context, data.state.exploration, data.state.prefix);
     self.postMessage({ id: data.id, result, elapsed: performance.now() - started });
   } catch (error) {
     self.postMessage({ id: data.id, error: error.message || String(error) });

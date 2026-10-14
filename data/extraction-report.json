@@ -52,16 +52,16 @@
     "knowledge/departures.json"
   ],
   "sourceHashes": {
-    "scenes.json": "36391e2167730e4a6f7879788eaa3bb936a09bb937c774b88443dbb3d489d629",
+    "scenes.json": "c09a2c4a62d7ede9bd1c5c63cbb4707089436258900e3ea27e4f6126fbc162f7",
     "activities.json": "04dd33865b3075f92853e2755a89259756bce6c3ce18308092ce1a2af8602b1d",
     "rules.json": "304735ebc6a9fc98371cafed6a0f0b262efb2d89b13ff4e145bf6a660f31d923",
     "metadata.json": "354d55c40133bf9e44e17a05aa76dfc9c5aa886b09e8d837bfce1a4f8270aa0e",
     "evidence.json": "8258a932a27f037068025b1e1ea7fc6389e1463167d17baa161321710690df78",
     "source-registry.json": "d767700e9e8d121758ce677c77da32f836484de9490ca8403c0aebfc967160a0",
     "conditions.json": "ee592cb574465d89cf2781415a3098cb66abef24a7f26b7d5515d85e313d0830",
-    "departures.json": "84bfa806a4603258967800cf7c8eb04f1a32cdcc0c9f84ffe240d896d02e477f"
+    "departures.json": "36a62a3349badb1764c9f365b0d23cbccbb428777dbe2ab164315ad604935684"
   },
-  "catalogContentSha256": "556b5205cf976639f5f4e5bd8eb50b7b4f529c505f83d3a0a2a98ff4a6e45206",
+  "catalogContentSha256": "e63e6a1ac1ba1238fd35325db7a935d2715dde73ec16b254c9c9a8317b71e6df",
   "defaultContext": {
     "cityTier": "tier1",
     "departureChoice": "separate",

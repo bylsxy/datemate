@@ -70,7 +70,7 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     assert.ok(current.querySelector('input[data-scene="b"][data-activity="b-act"]'));
     assert.equal(later.classList.contains('is-recomputing'),true);
     const centersBefore=f.centers.length;
-    timeline.render(result([stage('d',0,['d']),stage('b',1,['b']),stage('c',2,['c','b','a'])]),{preserveThrough:1});
+    timeline.render(result([stage('a',0,['a']),stage('b',1,['b']),stage('c',2,['c','b','a'])]),{preserveThrough:1});
     assert.deepEqual(order(first),['a','b','c']);
     assert.equal(first.querySelector('.stage-heading').innerHTML,firstHeading);
     assert.deepEqual(order(current),['a','b','c']);
@@ -92,23 +92,74 @@ test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选
     assert.deepEqual(order(first),['d']);assert.deepEqual(order(current),['b','a']);
     timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999}});f.flush();
     assert.deepEqual(order(current),['a','b']);
-    // 活动选择也锁住整条候选顺序；探索度重渲染未显式传保留范围时沿用 prefix。
+    // 活动选择也锁住整条候选顺序；render 未显式传保留范围时沿用 pending。
     f.emit('change',current.querySelector('input[data-activity="b-act"]'));
-    timeline.pending({fromStage:1,choice:{index:1,sceneId:'b',activityIds:[]}});
+    timeline.pending({fromStage:1,preserveThrough:1,preserveKey:'stage-1',choice:{index:1,sceneId:'b',activityIds:[]}});
     f.setIntent({prefix:[{sceneId:'d',activityIds:['d-act']},{sceneId:'b',activityIds:[]}],context:{dietaryRestrictions:[]}});
     timeline.render(result([stage('d',0,['d']),{...stage('b',1,['b']),activityIds:[]}]));
     assert.deepEqual(order(current),['a','b']);
     assert.equal(current.querySelector('input[data-activity="b-act"]').checked,false);
+    timeline.pending({fromStage:1,preserveThrough:1,preserveKey:'stage-1',choice:{index:1,sceneId:'a',activityIds:['a-act']}});
+    // 根回滚旧完整 result 时，选择恢复，但当前浏览列表仍然存在。
+    timeline.render(result([stage('d',0,['d']),stage('b',1,['b'])]),{preserveThrough:1,preserveKey:'stage-1'});
+    assert.deepEqual(order(current),['a','b']);
+    assert.equal(current.querySelector('.scene-strip').children[1].getAttribute('aria-checked'),'true');
+    timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{scoreStatus:'pending',fitScore:null}});
+    timeline.render(result([stage('d',0,['d']),stage('b',1,['b'])]),{preserveThrough:1,preserveKey:'stage-1'});
+    const retainedPending=timeline.getPendingCandidates().find(item=>item.viewKey==='stage-1'&&item.sceneId==='a');
+    assert.ok(retainedPending);assert.equal(retainedPending.stageIndex,1);
+    retainedPending.candidate.activityIds.push('external-change');
+    assert.deepEqual(timeline.getPendingCandidates().find(item=>item.sceneId==='a').candidate.activityIds,['a-act']);
+    timeline.updateCandidate({...retainedPending,candidate:{scoreStatus:'evaluated',fitScore:95,q:999}});f.flush();
+    assert.equal(timeline.getPendingCandidates().some(item=>item.sceneId==='a'),false);
+    assert.deepEqual(order(current),['a','b']);
+    // slider 全局重算显式 -1 优先于已有 prefix 和旧的保留 key。
+    timeline.pending({fromStage:0,preserveThrough:-1,preserveKey:'stage-1'});
+    timeline.render(result([stage('d',0,['d']),stage('b',1,['b'])]),{preserveThrough:-1,preserveKey:'stage-1'});
+    assert.deepEqual(order(current),['b']);
+    f.setIntent({prefix:[],exploration:1,context:{dietaryRestrictions:[]}});
+    timeline.render(result([stage('d',0,['d']),stage('b',1,['b','a'])]),{preserveThrough:-1});
+    timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999,fitScore:99}});f.flush();
+    assert.deepEqual(order(current),['b','a']);
     const meal={mealRole:'breakfast',choiceMode:'before_meeting',targetMinute:550,insertIndex:0,candidates:['a','b','c'].map(candidate)};
     timeline.render({...result([stage('a',0)]),mealRequirements:[meal]},{preserveThrough:-1});
     const mealView=f.root.children[0];
-    timeline.pending({fromStage:0,mealChoice:{role:'breakfast',choice:{sceneId:'b',activityIds:['b-act']}}});
-    timeline.render({...result([stage('a',0),{...stage('b',1,['b']),mealRole:'breakfast'}]),mealRequirements:[{...meal,choiceMode:'together'}]},{preserveThrough:0});
+    const ordinary=f.root.children[1];
+    timeline.pending({fromStage:0,preserveThrough:0,preserveKey:'meal-breakfast',mealChoice:{role:'breakfast',choice:{sceneId:'b',activityIds:['b-act']}}});
+    assert.equal(mealView.classList.contains('is-recomputing'),false);
+    assert.equal(ordinary.classList.contains('is-recomputing'),true);
+    const mealInput=mealView.querySelector('input[data-activity="b-act"]');mealInput.focus();
+    timeline.render({...result([stage('a',0,['c','b','a']),{...stage('b',1,['b']),mealRole:'breakfast'}]),mealRequirements:[{...meal,choiceMode:'together',candidates:['b'].map(candidate)}]},{preserveThrough:0,preserveKey:'meal-breakfast'});
     assert.equal(f.root.children[0],mealView);
     assert.deepEqual(order(mealView),['a','b','c','__breakfast_before_meeting']);
     assert.equal(mealView.dataset.index,1);
+    assert.deepEqual(order(ordinary),['c','b','a']);
+    assert.equal(f.doc.activeElement.dataset.scene,'b');
+    assert.equal(Number(f.doc.activeElement.dataset.stage),1);
+    assert.ok(mealView.contains(f.doc.activeElement));
     assert.equal(timeline.updateCandidate({stageIndex:0,viewKey:'meal-breakfast',mealRole:'breakfast',sceneId:'a',candidate:{q:999}}),false);
     assert.equal(timeline.updateCandidate({stageIndex:1,viewKey:'meal-breakfast',mealRole:'breakfast',sceneId:'a',candidate:{q:999}}),true);f.flush();
     assert.deepEqual(order(mealView),['a','b','c','__breakfast_before_meeting']);
+    // 连续操作的最新结果必须同步前段真实选择与时间，冻结的仅是候选顺序。
+    timeline.render(result([{...stage('a',0),scoreReference:{total:10}},stage('a',1),stage('a',2)]),{preserveThrough:-1});
+    const [earlier,middle,last]=f.root.children;
+    timeline.updateCandidate({stageIndex:0,sceneId:'a',candidate:{scoreStatus:'pending',fitScore:null}});
+    timeline.pending({fromStage:0,preserveThrough:0,preserveKey:'stage-0',choice:{index:0,sceneId:'b',activityIds:['b-act']}});
+    timeline.pending({fromStage:2,preserveThrough:2,preserveKey:'stage-2',choice:{index:2,sceneId:'c',activityIds:['c-act']}});
+    const latest=result([{...stage('b',0,['b']),activityIds:[],startMinute:625,fixedStartMinute:625,scoreReference:{total:20}},{...stage('a',1,['a']),activityIds:[]},stage('c',2,['c'])]);
+    const beforeLatestCenters=f.centers.length;
+    timeline.render(latest,{preserveThrough:2,preserveKey:'stage-2'});
+    assert.deepEqual(order(earlier),['a','b','c']);assert.deepEqual(order(middle),['a','b','c']);assert.deepEqual(order(last),['a','b','c']);
+    assert.equal(earlier.querySelector('.scene-strip').children[1].getAttribute('aria-checked'),'true');
+    assert.equal(earlier.querySelector('input[data-activity="b-act"]').checked,false);
+    assert.equal(middle.querySelector('input[data-activity="a-act"]').checked,false);
+    assert.match(earlier.querySelector('.stage-heading').innerHTML,/625/);
+    assert.equal(f.centers.slice(beforeLatestCenters).some(([strip])=>strip===earlier.querySelector('.scene-strip')||strip===middle.querySelector('.scene-strip')),false);
+    const extra=timeline.getPendingCandidates().find(item=>item.viewKey==='stage-0'&&item.sceneId==='a');
+    assert.deepEqual(extra.reference,{total:20});extra.reference.total=999;
+    assert.equal(latest.stages[0].scoreReference.total,20);
+    const unchangedInput=earlier.querySelector('input[data-activity="b-act"]');
+    timeline.render(structuredClone(latest),{preserveThrough:2,preserveKey:'stage-2'});
+    assert.equal(earlier.querySelector('input[data-activity="b-act"]'),unchangedInput);
   }finally{timeline?.dispose();globalThis.document=oldDocument;globalThis.CSS=oldCSS;delete globalThis[dependencyKey];}
 });

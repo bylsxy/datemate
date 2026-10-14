@@ -5,8 +5,8 @@
     {
       "id": "separate",
       "title": "各自回去",
-      "description": "结束约会后各自返回，预留10分钟告别与离开；交通费用按实际情况另行确认。",
-      "minutes": 10,
+      "description": "记得拥抱。真的不陪TA一起回去吗？",
+      "minutes": 5,
       "cost": [
         0,
         0
@@ -22,9 +22,9 @@
     },
     {
       "id": "walk_together",
-      "title": "一起走一段",
-      "description": "双方明确选择后一起步行离开，预留20分钟；路线按去向与体力确认。",
-      "minutes": 20,
+      "title": "一起回去",
+      "description": "在宿舍楼下分别的时候注意不要打扰到别人。",
+      "minutes": 30,
       "cost": [
         0,
         0
@@ -40,8 +40,8 @@
     },
     {
       "id": "hotel",
-      "title": "共同入住酒店",
-      "description": "过夜安排中由用户明确选择，预留15分钟办理入住；费用为双人一间客房一晚的初版设计区间，实际房价、交通、房源及入住条件需确认。",
+      "title": "酒店",
+      "description": "注意提前预定大床房、选择高层、非首尾房间，提前看好平台评分评价，忌电竞酒店",
       "minutes": 15,
       "costUnit": "CNY_per_room_for_two_per_night",
       "costByCityTier": {

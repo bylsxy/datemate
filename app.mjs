@@ -1,20 +1,21 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=155eb055b486c4e0';
-import {createTimeline} from './timeline.mjs?v=155eb055b486c4e0';
-import {buildCandidateJobs,candidateKey} from './candidate-validation.mjs?v=155eb055b486c4e0';
-import {createReasonView} from './reasons-view.mjs?v=155eb055b486c4e0';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=155eb055b486c4e0';
-import {createPlacePicker} from './place-picker.mjs?v=155eb055b486c4e0';
-import {dietaryOptions} from './data/activities.mjs?v=155eb055b486c4e0';
-import * as reasoning from './reasoning.mjs?v=155eb055b486c4e0';
-import {normalizePeriods} from './time-periods.mjs?v=155eb055b486c4e0';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=155eb055b486c4e0';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=1d081a6265958465';
+import {createTimeline} from './timeline.mjs?v=1d081a6265958465';
+import {buildCandidateJobs,candidateKey} from './candidate-validation.mjs?v=1d081a6265958465';
+import {createReasonView} from './reasons-view.mjs?v=1d081a6265958465';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=1d081a6265958465';
+import {createPlacePicker} from './place-picker.mjs?v=1d081a6265958465';
+import {dietaryOptions} from './data/activities.mjs?v=1d081a6265958465';
+import * as reasoning from './reasoning.mjs?v=1d081a6265958465';
+import {normalizePeriods} from './time-periods.mjs?v=1d081a6265958465';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay} from './planner.mjs?v=1d081a6265958465';
+import {selectStageIntent,selectMealIntent,exploreIntent} from './planning-intent.mjs?v=4.4.0';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>({...defaultContext(),...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=155eb055b486c4e0',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=1d081a6265958465',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,getIntent:snapshot,onCandidateVisible:prioritizeCandidate});
@@ -27,7 +28,7 @@ function prioritizeCandidate(choice){
 }
 function startValidation(){
   stopValidation();
-  const jobs=buildCandidateJobs(result,state);if(!jobs.length)return;
+  const jobs=buildCandidateJobs(result,state,{pendingCandidates:timeline.getPendingCandidates()});if(!jobs.length)return;
   validationGeneration=sequence;validationJobs=new Map(jobs.map(job=>[job.key,job]));
   const currentWorker=createWorker();validationWorker=currentWorker;
   currentWorker.onmessage=({data})=>{
@@ -62,10 +63,10 @@ function planningError(r,context){
   return '当前条件还没有可行安排，请调整条件或用餐选择。';
 }
 function snapshot(){return clone(pending?.next || active?.next || state);}
-function dispatch(job){busy=true;active=job;worker.postMessage({id:job.id,state:job.next});}
-function compute(next,message='安排已更新。横滑找灵感，点击才会选择。',{expectedDigest=null,fromStage=0,choice=null,mealChoice=null,departureChoice=null}={}){
-  const id=++sequence;stopValidation();timeline.pending({fromStage,choice,mealChoice,departureChoice});pendingPanels();$('#export').disabled=true;note('正在考虑后续安排…');
-  return new Promise(resolve=>{const job={id,next:clone(next),message,expectedDigest,resolve};if(busy){pending?.resolve(null);pending=job;}else dispatch(job);});
+function dispatch(job){busy=true;active=job;worker.postMessage({id:job.id,state:job.next,search:job.search});}
+function compute(next,message='安排已更新。横滑找灵感，点击才会选择。',{expectedDigest=null,search=null,fromStage=0,choice=null,mealChoice=null,departureChoice=null,preserveThrough=-1,preserveKey=null}={}){
+  const id=++sequence;stopValidation();timeline.pending({fromStage,choice,mealChoice,departureChoice,preserveThrough,preserveKey});pendingPanels();$('#export').disabled=true;note('正在考虑后续安排…');
+  return new Promise(resolve=>{const job={id,next:clone(next),message,expectedDigest,search:clone(search),preserveThrough,preserveKey,resolve};if(busy){pending?.resolve(null);pending=job;}else dispatch(job);});
 }
 worker.onmessage=({data})=>{
   const job=active;busy=false;active=null;
@@ -73,13 +74,17 @@ worker.onmessage=({data})=>{
     if(data.id===sequence){
       const r=data.result;
       if(data.error||!r?.ok){
-        state=job.next;
-        const mealRequirements=normalizePeriods(state.context.periodIds,state.context.mealChoices).mealRequirements;
-        result={...(r||{}),ok:false,stages:[],mealRequirements:r?.mealRequirements||mealRequirements};
-        render();note(planningError(r,state.context),true);syncControls();
+        if(result?.ok&&(job.preserveThrough>=0||job.expectedDigest)){
+          render(job);syncControls();note(`${planningError(r,job.next.context)} 已保留原安排。`,true);
+        }else{
+          state=job.next;
+          const mealRequirements=normalizePeriods(state.context.periodIds,state.context.mealChoices).mealRequirements;
+          result={...(r||{}),ok:false,stages:[],mealRequirements:r?.mealRequirements||mealRequirements};
+          render(job);note(planningError(r,state.context),true);syncControls();
+        }
       }
-      else if(job.expectedDigest&&r.outputFingerprint!==job.expectedDigest){if(result)render();note('复盘输出校验不一致，当前安排保留。',true);syncControls();}
-      else{state=job.next;result=r;lastElapsed=data.elapsed;conditionsError();render();syncControls();note(job.message);}
+      else if(job.expectedDigest&&r.outputFingerprint!==job.expectedDigest){if(result)render(job);note('复盘输出校验不一致，当前安排保留。',true);syncControls();}
+      else{state=job.next;result=r;lastElapsed=data.elapsed;conditionsError();render(job);syncControls();note(job.message);}
       $('#stages').setAttribute('aria-busy','false');$('#export').disabled=!result?.ok;job.resolve(r);
     }else job.resolve(null);
   }
@@ -104,6 +109,7 @@ function readContext({strict=true}={}){
   c.preferencesA=checked('preferencesA').filter(Boolean);c.preferencesB=checked('preferencesB').filter(Boolean);c.dietaryRestrictions=checked('diet');
   Object.assign(c,placePicker.getChoices());
   c.explicitConsentIds=[...(snapshot().context.explicitConsentIds||[])];
+  c.explorationSeed=snapshot().context.explorationSeed??0;
   return c;
 }
 function syncControls(){
@@ -127,12 +133,12 @@ function pendingPanels(){
   }
   $('#preparation-items').innerHTML=placeholder;$('#preparation-summary').setAttribute('aria-busy','true');
 }
-function render(){
+function render({preserveThrough=-1,preserveKey=null}={}){
   const preparations=result.ok?planPreparations(result.stages,catalog):[];
   $('#preparation-summary').hidden=!preparations.length;
   $('#preparation-summary').setAttribute('aria-busy','false');
   $('#preparation-items').innerHTML=preparations.length?`<div class="preparation-list">${preparations.map(item=>`<span class="preparation-item">${esc(item.label.replace(/^已(?:准备)?|^可用|^一份/g,''))}${item.quantity>1?` × ${esc(item.quantity)}`:''}</span>`).join('')}</div>`:'';
-  timeline.render(result);
+  timeline.render(result,{preserveThrough,preserveKey});
   const r=result;
   reasonView.setResult(r,state.context);
   if(!r.ok){
@@ -150,30 +156,21 @@ function render(){
 async function commitStage(index,sceneId,activityIds){
   if(!result?.ok||!conditionsValid)return false;
   clearTimeout(sliderTimer);
-  const intended=snapshot();
-  const prefix=result.stages.slice(0,index).map((s,i)=>intended.prefix[i]||{sceneId:s.sceneId,activityIds:[...s.activityIds],...(s.mealRole?{mealRole:s.mealRole}:{})});
-  prefix.push({sceneId,activityIds});
-  const next=snapshot();next.prefix=prefix;delete next.context.endAfterStage;
-  next.context.explicitConsentIds=prefix.flatMap(choice=>sceneById.get(choice.sceneId).activities.filter(a=>a.requiresExplicitConsent&&choice.activityIds.includes(a.id)).map(a=>a.id));
-  const r=await compute(next,'已按地点和活动重新规划，之前阶段保留。',{fromStage:index,choice:{index,sceneId,activityIds}});
+  const next=selectStageIntent(snapshot(),result,index,sceneId,activityIds,catalog);
+  const r=await compute(next,'当前及之前阶段的卡片顺序保留，后续安排已更新。',{fromStage:index,choice:{index,sceneId,activityIds},preserveThrough:index,preserveKey:`stage-${index}`});
   return !!r?.ok;
 }
 async function commitMeal(role,choice,{fromStage=0}={}){
   if(!result||!conditionsValid)return false;
   clearTimeout(sliderTimer);
-  const next=snapshot();
-  next.context.mealChoices={...(next.context.mealChoices||{}),[role]:clone(choice)};
-  next.prefix=result.stages.slice(0,fromStage).map(s=>({sceneId:s.sceneId,activityIds:[...s.activityIds],...(s.mealRole?{mealRole:s.mealRole}:{})}));
-  const consentChoices=[...next.prefix,...(choice.sceneId?[choice]:[])];
-  next.context.explicitConsentIds=[...new Set(consentChoices.flatMap(p=>sceneById.get(p.sceneId).activities.filter(a=>a.requiresExplicitConsent&&p.activityIds.includes(a.id)).map(a=>a.id)))];
-  delete next.context.endAfterStage;
-  const r=await compute(next,'用餐选择已更新。',{fromStage,mealChoice:{role,choice}});
+  const next=selectMealIntent(snapshot(),result,role,choice,fromStage,catalog);
+  const r=await compute(next,'餐卡顺序保留，后续用餐安排已更新。',{fromStage,mealChoice:{role,choice},preserveThrough:fromStage,preserveKey:`meal-${role}`});
   return !!r?.ok;
 }
 async function commitDeparture(id){
   if(!result||!conditionsValid)return false;
   clearTimeout(sliderTimer);const next=snapshot();next.context.departureChoice=id;
-  const r=await compute(next,'分别方式已更新。',{departureChoice:id});return !!r?.ok;
+  const r=await compute(next,'分别方式已更新。',{departureChoice:id,preserveThrough:result.stages.length,preserveKey:'departure'});return !!r?.ok;
 }
 const nodeById=new Map(graph.nodes.map(n=>[n.id,n]));
 const predicates={allows_activity:'可包含',has_feature:'具有特征',supported_by:'依据',from_source:'来自',requires:'需要',provides:'提供',consumes:'消耗',governed_by:'受规则约束',depends_on:'前置依赖',derives:'推导'};
@@ -237,7 +234,7 @@ $('#conditions-form').addEventListener('change',ev=>{
   if(ev.target.id==='saving'){$('#budget').disabled=ev.target.checked;if(ev.target.checked)$('#budget').value=50;else $('#budget').value='';}applyConditions();
 });
 $('#budget').addEventListener('input',()=>{clearTimeout(conditionTimer);$('#export').disabled=true;conditionTimer=setTimeout(applyConditions,160);});
-$('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);$('#exploration-value').innerHTML=`${e}<small>/ 100</small>`;clearTimeout(sliderTimer);sliderTimer=setTimeout(()=>{const next=snapshot();next.exploration=e;compute(next,'探索度已更新：固定已选阶段，重新比较可行后续。');},130);});
+$('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);$('#exploration-value').innerHTML=`${e}<small>/ 100</small>`;clearTimeout(sliderTimer);sliderTimer=setTimeout(()=>{const seed=crypto.getRandomValues(new Uint32Array(1))[0];const next=exploreIntent(snapshot(),e,seed);compute(next,e?'探索度已更新：在硬约束内重新探索全部阶段。':'探索度已归零：重新生成常规择优安排。');},130);});
 function closeMenu(){ $('#more-menu').hidden=true;$('#more-menu-toggle').setAttribute('aria-expanded','false'); }
 function showView(name){
   closeMenu();$$('.view').forEach(x=>x.hidden=x.id!==`view-${name}`);
@@ -277,8 +274,8 @@ $('#export').addEventListener('click',()=>{
 $('#import').addEventListener('click',()=>{closeMenu();$('#import-file').click();});
 async function loadReplay(obj){
   const p=validateReplay(obj);
-  if(JSON.stringify(p.versions)!==JSON.stringify(result?.versions)||JSON.stringify(p.search)!==JSON.stringify(result?.replay?.search))throw Error('数据、规则、评分或搜索版本不匹配，无法保证复现。');
-  return compute(p.state,'复盘成功：输入与输出校验一致。',{expectedDigest:p.outputFingerprint});
+  if(JSON.stringify(p.versions)!==JSON.stringify(result?.versions))throw Error('数据、规则或评分版本不匹配，无法保证复现。');
+  return compute(p.state,'复盘成功：输入与输出校验一致。',{expectedDigest:p.outputFingerprint,search:p.search});
 }
 $('#import-file').addEventListener('change',async ev=>{const file=ev.target.files[0];if(!file)return;try{if(file.size>200000)throw Error('复盘文件超过200KB限制。');await loadReplay(JSON.parse(await file.text()));}catch(e){note(`导入失败：${e.message}`,true);}ev.target.value='';});
 initializeKnowledge();syncControls();

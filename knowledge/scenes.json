@@ -12,7 +12,7 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "泰超门口有露天餐饮与停留空间，自述认为氛围较好、食物价格较高；按天气选择短暂停留，座位、消费和可用空间需确认。",
+      "description": "泰超门口露天餐饮与停留空间，氛围较好，但吃泰超略贵。",
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -46,7 +46,7 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "教四可作为晚间一起自习的去处，双方安静各读；可进入教室、座位和自习安排需现场确认。",
+      "description": "注意谈恋爱不要打扰到别的自习的同学",
       "scauOnly": true,
       "minutes": 45,
       "cost": [
@@ -80,7 +80,7 @@
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "教四后方坡路是自述中的晚间散步去处，按体力缓慢步行；坡度、照明和通行条件需确认。",
+      "description": "晚间散步去处",
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -106,14 +106,14 @@
     {
       "id": "taishan_lab_garden",
       "place": {
-        "name": "泰山实验楼下花园",
+        "name": "泰山实验楼架空层花园",
         "kind": "ordinary",
         "category": "校园花园",
         "universityId": "scau",
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
       },
-      "description": "泰山实验楼下花园可作晚间短距离散步与景物观察，按天气和体力选择路线；照明、开放与通行条件需确认。",
+      "description": "情侣幽会场所",
       "scauOnly": true,
       "minutes": 30,
       "cost": [
@@ -138,7 +138,7 @@
     },
     {
       "id": "agriculture_museum",
-      "description": "挑一个展厅轻量参观，围绕共同感兴趣的展品聊天。",
+      "description": "注意似乎只有一周中的几天开放",
       "minutes": 60,
       "cost": [
         0,
@@ -188,9 +188,9 @@
       "crowdRisk": "unknown",
       "seated": false,
       "place": {
-        "name": "农业主题博物馆",
+        "name": "农业博物馆",
         "kind": "ordinary",
-        "category": "农业主题博物馆",
+        "category": "华农特色",
         "verificationStatus": "awaiting_confirmation"
       },
       "activityIds": [

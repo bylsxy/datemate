@@ -1,5 +1,5 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=155eb055b486c4e0';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=155eb055b486c4e0';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=1d081a6265958465';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=1d081a6265958465';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const cardDescription=scene=>{
@@ -30,7 +30,14 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   const root=document.querySelector('#stages');
   const window=root.ownerDocument.defaultView;
   const scenes=new Map(catalog.scenes.map(s=>[s.id,s]));
-  const views=new Map(); let result=null, optimistic=null, pendingPreserveThrough=-1;
+  const views=new Map(); let result=null, optimistic=null, pendingPreserveThrough=-1, pendingPreservation=null;
+  function preservationThrough(preserveThrough,preserveKey){
+    const byElement=new Map([...views.values()].map(view=>[view.element,view]));
+    const ordered=[...root.children].map(element=>byElement.get(element)).filter(Boolean);
+    const boundary=preserveKey!=null?ordered.findIndex(view=>view.key===preserveKey):-1;
+    const kept=preserveKey!=null?(boundary<0?[]:ordered.slice(0,boundary+1)):ordered.filter(view=>view.index<=preserveThrough);
+    return {keys:kept.map(view=>view.key),key:kept.at(-1)?.key??null};
+  }
   const activeChoice=index=>optimistic?.index===index?optimistic:getIntent()?.prefix?.[index]||result?.stages[index];
   function centerSelection(view,smooth){view.strip.classList.remove('is-preserving-scroll');if(smooth)deferSortUntilStill(view);syncCarousel(view.strip);centerCard(view.strip,view.selectedId,{smooth});}
   function updateScore(view,card,candidate) {
@@ -105,12 +112,13 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     },120);
   }
   function queueCandidateSort(view) {
-    if(view.orderLocked)return;
+    // 探索排序由引擎决定，后台补分不能用 q 覆盖已经生成的探索顺序。
+    if(view.orderLocked||getIntent()?.exploration>0)return;
     view.needsSort=true;
     if(view.sortFrame||view.scrollTimer!=null)return;
     view.sortFrame=window.requestAnimationFrame(()=>{
       view.sortFrame=0;
-      if(view.orderLocked){view.needsSort=false;return;}
+      if(view.orderLocked||getIntent()?.exploration>0){view.needsSort=false;return;}
       if(view.scrollTimer!=null||view.strip.classList.contains('is-dragging')||view.activePointers.size)return;
       view.needsSort=false;
       const cards=[...view.strip.children],bounds=view.strip.getBoundingClientRect(),viewport=window.visualViewport;
@@ -157,6 +165,19 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     view.visibility?.queue();
     if(result?.ok!==false)queueCandidateSort(view);
     return true;
+  }
+  /** 含冻结列表中被新 candidates 截断的待验证卡；返回副本，不修改 base result。 */
+  function getPendingCandidates(){
+    const pending=[];
+    for(const view of views.values()){
+      if(view.departure)continue;
+      for(const [sceneId,candidate]of view.candidates){
+        const card=view.cards.get(sceneId);
+        if(candidate.scoreStatus!=='pending'||!card||card.querySelector('.scene-score').hidden)continue;
+        pending.push({stageIndex:view.index,viewKey:view.key,sceneId,...(view.mealRole?{mealRole:view.mealRole}:{}),candidate:structuredClone(candidate),...(view.entry?.stage.scoreReference!=null?{reference:structuredClone(view.entry.stage.scoreReference)}:{})});
+      }
+    }
+    return pending;
   }
   function setActivityContent(view,scene,ids) {
     if(!scene||view.departure){view.activities.innerHTML='';return;}
@@ -244,12 +265,22 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     setActivityContent(view,scenes.get(stage.sceneId),stage.activityIds||[]);
     view.meta.innerHTML='';view.meta.hidden=true;
   }
-  /** preserveThrough 包含边界阶段；-1 显式解除保留，未传则沿用 pending 或 intent.prefix。 */
-  function render(nextResult,{preserveThrough=Math.max(pendingPreserveThrough,(getIntent()?.prefix?.length||0)-1)}={}) {
+  function sameStageContent(previous,next){
+    if(!previous||previous.sceneId!==next.sceneId)return false;
+    const ids=previous.activityIds||[],nextIds=next.activityIds||[];
+    return ids.length===nextIds.length&&ids.every((id,index)=>id===nextIds[index])&&
+      (previous.start??previous.startMinute)===(next.start??next.startMinute)&&
+      (previous.end??previous.endMinute)===(next.end??next.endMinute)&&
+      ['fixedStartMinute','fixedEndMinute','mealRole'].every(key=>previous[key]===next[key])&&
+      (previous.transfer||0)===(next.transfer||0)&&!!previous.virtualMeal===!!next.virtualMeal&&!!previous.departure===!!next.departure;
+  }
+  /** preserveKey 按现有 DOM 截到当前视图；未传沿用 pending，preserveThrough:-1 解除保留。 */
+  function render(nextResult,{preserveThrough=pendingPreserveThrough,preserveKey}={}) {
     // 必须在 index 更新前冻结范围；虚拟用餐变为真实阶段时索引可能改变。
-    const preserved=new Map([...views].filter(([,view])=>view.index<=preserveThrough).map(([key,view])=>[key,{view,full:view.index<preserveThrough}]));
+    const retention=preserveThrough<0?{keys:[],key:null}:pendingPreservation&&preserveThrough===pendingPreserveThrough&&(preserveKey==null||preserveKey===pendingPreservation.key)?pendingPreservation:preservationThrough(preserveThrough,preserveKey);
+    const preserved=new Map(retention.keys.filter(key=>views.has(key)).map(key=>[key,{view:views.get(key),full:key!==retention.key}]));
     views.forEach(stopVisibility);
-    result=nextResult;optimistic=null;pendingPreserveThrough=-1;
+    result=nextResult;optimistic=null;pendingPreserveThrough=-1;pendingPreservation=null;
     const focus=document.activeElement,focusView=[...views.values()].find(view=>view.element.contains(focus));
     const focusData=focus?.dataset?.activity?{...focus.dataset,viewKey:focusView?.key}:null;
     root.querySelectorAll('.skeleton-stage').forEach(el=>el.remove());
@@ -265,10 +296,9 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       entries.push({stage:{sceneId:departure.id,activityIds:[],startMinute:start,endMinute:end,transfer:0,departure:true,candidates:departure.candidates},index:result.stages.length,key:'departure',time:start});
     }
     entries.sort((a,b)=>a.time-b.time||Number(Boolean(b.stage.virtualMeal))-Number(Boolean(a.stage.virtualMeal)));
-    for(const [key,{view,full}]of preserved){
+    for(const [key,{view}]of preserved){
       const at=entries.findIndex(entry=>entry.key===key);
       if(at<0)entries.push(view.entry);
-      else if(full)entries[at]={...view.entry,index:entries[at].index};
     }
     // 前段节点保持原来相对位置，后续再按新结果排列。
     const prefix=[...root.children].map(element=>[...preserved.values()].find(({view})=>view.element===element)?.view.entry?.key).filter(Boolean);
@@ -280,34 +310,37 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       const {stage,index,key,meal}=entry;
       const view=views.get(key)||createView(index,key);
       const retention=preserved.get(key),wasSelected=view.selectedId;
+      const contentUnchanged=sameStageContent(view.entry?.stage,stage)&&wasSelected===stage.sceneId&&!view.element.classList.contains('is-recomputing');
       view.orderLocked=!!retention;view.entry=entry;
       view.index=index;view.mealRole=stage.mealRole||null;view.departure=!!stage.departure;view.element.dataset.index=index;view.strip.dataset.index=index;
       view.element.classList.toggle('departure-stage',view.departure);view.element.setAttribute('aria-label',view.departure?'分别方式':meal?meal.label:`阶段${index+1}`);
       view.element.classList.toggle('meal-stage',!!view.mealRole);view.strip.setAttribute('aria-label',view.departure?'分别方式':meal?`${meal.label}地点`:`阶段${index+1}地点`);
       if(root.children[position]!==view.element)root.insertBefore(view.element,root.children[position]||null);
       view.element.classList.remove('is-recomputing');view.element.removeAttribute('aria-busy');
-      if(retention?.full){
-        // 前段内容不重建，但事件索引必须跟随稳定 key 对应的新阶段。
+      if(retention?.full&&contentUnchanged){
+        // 只有真实内容一致时保留前段节点；事件索引跟随稳定 key 对应的新阶段。
         for(const card of view.cards.values())card.dataset.stage=index;
         for(const input of view.activities.querySelectorAll('input[data-activity]'))input.dataset.stage=index;
         watchVisibility(view);return;
       }
-      updateCards(view,stage,meal,{preserve:!!retention,center:wasSelected!==stage.sceneId});updateStageContent(view,stage);
+      updateCards(view,stage,meal,{preserve:!!retention,center:!retention?.full&&wasSelected!==stage.sceneId});updateStageContent(view,stage);
       watchVisibility(view);
     });
     root.setAttribute('aria-busy','false');
     if(focusData?.activity){const el=views.get(focusData.viewKey)?.activities.querySelector(`input[data-scene="${CSS.escape(focusData.scene)}"][data-activity="${CSS.escape(focusData.activity)}"]`);el?.focus({preventScroll:true});}
   }
-  function pending({fromStage=0,choice=null,mealChoice=null,departureChoice=null,preserveThrough=choice||mealChoice?fromStage:-1}={}) {
+  function pending({fromStage=0,choice=null,mealChoice=null,departureChoice=null,preserveThrough=choice||mealChoice?fromStage:-1,preserveKey}={}) {
     const focused=document.activeElement,focusData=focused?.dataset?.activity?{...focused.dataset}:null;
     const focusView=[...views.values()].find(view=>view.element.contains(focused));
     pendingPreserveThrough=preserveThrough;
+    pendingPreservation=preserveThrough<0?{keys:[],key:null}:preservationThrough(preserveThrough,preserveKey);
+    const preservedKeys=new Set(pendingPreservation.keys);
     optimistic=choice;
     root.setAttribute('aria-busy','true');
     if(!result){root.innerHTML=[0,1].map(skeletonStage).join('');return;}
     for(const view of views.values()){
       const i=view.index;
-      view.orderLocked=i<=preserveThrough;
+      view.orderLocked=preservedKeys.has(view.key);
       if(view.orderLocked)stopVisibility(view);
       // 连续选到原先的后续阶段时，不能把上一轮骨架锁成前段内容。
       if(view.orderLocked&&view.element.classList.contains('is-recomputing')&&view.entry){
@@ -323,7 +356,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       const selected=mealChoice&&view.mealRole===mealChoice.role?mealChoice.choice:choice&&i===choice.index&&!view.mealRole&&!view.departure?choice:null;
       if(selected&&view.entry)view.entry={...view.entry,stage:{...view.entry.stage,sceneId:view.selectedId,activityIds:[...(selected.activityIds||[])]}};
       if(view.orderLocked){view.element.classList.remove('is-recomputing');view.element.removeAttribute('aria-busy');continue;}
-      if(i<fromStage)continue;
+      if(preserveKey==null&&i<fromStage)continue;
       stopVisibility(view);
       view.element.classList.add('is-recomputing');view.element.setAttribute('aria-busy','true');
       const ownClockKnown=choice&&i===choice.index&&result.stages[i]?.sceneId===choice.sceneId;
@@ -337,7 +370,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     }
     if(focusData){focusView?.activities.querySelector(`input[data-scene="${CSS.escape(focusData.scene)}"][data-activity="${CSS.escape(focusData.activity)}"]`)?.focus({preventScroll:true});}
   }
-  function lockThrough(view){for(const previous of views.values())if(previous.index<=view.index){previous.orderLocked=true;stopVisibility(previous);}}
+  function lockThrough(view){for(const key of preservationThrough(view.index,view.key).keys){const previous=views.get(key);previous.orderLocked=true;stopVisibility(previous);}}
   root.addEventListener('click',event=>{
     const card=event.target.closest('.scene-card');if(!card||card.dataset.dragged==='1')return;
     const view=views.get(card.dataset.view);if(!view)return;
@@ -361,5 +394,5 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     if(view.mealRole){onMeal(view.mealRole,{sceneId:input.dataset.scene,activityIds:toggleActivity(scenes.get(input.dataset.scene),ids,input.dataset.activity)},{fromStage:index});return;}
     onActivities(index,input.dataset.scene,toggleActivity(scenes.get(input.dataset.scene),ids,input.dataset.activity));
   });
-  return {render,pending,updateCandidate,recenter:()=>views.forEach(v=>centerSelection(v,false)),dispose:()=>views.forEach(v=>v.dispose())};
+  return {render,pending,updateCandidate,getPendingCandidates,recenter:()=>views.forEach(v=>centerSelection(v,false)),dispose:()=>views.forEach(v=>v.dispose())};
 }

@@ -24,8 +24,9 @@ function unitHash(text) {
 export function createExploration(exploration, seed) {
   const strength = (Math.max(0, Math.min(100, exploration)) / 100) ** 2;
   const noise = (scope, key) => (2 * unitHash(JSON.stringify([seed, scope, key])) - 1) * strength;
-  function select(ordered, limit, { key, value, bucket = key, scope, temperature = 60, elite = 0.25 } = {}) {
-    if (!strength || ordered.length <= limit) return ordered.slice(0, limit);
+  function select(ordered, limit, { key, value, bucket = key, scope, temperature = 60, elite = 0.25, reorder = false } = {}) {
+    if (!strength || !reorder && ordered.length <= limit) return ordered.slice(0, limit);
+    limit = Math.min(limit, ordered.length);
     // 保留择优槽位，剩余槽位在不同场景间轮转；重复仍合法，不作硬禁止。
     const keep = Math.min(limit, Math.max(1, Math.ceil(limit * (1 - strength * (1 - elite)))));
     const selected = ordered.slice(0, keep), retained = new Set(selected);

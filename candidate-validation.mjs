@@ -1,7 +1,7 @@
 // 候选验证与当前安排分开：只补全卡片评分，不改选中地点、时间线或复盘输出。
 export const candidateKey = ({stageIndex, sceneId, mealRole}) => `${mealRole ? `meal-${mealRole}` : `stage-${stageIndex}`}:${sceneId}`;
 
-export function buildCandidateJobs(result, state) {
+export function buildCandidateJobs(result, state, {pendingCandidates = null} = {}) {
   if (!result?.ok) return [];
   const jobs = new Map();
   function add(stageIndex, mealRole, candidate, reference) {
@@ -15,11 +15,21 @@ export function buildCandidateJobs(result, state) {
     job.key = candidateKey(job);
     jobs.set(job.key, job);
   }
-  result.stages.forEach((stage, i) => (stage.candidates || []).forEach(c => add(i, stage.mealRole, c, stage.scoreReference)));
-  for (const meal of result.mealRequirements || []) {
-    const index = meal.stageIndex ?? meal.insertIndex;
-    const reference = meal.stageIndex === null ? null : result.stages[index]?.scoreReference;
-    for (const candidate of meal.candidates || []) add(index, meal.mealRole, candidate, reference);
+  if (pendingCandidates) {
+    // 冻结的横条可能保留搜索输出已截断的卡片，仍须补分，不能让它们无限转圈。
+    for (const entry of pendingCandidates) {
+      const meal = entry.mealRole ? result.mealRequirements?.find(m => m.mealRole === entry.mealRole) : null;
+      const index = meal ? meal.stageIndex ?? meal.insertIndex : entry.stageIndex;
+      const reference = entry.reference ?? (meal?.stageIndex === null ? null : result.stages[index]?.scoreReference);
+      if (Number.isInteger(index) && index >= 0 && index <= result.stages.length) add(index, entry.mealRole, entry.candidate, reference);
+    }
+  } else {
+    result.stages.forEach((stage, i) => (stage.candidates || []).forEach(c => add(i, stage.mealRole, c, stage.scoreReference)));
+    for (const meal of result.mealRequirements || []) {
+      const index = meal.stageIndex ?? meal.insertIndex;
+      const reference = meal.stageIndex === null ? null : result.stages[index]?.scoreReference;
+      for (const candidate of meal.candidates || []) add(index, meal.mealRole, candidate, reference);
+    }
   }
   return [...jobs.values()];
 }

@@ -1,8 +1,8 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=155eb055b486c4e0';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=155eb055b486c4e0';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=155eb055b486c4e0';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=1d081a6265958465';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=1d081a6265958465';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=1d081a6265958465';
 
-export { canonical, digest } from './reasoning.mjs?v=155eb055b486c4e0';
+export { canonical, digest } from './reasoning.mjs?v=1d081a6265958465';
 export const VERSION = 'datemate-engine-3.3.0';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
@@ -478,7 +478,8 @@ function* searchDate(input = {}, catalog, options = {}) {
     anchors = normalizeAnchors(rawAnchors, compiled, ctx); ctx.anchors = anchors;
   } catch (error) { return errorResponse('invalid_input', [error.message], ctx, versions); }
   const exploration = integer(options.exploration ?? input.exploration ?? input.context?.exploration, 0, 0, 100);
-  const explorer = createExploration(exploration, ctx.explorationSeed);
+  // 独立候选验证只求最高真实效用；探索度仍影响真实目标函数，不施加搜索噪声。
+  const explorer = createExploration(options.continuationOnly ? 0 : exploration, ctx.explorationSeed);
   const periodDefaults = ctx.periodIds ? { maxStages: Math.min(24, Math.max(CONFIG.maxStages, Math.ceil(ctx.duration / 45) + 2)), beamWidth: 8, activitySubsetLimit: 8 } : {};
   const rawConfig = { ...CONFIG, ...periodDefaults, candidateLimit: CONFIG.candidateLimit + Math.round(12 * explorer.strength), ...(input.searchConfig || {}), ...options };
   const config = { method: rawConfig.method === 'exact' ? 'exact' : 'bounded', maxStages: integer(rawConfig.maxStages ?? rawConfig.maxDepth, CONFIG.maxStages, 1, 24), beamWidth: integer(rawConfig.beamWidth, CONFIG.beamWidth, 1, 2048), maxExpandedNodes: integer(rawConfig.maxExpandedNodes, CONFIG.maxExpandedNodes, 1, 1000000), maxCandidateExpandedNodes: integer(rawConfig.maxCandidateExpandedNodes, CONFIG.maxCandidateExpandedNodes, 0, 100000), activitySubsetLimit: integer(rawConfig.activitySubsetLimit, CONFIG.activitySubsetLimit, 1, 4096), candidateLimit: integer(rawConfig.candidateLimit, CONFIG.candidateLimit, 1, 64), tieBreak: 'stable-id' };
@@ -534,7 +535,8 @@ function* searchDate(input = {}, catalog, options = {}) {
       if (!groups.has(key)) groups.set(key, []);
       groups.get(key).push(item);
     }
-    const buckets = [...groups.entries()].sort(([a], [b]) => Number(a[0]) - Number(b[0]) || explorer.noise(scope, b) - explorer.noise(scope, a) || cmp(a, b)).map(([, items]) => items);
+    const buckets = [...groups.entries()].map(([key, items]) => ({ key, items, rank: explorer.noise(scope, key) }))
+      .sort((a, b) => Number(a.key[0]) - Number(b.key[0]) || b.rank - a.rank || cmp(a.key, b.key)).map(group => group.items);
     const spread = [];
     for (let rank = 0; spread.length < choices.length; rank++) for (const bucket of buckets) if (bucket[rank]) spread.push(bucket[rank]);
     return spread;
@@ -605,7 +607,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   // 后续候选评分取发现的最高真实效用，不把探索选择的噪声带入契合分。
   const best = options.continuationOnly ? finished[0] : selection.selected;
   const explorationSelection = { version: EXPLORATION_VERSION, seed: ctx.explorationSeed, strength: explorer.strength, mode: explorer.strength ? 'seeded_exploration' : 'utility_best', label: explorer.strength ? '探索选择' : '效用择优', objective: objective(best, exploration), bestDiscoveredObjective: selection.bestDiscoveredObjective, utilityGap: selection.utilityGap, maxUtilityGap: selection.maxUtilityGap, searchNoise: selection.searchNoise };
-  if (options.continuationOnly) return { ok: true, status: 'feasible', q: objective(best, exploration), prefixUtility: candidatePrefixUtility, referenceUtility: 80 * (ctx.periodIds ? 0.96 : 0.88) ** Math.max(0, prefix.length - 1), scoreVersion: CONFIG.scoreVersion, stages: best.stages, search: stats };
+  if (options.continuationOnly) return { ok: true, status: 'feasible', q: objective(best, exploration), prefixUtility: candidatePrefixUtility, referenceUtility: 80 * (ctx.periodIds ? 0.96 : 0.88) ** Math.max(0, prefix.length - 1), scoreVersion: CONFIG.scoreVersion, explorationSeed: ctx.explorationSeed, choiceMode: 'utility_best', decisionMode: 'utility_best', explorationNoiseEnabled: false, scoringMode: 'best_discovered_true_utility', stages: best.stages, search: stats };
   function continuationValues(terminals, searchHistory) {
     const values = new Map();
     for (const terminal of terminals) {
@@ -627,6 +629,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   const stages = best.stages.map((original, index) => {
     beforeByIndex.push(before);
     const anchor = original.anchorId ? anchors.find(a => a.id === original.anchorId) : null;
+    const lockedStage = index < prefix.length || Boolean(anchor) || Boolean(ctx.mealRequirements.find(m => m.mealRole === original.mealRole)?.sceneId);
     const replayChoice = { sceneId: original.sceneId, activityIds: original.activityIds, ...(original.mealRole ? { mealRole: original.mealRole } : {}), ...(original.fixedStartMinute !== null ? { startMinute: original.fixedStartMinute } : {}) };
     const ownState = evaluator.evaluate(before, replayChoice, anchor, true).next;
     const prefixUtility = objective(before, exploration), referenceUtility = 80 * (ctx.periodIds ? 0.96 : 0.88) ** index;
@@ -669,10 +672,14 @@ function* searchDate(input = {}, catalog, options = {}) {
     // 已有完整后续的卡片优先展露；未验证的场景只能带 pending 状态出现。
     const completedEntries = allEntries.filter(c => c.continuationFound);
     const pendingEntries = allEntries.filter(c => !c.continuationFound);
-    const sampleEntries = (entries, limit, scope) => explorer.select(entries, limit, { key: c => c.sceneId, value: c => c.q ?? c.localUtility, scope: `${scope}:${stateKey(before)}`, temperature: 80 });
-    let ordered = [...sampleEntries(completedEntries, config.candidateLimit, 'cards-complete'), ...sampleEntries(pendingEntries, Math.max(0, config.candidateLimit - completedEntries.length), 'cards-pending')].sort(orderEntries);
-    if (!ordered.some(c => c.sceneId === own.sceneId)) ordered = [...ordered.slice(0, config.candidateLimit - 1), own].sort(orderEntries);
-    const stage = { ...original, index, fitScore: own.fitScore, score: own.score, recommendationIndex: own.score, scoreStatus: own.scoreStatus, evaluationStatus: own.evaluationStatus, scoreVersion: own.scoreVersion, scoreReference, rawUtility: own.rawUtility, candidates: ordered, manual: index < prefix.length, selected: true, selectionMode: index < prefix.length ? 'manual' : explorationSelection.mode, selectionLabel: index < prefix.length ? '人工固定' : explorationSelection.label };
+    const sampleEntries = (entries, limit, scope) => explorer.select(entries, limit, { key: c => c.sceneId, value: c => c.q ?? c.localUtility, scope: `${scope}:${stateKey(before)}`, temperature: 80, reorder: true });
+    const explorationDisplay = explorer.strength > 0 && !lockedStage;
+    let ordered = explorationDisplay ? [...sampleEntries(completedEntries, config.candidateLimit, 'cards-complete'), ...sampleEntries(pendingEntries, Math.max(0, config.candidateLimit - completedEntries.length), 'cards-pending')] : allEntries.slice(0, config.candidateLimit);
+    if (!ordered.some(c => c.sceneId === own.sceneId)) ordered = [...ordered.slice(0, config.candidateLimit - 1), own];
+    if (!explorationDisplay) ordered.sort(orderEntries);
+    ordered = ordered.map((candidate, rank) => ({ ...candidate, explorationRank: rank, displayOrderIndex: rank }));
+    const decisionMode = lockedStage ? 'manual' : explorationSelection.mode;
+    const stage = { ...original, index, fitScore: own.fitScore, score: own.score, recommendationIndex: own.score, scoreStatus: own.scoreStatus, evaluationStatus: own.evaluationStatus, scoreVersion: own.scoreVersion, scoreReference, rawUtility: own.rawUtility, candidates: ordered, manual: index < prefix.length, selected: true, choiceMode: decisionMode, decisionMode, selectionMode: decisionMode, selectionLabel: lockedStage ? '人工固定' : explorationSelection.label };
     before = ownState;
     return stage;
   });
@@ -696,7 +703,11 @@ function* searchDate(input = {}, catalog, options = {}) {
         break;
       }
     }
-    const ordered = [...candidates.values()].sort((a, b) => Number(b.continuationFound) - Number(a.continuationFound) || (b.fitScore ?? -Infinity) - (a.fitScore ?? -Infinity) || cmp(a.sceneId, b.sceneId));
+    const exploredMenu = explorer.strength > 0 && stageIndex !== null && stages[stageIndex].decisionMode === 'seeded_exploration';
+    const ordered = [...candidates.values()].sort((a, b) => exploredMenu
+      ? (a.displayOrderIndex ?? Infinity) - (b.displayOrderIndex ?? Infinity) || explorer.noise(`meal-cards:${meal.mealRole}`, b.sceneId) - explorer.noise(`meal-cards:${meal.mealRole}`, a.sceneId) || cmp(a.sceneId, b.sceneId)
+      : Number(b.continuationFound) - Number(a.continuationFound) || (b.fitScore ?? -Infinity) - (a.fitScore ?? -Infinity) || cmp(a.sceneId, b.sceneId))
+      .map((candidate, rank) => ({ ...candidate, explorationRank: rank, displayOrderIndex: rank }));
     if (stageIndex !== null) stages[stageIndex].candidates = ordered;
     return { ...meal, satisfied: meal.choiceMode !== 'together' || stageIndex !== null, sceneId: stageIndex === null ? null : stages[stageIndex].sceneId, activityIds: stageIndex === null ? [] : stages[stageIndex].activityIds, stageIndex, insertIndex, candidates: ordered };
   });
@@ -709,7 +720,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   const warnings = [...new Set(stages.flatMap(s => s.warnings))];
   const replay = { schema: 'datemate-replay-3.0', versions, context: ctx, exploration, explorationSeed: ctx.explorationSeed, explorationVersion: EXPLORATION_VERSION, prefix, anchors, search: config };
   const core = { stages: stages.map(s => ({ sceneId: s.sceneId, activityIds: s.activityIds, ...(s.mealRole ? { mealRole: s.mealRole } : {}), start: s.start, end: s.end, costCents: s.costCents, score: s.score })), mealRequirements, ...(departure ? { departure } : {}), metrics: measured };
-  return { ok: true, status: 'feasible', searchStatus: 'heuristic_feasible_not_proved_optimal', context: ctx, exploration, explorationSeed: ctx.explorationSeed, explorationSelection, prefix, anchors, stages, mealRequirements, ...(departure ? { departure } : {}), totalCost: measured.totalCost, totalCostCents: measured.totalCostCents, endingBuffer: measured.endingBuffer, metrics: measured, candidates: stages.map(s => s.candidates), paretoPlans: pareto(finished, ctx, exploration), trace: stages.flatMap(s => s.trace), search: stats, evaluated: stats.expandedNodes, versions, assumptions, warnings, errors: [], suggestions: [], replay, fingerprint: digest(replay), inputDigest: digest(replay), outputFingerprint: digest(core), outputDigest: digest(core) };
+  return { ok: true, status: 'feasible', searchStatus: 'heuristic_feasible_not_proved_optimal', context: ctx, exploration, explorationSeed: ctx.explorationSeed, choiceMode: explorationSelection.mode, decisionMode: explorationSelection.mode, explorationSelection, prefix, anchors, stages, mealRequirements, ...(departure ? { departure } : {}), totalCost: measured.totalCost, totalCostCents: measured.totalCostCents, endingBuffer: measured.endingBuffer, metrics: measured, candidates: stages.map(s => s.candidates), paretoPlans: pareto(finished, ctx, exploration), trace: stages.flatMap(s => s.trace), search: stats, evaluated: stats.expandedNodes, versions, assumptions, warnings, errors: [], suggestions: [], replay, fingerprint: digest(replay), inputDigest: digest(replay), outputFingerprint: digest(core), outputDigest: digest(core) };
 }
 
 export function createPlanner(catalog, options = {}) {
