@@ -1,5 +1,5 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=42c9bf501af5cbfb';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=42c9bf501af5cbfb';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=155eb055b486c4e0';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=155eb055b486c4e0';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const cardDescription=scene=>{
@@ -25,12 +25,12 @@ export function scoreMarkup(candidate,{planningFailed=false}={}) {
   return `<small>契合分</small><b>${Math.round(candidate.fitScore)}</b>`;
 }
 
-/** 卡片节点按地点ID复用，规划完成后按引擎返回的完整后续推荐顺序排列。 */
+/** 卡片按地点 ID 复用；保留阶段按稳定 view.key 关联，只有后续推荐允许重排。 */
 export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,getIntent,onCandidateVisible}) {
   const root=document.querySelector('#stages');
   const window=root.ownerDocument.defaultView;
   const scenes=new Map(catalog.scenes.map(s=>[s.id,s]));
-  const views=new Map(); let result=null, optimistic=null;
+  const views=new Map(); let result=null, optimistic=null, pendingPreserveThrough=-1;
   const activeChoice=index=>optimistic?.index===index?optimistic:getIntent()?.prefix?.[index]||result?.stages[index];
   function centerSelection(view,smooth){view.strip.classList.remove('is-preserving-scroll');if(smooth)deferSortUntilStill(view);syncCarousel(view.strip);centerCard(view.strip,view.selectedId,{smooth});}
   function updateScore(view,card,candidate) {
@@ -73,7 +73,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       if(rect.width<=0||rect.height<=0||rect.right<=clip.left||rect.left>=clip.right||rect.bottom<=clip.top||rect.top>=clip.bottom)return;
       // 每轮每张卡只通知一次；先登记，允许回调同步更新评分。
       notified.add(sceneId);
-      onCandidateVisible({stageIndex:view.index,sceneId,...(view.mealRole?{mealRole:view.mealRole}:{})});
+      onCandidateVisible({stageIndex:view.index,viewKey:view.key,sceneId,...(view.mealRole?{mealRole:view.mealRole}:{})});
     }
     function scan() {
       frame=0;if(stopped)return;
@@ -105,10 +105,12 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     },120);
   }
   function queueCandidateSort(view) {
+    if(view.orderLocked)return;
     view.needsSort=true;
     if(view.sortFrame||view.scrollTimer!=null)return;
     view.sortFrame=window.requestAnimationFrame(()=>{
       view.sortFrame=0;
+      if(view.orderLocked){view.needsSort=false;return;}
       if(view.scrollTimer!=null||view.strip.classList.contains('is-dragging')||view.activePointers.size)return;
       view.needsSort=false;
       const cards=[...view.strip.children],bounds=view.strip.getBoundingClientRect(),viewport=window.visualViewport;
@@ -141,9 +143,9 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       syncCarousel(view.strip);
     });
   }
-  /** 只更新已有卡片。用餐必须提供 mealRole；调用方负责过滤旧规划轮次的结果。 */
-  function updateCandidate({stageIndex,sceneId,mealRole,candidate}={}) {
-    const view=views.get(mealRole?`meal-${mealRole}`:`stage-${stageIndex}`);
+  /** 只更新已有卡片。可传稳定 viewKey，用餐必须提供 mealRole；调用方过滤旧轮结果。 */
+  function updateCandidate({stageIndex,viewKey,sceneId,mealRole,candidate}={}) {
+    const view=views.get(viewKey??(mealRole?`meal-${mealRole}`:`stage-${stageIndex}`));
     if(!view||view.index!==stageIndex||view.departure||view.mealRole!==(mealRole||null)||!candidate||typeof candidate!=='object'||view.element.classList.contains('is-recomputing'))return false;
     const card=view.cards.get(sceneId),previous=view.candidates.get(sceneId);
     if(!card||!previous||card.querySelector('.scene-score').hidden||(candidate.sceneId!=null&&candidate.sceneId!==sceneId)||(candidate.id!=null&&candidate.id!==sceneId))return false;
@@ -190,8 +192,10 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     view.dispose=()=>{stopVisibility(view);view.strip.classList.remove('is-preserving-scroll');view.strip.removeEventListener('pointerdown',down);view.strip.removeEventListener('wheel',releaseSnap);view.strip.removeEventListener('keydown',releaseSnap,true);view.strip.removeEventListener('scroll',scrolling);window.removeEventListener('pointerup',up);window.removeEventListener('pointercancel',up);window.removeEventListener('blur',blur);view.controller?.destroy();};
     view.strip.dataset.index=index;view.strip.setAttribute('aria-label',`阶段${index+1}地点`);views.set(key,view);return view;
   }
-  function updateCards(view,stage,meal=null) {
-    const candidates=new Map((meal?.candidates?.length?meal.candidates:stage.candidates||[]).map(c=>[c.sceneId||c.id,c]));
+  function updateCards(view,stage,meal=null,{preserve=false,center=false}={}) {
+    const incoming=new Map((meal?.candidates?.length?meal.candidates:stage.candidates||[]).map(c=>[c.sceneId||c.id,c]));
+    // 新一轮候选可能截断；保留视图必须继续展示用户已经刷到的全部卡片。
+    const candidates=preserve?new Map([...view.candidates,...incoming]):incoming;
     if(meal&&!result.ok&&!candidates.size){
       for(const scene of catalog.scenes.filter(s=>s.mealRoles?.includes(meal.mealRole))){
         const ids=mealActivityIds(scene,meal.mealRole),diet=getIntent()?.context?.dietaryRestrictions||[];
@@ -202,8 +206,14 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     if(scenes.has(stage.sceneId)&&!candidates.has(stage.sceneId))candidates.set(stage.sceneId,stage);
     view.candidates=candidates;
     const departureDescriptions={separate:'各自回去，给今天一个轻松的收尾。',walk_together:'一起走一段，再各自返程。',hotel:'今晚留宿，房费按所选城市档位预留。'};
-    const ordered=view.departure?(catalog.departures||[]).filter(d=>candidates.has(d.id)).map(d=>({...d,title:d.id==='hotel'?'酒店':d.title,description:departureDescriptions[d.id]})):[...candidates.keys()].map(id=>scenes.get(id)).filter(s=>s&&(!view.mealRole||s.mealRoles?.includes(view.mealRole)));
+    let ordered=view.departure?(catalog.departures||[]).filter(d=>candidates.has(d.id)).map(d=>({...d,title:d.id==='hotel'?'酒店':d.title,description:departureDescriptions[d.id]})):[...candidates.keys()].map(id=>scenes.get(id)).filter(s=>s&&(!view.mealRole||s.mealRoles?.includes(view.mealRole)));
     const special=specialFor(view.mealRole);if(special)ordered.push(special);
+    if(preserve){
+      const byId=new Map(ordered.map(scene=>[scene.id,scene]));
+      ordered=[...view.strip.children].map(card=>byId.get(card.dataset.scene)).filter(Boolean);
+      const existing=new Set(ordered.map(scene=>scene.id));
+      ordered.push(...[...byId.values()].filter(scene=>!existing.has(scene.id)));
+    }
     const keep=new Set(ordered.map(s=>s.id));
     for(const [id,card]of view.cards)if(!keep.has(id)){card.remove();view.cards.delete(id);}
     ordered.forEach((scene,index)=>{
@@ -223,13 +233,25 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
     view.selectedId=stage.sceneId;
     if(!view.controller)view.controller=attachCarousel(view.strip,{selectedId:stage.sceneId});
     else view.controller.update({selectedId:stage.sceneId});
-    // 重排或移动阶段节点会改变位置；同一个选中地点也必须在本轮布局中重新居中。
-    centerSelection(view,true);
+    syncCarousel(view.strip);
+    if(center)centerSelection(view,true);
   }
-  function render(nextResult) {
+  function updateStageContent(view,stage){
+    const start=stage.start??stage.startMinute,end=stage.end??stage.endMinute;
+    view.heading.innerHTML=`<h2 class="stage-time">${formatTime(start)}${stage.virtualMeal?'':`-${formatTime(end)}`}</h2>`;
+    view.transfer.hidden=!stage.transfer;
+    view.transfer.innerHTML=`<span>${formatTime(start-(stage.transfer||0))}-${formatTime(start)}</span><span>转场</span>`;
+    setActivityContent(view,scenes.get(stage.sceneId),stage.activityIds||[]);
+    view.meta.innerHTML='';view.meta.hidden=true;
+  }
+  /** preserveThrough 包含边界阶段；-1 显式解除保留，未传则沿用 pending 或 intent.prefix。 */
+  function render(nextResult,{preserveThrough=Math.max(pendingPreserveThrough,(getIntent()?.prefix?.length||0)-1)}={}) {
+    // 必须在 index 更新前冻结范围；虚拟用餐变为真实阶段时索引可能改变。
+    const preserved=new Map([...views].filter(([,view])=>view.index<=preserveThrough).map(([key,view])=>[key,{view,full:view.index<preserveThrough}]));
     views.forEach(stopVisibility);
-    result=nextResult;optimistic=null;
-    const focus=document.activeElement,focusData=focus?.dataset?.stage!==undefined?{...focus.dataset}:null;
+    result=nextResult;optimistic=null;pendingPreserveThrough=-1;
+    const focus=document.activeElement,focusView=[...views.values()].find(view=>view.element.contains(focus));
+    const focusData=focus?.dataset?.activity?{...focus.dataset,viewKey:focusView?.key}:null;
     root.querySelectorAll('.skeleton-stage').forEach(el=>el.remove());
     const meals=new Map((result.mealRequirements||[]).map(m=>[m.mealRole,m]));
     const entries=result.stages.map((stage,index)=>({stage,index,key:stage.mealRole?`meal-${stage.mealRole}`:`stage-${index}`,meal:meals.get(stage.mealRole),time:stage.startMinute}));
@@ -243,33 +265,64 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       entries.push({stage:{sceneId:departure.id,activityIds:[],startMinute:start,endMinute:end,transfer:0,departure:true,candidates:departure.candidates},index:result.stages.length,key:'departure',time:start});
     }
     entries.sort((a,b)=>a.time-b.time||Number(Boolean(b.stage.virtualMeal))-Number(Boolean(a.stage.virtualMeal)));
-    const keys=new Set(entries.map(e=>e.key));
+    for(const [key,{view,full}]of preserved){
+      const at=entries.findIndex(entry=>entry.key===key);
+      if(at<0)entries.push(view.entry);
+      else if(full)entries[at]={...view.entry,index:entries[at].index};
+    }
+    // 前段节点保持原来相对位置，后续再按新结果排列。
+    const prefix=[...root.children].map(element=>[...preserved.values()].find(({view})=>view.element===element)?.view.entry?.key).filter(Boolean);
+    const byKey=new Map(entries.map(entry=>[entry.key,entry]));
+    const orderedEntries=[...prefix.map(key=>byKey.get(key)),...entries.filter(entry=>!preserved.has(entry.key))];
+    const keys=new Set(orderedEntries.map(e=>e.key));
     for(const [key,view]of views)if(!keys.has(key)){view.dispose();view.element.remove();views.delete(key);}
-    entries.forEach(({stage,index,key,meal})=>{
-      const scene=scenes.get(stage.sceneId),view=views.get(key)||createView(index,key);
+    orderedEntries.forEach((entry,position)=>{
+      const {stage,index,key,meal}=entry;
+      const view=views.get(key)||createView(index,key);
+      const retention=preserved.get(key),wasSelected=view.selectedId;
+      view.orderLocked=!!retention;view.entry=entry;
       view.index=index;view.mealRole=stage.mealRole||null;view.departure=!!stage.departure;view.element.dataset.index=index;view.strip.dataset.index=index;
       view.element.classList.toggle('departure-stage',view.departure);view.element.setAttribute('aria-label',view.departure?'分别方式':meal?meal.label:`阶段${index+1}`);
       view.element.classList.toggle('meal-stage',!!view.mealRole);view.strip.setAttribute('aria-label',view.departure?'分别方式':meal?`${meal.label}地点`:`阶段${index+1}地点`);
-      root.append(view.element);
+      if(root.children[position]!==view.element)root.insertBefore(view.element,root.children[position]||null);
       view.element.classList.remove('is-recomputing');view.element.removeAttribute('aria-busy');
-      const start=stage.start??stage.startMinute,end=stage.end??stage.endMinute;
-      view.heading.innerHTML=`<h2 class="stage-time">${formatTime(start)}${stage.virtualMeal?'':`-${formatTime(end)}`}</h2>`;
-      view.transfer.hidden=!stage.transfer;
-      view.transfer.innerHTML=`<span>${formatTime(start-(stage.transfer||0))}-${formatTime(start)}</span><span>转场</span>`;
-      updateCards(view,stage,meal);setActivityContent(view,scene,stage.activityIds);
-      view.meta.innerHTML='';view.meta.hidden=true;
+      if(retention?.full){
+        // 前段内容不重建，但事件索引必须跟随稳定 key 对应的新阶段。
+        for(const card of view.cards.values())card.dataset.stage=index;
+        for(const input of view.activities.querySelectorAll('input[data-activity]'))input.dataset.stage=index;
+        watchVisibility(view);return;
+      }
+      updateCards(view,stage,meal,{preserve:!!retention,center:wasSelected!==stage.sceneId});updateStageContent(view,stage);
       watchVisibility(view);
     });
     root.setAttribute('aria-busy','false');
-    if(focusData?.activity){const el=root.querySelector(`input[data-stage="${focusData.stage}"][data-activity="${CSS.escape(focusData.activity)}"]`);el?.focus({preventScroll:true});}
+    if(focusData?.activity){const el=views.get(focusData.viewKey)?.activities.querySelector(`input[data-scene="${CSS.escape(focusData.scene)}"][data-activity="${CSS.escape(focusData.activity)}"]`);el?.focus({preventScroll:true});}
   }
-  function pending({fromStage=0,choice=null,mealChoice=null,departureChoice=null}={}) {
+  function pending({fromStage=0,choice=null,mealChoice=null,departureChoice=null,preserveThrough=choice||mealChoice?fromStage:-1}={}) {
     const focused=document.activeElement,focusData=focused?.dataset?.activity?{...focused.dataset}:null;
+    const focusView=[...views.values()].find(view=>view.element.contains(focused));
+    pendingPreserveThrough=preserveThrough;
     optimistic=choice;
     root.setAttribute('aria-busy','true');
     if(!result){root.innerHTML=[0,1].map(skeletonStage).join('');return;}
     for(const view of views.values()){
       const i=view.index;
+      view.orderLocked=i<=preserveThrough;
+      if(view.orderLocked)stopVisibility(view);
+      // 连续选到原先的后续阶段时，不能把上一轮骨架锁成前段内容。
+      if(view.orderLocked&&view.element.classList.contains('is-recomputing')&&view.entry){
+        updateCards(view,view.entry.stage,view.entry.meal,{preserve:true});updateStageContent(view,view.entry.stage);
+      }
+      // 当前选择立即生效；保留范围不换成骨架，也不等 worker 回来才更新活动。
+      if(departureChoice&&view.departure){view.selectedId=departureChoice;view.controller.update({selectedId:departureChoice});centerSelection(view,true);view.activities.innerHTML='';}
+      else if(mealChoice&&view.mealRole===mealChoice.role){
+        const selected=mealChoice.choice,scene=scenes.get(selected.sceneId),id=scene?.id||specialFor(view.mealRole)?.id;
+        view.selectedId=id;view.controller.update({selectedId:id});centerSelection(view,true);setActivityContent(view,scene,selected.activityIds||[]);
+      }
+      else if(choice&&i===choice.index&&!view.mealRole&&!view.departure){const scene=scenes.get(choice.sceneId);if(scene){view.selectedId=scene.id;view.controller.update({selectedId:scene.id});centerSelection(view,true);setActivityContent(view,scene,choice.activityIds||[]);}}
+      const selected=mealChoice&&view.mealRole===mealChoice.role?mealChoice.choice:choice&&i===choice.index&&!view.mealRole&&!view.departure?choice:null;
+      if(selected&&view.entry)view.entry={...view.entry,stage:{...view.entry.stage,sceneId:view.selectedId,activityIds:[...(selected.activityIds||[])]}};
+      if(view.orderLocked){view.element.classList.remove('is-recomputing');view.element.removeAttribute('aria-busy');continue;}
       if(i<fromStage)continue;
       stopVisibility(view);
       view.element.classList.add('is-recomputing');view.element.setAttribute('aria-busy','true');
@@ -280,19 +333,15 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
       }
       view.cards.forEach(card=>{card.classList.add('is-pending');card.querySelector('.scene-score').classList.remove('is-validating');card.querySelector('.scene-score').classList.add('is-pending');card.querySelector('.scene-score').innerHTML=skeleton('badge');});
       view.meta.innerHTML=skeleton('line');
-      if(departureChoice&&view.departure){view.selectedId=departureChoice;view.controller.update({selectedId:departureChoice});centerCard(view.strip,departureChoice,{smooth:true});view.activities.innerHTML='';}
-      else if(mealChoice&&view.mealRole===mealChoice.role){
-        const selected=mealChoice.choice,scene=scenes.get(selected.sceneId),id=scene?.id||specialFor(view.mealRole)?.id;
-        view.selectedId=id;view.controller.update({selectedId:id});centerCard(view.strip,id,{smooth:true});setActivityContent(view,scene,selected.activityIds||[]);
-      }
-      else if(choice&&i===choice.index&&!view.mealRole){const scene=scenes.get(choice.sceneId);view.selectedId=scene.id;view.controller.update({selectedId:scene.id});centerCard(view.strip,scene.id,{smooth:true});setActivityContent(view,scene,choice.activityIds);}
-      else view.activities.innerHTML=`<div class="skeleton-row">${skeleton('activity')}${skeleton('activity')}</div>`;
+      if(!(departureChoice&&view.departure)&&!(mealChoice&&view.mealRole===mealChoice.role)&&!(choice&&i===choice.index&&!view.mealRole&&!view.departure))view.activities.innerHTML=`<div class="skeleton-row">${skeleton('activity')}${skeleton('activity')}</div>`;
     }
-    if(focusData){root.querySelector(`input[data-stage="${focusData.stage}"][data-activity="${CSS.escape(focusData.activity)}"]`)?.focus({preventScroll:true});}
+    if(focusData){focusView?.activities.querySelector(`input[data-scene="${CSS.escape(focusData.scene)}"][data-activity="${CSS.escape(focusData.activity)}"]`)?.focus({preventScroll:true});}
   }
+  function lockThrough(view){for(const previous of views.values())if(previous.index<=view.index){previous.orderLocked=true;stopVisibility(previous);}}
   root.addEventListener('click',event=>{
     const card=event.target.closest('.scene-card');if(!card||card.dataset.dragged==='1')return;
     const view=views.get(card.dataset.view);if(!view)return;
+    lockThrough(view);
     const index=view.index,chosen=activeChoice(index),candidate=view.candidates.get(card.dataset.scene);
     if(view.departure){onDeparture(card.dataset.departure);return;}
     if(view.mealRole){
@@ -306,6 +355,7 @@ export function createTimeline({catalog,onScene,onActivities,onMeal,onDeparture,
   root.addEventListener('change',event=>{
     const input=event.target.closest('input[data-activity]');if(!input)return;
     const view=views.get(input.closest('.stage').querySelector('.scene-card').dataset.view);if(!view)return;
+    lockThrough(view);
     const index=Number(input.dataset.stage);
     const selected=view.mealRole?getIntent()?.context?.mealChoices?.[view.mealRole]||result.stages[index]:activeChoice(index),ids=selected?.sceneId===input.dataset.scene?selected.activityIds:[];
     if(view.mealRole){onMeal(view.mealRole,{sceneId:input.dataset.scene,activityIds:toggleActivity(scenes.get(input.dataset.scene),ids,input.dataset.activity)},{fromStage:index});return;}

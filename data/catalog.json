@@ -315,8 +315,8 @@
           "parameterStatus": "designed_not_measured",
           "publicAllowed": true,
           "id": "aqua_observe",
-          "title": "各选一种海洋动物",
-          "description": "轮流指出最想多看一会儿的动物。",
+          "title": "看海洋动物",
+          "description": "看海洋动物。？",
           "cost": [
             0,
             0
@@ -6224,9 +6224,9 @@
       "publicAllowed": true,
       "id": "teaching4_study",
       "place": {
-        "name": "教四自习区",
+        "name": "教四教室",
         "kind": "ordinary",
-        "category": "教学楼自习区",
+        "category": "或许可以自习……",
         "universityId": "scau",
         "campusArea": "taishan",
         "verificationStatus": "awaiting_confirmation"
@@ -6251,7 +6251,7 @@
       "evidenceIds": [
         "E-campus-evening"
       ],
-      "title": "教四自习区",
+      "title": "教四教室",
       "typeId": "teaching4_study",
       "seated": true,
       "weather": [
@@ -6755,8 +6755,8 @@
       "parameterStatus": "designed_not_measured",
       "publicAllowed": true,
       "id": "aqua_observe",
-      "title": "各选一种海洋动物",
-      "description": "轮流指出最想多看一会儿的动物。",
+      "title": "看海洋动物",
+      "description": "看海洋动物。？",
       "cost": [
         0,
         0
@@ -13402,7 +13402,7 @@
       {
         "id": "aqua_observe",
         "type": "activity",
-        "label": "各选一种海洋动物"
+        "label": "看海洋动物"
       },
       {
         "id": "aqua_photo",
@@ -14175,9 +14175,9 @@
       {
         "id": "teaching4_study",
         "type": "scene",
-        "label": "教四自习区",
+        "label": "教四教室",
         "placeKind": "ordinary",
-        "category": "教学楼自习区"
+        "category": "或许可以自习……"
       },
       {
         "id": "track_observe",
@@ -21918,5 +21918,5 @@
       }
     ]
   },
-  "contentRevision": "374d68c345225430"
+  "contentRevision": "6bf195e237968aa0"
 }

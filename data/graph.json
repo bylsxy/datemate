@@ -1296,7 +1296,7 @@
     {
       "id": "aqua_observe",
       "type": "activity",
-      "label": "各选一种海洋动物"
+      "label": "看海洋动物"
     },
     {
       "id": "aqua_photo",
@@ -2069,9 +2069,9 @@
     {
       "id": "teaching4_study",
       "type": "scene",
-      "label": "教四自习区",
+      "label": "教四教室",
       "placeKind": "ordinary",
-      "category": "教学楼自习区"
+      "category": "或许可以自习……"
     },
     {
       "id": "track_observe",

@@ -4,9 +4,15 @@
     {
       "key": "cityTier",
       "type": "enum",
-      "allowedValues": ["tier1", "tier2", "tier3"],
+      "allowedValues": [
+        "tier1",
+        "tier2",
+        "tier3"
+      ],
       "default": "tier1",
-      "subjectTypes": ["plan"],
+      "subjectTypes": [
+        "plan"
+      ],
       "sensitive": false,
       "defaultStrength": "hard",
       "schemaVersion": "place-activity-4.0",
@@ -15,9 +21,15 @@
     {
       "key": "departureChoice",
       "type": "enum",
-      "allowedValues": ["separate", "walk_together", "hotel"],
+      "allowedValues": [
+        "separate",
+        "walk_together",
+        "hotel"
+      ],
       "default": "separate",
-      "subjectTypes": ["plan"],
+      "subjectTypes": [
+        "plan"
+      ],
       "sensitive": false,
       "defaultStrength": "hard",
       "schemaVersion": "place-activity-4.0",

@@ -11,3 +11,7 @@ __pycache__/
 *.log
 .DS_Store
 Thumbs.db
+
+# 本机知识库管理界面、写入锁与备份不进入 GitHub Pages
+/local-editor/
+/知识库编辑器.cmd

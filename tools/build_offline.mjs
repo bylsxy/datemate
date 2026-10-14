@@ -5,6 +5,7 @@ import { dirname, resolve, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createHash } from 'node:crypto';
 import { Script, createContext } from 'node:vm';
+import { refreshAssetVersions } from './refresh_assets.mjs';
 
 const project = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const output = resolve(project, 'dist/DateMate_offline.html');
@@ -90,6 +91,7 @@ async function bundle(entry, workerUrl = false) {
 }
 
 async function main() {
+  await refreshAssetVersions(project);
   const worker = await bundle(resolve(project, 'worker.mjs'));
   const app = await bundle(resolve(project, 'app.mjs'), true);
   const workerCode = `(() => { "use strict";\n${worker.code}\n})();`;

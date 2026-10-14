@@ -1,0 +1,114 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFile} from 'node:fs/promises';
+
+// 只替换轮播和格式化依赖；实际执行 timeline 的渲染、事件与后台更新逻辑。
+class Element {
+  constructor(doc,tag='div',className=''){this.ownerDocument=doc;this.tagName=tag.toUpperCase();this.className=className;this.dataset={};this.children=[];this.attributes={};this.listeners={};this.scrollLeft=0;this.hidden=false;this._html='';}
+  get classList(){return {contains:name=>this.className.split(' ').includes(name),add:(...names)=>names.forEach(name=>this.classList.toggle(name,true)),remove:(...names)=>names.forEach(name=>this.classList.toggle(name,false)),toggle:(name,on)=>{const names=new Set(this.className.split(' ').filter(Boolean));on??=!names.has(name);if(on)names.add(name);else names.delete(name);this.className=[...names].join(' ');return on;}};}
+  set innerHTML(html){this._html=html;for(const child of this.children)child.parentElement=null;this.children=[];
+    const add=(tag,cls)=>{const el=new Element(this.ownerDocument,tag,cls);this.append(el);return el;};
+    if(html.includes('class="transfer-bar"'))for(const cls of ['transfer-bar','stage-heading','scene-strip','stage-activities','stage-meta'])add('div',cls);
+    else if(html.includes('class="scene-score"')){add('span','scene-score');add('h3','scene-title');add('p','scene-desc');}
+    else if(html.includes('class="stage-time"'))add('h2','stage-time');
+    else for(const match of html.matchAll(/<input\b([^>]+)>/g)){const input=add('input','');for(const attr of match[1].matchAll(/data-([\w-]+)="([^"]*)"/g))input.dataset[attr[1]]=attr[2];input.checked=match[1].includes('checked');}
+  }
+  get innerHTML(){return this._html;}
+  append(el){this.insertBefore(el,null);}
+  insertBefore(el,before){if(el===before)return;el.remove();const at=before?this.children.indexOf(before):this.children.length;this.children.splice(at,0,el);el.parentElement=this;}
+  remove(){if(this.parentElement){const siblings=this.parentElement.children;siblings.splice(siblings.indexOf(this),1);this.parentElement=null;}}
+  contains(el){return el===this||this.children.some(child=>child.contains(el));}
+  matches(selector){if(selector.startsWith('.'))return this.classList.contains(selector.slice(1));if(!selector.startsWith('input')||this.tagName!=='INPUT')return false;return [...selector.matchAll(/\[data-([\w-]+)(?:="([^"]*)")?\]/g)].every(([,key,value])=>value===undefined?key in this.dataset:this.dataset[key]===value);}
+  querySelectorAll(selector){return this.children.flatMap(child=>[...(child.matches(selector)?[child]:[]),...child.querySelectorAll(selector)]);}
+  querySelector(selector){return this.querySelectorAll(selector)[0]||null;}
+  closest(selector){return this.matches(selector)?this:this.parentElement?.closest(selector)||null;}
+  setAttribute(name,value){this.attributes[name]=String(value);}
+  getAttribute(name){return this.attributes[name]??null;}
+  removeAttribute(name){delete this.attributes[name];}
+  addEventListener(name,fn){(this.listeners[name]??=[]).push(fn);}
+  removeEventListener(name,fn){this.listeners[name]=(this.listeners[name]||[]).filter(item=>item!==fn);}
+  focus(){this.ownerDocument.activeElement=this;}
+  getBoundingClientRect(){return {left:0,right:500,top:0,bottom:100,width:500,height:100};}
+  get offsetLeft(){return (this.parentElement?.children.indexOf(this)||0)*100;}
+}
+function fixture(){
+  let next=0;const frames=new Map(),timers=new Map(),centers=[];
+  const win={requestAnimationFrame:fn=>{frames.set(++next,fn);return next;},cancelAnimationFrame:id=>frames.delete(id),setTimeout:fn=>{timers.set(++next,fn);return next;},clearTimeout:id=>timers.delete(id),addEventListener(){},removeEventListener(){},innerWidth:500,innerHeight:500};
+  const doc={defaultView:win,documentElement:{clientWidth:500,clientHeight:500},createElement:tag=>new Element(doc,tag)};
+  const root=new Element(doc);doc.querySelector=()=>root;doc.activeElement=null;
+  const deps={esc:value=>value,formatTime:String,toggleActivity:(_scene,ids,id)=>ids.includes(id)?ids.filter(item=>item!==id):[...ids,id],syncCarousel(){},centerCard:(strip,id)=>centers.push([strip,id]),attachCarousel:strip=>({update({selectedId}){for(const card of strip.children){card.classList.toggle('selected',card.dataset.scene===selectedId);card.setAttribute('aria-checked',String(card.dataset.scene===selectedId));}},destroy(){}})};
+  const scenes=['a','b','c','d'].map(id=>({id,title:id,description:id,activities:[{id:`${id}-act`,title:id,description:id,group:'玩法',mealRoles:['breakfast']}],mealRoles:['breakfast'],default:[`${id}-act`]}));
+  let intent={prefix:[],context:{dietaryRestrictions:[]}};
+  return {doc,root,deps,centers,catalog:{scenes},getIntent:()=>intent,setIntent:value=>intent=value,flush(){for(const queue of [timers,frames])for(const [id,fn]of [...queue]){queue.delete(id);fn();}},emit(type,target){for(const fn of root.listeners[type]||[])fn({target});}};
+}
+const candidate=id=>({sceneId:id,activityIds:[`${id}-act`],scoreStatus:'evaluated',fitScore:70,q:70});
+const stage=(id,index,ids=['a','b','c'])=>({sceneId:id,activityIds:[`${id}-act`],startMinute:600+index*60,endMinute:650+index*60,candidates:ids.map(candidate)});
+const result=stages=>({ok:true,stages});
+const order=element=>element.querySelector('.scene-strip').children.map(card=>card.dataset.scene);
+
+test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选择和稳定 key',async()=>{
+  const f=fixture(),oldDocument=globalThis.document,oldCSS=globalThis.CSS;
+  const dependencyKey=Symbol.for('datemate.timeline.order.test');
+  globalThis[dependencyKey]=f.deps;globalThis.document=f.doc;globalThis.CSS={escape:value=>value};
+  let timeline;
+  try{
+    const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
+    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity}=globalThis[Symbol.for('datemate.timeline.order.test')];\n${source}`).toString('base64')}`);
+    timeline=createTimeline({...f,onScene(){},onActivities(){},onMeal(){}});
+    timeline.render(result([stage('a',0),stage('a',1),stage('a',2)]));
+    const [first,current,later]=f.root.children;
+    const firstHeading=first.querySelector('.stage-heading').innerHTML;
+    const browsed=current.querySelector('.scene-strip').children[2];browsed.focus();
+    // 点击就阻止已排队的后台重排，尚未进入 pending 也受保护。
+    timeline.updateCandidate({stageIndex:1,sceneId:'c',candidate:{q:100}});
+    f.emit('click',current.querySelector('.scene-strip').children[1]);f.flush();
+    assert.deepEqual(order(current),['a','b','c']);
+    timeline.pending({fromStage:1,choice:{index:1,sceneId:'b',activityIds:['b-act']}});
+    assert.equal(current.classList.contains('is-recomputing'),false);
+    assert.equal(first.querySelector('.stage-heading').innerHTML,firstHeading);
+    assert.equal(current.querySelector('.scene-strip').children[1].getAttribute('aria-checked'),'true');
+    assert.ok(current.querySelector('input[data-scene="b"][data-activity="b-act"]'));
+    assert.equal(later.classList.contains('is-recomputing'),true);
+    const centersBefore=f.centers.length;
+    timeline.render(result([stage('d',0,['d']),stage('b',1,['b']),stage('c',2,['c','b','a'])]),{preserveThrough:1});
+    assert.deepEqual(order(first),['a','b','c']);
+    assert.equal(first.querySelector('.stage-heading').innerHTML,firstHeading);
+    assert.deepEqual(order(current),['a','b','c']);
+    assert.deepEqual(order(later),['c','b','a']);
+    assert.equal(f.doc.activeElement,browsed);
+    assert.equal(f.centers.slice(centersBefore).some(([strip])=>strip===current.querySelector('.scene-strip')),false);
+    assert.equal(timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999,fitScore:99}}),true);f.flush();
+    assert.deepEqual(order(current),['a','b','c']);
+    assert.match(current.querySelector('.scene-strip').children[0].querySelector('.scene-score').innerHTML,/99/);
+    // 快速连续选择后续阶段时，先前骨架恢复为已有完整内容再保留。
+    timeline.pending({fromStage:0,choice:{index:0,sceneId:'a',activityIds:['a-act']}});
+    timeline.pending({fromStage:2,choice:{index:2,sceneId:'c',activityIds:['c-act']}});
+    assert.equal(current.classList.contains('is-recomputing'),false);
+    assert.equal(current.querySelector('.scene-strip').children.some(card=>card.classList.contains('is-pending')),false);
+    assert.ok(current.querySelector('input[data-activity="b-act"]'));
+    assert.doesNotMatch(current.querySelector('.stage-heading').innerHTML,/skeleton/);
+    // 显式解除保留后，新的推荐集合和顺序生效。
+    timeline.render(result([stage('d',0,['d']),stage('b',1,['b','a'])]),{preserveThrough:-1});
+    assert.deepEqual(order(first),['d']);assert.deepEqual(order(current),['b','a']);
+    timeline.updateCandidate({stageIndex:1,sceneId:'a',candidate:{q:999}});f.flush();
+    assert.deepEqual(order(current),['a','b']);
+    // 活动选择也锁住整条候选顺序；探索度重渲染未显式传保留范围时沿用 prefix。
+    f.emit('change',current.querySelector('input[data-activity="b-act"]'));
+    timeline.pending({fromStage:1,choice:{index:1,sceneId:'b',activityIds:[]}});
+    f.setIntent({prefix:[{sceneId:'d',activityIds:['d-act']},{sceneId:'b',activityIds:[]}],context:{dietaryRestrictions:[]}});
+    timeline.render(result([stage('d',0,['d']),{...stage('b',1,['b']),activityIds:[]}]));
+    assert.deepEqual(order(current),['a','b']);
+    assert.equal(current.querySelector('input[data-activity="b-act"]').checked,false);
+    const meal={mealRole:'breakfast',choiceMode:'before_meeting',targetMinute:550,insertIndex:0,candidates:['a','b','c'].map(candidate)};
+    timeline.render({...result([stage('a',0)]),mealRequirements:[meal]},{preserveThrough:-1});
+    const mealView=f.root.children[0];
+    timeline.pending({fromStage:0,mealChoice:{role:'breakfast',choice:{sceneId:'b',activityIds:['b-act']}}});
+    timeline.render({...result([stage('a',0),{...stage('b',1,['b']),mealRole:'breakfast'}]),mealRequirements:[{...meal,choiceMode:'together'}]},{preserveThrough:0});
+    assert.equal(f.root.children[0],mealView);
+    assert.deepEqual(order(mealView),['a','b','c','__breakfast_before_meeting']);
+    assert.equal(mealView.dataset.index,1);
+    assert.equal(timeline.updateCandidate({stageIndex:0,viewKey:'meal-breakfast',mealRole:'breakfast',sceneId:'a',candidate:{q:999}}),false);
+    assert.equal(timeline.updateCandidate({stageIndex:1,viewKey:'meal-breakfast',mealRole:'breakfast',sceneId:'a',candidate:{q:999}}),true);f.flush();
+    assert.deepEqual(order(mealView),['a','b','c','__breakfast_before_meeting']);
+  }finally{timeline?.dispose();globalThis.document=oldDocument;globalThis.CSS=oldCSS;delete globalThis[dependencyKey];}
+});
