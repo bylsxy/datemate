@@ -1,6 +1,6 @@
-import {escapeHTML as esc} from './planner.mjs?v=30719f63b23a80fd';
-import {isSceneInUIScope,normalizeUIScope} from './scope-ui.mjs?v=30719f63b23a80fd';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=30719f63b23a80fd';
+import {escapeHTML as esc} from './planner.mjs?v=652f0ca749b11d2a';
+import {isSceneInUIScope,normalizeUIScope} from './scope-ui.mjs?v=652f0ca749b11d2a';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=652f0ca749b11d2a';
 
 const searchable = scene => [scene.title, scene.id, ...(Array.isArray(scene.aliases) ? scene.aliases : []), ...(Array.isArray(scene.keywords) ? scene.keywords : [])].filter(Boolean).join(' ').toLocaleLowerCase();
 export function searchPlaces(scenes, query = '', context = {}) {
