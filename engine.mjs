@@ -1,7 +1,7 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=b2b7f81bafcbcb14';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=b2b7f81bafcbcb14';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=42c9bf501af5cbfb';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=42c9bf501af5cbfb';
 
-export { canonical, digest } from './reasoning.mjs?v=b2b7f81bafcbcb14';
+export { canonical, digest } from './reasoning.mjs?v=42c9bf501af5cbfb';
 export const VERSION = 'datemate-engine-3.2.0';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-3.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;

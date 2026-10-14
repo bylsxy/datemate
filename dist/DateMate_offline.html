@@ -94,6 +94,7 @@
 .robust-choice input{flex:none}
 .form>.apply-button{justify-content:center;text-align:center}
 .form>.apply-button::before,.form>.apply-button::after{content:none;display:none}
+.place-choice>.field{clear:both;width:100%}
 .place-choice-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .place-choice-actions button{min-height:40px;padding:9px 13px;border:1px solid #dab5c1;border-radius:9px;background:var(--wash);color:var(--rose);font-size:12px;font-weight:600}
 .place-choice-actions button:hover{background:#f6dce5}
@@ -1919,7 +1920,7 @@ function showView(name){
   if(name==='plan')timeline.recenter();
   validationWorker?.postMessage({type:'pauseValidation',paused:name!=='plan'||document.hidden});
   window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
-  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.3.0</p><p>知识库 · ${esc(catalog.version)}</p>`;
+  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.3.1</p><p>知识库 · ${esc(catalog.version)}</p>`;
 }
 $('#more-menu-toggle').addEventListener('click',()=>{const open=$('#more-menu').hidden;$('#more-menu').hidden=!open;$('#more-menu-toggle').setAttribute('aria-expanded',String(open));});
 $$('[data-view]').forEach(button=>button.addEventListener('click',()=>showView(button.dataset.view)));

@@ -90,6 +90,7 @@
 .robust-choice input{flex:none}
 .form>.apply-button{justify-content:center;text-align:center}
 .form>.apply-button::before,.form>.apply-button::after{content:none;display:none}
+.place-choice>.field{clear:both;width:100%}
 .place-choice-actions{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
 .place-choice-actions button{min-height:40px;padding:9px 13px;border:1px solid #dab5c1;border-radius:9px;background:var(--wash);color:var(--rose);font-size:12px;font-weight:600}
 .place-choice-actions button:hover{background:#f6dce5}

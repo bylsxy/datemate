@@ -1,5 +1,5 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=b2b7f81bafcbcb14';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=b2b7f81bafcbcb14';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=42c9bf501af5cbfb';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=42c9bf501af5cbfb';
 
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const cardDescription=scene=>{

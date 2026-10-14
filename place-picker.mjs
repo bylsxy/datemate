@@ -1,4 +1,4 @@
-import {escapeHTML as esc} from './planner.mjs?v=b2b7f81bafcbcb14';
+import {escapeHTML as esc} from './planner.mjs?v=42c9bf501af5cbfb';
 
 const searchable = scene => [scene.title, scene.id, ...(Array.isArray(scene.aliases) ? scene.aliases : []), ...(Array.isArray(scene.keywords) ? scene.keywords : [])].filter(Boolean).join(' ').toLocaleLowerCase();
 export function searchPlaces(scenes, query = '') {
