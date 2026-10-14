@@ -13,6 +13,50 @@ const state = (extra = {}) => ({
     requiredSceneIds: ['c'], bans: ['outside'], mealChoices: {}, explicitConsentIds: ['stale'], explorationSeed: 7},
   ...extra,
 });
+
+test('露营探索度79退回各自回去，80保留露营，阈值切换不改变人工prefix',()=>{
+  const input=state({prefix:[{sceneId:'a',activityIds:['touch'],startMinute:1380,durationMinutes:60},{sceneId:'b',activityIds:['walk'],durationMinutes:90}]});
+  input.context.departureChoice='camping';input.context.mealChoices={supper:{mode:'skip'}};input.context.explicitConsentIds=['touch','stale'];
+  const before=structuredClone(input);
+  for(const [exploration,departure] of [[79,'separate'],[80,'camping']]){
+    const next=exploreIntent(freeze(structuredClone(input)),exploration,123);
+    assert.equal(next.exploration,exploration);assert.equal(next.context.departureChoice,departure);
+    assert.deepEqual(next.prefix,input.prefix);assert.notEqual(next.prefix,input.prefix);
+    assert.deepEqual(next.context.mealChoices,{supper:{mode:'skip'}});
+    assert.deepEqual(next.context.explicitConsentIds,['touch']);
+  }
+  const lowered=exploreIntent(input,79,123),raised=exploreIntent(lowered,80,124);
+  assert.equal(raised.context.departureChoice,'separate','调高探索度只恢复可选资格，不自动选回露营');
+  assert.deepEqual(raised.prefix,input.prefix);assert.deepEqual(input,before);
+});
+
+test('分别意图在79拒绝露营，80允许，拒绝选择不修改状态',()=>{
+  const low=state({exploration:79}),before=structuredClone(low);
+  assert.throws(()=>selectDepartureIntent(low,result,'camping',catalog),RangeError);
+  assert.deepEqual(low,before);
+  const allowed=selectDepartureIntent({...low,exploration:80},result,'camping',catalog);
+  assert.equal(allowed.context.departureChoice,'camping');
+  assert.equal(allowed.prefix.length,result.stages.length);
+});
+
+test('营地场景在80保留prefix和required，79从首个营地释放后续且不误伤campus',()=>{
+  const source={scenes:['campus_walk','camp_day_setup','camp_evening','after'].map(id=>({id,activities:[{id:'walk'}]}))};
+  for(const campIds of [['camp_day_setup','camp_evening'],['camp_evening','camp_day_setup']]){
+    const input=state({exploration:80,prefix:[{sceneId:'campus_walk',activityIds:['walk'],startMinute:1140,durationMinutes:60},...campIds.map(sceneId=>({sceneId,activityIds:['walk']})),{sceneId:'after',activityIds:['walk']}]});
+    input.context.requiredSceneIds=['campus_walk',...campIds,'after'];input.context.endAfterStage=3;input.context.minimumStageCount=4;
+    const before=structuredClone(input),kept=exploreIntent(freeze(structuredClone(input)),80,123,source);
+    assert.deepEqual(kept.prefix,input.prefix);assert.deepEqual(kept.context.requiredSceneIds,input.context.requiredSceneIds);
+    const lowered=exploreIntent(freeze(structuredClone(input)),79,123,source);
+    assert.deepEqual(lowered.prefix,[input.prefix[0]],'从第一个失效营地开始释放，而非仅删营地留下后续槽位');
+    assert.deepEqual(lowered.context.requiredSceneIds,['campus_walk','after']);
+    assert.equal(lowered.context.endAfterStage,undefined);assert.equal(lowered.context.minimumStageCount,undefined);
+    assert.deepEqual(input,before);
+  }
+  const campusOnly=state({exploration:80,prefix:[{sceneId:'campus_walk',activityIds:['walk'],startMinute:1140,durationMinutes:60}]});
+  campusOnly.context.requiredSceneIds=['campus_walk'];
+  const lowered=exploreIntent(campusOnly,79,123,source);
+  assert.deepEqual(lowered.prefix,campusOnly.prefix);assert.deepEqual(lowered.context.requiredSceneIds,['campus_walk']);
+});
 function freeze(value) {
   if (value && typeof value === 'object') {
     Object.values(value).forEach(freeze);

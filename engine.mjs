@@ -1,12 +1,12 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=97b6b88b9e62ea18';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=97b6b88b9e62ea18';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION } from './exploration.mjs?v=97b6b88b9e62ea18';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=97b6b88b9e62ea18';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=97b6b88b9e62ea18';
-import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=97b6b88b9e62ea18';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=3b6419e840a1e140';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=3b6419e840a1e140';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION, CAMPING_EXPLORATION_MIN, isDepartureAllowedAtExploration, isSceneAllowedAtExploration } from './exploration.mjs?v=3b6419e840a1e140';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=3b6419e840a1e140';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=3b6419e840a1e140';
+import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=3b6419e840a1e140';
 
-export { canonical, digest } from './reasoning.mjs?v=97b6b88b9e62ea18';
-import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=97b6b88b9e62ea18';
+export { canonical, digest } from './reasoning.mjs?v=3b6419e840a1e140';
+import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=3b6419e840a1e140';
 export const VERSION = 'datemate-engine-4.2.1';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-4.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;
@@ -85,7 +85,7 @@ function compileDepartures(catalog, ctx) {
     return { ...raw, cost: [...values], costCents: values.map(cents), reservedMinutes: Math.max(15, raw.minutes), cityTier: ctx.cityTier, manualOnly: ['hotel', 'camping'].includes(raw.id) || raw.requiresExplicitChoice === true, realWorldStatus: 'needs_confirmation' };
   });
   if (new Set(departures.map(d => d.id)).size !== departures.length || !departures.some(d => d.id === ctx.departureChoice)) throw Error(fail('H_DEPARTURE_DATA', '分别方式目录重复或缺少所选方式。'));
-  return departures;
+  return departures.filter(departure => isDepartureAllowedAtExploration(departure, ctx.exploration));
 }
 
 function departureResult(ctx, st = null) {
@@ -116,6 +116,7 @@ function compileCatalog(catalog, ctx = { weekPart: 'weekday' }) {
   const flat = new Map((catalog.activities || []).map(a => [a.id, a]));
   const scenes = [...catalog.scenes].sort((a, b) => cmp(a.id, b.id)).map(raw => {
     const scene = { ...raw, sheltered: raw.sheltered === true, area: raw.area === 'nearby' ? 'near' : raw.area || raw.areaClass || 'campus', kind: raw.kind || raw.typeId || 'ordinary', tags: list(raw.tags) };
+    if (raw.minimumExploration !== undefined && (!Number.isInteger(raw.minimumExploration) || raw.minimumExploration < 0 || raw.minimumExploration > 100)) throw Error(fail('H_DATA', `场景${raw.id}的最低探索度需为0至100的整数。`));
     scene.minutes = range(raw.minutes ?? raw.baseline?.duration)[1];
     durationBounds(scene);
     validateDailyWindows(scene);
@@ -336,6 +337,7 @@ function createEvaluator(ctx, compiled, catalog, exploration) {
     if (ctx.area === 'campus' && !['campus', 'current'].includes(scene.area) || ctx.area === 'near' && scene.area === 'off') errors.push(fail('H_RANGE', '超出本次地点范围。'));
     else if (!isSceneInSchoolScope(scene, ctx) || !isSceneInSchoolScope(place, ctx)) errors.push(fail('H_SCHOOL_SCOPE', '地点不适用于本次学校或校区范围。'));
     if (scene.dreamOnly === true && exploration !== 100) errors.push(fail('H_DREAM_ONLY', '该场景仅在探索度100的梦幻模式可选；降低探索度后请移除该阶段及其后续固定安排。'));
+    else if (!isSceneAllowedAtExploration(scene, exploration)) errors.push(fail('H_SCENE_EXPLORATION', `场景${scene.id}未达到所需探索度；请提高探索度或移除该阶段及其后续固定安排。`));
     if (ctx.periodIds && scene.kind === 'rest' && st.placeId === null) errors.push(fail('H_REST_PLACE', '原地休息需要先进入一个可停留的地点。'));
     const dietary = list([...(scene.dietaryTags || []), ...acts.flatMap(a => a.dietaryTags || [])]);
     if (ctx.dietaryRestrictions.some(tag => dietary.includes(tag))) errors.push(fail('H_DIET', '具体食物或活动与明示饮食限制冲突。'));
@@ -569,17 +571,21 @@ export function verifyPlanWitness(input = {}, catalog, options = {}) {
 
 function* searchDate(input = {}, catalog, options = {}) {
   let ctx, compiled, prefix, anchors;
+  const exploration = integer(options.exploration ?? input.exploration ?? input.context?.exploration, 0, 0, 100);
   const versions = { engine: VERSION, rules: catalog?.rulesVersion || REASONING_VERSION, knowledge: catalog?.version || 'unversioned', knowledgeRevision: catalog?.contentRevision || digest({scenes:catalog?.scenes,rules:catalog?.rules,departures:catalog?.departures}), data: catalog?.version || 'unversioned', score: CONFIG.scoreVersion, schema: 'datemate-3.0' };
   const expectedVersions = options.expectedVersions ?? input.expectedVersions;
   if (expectedVersions && Object.entries(expectedVersions).some(([key, value]) => versions[key] !== value)) return errorResponse('invalid_input', [fail('H_VERSION', '复盘的引擎、知识或评分版本与当前版本不一致。')], null, versions);
   try {
     ctx = normalize({ ...input, explorationSeed: options.explorationSeed ?? input.explorationSeed ?? input.context?.explorationSeed });
+    if (!isDepartureAllowedAtExploration({id: ctx.departureChoice}, exploration)) throw Error(fail('H_DEPARTURE_EXPLORATION', `露营需要探索度至少${CAMPING_EXPLORATION_MIN}。`));
     ctx.explorationSeed ??= digest(ctx);
+    ctx.exploration = exploration;
   } catch (error) { return errorResponse('invalid_input', [error.message], null, versions); }
   try { compiled = compileCatalog(catalog, ctx); } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
   ctx.durationPolicy = compiled.scenes.some(scene => scene.durationRange) ? 'flexible' : 'fixed';
   if (ctx.requiredSceneIds.some(id => !compiled.byId.has(id) || ctx.bans.includes(id))) return errorResponse('invalid_input', [fail('H_REQUIRED_SCENE', '必去地点不存在或同时被排除。')], ctx, versions);
   if (ctx.requiredSceneIds.some(id => !isSceneInSchoolScope(compiled.byId.get(id), ctx))) return errorResponse('invalid_input', [fail('H_SCHOOL_SCOPE', '必去地点不适用于本次地点、学校或校区范围。')], ctx, versions);
+  if (ctx.requiredSceneIds.some(id => { const scene = compiled.byId.get(id); return !scene.dreamOnly && !isSceneAllowedAtExploration(scene, exploration); })) return errorResponse('invalid_input', [fail('H_SCENE_EXPLORATION', '必去地点未达到所需探索度。')], ctx, versions);
   try { ctx.departures = compileDepartures(catalog, ctx); ctx.departure = ctx.departures.find(d => d.id === ctx.departureChoice) ?? null; } catch (error) { return errorResponse('invalid_data', [error.message], ctx, versions); }
   try {
     const rawPrefix = options.fixedPrefix ?? input.fixedPrefix ?? input.prefix ?? [];
@@ -596,8 +602,8 @@ function* searchDate(input = {}, catalog, options = {}) {
     const rawAnchors = input.anchors || (input.anchorSceneId ? [{ choice: { sceneId: input.anchorSceneId, activityIds: [] } }] : []);
     anchors = normalizeAnchors(rawAnchors, compiled, ctx); ctx.anchors = anchors;
     if (anchors.some(a => !isSceneInSchoolScope(compiled.byId.get(a.choice.sceneId), ctx))) throw Error(fail('H_SCHOOL_SCOPE', '锚点不适用于本次地点、学校或校区范围。'));
+    if (anchors.some(a => { const scene = compiled.byId.get(a.choice.sceneId); return !scene.dreamOnly && !isSceneAllowedAtExploration(scene, exploration); })) throw Error(fail('H_SCENE_EXPLORATION', '锚点未达到所需探索度。'));
   } catch (error) { return errorResponse('invalid_input', [error.message], ctx, versions); }
-  const exploration = integer(options.exploration ?? input.exploration ?? input.context?.exploration, 0, 0, 100);
   // 独立候选验证只求最高真实效用；探索度仍影响真实目标函数，不施加搜索噪声。
   const explorer = createExploration(options.continuationOnly ? 0 : exploration, ctx.explorationSeed);
   const periodDefaults = ctx.periodIds ? { maxStages: Math.min(24, Math.max(CONFIG.maxStages, Math.ceil(ctx.duration / 45) + 2)), beamWidth: 8, activitySubsetLimit: 8 } : {};
@@ -609,7 +615,7 @@ function* searchDate(input = {}, catalog, options = {}) {
   if (prefix.length > config.maxStages) return errorResponse('invalid_input', [fail('H_PREFIX_LENGTH', '固定前缀超过主动结束位置或阶段上限。')], ctx, versions);
   if (ctx.requiredSceneIds.length > config.maxStages) return errorResponse('invalid_input', [fail('H_REQUIRED_LENGTH', '必去地点数量超过当前阶段上限。')], ctx, versions);
   const stats = { ...config, explorationVersion: EXPLORATION_VERSION, explorationSeed: ctx.explorationSeed, explorationStrength: explorer.strength, expandedNodes: 0, candidateExpandedNodes: 0, candidateNodeBudgetReached: false, generatedNodes: 0, feasibleNodes: 0, terminalPlans: 0, constraintRejections: {}, beamPruned: 0, activitySubsetsTruncated: false, nodeBudgetReached: false, maxDepthReached: false, provedOptimal: false, proofScope: '未证明全局最优；搜索空间受阶段、活动子集和节点上限约束。' };
-  const scopedScenes = compiled.scenes.filter(scene => isSceneInSchoolScope(scene, ctx));
+  const scopedScenes = compiled.scenes.filter(scene => isSceneInSchoolScope(scene, ctx) && isSceneAllowedAtExploration(scene, exploration));
   const evaluator = createEvaluator(ctx, compiled, catalog, exploration);
   let start = initial(ctx), candidatePrefixUtility = 0;
   const reject = errors => { for (const error of errors) { const code = error.split(':')[0]; stats.constraintRejections[code] = (stats.constraintRejections[code] || 0) + 1; } };

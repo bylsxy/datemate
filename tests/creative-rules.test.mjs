@@ -95,7 +95,7 @@ test('梦幻场景仅探索100出现且提高排序，固定前缀也不能绕�
 
 test('camping明确选择且仅跨午夜，费用和停留预留仍独立核算', () => {
   const catalog = { ...data([scene('walk')]), departures: [{ id: 'separate', minutes: 10, cost: [0, 0] }, { id: 'camping', minutes: 15, cost: [20, 40], onlyOvernight: true, requiresExplicitChoice: true }] };
-  const input = { periodIds: ['night'], reserve: 0, robust: false, fatigueA: 0, fatigueB: 0, anchors: [{ choice: { sceneId: 'walk', activityIds: [] }, startMinute: 1485, index: 0 }] };
+  const input = { periodIds: ['night'], exploration: 80, reserve: 0, robust: false, fatigueA: 0, fatigueB: 0, anchors: [{ choice: { sceneId: 'walk', activityIds: [] }, startMinute: 1485, index: 0 }] };
   const r = planDate({ ...input, departureChoice: 'camping', budget: 40 }, catalog, { maxStages: 1 });
   assert.equal(r.ok, true, r.errors.join()); assert.equal(r.departure.id, 'camping'); assert.equal(r.departure.manualOnly, true); assert.deepEqual(r.totalCostCents, [2000, 4000]);
   assert.equal(r.departure.endMinute - r.departure.startMinute, 15);

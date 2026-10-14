@@ -1,6 +1,8 @@
 import test from 'node:test';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from '../exploration.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
+import {formatTime} from '../planner.mjs';
 
 // 最小 DOM 只承接渲染；卡片内容仍由实际 timeline 代码生成。
 class Element {
@@ -32,13 +34,13 @@ test('四种别离卡使用目录全文，酒店提醒和露营文案不截断�
   const doc={defaultView:win,documentElement:{clientWidth:500,clientHeight:500},createElement:()=>new Element(doc),activeElement:null};
   const root=new Element(doc);doc.querySelector=()=>root;
   globalThis.document=doc;
-  globalThis[dependencyKey]={attachCarousel:()=>({update(){},destroy(){}}),centerCard(){},syncCarousel(){},esc:value=>value,formatTime:String,toggleActivity(){},isSceneInSchoolScope:()=>true};
+  globalThis[dependencyKey]={isSceneAllowedAtExploration,attachCarousel:()=>({update(){},destroy(){}}),centerCard(){},syncCarousel(){},esc:value=>value,formatTime,toggleActivity(){},isSceneInSchoolScope:()=>true};
   let timeline;
   try{
     const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
-    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.departure.description.test')];\n${source}`).toString('base64')}`);
-    timeline=createTimeline({catalog,getIntent:()=>({prefix:[],context:{}}),onDeparture(){}});
-    const render=()=>timeline.render({ok:true,stages:[],departure:{id:'hotel',startMinute:1200,endMinute:1215,candidates:catalog.departures.map(({id})=>({id}))}});
+    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const CAMPING_EXPLORATION_MIN=${CAMPING_EXPLORATION_MIN}; const {isSceneAllowedAtExploration,attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.departure.description.test')];\n${source}`).toString('base64')}`);
+    timeline=createTimeline({catalog,getIntent:()=>({exploration:CAMPING_EXPLORATION_MIN,prefix:[],context:{}}),onDeparture(){}});
+    const render=(id='hotel')=>timeline.render({ok:true,stages:[],departure:{id,startMinute:1200,endMinute:1215,candidates:catalog.departures.map(({id})=>({id}))}});
     const check=()=>{
       const cards=root.querySelector('.scene-strip').children;
       assert.equal(cards.length,catalog.departures.length);
@@ -50,8 +52,12 @@ test('四种别离卡使用目录全文，酒店提醒和露营文案不截断�
       }
     };
     render();check();
-    assert.match(root.querySelector('.scene-strip').children.find(card=>card.dataset.departure==='hotel').querySelector('.scene-desc').textContent,/忌电竞酒店$/);
+    assert.equal(root.querySelector('.scene-strip').children.find(card=>card.dataset.departure==='hotel').querySelector('.scene-desc').textContent,'注意提前预定大床房、选择高层、非首尾房间，提前看好平台评分评价和卫生环境，尽量选更新的酒店');
     assert.equal(root.querySelector('.scene-strip').children.find(card=>card.dataset.departure==='camping').querySelector('.scene-desc').textContent,knowledge.departures.find(({id})=>id==='camping').description);
+    for(const id of ['hotel','camping','separate','walk_together']){
+      render(id);check();
+      assert.equal(root.querySelector('.stage-heading').innerHTML,`<h2 class="stage-time">20:00-${['hotel','camping'].includes(id)?'次日':'20:15'}</h2>`);
+    }
     // 注入新目录文案和摘要字段，证明更新始终使用 description 唯一内容源。
     for(const departure of catalog.departures){departure.description=`更新：${departure.description}。补充提醒`;departure.cardDescription='不应使用的摘要';}
     render();check();

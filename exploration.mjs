@@ -1,5 +1,22 @@
-/** 探索只改变搜索和展露顺序；真实效用与硬约束仍由引擎计算。 */
-export const EXPLORATION_VERSION = 'seeded-exploration-1.3';
+/** 探索改变搜索和展露顺序，并控制露营门槛；真实效用与硬约束由引擎计算。 */
+export const EXPLORATION_VERSION = 'seeded-exploration-1.4';
+export const CAMPING_EXPLORATION_MIN = 80;
+
+// 精确匹配露营标识，避免把 campus 等普通校园场景误归为露营。
+const CAMPING_SCENE_IDS = new Set(['camp_day_setup', 'camp_evening']);
+export function isSceneAllowedAtExploration(scene, exploration = 0) {
+  if (!scene) return false;
+  const level = Number(exploration);
+  const configured = scene.minimumExploration === undefined ? 0 : scene.minimumExploration;
+  if (!Number.isInteger(configured) || configured < 0 || configured > 100) return false;
+  if (scene.dreamOnly === true && level !== 100) return false;
+  const minimum = Math.max(configured, CAMPING_SCENE_IDS.has(scene.id) ? CAMPING_EXPLORATION_MIN : 0);
+  return level >= minimum;
+}
+
+export function isDepartureAllowedAtExploration(departure, exploration = 0) {
+  return departure?.id !== 'camping' || Number(exploration) >= CAMPING_EXPLORATION_MIN;
+}
 
 export function normalizeExplorationSeed(seed) {
   if (seed === undefined || seed === null) return null;

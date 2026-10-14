@@ -2,9 +2,9 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {resolveMealCardChoice} from '../timeline.mjs';
 
-test('会面前早餐和不吃宵夜没有地点对象，也能直接形成有效选择',()=>{
+test('会面前早餐支持特殊卡，宵夜跳过已移到标题按钮且不再接受旧卡ID',()=>{
   assert.deepEqual(resolveMealCardChoice('breakfast','__breakfast_before_meeting'),{mode:'before_meeting'});
-  assert.deepEqual(resolveMealCardChoice('supper','__supper_skip'),{mode:'skip'});
+  assert.throws(()=>resolveMealCardChoice('supper','__supper_skip'),/用餐地点/);
   assert.throws(()=>resolveMealCardChoice('lunch','__supper_skip'),/用餐地点/);
 });
 test('再点击当前餐馆保留已经勾选的玩法，换馆才取新的实际餐食',()=>{

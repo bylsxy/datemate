@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from '../exploration.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {escapeHTML} from '../planner.mjs';
@@ -61,11 +62,11 @@ test('全部地点卡和活动卡直接渲染 description 全文，旧摘要不�
   const root=new Element(doc);doc.querySelector=()=>root;
   const key=Symbol.for('datemate.card.description.test'),oldDocument=globalThis.document;
   globalThis.document=doc;
-  globalThis[key]={attachCarousel:()=>({update(){},destroy(){}}),centerCard(){},syncCarousel(){},esc:escapeHTML,formatTime:String,toggleActivity(){},isSceneInSchoolScope:()=>true};
+  globalThis[key]={isSceneAllowedAtExploration,attachCarousel:()=>({update(){},destroy(){}}),centerCard(){},syncCarousel(){},esc:escapeHTML,formatTime:String,toggleActivity(){},isSceneInSchoolScope:()=>true};
   let timeline;
   try{
     const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
-    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.card.description.test')];\n${source}`).toString('base64')}`);
+    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const CAMPING_EXPLORATION_MIN=${CAMPING_EXPLORATION_MIN}; const {isSceneAllowedAtExploration,attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.card.description.test')];\n${source}`).toString('base64')}`);
     timeline=createTimeline({catalog,getIntent:()=>({prefix:[],context:{}})});
     const candidate=sceneId=>({sceneId,fitScore:70,scoreStatus:'evaluated'});
     const render=()=>timeline.render({ok:true,stages:[
@@ -96,6 +97,6 @@ test('全部地点卡和活动卡直接渲染 description 全文，旧摘要不�
     render();check();
     for(const empty of ['',null,undefined]){activity.description=empty;scenes[1].activities[0].description=empty;render();check();}
     timeline.render({ok:true,stages:[],mealRequirements:[{mealRole:'breakfast',choiceMode:'before_meeting',targetMinute:540},{mealRole:'supper',choiceMode:'skip',targetMinute:1200}]});
-    assert.deepEqual(root.querySelectorAll('.scene-desc').map(el=>el.textContent),['见面前各自吃好早餐，见面后直接开始。','这一餐不安排，前后的活动继续相连。']);
+    assert.deepEqual(root.querySelectorAll('.scene-desc').map(el=>el.textContent),['见面前各自吃好早餐，见面后直接开始。']);
   }finally{timeline?.dispose();globalThis.document=oldDocument;delete globalThis[key];}
 });

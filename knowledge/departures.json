@@ -55,7 +55,7 @@
     {
       "id": "hotel",
       "title": "酒店",
-      "description": "注意提前预定大床房、选择高层、非首尾房间，提前看好平台评分评价，忌电竞酒店",
+      "description": "注意提前预定大床房、选择高层、非首尾房间，提前看好平台评分评价和卫生环境，尽量选更新的酒店",
       "minutes": 15,
       "costUnit": "CNY_per_room_for_two_per_night",
       "costByCityTier": {

@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from '../exploration.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {isSceneInSchoolScope} from '../school-scope.mjs';
@@ -72,9 +73,9 @@ async function timelineFixture(scenes){
   const f=fixture(),previousDocument=globalThis.document;
   f.catalog.scenes=scenes;
   const key=Symbol.for('datemate.night.ui.test');
-  globalThis.document=f.doc;globalThis[key]={...f.deps,sceneDurationAt,isSceneOpenDuring};
+  globalThis.document=f.doc;globalThis[key]={...f.deps,isSceneAllowedAtExploration,sceneDurationAt,isSceneOpenDuring};
   const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
-  const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope,sceneDurationAt,isSceneOpenDuring}=globalThis[Symbol.for('datemate.night.ui.test')];\n${source}`).toString('base64')}`);
+  const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const CAMPING_EXPLORATION_MIN=${CAMPING_EXPLORATION_MIN}; const {isSceneAllowedAtExploration,attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope,sceneDurationAt,isSceneOpenDuring}=globalThis[Symbol.for('datemate.night.ui.test')];\n${source}`).toString('base64')}`);
   const timeline=createTimeline({...f,onScene(){},onActivities(){},onMeal(){}});
   return {...f,timeline,cleanup(){timeline.dispose();globalThis.document=previousDocument;delete globalThis[key];}};
 }

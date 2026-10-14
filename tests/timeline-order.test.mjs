@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from '../exploration.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {isSceneInSchoolScope} from '../school-scope.mjs';
@@ -13,13 +14,14 @@ class Element {
     else if(html.includes('class="scene-score"')){add('span','scene-score');add('h3','scene-title');add('p','scene-desc');}
     else if(html.includes('class="stage-time"'))add('h2','stage-time');
     else for(const match of html.matchAll(/<input\b([^>]+)>/g)){const input=add('input','');for(const attr of match[1].matchAll(/data-([\w-]+)="([^"]*)"/g))input.dataset[attr[1]]=attr[2];input.checked=match[1].includes('checked');}
+    for(const match of html.matchAll(/<button\b([^>]*)>([\s\S]*?)<\/button>/g)){const button=add('button',match[1].match(/class="([^"]*)"/)?.[1]||'');for(const attr of match[1].matchAll(/data-([\w-]+)(?:="([^"]*)")?/g))button.dataset[attr[1]]=attr[2]??'';button.textContent=match[2].replace(/<[^>]*>/g,'');button.disabled=/\bdisabled\b/.test(match[1]);}
   }
   get innerHTML(){return this._html;}
   append(el){this.insertBefore(el,null);}
   insertBefore(el,before){if(el===before)return;el.remove();const at=before?this.children.indexOf(before):this.children.length;this.children.splice(at,0,el);el.parentElement=this;}
   remove(){if(this.parentElement){const siblings=this.parentElement.children;siblings.splice(siblings.indexOf(this),1);this.parentElement=null;}}
   contains(el){return el===this||this.children.some(child=>child.contains(el));}
-  matches(selector){if(selector.startsWith('.'))return this.classList.contains(selector.slice(1));if(!selector.startsWith('input')||this.tagName!=='INPUT')return false;return [...selector.matchAll(/\[data-([\w-]+)(?:="([^"]*)")?\]/g)].every(([,key,value])=>value===undefined?key in this.dataset:this.dataset[key]===value);}
+  matches(selector){if(selector.includes(','))return selector.split(',').some(part=>this.matches(part.trim()));if(selector.startsWith('.'))return this.classList.contains(selector.slice(1));const tag=selector.match(/^(input|button)/)?.[1];if(!tag||this.tagName!==tag.toUpperCase())return false;return [...selector.matchAll(/\[data-([\w-]+)(?:="([^"]*)")?\]/g)].every(([,key,value])=>value===undefined?key in this.dataset:this.dataset[key]===value);}
   querySelectorAll(selector){return this.children.flatMap(child=>[...(child.matches(selector)?[child]:[]),...child.querySelectorAll(selector)]);}
   querySelector(selector){return this.querySelectorAll(selector)[0]||null;}
   closest(selector){return this.matches(selector)?this:this.parentElement?.closest(selector)||null;}
@@ -50,11 +52,11 @@ const order=element=>element.querySelector('.scene-strip').children.map(card=>ca
 test('保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选择和稳定 key',async()=>{
   const f=fixture(),oldDocument=globalThis.document,oldCSS=globalThis.CSS;
   const dependencyKey=Symbol.for('datemate.timeline.order.test');
-  globalThis[dependencyKey]=f.deps;globalThis.document=f.doc;globalThis.CSS={escape:value=>value};
+  globalThis[dependencyKey]={...f.deps,isSceneAllowedAtExploration};globalThis.document=f.doc;globalThis.CSS={escape:value=>value};
   let timeline;
   try{
     const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
-    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.timeline.order.test')];\n${source}`).toString('base64')}`);
+    const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const CAMPING_EXPLORATION_MIN=${CAMPING_EXPLORATION_MIN}; const {isSceneAllowedAtExploration,attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.timeline.order.test')];\n${source}`).toString('base64')}`);
     timeline=createTimeline({...f,onScene(){},onActivities(){},onMeal(){}});
     const certify=(predicate,candidate)=>{
       const action=timeline.getPendingActions().find(predicate);

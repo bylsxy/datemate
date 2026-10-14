@@ -1,5 +1,5 @@
-import {explainDecision,formatFact} from './explanations.mjs?v=97b6b88b9e62ea18';
-import {escapeHTML as esc,formatTime} from './planner.mjs?v=97b6b88b9e62ea18';
+import {explainDecision,formatFact} from './explanations.mjs?v=3b6419e840a1e140';
+import {escapeHTML as esc,formatTime} from './planner.mjs?v=3b6419e840a1e140';
 
 const paragraphs = lines => lines.map(line => `<p>${esc(line)}</p>`).join('');
 const factLabels = {'context.weather':'天气','context.fatigueA':'我方疲惫值','context.fatigueB':'对方疲惫值','context.budget':'预算','context.prepared':'可用准备项','scene.kind':'地点类型','scene.load':'地点负担','activity.load':'活动负担','derived.needsRecovery':'恢复需求','explicitPreference':'明示偏好','composition':'活动组合','costCents':'费用（分）','minutes':'分钟'};

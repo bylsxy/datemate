@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from '../exploration.mjs';
 import assert from 'node:assert/strict';
 import {readFile} from 'node:fs/promises';
 import {isSceneInSchoolScope} from '../school-scope.mjs';
@@ -10,9 +11,9 @@ async function setup(options={}){
   const fixture=new Function('isSceneInSchoolScope',`${fixtureSource.slice(fixtureSource.indexOf('class Element'),fixtureSource.indexOf('const candidate='))};return fixture;`)(isSceneInSchoolScope);
   const f=fixture(),oldDocument=globalThis.document;
   globalThis.document=f.doc;
-  const key=Symbol.for('datemate.timeline.validation.test');globalThis[key]=f.deps;
+  const key=Symbol.for('datemate.timeline.validation.test');globalThis[key]={...f.deps,isSceneAllowedAtExploration};
   const source=(await readFile(new URL('../timeline.mjs',import.meta.url),'utf8')).replace(/^import .*;\r?\n/gm,'');
-  const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const {attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.timeline.validation.test')];\n${source}`).toString('base64')}#${++fixtureRound}`);
+  const {createTimeline}=await import(`data:text/javascript;base64,${Buffer.from(`const CAMPING_EXPLORATION_MIN=${CAMPING_EXPLORATION_MIN}; const {isSceneAllowedAtExploration,attachCarousel,centerCard,syncCarousel,esc,formatTime,toggleActivity,isSceneInSchoolScope}=globalThis[Symbol.for('datemate.timeline.validation.test')];\n${source}`).toString('base64')}#${++fixtureRound}`);
   const calls=[];
   const timeline=createTimeline({...f,onScene:(...args)=>calls.push(['scene',...args]),onActivities:(...args)=>calls.push(['activity',...args]),onMeal:(...args)=>calls.push(['meal',...args]),...options});
   const plan={ok:true,stages:[{sceneId:'a',activityIds:['a-act'],startMinute:600,endMinute:660,candidates:['a','b'].map(id=>({sceneId:id,activityIds:[`${id}-act`],fitScore:73,q:73,scoreStatus:'evaluated',continuationWitness:{id}}))}]};
@@ -96,9 +97,9 @@ test('分别卡验证后携带 witness，pending 不接收证书，失败规划�
     assert.equal(f.timeline.updateActionValidation({...action,validationStatus:'verified',continuationWitness:{bye:true}}),false);
     f.emit('click',card);assert.equal(f.calls.length,1);
     f.timeline.render({...f.plan,ok:false,mealRequirements:[{mealRole:'supper',choiceMode:'together',targetMinute:700,insertIndex:0,candidates:[]}]},{preserveThrough:-1});
-    const meal=f.root.children.find(el=>el.querySelector('.scene-strip').children.some(c=>c.dataset.scene==='__supper_skip'));
-    const special=meal.querySelector('.scene-strip').children.find(c=>c.dataset.scene==='__supper_skip');
-    f.emit('click',special);assert.deepEqual(f.calls[1],['meal','supper',{mode:'skip'},{fromStage:0,knownPlan:undefined}]);
+    const button=f.root.querySelector('button[data-skip-supper]');assert.ok(button);
+    assert.equal(f.root.querySelectorAll('.scene-card').some(card=>card.dataset.scene==='__supper_skip'),false);
+    f.emit('click',button);assert.deepEqual(f.calls[1],['meal','supper',{mode:'skip'},{fromStage:0}]);
   }finally{f.cleanup();}
 });
 
