@@ -1,11 +1,11 @@
-import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=a4420782c4d5e641';
-import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=a4420782c4d5e641';
-import {isSceneInSchoolScope} from './school-scope.mjs?v=a4420782c4d5e641';
-import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=a4420782c4d5e641';
+import {attachCarousel,centerCard,syncCarousel} from './carousel.mjs?v=43ea07b0521b5869';
+import {escapeHTML as esc,formatTime,toggleActivity} from './planner.mjs?v=43ea07b0521b5869';
+import {isSceneInSchoolScope} from './school-scope.mjs?v=43ea07b0521b5869';
+import {sceneDurationAt,isSceneOpenDuring} from './scene-time.mjs?v=43ea07b0521b5869';
 
-import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=a4420782c4d5e641';
-import {mealModeCard,mealOptions} from './meal-options.mjs?v=a4420782c4d5e641';
-import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from './exploration.mjs?v=a4420782c4d5e641';
+import {durationBounds,splitDuration,mergeStayOption} from './duration-policy.mjs?v=43ea07b0521b5869';
+import {mealModeCard,mealOptions} from './meal-options.mjs?v=43ea07b0521b5869';
+import {CAMPING_EXPLORATION_MIN,isSceneAllowedAtExploration} from './exploration.mjs?v=43ea07b0521b5869';
 const skeleton = (kind='line') => `<span class="skeleton skeleton-${kind}" aria-hidden="true"></span>`;
 const specialFor=role=>role==='breakfast'?{id:'__breakfast_before_meeting',title:'会面前吃早餐',description:'见面前各自吃好早餐，见面后直接开始。',mode:'before_meeting'}:null;
 const mealActivityIds=(scene,role)=>(scene.mealActivityIds||[]).filter(id=>scene.activities.some(a=>a.id===id&&a.mealRoles?.includes(role)));

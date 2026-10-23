@@ -96,7 +96,33 @@ async function main() {
   const app = await bundle(resolve(project, 'app.mjs'), true);
   const workerCode = `(() => { "use strict";\n${worker.code}\n})();`;
   new Script(workerCode, { filename: 'DateMate_offline.worker.js' });
-  const appCode = `(() => { "use strict";\nconst __offlineWorkerSource = ${JSON.stringify(workerCode)};\nconst __offlineWorkerUrl = URL.createObjectURL(new Blob([__offlineWorkerSource], { type: 'text/javascript' }));\nwindow.addEventListener('pagehide', () => URL.revokeObjectURL(__offlineWorkerUrl), { once: true });\n${app.code}\n})();`;
+  const inlineWorkerShim = [
+    'const __NativeWorker = window.Worker;',
+    'function __createOfflineInlineWorker() {',
+    '  let alive = true;',
+    '  const host = { onmessage: null, onerror: null, terminate() { alive = false; } };',
+    '  const selfProxy = {',
+    '    onmessage: null,',
+    '    postMessage(data) {',
+    '      if (!alive) return;',
+    '      const cloned = structuredClone(data);',
+    '      setTimeout(() => { if (alive && typeof host.onmessage === "function") host.onmessage({ data: cloned }); }, 0);',
+    '    }',
+    '  };',
+    '  new Function("self", __offlineWorkerSource)(selfProxy);',
+    '  host.postMessage = data => {',
+    '    if (!alive) return;',
+    '    const cloned = structuredClone(data);',
+    '    setTimeout(() => { if (alive && typeof selfProxy.onmessage === "function") selfProxy.onmessage({ data: cloned }); }, 0);',
+    '  };',
+    '  return host;',
+    '}',
+    'const Worker = function(url, options) {',
+    '  if (url === __offlineWorkerUrl && location.protocol === "file:") return __createOfflineInlineWorker();',
+    '  return new __NativeWorker(url, options);',
+    '};'
+  ].join('\n');
+  const appCode = `(() => { "use strict";\nconst __offlineWorkerSource = ${JSON.stringify(workerCode)};\nconst __offlineWorkerUrl = URL.createObjectURL(new Blob([__offlineWorkerSource], { type: 'text/javascript' }));\nwindow.addEventListener('pagehide', () => URL.revokeObjectURL(__offlineWorkerUrl), { once: true });\n${inlineWorkerShim}\n${app.code}\n})();`;
   new Script(appCode, { filename: 'DateMate_offline.app.js' });
 
   // 在独立 VM 中真正执行打包后的 Worker，验证规划、图谱和规则导入一致。

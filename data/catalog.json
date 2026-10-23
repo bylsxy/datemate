@@ -29967,6 +29967,11 @@
         "label": "镜系列"
       },
       {
+        "id": "SRC-03bae8fe0f5e",
+        "type": "source",
+        "label": "死者代言人"
+      },
+      {
         "id": "SRC-04b4a8ba64fd",
         "type": "source",
         "label": "景山北斗的哀与愛"
@@ -29995,6 +30000,11 @@
         "id": "SRC-07b4af15348d",
         "type": "source",
         "label": "きりぎりす（日文）"
+      },
+      {
+        "id": "SRC-0a8029818c3c",
+        "type": "source",
+        "label": "少年维特的烦恼"
       },
       {
         "id": "SRC-0b7fd3dd6717",
@@ -30030,6 +30040,11 @@
         "id": "SRC-1698bdaaf21f",
         "type": "source",
         "label": "佐贺的超级阿嬷"
+      },
+      {
+        "id": "SRC-16d561a191ca",
+        "type": "source",
+        "label": "安德的游戏"
       },
       {
         "id": "SRC-16f7bb14b77b",
@@ -30157,6 +30172,11 @@
         "label": "長堤看海"
       },
       {
+        "id": "SRC-3d090f28869f",
+        "type": "source",
+        "label": "放学后"
+      },
+      {
         "id": "SRC-3def52aaffc6",
         "type": "source",
         "label": "成都游记"
@@ -30212,6 +30232,11 @@
         "label": "“Leveling up” in Love： processual social exchange trajectories in digital dating among Chinese university students"
       },
       {
+        "id": "SRC-5300d6ea14e4",
+        "type": "source",
+        "label": "看海的人"
+      },
+      {
         "id": "SRC-566ab0849855",
         "type": "source",
         "label": "行人（日文）"
@@ -30222,9 +30247,19 @@
         "label": "00_数据集获取渠道与AI提炼Prompt指南"
       },
       {
+        "id": "SRC-5a9b39b6dda1",
+        "type": "source",
+        "label": "名侦探的守则"
+      },
+      {
         "id": "SRC-5af64b8f48c9",
         "type": "source",
         "label": "球状闪电"
+      },
+      {
+        "id": "SRC-5c59b8ea0c10",
+        "type": "source",
+        "label": "幻夜"
       },
       {
         "id": "SRC-5cb190a45bd9",
@@ -30282,6 +30317,11 @@
         "label": "广州步行、城市文化与公共空间场景"
       },
       {
+        "id": "SRC-6d736f436393",
+        "type": "source",
+        "label": "忘川"
+      },
+      {
         "id": "SRC-6d9b50deb26d",
         "type": "source",
         "label": "皮膚と心（日文）"
@@ -30317,6 +30357,11 @@
         "label": "04_言情甜宠小说_场景与规则精粹语料"
       },
       {
+        "id": "SRC-79547abd2b6e",
+        "type": "source",
+        "label": "好兆头"
+      },
+      {
         "id": "SRC-7bc9c1f0010a",
         "type": "source",
         "label": "美しい村（日文）"
@@ -30345,6 +30390,16 @@
         "id": "SRC-843fbbce5ee0",
         "type": "source",
         "label": "夜明前的琉璃色"
+      },
+      {
+        "id": "SRC-846ee4ba37ca",
+        "type": "source",
+        "label": "伊豆旅馆的神秘案"
+      },
+      {
+        "id": "SRC-8485bea32a67",
+        "type": "source",
+        "label": "布鲁斯特的心脏"
       },
       {
         "id": "SRC-852c63d2fa2d",
@@ -30377,6 +30432,11 @@
         "label": "长沙游记"
       },
       {
+        "id": "SRC-8fe047002459",
+        "type": "source",
+        "label": "流浪地球"
+      },
+      {
         "id": "SRC-906f0db3dca0",
         "type": "source",
         "label": "十二镜面"
@@ -30392,6 +30452,11 @@
         "label": "02_Galgame与甜宠小说_产生式规则原始语料"
       },
       {
+        "id": "SRC-96ab55401d2c",
+        "type": "source",
+        "label": "桃花扇"
+      },
+      {
         "id": "SRC-99bf22cc14b8",
         "type": "source",
         "label": "四世同堂"
@@ -30400,6 +30465,11 @@
         "id": "SRC-9d52a0728f3d",
         "type": "source",
         "label": "徐阳我打包票的手搓的目前全华农商铺运营情况和约会地点！！！其实是我的亲身经历，哈哈"
+      },
+      {
+        "id": "SRC-9f0068487eea",
+        "type": "source",
+        "label": "盛夏的方程式"
       },
       {
         "id": "SRC-a142df9c3714",
@@ -30425,6 +30495,11 @@
         "id": "SRC-a72ce40e0e24",
         "type": "source",
         "label": "变身"
+      },
+      {
+        "id": "SRC-a7da9dc04865",
+        "type": "source",
+        "label": "戏言系列"
       },
       {
         "id": "SRC-aa8abba3bbb0",
@@ -30492,6 +30567,11 @@
         "label": "A Room With A View（英文）"
       },
       {
+        "id": "SRC-bd77b54a9d84",
+        "type": "source",
+        "label": "月亮与六便士"
+      },
+      {
         "id": "SRC-bde1a0ea570a",
         "type": "source",
         "label": "在黑暗文艺复兴时期约会"
@@ -30530,6 +30610,11 @@
         "id": "SRC-cb65675f3b73",
         "type": "source",
         "label": "The Age of Innocence（英文）"
+      },
+      {
+        "id": "SRC-cc81a0a2b0c5",
+        "type": "source",
+        "label": "听雪楼系列"
       },
       {
         "id": "SRC-cfcba0065573",
@@ -30622,9 +30707,19 @@
         "label": "同命运的小鱼"
       },
       {
+        "id": "SRC-e232d8c3365e",
+        "type": "source",
+        "label": "少女委托人"
+      },
+      {
         "id": "SRC-e352e94f12c5",
         "type": "source",
         "label": "撒哈拉的故事"
+      },
+      {
+        "id": "SRC-e3a02cd53ca6",
+        "type": "source",
+        "label": "侦探伽利略"
       },
       {
         "id": "SRC-e46fa3564e74",
@@ -30635,6 +30730,11 @@
         "id": "SRC-e71e9f991607",
         "type": "source",
         "label": "茶馆"
+      },
+      {
+        "id": "SRC-e79f3b095624",
+        "type": "source",
+        "label": "十字屋敷的小丑"
       },
       {
         "id": "SRC-e7ff888366ac",
@@ -30695,6 +30795,16 @@
         "id": "SRC-f9cec9b10565",
         "type": "source",
         "label": "参加了一场985相亲局"
+      },
+      {
+        "id": "SRC-fae84be1234b",
+        "type": "source",
+        "label": "家信"
+      },
+      {
+        "id": "SRC-fe7c20b51ca8",
+        "type": "source",
+        "label": "俗世奇人"
       },
       {
         "id": "SRC-fec8e4b0d9c4",
@@ -59453,5 +59563,5 @@
       }
     ]
   },
-  "contentRevision": "f4a0377044d7a796"
+  "contentRevision": "27fb7d3cacb92ca9"
 }

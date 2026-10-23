@@ -86,16 +86,46 @@
       "id": "music",
       "label": "音乐"
     },
-    {"id":"dream","label":"梦想清单"},
-    {"id":"travel","label":"旅行"},
-    {"id":"celebration","label":"庆祝"},
-    {"id":"confession","label":"告白"},
-    {"id":"shared_hobby","label":"共同爱好"},
-    {"id":"private","label":"私密氛围"},
-    {"id":"night","label":"夜间体验"},
-    {"id":"japanese","label":"日式体验"},
-    {"id":"chinese","label":"中式体验"},
-    {"id":"outdoor","label":"户外"}
+    {
+      "id": "dream",
+      "label": "梦想清单"
+    },
+    {
+      "id": "travel",
+      "label": "旅行"
+    },
+    {
+      "id": "celebration",
+      "label": "庆祝"
+    },
+    {
+      "id": "confession",
+      "label": "告白"
+    },
+    {
+      "id": "shared_hobby",
+      "label": "共同爱好"
+    },
+    {
+      "id": "private",
+      "label": "私密氛围"
+    },
+    {
+      "id": "night",
+      "label": "夜间体验"
+    },
+    {
+      "id": "japanese",
+      "label": "日式体验"
+    },
+    {
+      "id": "chinese",
+      "label": "中式体验"
+    },
+    {
+      "id": "outdoor",
+      "label": "户外"
+    }
   ],
   "preparationOptions": [
     {
@@ -262,7 +292,7 @@
   },
   "extraction": {
     "categoryCounts": {
-      "1文学剧情描述": 82,
+      "1文学剧情描述": 104,
       "2经验描述": 39,
       "3现实场景": 4,
       "4学术参考": 7,
@@ -270,18 +300,18 @@
       "6组员提供": 7
     },
     "candidateHitsByFeature": {
-      "nature": 677,
-      "culture": 608,
-      "food": 622,
-      "play": 734,
-      "creative": 523,
-      "music": 988,
-      "weather": 1198,
-      "fatigue": 1748,
-      "preparation": 966,
-      "budget": 208,
-      "communication": 9386,
-      "consent": 246
+      "nature": 928,
+      "culture": 683,
+      "food": 1065,
+      "play": 1082,
+      "creative": 1114,
+      "music": 1554,
+      "weather": 1742,
+      "fatigue": 2069,
+      "preparation": 1726,
+      "budget": 282,
+      "communication": 9621,
+      "consent": 904
     },
     "prototypeSha256": "0fbb3c5b631f55a9902d84a00d9992376c491bc2fd726bbdafff5ad408c44896",
     "processingPolicy": "全文本扫描与哈希登记；关键词用于候选发现，正式采用项以定位证据为准。原始材料不写入公开数据。"

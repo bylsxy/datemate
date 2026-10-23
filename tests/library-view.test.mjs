@@ -10,12 +10,12 @@ const countEntries = html => (html.match(/class="library-entry"/g) || []).length
 
 test('七个章节完整覆盖公开数据，采用来源与登记材料准确区分',()=>{
   const html = renderLibraryHTML(data);
-  for (const [key,count] of [['sources',151],['scenes',86],['activities',150],['evidence',63],['rules',59],['resources',22],['departures',4]]) {
+  for (const [key,count] of [['sources',173],['scenes',86],['activities',150],['evidence',63],['rules',59],['resources',22],['departures',4]]) {
     assert.equal(countEntries(chapter(html,key)),count,key);
     assert.ok(html.includes(`href="#library-${key}"`),key);
     assert.ok(chapter(html,key).includes(`${count}. `),`${key} 连续序号`);
   }
-  assert.ok(html.includes('登记参考材料 151 份，其中 26 份形成 51 条采用证据；另有 12 条原创设计摘要。'));
+  assert.ok(html.includes('登记参考材料 173 份，其中 26 份形成 51 条采用证据；另有 12 条原创设计摘要。'));
   assert.equal((chapter(html,'sources').match(/· 已采用：/g)||[]).length,26);
   assert.ok(!html.includes('原材料未记录作者或许可声明'));
   assert.ok(!html.includes('仅完成候选抽取，未形成经人工核对的采用项'));

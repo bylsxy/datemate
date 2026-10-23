@@ -1,12 +1,22 @@
 <!doctype html>
 <html lang="zh-CN">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#fbf9f6"><meta name="description" content="约会策划"><title>约会策划 · DateMate</title><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=a4420782c4d5e641"><script type="module" src="./app.mjs?v=a4420782c4d5e641"></script>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="color-scheme" content="light"><meta name="theme-color" content="#fbf9f6"><meta name="description" content="约会策划"><title>约会策划 · DateMate</title><link rel="icon" href="./favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="./styles.css?v=43ea07b0521b5869"><script type="module" src="./app.mjs?v=43ea07b0521b5869"></script>
 </head>
 <body><div class="page-shell">
-<header class="site-header"><a class="brand" href="./" aria-label="DateMate 首页"><span class="brand-mark" aria-hidden="true">d.</span><span>DateMate</span></a></header>
-<section class="hero"><h1>约会策划</h1></section>
-<div class="workspace"><aside class="sidebar"><details class="conditions" id="conditions" open><summary>条件</summary><form id="conditions-form" class="form" autocomplete="off">
+<header class="site-header"><a class="brand" href="./" aria-label="DateMate 首页"><span class="brand-mark" aria-hidden="true">d.</span><span>DateMate</span></a><div class="header-actions"><button type="button" id="header-atlas-btn" class="atlas-pill-button" data-view="atlas">场景图鉴 <strong id="header-atlas-count">0 / 236</strong></button></div></header>
+<section class="hero"><div class="hero-copy"><h1>约会策划</h1><p class="hero-subtitle">基于 788 节点知识图谱与 59 条产生式规则的确定性行程规划 · 零输入即刻生成完整方案</p></div></section>
+<section class="preset-bar" aria-label="典型情境预设">
+  <div class="preset-bar-header"><span class="preset-bar-label">典型情境</span><span class="preset-bar-hint">一键载入代表性条件与知识推理链路</span></div>
+  <div class="preset-strip" id="preset-strip">
+    <button type="button" class="preset-chip" data-preset="scau_firefly"><span class="preset-chip-tag">华农限定</span><strong>泰山野餐与兰园观萤</strong><small>超市物资链 · 18:55 观萤窗口</small></button>
+    <button type="button" class="preset-chip" data-preset="rain_fatigue"><span class="preset-chip-tag">产生式推理</span><strong>雨天疲惫 · 室内恢复</strong><small>两轮正向推导 · 自动前置休息</small></button>
+    <button type="button" class="preset-chip" data-preset="exam_short"><span class="preset-chip-tag">时期约束</span><strong>临考间隙 · 图书馆一小时</strong><small>短会规则触发 · 预留复习缓冲</small></button>
+    <button type="button" class="preset-chip" data-preset="zero_budget"><span class="preset-chip-tag">预算硬约束</span><strong>零预算 · 院楼天台观星</strong><small>0 元硬边界 · 夜间开放窗口</small></button>
+    <button type="button" class="preset-chip" data-preset="dream_100"><span class="preset-chip-tag">探索度 100</span><strong>纪念日 · 跨区梦幻行程</strong><small>开启梦幻模式 · 解锁远途场景</small></button>
+  </div>
+</section>
+<div class="workspace"><aside class="sidebar"><details class="conditions" id="conditions"><summary><span class="conditions-summary-main"><span class="conditions-summary-title">定制条件</span><span id="conditions-summary-pills" class="conditions-summary-pills">下午 · 校内及周边 · 阴天</span></span><span class="conditions-summary-cta">展开 18 项参数</span></summary><form id="conditions-form" class="form" autocomplete="off">
 <fieldset class="slot-field"><legend>时段</legend><div class="choices slot-choices"><label class="choice slot-choice"><input name="slots" type="checkbox" value="morning"><span>上午<small>7:30–12:00</small></span></label><label class="choice slot-choice"><input name="slots" type="checkbox" value="afternoon" checked><span>下午<small>14:00–18:00</small></span></label><label class="choice slot-choice"><input name="slots" type="checkbox" value="evening"><span>晚上<small>19:00–23:00</small></span></label><label class="choice slot-choice"><input name="slots" type="checkbox" value="night"><span>夜晚<small>23:00–次日02:00</small></span></label></div></fieldset>
 <p id="condition-error" class="condition-error" role="alert" hidden></p>
 <fieldset><legend>忌口</legend><div class="choices"><label class="choice"><input name="diet" type="checkbox" value="raw">不吃生食</label><label class="choice"><input name="diet" type="checkbox" value="spicy">不吃辣</label><label class="choice"><input name="diet" type="checkbox" value="seafood">避开海鲜</label><label class="choice"><input name="diet" type="checkbox" value="caffeine">避开咖啡因</label></div></fieldset>
@@ -25,7 +35,7 @@
 <fieldset id="school-scope" class="scope-child" hidden><legend>学校</legend><div class="choices"><label class="choice"><input id="school-scau" name="school" type="checkbox" value="scau">华农</label></div><p id="school-scope-hint" class="scope-hint" hidden>ⓘ会推荐华农校内场景与活动</p></fieldset>
 <fieldset id="campus-area-scope" class="scope-child" hidden><legend>宿舍区</legend><div class="choices"><label class="choice"><input id="campus-area-taishan" name="campusArea" type="radio" value="taishan" aria-describedby="campus-area-availability">泰山区</label></div><p id="campus-area-scope-hint" class="scope-hint" hidden>ⓘ会推荐泰山区场景与活动</p><p id="campus-area-availability" class="field-hint">更多宿舍区资料正在收集中</p></fieldset>
 <details class="advanced"><summary>高级选项</summary>
-<fieldset><legend>体力</legend><div class="choices"><label class="choice"><input type="checkbox" id="tired-a">我有点累</label><label class="choice"><input type="checkbox" id="tired-b">TA有点累</label></div></fieldset>
+<fieldset><legend>体力</legend><div class="choices"><label class="choice"><input type="checkbox" id="tired-a">我有点累</label><label class="choice"><input type="checkbox" id="tired-b">TA有点累</label><label class="choice"><small class="field-hint">（勾选后触发产生式恢复推导链）</small></label></div></fieldset>
 <div class="form-grid context-grid">
 <label class="field">当天预期天气<select id="weather"><option value="clear">太阳</option><option value="cloudy" selected>阴天</option><option value="rain">雨天</option></select></label>
 <label class="field">安排<select id="planStyle"><option value="steady">稳定一点</option><option value="flexible">随时变通</option></select></label>
@@ -55,7 +65,27 @@
   <section id="preparation-summary" class="preparation-summary" aria-labelledby="preparation-title" hidden><h2 id="preparation-title">需要准备</h2><div id="preparation-items"></div></section>
   <div id="stages" aria-busy="true"><section class="skeleton-stage" role="status" aria-label="正在加载"><div class="stage-heading"><span class="skeleton skeleton-time"></span></div><div class="skeleton-cards"><div class="skeleton skeleton-card"></div><div class="skeleton skeleton-card"></div></div><div class="skeleton-row"><span class="skeleton skeleton-activity"></span><span class="skeleton skeleton-activity"></span></div></section></div>
   <div id="ending" class="balance-line"></div>
+  <div id="plan-Share-bar" class="plan-share-bar" hidden>
+    <button type="button" id="share-poster-btn" class="poster-btn">生成行程单卡片</button>
+    <button type="button" id="inline-atlas-btn" class="poster-btn secondary" data-view="atlas">浏览场景与活动图鉴 (<span id="inline-atlas-count">0/236</span>)</button>
+  </div>
   <details class="explanation"><summary>理由</summary><div id="reason-content"></div></details>
+</section>
+<section id="view-atlas" class="view" hidden>
+  <button class="back-button" data-home type="button">返回规划</button>
+  <div class="section-heading">
+    <h2>场景与活动图鉴</h2>
+    <p>收录知识库全部 86 类场景与 150 项活动。每次生成或点选行程都会自动点亮对应条目；尚未点亮的限定场景会展示知识图谱中的开放时段与前置资源线索。</p>
+  </div>
+  <div id="atlas-summary" class="knowledge-summary"></div>
+  <div id="atlas-filters" class="atlas-filters" role="tablist" aria-label="图鉴分类">
+    <button type="button" class="atlas-filter active" data-atlas-filter="featured">限定与特色</button>
+    <button type="button" class="atlas-filter" data-atlas-filter="scau">华农专属 (18)</button>
+    <button type="button" class="atlas-filter" data-atlas-filter="linked">图谱物资联动</button>
+    <button type="button" class="atlas-filter" data-atlas-filter="scenes">全部地点 (86)</button>
+    <button type="button" class="atlas-filter" data-atlas-filter="activities">全部活动 (150)</button>
+  </div>
+  <div id="atlas-grid" class="atlas-grid"></div>
 </section>
 <section id="view-knowledge" class="view" hidden>
   <button class="back-button" data-home type="button">返回</button>
@@ -71,10 +101,30 @@
 <section id="view-library" class="view" hidden><div id="library-content"></div></section>
 <noscript><p>请启用 JavaScript。</p></noscript>
 </main></div>
+<div id="unlock-toast" class="unlock-toast" role="status" aria-live="polite" hidden>
+  <div class="unlock-toast-body">
+    <span class="unlock-toast-badge">已点亮图鉴</span>
+    <strong id="unlock-toast-title"></strong>
+    <p id="unlock-toast-desc"></p>
+  </div>
+  <button type="button" id="unlock-toast-view" class="unlock-toast-btn" data-view="atlas">查看图鉴</button>
+</div>
+<div id="poster-modal" class="poster-modal" role="dialog" aria-modal="true" aria-labelledby="poster-modal-title" hidden>
+  <div class="poster-modal-card">
+    <div class="poster-modal-header">
+      <h3 id="poster-modal-title">DateMate 行程单卡片</h3>
+      <button type="button" id="poster-close-btn" class="poster-close-btn" aria-label="关闭">×</button>
+    </div>
+    <div class="poster-canvas-wrap"><canvas id="poster-canvas" width="760" height="1040"></canvas></div>
+    <div class="poster-modal-actions">
+      <button type="button" id="poster-download-btn" class="apply-button">保存 PNG 行程单</button>
+    </div>
+  </div>
+</div>
 <div class="more-menu-area">
   <button id="more-menu-toggle" class="more-menu-toggle" type="button" aria-label="更多" aria-controls="more-menu" aria-expanded="false"><svg width="22" height="22" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></button>
   <nav id="more-menu" class="more-menu" aria-label="更多" hidden>
-    <button type="button" id="menu-home" data-home hidden>返回规划</button><button type="button" data-view="library">资料库</button><button type="button" data-view="knowledge">知识与推理</button><button type="button" data-view="compare">方案对比</button><button type="button" id="import">导入JSON</button><button type="button" id="export">导出JSON</button><button type="button" data-view="diagnostics">输入输出</button><button type="button" data-view="about">关于</button>
+    <button type="button" id="menu-home" data-home hidden>返回规划</button><button type="button" data-view="atlas">场景图鉴</button><button type="button" data-view="library">资料库</button><button type="button" data-view="knowledge">知识与推理</button><button type="button" data-view="compare">方案对比</button><button type="button" id="import">导入JSON</button><button type="button" id="export">导出JSON</button><button type="button" data-view="diagnostics">输入输出</button><button type="button" data-view="about">关于</button>
   </nav>
 </div>
 <input id="import-file" type="file" accept="application/json,.json" hidden>

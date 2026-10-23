@@ -127,8 +127,8 @@ test('活动在场景内进行，建议时长及可调区间由场景统一管�
   assert.ok(edited.catalog.scenes.find(s => s.id === 'mall').activities.every(a => a.minutes === 0));
 });
 
-test('151份来源元数据与原创摘要保留，用户设计证据明确待确认', () => {
-  assert.equal(sources.length, 151);
+test('173份来源元数据与原创摘要保留，用户设计证据明确待确认', () => {
+  assert.equal(sources.length, 173);
   assert.deepEqual(new Set(sources.map(s => s.id)), new Set(input.documents['source-registry'].sources.map(s => s.id)));
   assert.ok(sources.every(s => !s.rawTextIncluded && /^[a-f0-9]{64}$/.test(s.sha256)));
   assert.ok(evidence.every(e => !e.publicExcerptAllowed && !Object.hasOwn(e, 'originalExcerpt')));

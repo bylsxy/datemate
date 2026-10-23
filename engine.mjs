@@ -1,12 +1,12 @@
-import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=a4420782c4d5e641';
-import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=a4420782c4d5e641';
-import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION, CAMPING_EXPLORATION_MIN, isDepartureAllowedAtExploration, isSceneAllowedAtExploration } from './exploration.mjs?v=a4420782c4d5e641';
-import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=a4420782c4d5e641';
-import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=a4420782c4d5e641';
-import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=a4420782c4d5e641';
+import { canonical, digest, forwardChain, buildKnowledgeGraph, queryGraph, DEFAULT_RULES, REASONING_VERSION } from './reasoning.mjs?v=43ea07b0521b5869';
+import { normalizePeriods, TIME_PERIODS } from './time-periods.mjs?v=43ea07b0521b5869';
+import { createExploration, normalizeExplorationSeed, EXPLORATION_VERSION, CAMPING_EXPLORATION_MIN, isDepartureAllowedAtExploration, isSceneAllowedAtExploration } from './exploration.mjs?v=43ea07b0521b5869';
+import { normalizeSchoolScope, isSceneInSchoolScope } from './school-scope.mjs?v=43ea07b0521b5869';
+import { validateDailyWindows, sceneOpenWindows, sceneStayMinutes } from './scene-time.mjs?v=43ea07b0521b5869';
+import { normalizePreferences, preferencePolicy } from './preference-policy.mjs?v=43ea07b0521b5869';
 
-export { canonical, digest } from './reasoning.mjs?v=a4420782c4d5e641';
-import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=a4420782c4d5e641';
+export { canonical, digest } from './reasoning.mjs?v=43ea07b0521b5869';
+import {durationBounds,chooseStayDuration} from './duration-policy.mjs?v=43ea07b0521b5869';
 export const VERSION = 'datemate-engine-4.2.1';
 export const CONFIG = Object.freeze({ method: 'bounded', maxStages: 8, beamWidth: 24, maxExpandedNodes: 18000, maxCandidateExpandedNodes: 6000, activitySubsetLimit: 64, candidateLimit: 20, scoreVersion: 'planning-fit-4.1.0', tieBreak: 'stable-id' });
 const cmp = (a, b) => String(a) < String(b) ? -1 : String(a) > String(b) ? 1 : 0;

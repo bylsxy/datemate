@@ -1,0 +1,2470 @@
+npm notice run datemate@5.0.0 test
+npm notice run node --test tests/*.test.mjs
+TAP version 13
+# Subtest: 四类动作复用真实 intent，释放未来条件、固定前序及重新计算明确同意
+ok 1 - 四类动作复用真实 intent，释放未来条件、固定前序及重新计算明确同意
+  ---
+  duration_ms: 14.7515
+  type: 'test'
+  ...
+# Subtest: knownPlan 优先动作 witness 再候选 witness，否则 compact 实际安排并替换或插入目标
+ok 2 - knownPlan 优先动作 witness 再候选 witness，否则 compact 实际安排并替换或插入目标
+  ---
+  duration_ms: 2.1013
+  type: 'test'
+  ...
+# Subtest: 动作只有完整 witness 成功才 verified，所有 action 字段回传；硬失败、搜索未找到和异常分开
+ok 3 - 动作只有完整 witness 成功才 verified，所有 action 字段回传；硬失败、搜索未找到和异常分开
+  ---
+  duration_ms: 2.7757
+  type: 'test'
+  ...
+# Subtest: 真实搜索核验活动删除导致未来准备条件失败时不产出可点击结果
+ok 4 - 真实搜索核验活动删除导致未来准备条件失败时不产出可点击结果
+  ---
+  duration_ms: 29.7807
+  type: 'test'
+  ...
+# Subtest: 保存知识后资源版本改变，重复构建保持幂等且保留其它查询参数
+ok 5 - 保存知识后资源版本改变，重复构建保持幂等且保留其它查询参数
+  ---
+  duration_ms: 294.9299
+  type: 'test'
+  ...
+# Subtest: 资源收集拒绝跟随项目外模块，不改变实际文件
+ok 6 - 资源收集拒绝跟随项目外模块，不改变实际文件
+  ---
+  duration_ms: 43.5809
+  type: 'test'
+  ...
+# Subtest: 基本可行性矩阵覆盖10个连续时段及所有天气/学校/范围二元组合
+ok 7 - 基本可行性矩阵覆盖10个连续时段及所有天气/学校/范围二元组合
+  ---
+  duration_ms: 2.9653
+  type: 'test'
+  ...
+# Subtest: 真实目录所有90个常见代表组合都具有可重演的完整基本解
+ok 8 - 真实目录所有90个常见代表组合都具有可重演的完整基本解
+  ---
+  duration_ms: 32394.2354
+  type: 'test'
+  ...
+# Subtest: 无强制饭点的下午及雨夜支持疲劳6/安静/避拥挤/零预算的组合
+ok 9 - 无强制饭点的下午及雨夜支持疲劳6/安静/避拥挤/零预算的组合
+  ---
+  duration_ms: 2419.6961
+  type: 'test'
+  ...
+# Subtest: 零预算却要求购买早餐或跨时段正餐不能伪造成功
+ok 10 - 零预算却要求购买早餐或跨时段正餐不能伪造成功
+  ---
+  duration_ms: 101.835
+  type: 'test'
+  ...
+# Subtest: 明确选择会面前早餐后，安静/零预算上午可正常规划
+ok 11 - 明确选择会面前早餐后，安静/零预算上午可正常规划
+  ---
+  duration_ms: 214.8327
+  type: 'test'
+  ...
+# Subtest: 50元支持常见时段；全天选择不吃宵夜后保留可重演基本解
+ok 12 - 50元支持常见时段；全天选择不吃宵夜后保留可重演基本解
+  ---
+  duration_ms: 7614.4653
+  type: 'test'
+  ...
+# Subtest: 低预算选酒店及必去同时排除不可伪造成功
+ok 13 - 低预算选酒店及必去同时排除不可伪造成功
+  ---
+  duration_ms: 110.3726
+  type: 'test'
+  ...
+# Subtest: 通用宿舍楼下基础停留全天避雨，安静低负担且不靠消费或室内大厅
+ok 14 - 通用宿舍楼下基础停留全天避雨，安静低负担且不靠消费或室内大厅
+  ---
+  duration_ms: 2.119
+  type: 'test'
+  ...
+# Subtest: 有盖场景均可避雨，泰超门口保持非室内和略贵提醒
+ok 15 - 有盖场景均可避雨，泰超门口保持非室内和略贵提醒
+  ---
+  duration_ms: 0.6167
+  type: 'test'
+  ...
+# Subtest: 校园打包路线四餐上界60元，不承诺安静，餐食由付费活动提供
+ok 16 - 校园打包路线四餐上界60元，不承诺安静，餐食由付费活动提供
+  ---
+  duration_ms: 0.5051
+  type: 'test'
+  ...
+# Subtest: 所有说明及场地覆盖文案都描述玩法，后台证据口吻不进入约会卡片
+ok 17 - 所有说明及场地覆盖文案都描述玩法，后台证据口吻不进入约会卡片
+  ---
+  duration_ms: 0.815
+  type: 'test'
+  ...
+# Subtest: 完整旅行真实容纳两餐并计入预算，见证可以复算
+ok 18 - 完整旅行真实容纳两餐并计入预算，见证可以复算
+  ---
+  duration_ms: 32.4312
+  type: 'test'
+  ...
+# Subtest: 旅行不能覆盖用户另选的餐馆，也不能缺少其中一餐
+ok 19 - 旅行不能覆盖用户另选的餐馆，也不能缺少其中一餐
+  ---
+  duration_ms: 4.1666
+  type: 'test'
+  ...
+# Subtest: 仅跨饭点十分钟不算吃过饭，不在旅行时段内的餐次继续待安排
+ok 20 - 仅跨饭点十分钟不算吃过饭，不在旅行时段内的餐次继续待安排
+  ---
+  duration_ms: 2.6346
+  type: 'test'
+  ...
+# Subtest: 露营共享门槛为80，普通分别方式不受门槛影响
+ok 21 - 露营共享门槛为80，普通分别方式不受门槛影响
+  ---
+  duration_ms: 1.1777
+  type: 'test'
+  ...
+# Subtest: 79过滤露营候选且不预留露营时间，80恢复候选和预留
+ok 22 - 79过滤露营候选且不预留露营时间，80恢复候选和预留
+  ---
+  duration_ms: 31.8821
+  type: 'test'
+  ...
+# Subtest: 80可以明确露营，但预算和跨午夜条件仍生效
+ok 23 - 80可以明确露营，但预算和跨午夜条件仍生效
+  ---
+  duration_ms: 7.0059
+  type: 'test'
+  ...
+# Subtest: 低探索度不能通过prefix、knownPlan、同步或分片续算选择露营
+ok 24 - 低探索度不能通过prefix、knownPlan、同步或分片续算选择露营
+  ---
+  duration_ms: 5.2635
+  type: 'test'
+  ...
+# Subtest: 门槛使用有效探索度，options优先于input及嵌套context
+ok 25 - 门槛使用有效探索度，options优先于input及嵌套context
+  ---
+  duration_ms: 16.8133
+  type: 'test'
+  ...
+# Subtest: 精确营地ID和metadata门槛不会误伤campus，dreamOnly仍仅允许100
+ok 26 - 精确营地ID和metadata门槛不会误伤campus，dreamOnly仍仅允许100
+  ---
+  duration_ms: 19.5086
+  type: 'test'
+  ...
+# Subtest: 79从普通候选彻底移除两类营地，80恢复且其他条件仍可拒绝
+ok 27 - 79从普通候选彻底移除两类营地，80恢复且其他条件仍可拒绝
+  ---
+  duration_ms: 10.8672
+  type: 'test'
+  ...
+# Subtest: 两类营地的prefix、required、anchor及knownPlan均不能绕过79门槛
+ok 28 - 两类营地的prefix、required、anchor及knownPlan均不能绕过79门槛
+  ---
+  duration_ms: 44.0426
+  type: 'test'
+  ...
+# Subtest: metadata门槛执行相同硬校验，无效metadata明确拒绝目录
+ok 29 - metadata门槛执行相同硬校验，无效metadata明确拒绝目录
+  ---
+  duration_ms: 2.2396
+  type: 'test'
+  ...
+# Subtest: 同步规划和分片完整搜索使用相同q、实际组合及约束，参考尺取候选前状态
+ok 30 - 同步规划和分片完整搜索使用相同q、实际组合及约束，参考尺取候选前状态
+  ---
+  duration_ms: 47.2865
+  type: 'test'
+  ...
+# Subtest: 前缀局部可行但无法完成未来锚点或正餐目标时不能产出完整q
+ok 31 - 前缀局部可行但无法完成未来锚点或正餐目标时不能产出完整q
+  ---
+  duration_ms: 3.7376
+  type: 'test'
+  ...
+# Subtest: 实际经过多次yield后同步与分片搜索的约束、累计指标和参考尺一致
+ok 32 - 实际经过多次yield后同步与分片搜索的约束、累计指标和参考尺一致
+  ---
+  duration_ms: 86.8651
+  type: 'test'
+  ...
+# Subtest: 任务只保留显式fixedStartMinute，自动start不会转成硬预约
+ok 33 - 任务只保留显式fixedStartMinute，自动start不会转成硬预约
+  ---
+  duration_ms: 1.2528
+  type: 'test'
+  ...
+# Subtest: 失败密集的搜索也在至多64节点让出，并最终报告有界未找到
+ok 34 - 失败密集的搜索也在至多64节点让出，并最终报告有界未找到
+  ---
+  duration_ms: 38.6069
+  type: 'test'
+  ...
+# Subtest: 实际固定餐馆换馆任务释放目标餐次，保留其他固定餐次及前序组合
+ok 35 - 实际固定餐馆换馆任务释放目标餐次，保留其他固定餐次及前序组合
+  ---
+  duration_ms: 90.008
+  type: 'test'
+  ...
+# Subtest: 虚拟早餐和跳过宵夜按insertIndex生成真实餐卡任务，参考尺覆盖候选本身
+ok 36 - 虚拟早餐和跳过宵夜按insertIndex生成真实餐卡任务，参考尺覆盖候选本身
+  ---
+  duration_ms: 55.0328
+  type: 'test'
+  ...
+# Subtest: 任务构建、搜索和评分不会修改冻结输入、选中组合或复盘fingerprint
+ok 37 - 任务构建、搜索和评分不会修改冻结输入、选中组合或复盘fingerprint
+  ---
+  duration_ms: 14.5862
+  type: 'test'
+  ...
+# Subtest: 评分只使用完整q与同阶段参考尺，未找到时清除数值并结束pending
+ok 38 - 评分只使用完整q与同阶段参考尺，未找到时清除数值并结束pending
+  ---
+  duration_ms: 0.6962
+  type: 'test'
+  ...
+# Subtest: 可见卡取消80ms等待，在低优先迭代器片间抢占而不重复创建搜索
+ok 39 - 可见卡取消80ms等待，在低优先迭代器片间抢占而不重复创建搜索
+  ---
+  duration_ms: 1.5223
+  type: 'test'
+  ...
+# Subtest: reset关闭旧迭代器并隔离旧结果，dispose清理新轮所有等待
+ok 40 - reset关闭旧迭代器并隔离旧结果，dispose清理新轮所有等待
+  ---
+  duration_ms: 0.4635
+  type: 'test'
+  ...
+# Subtest: 39个任务与连续可见提优最多保留两个活动搜索树
+ok 41 - 39个任务与连续可见提优最多保留两个活动搜索树
+  ---
+  duration_ms: 9.3911
+  type: 'test'
+  ...
+# Subtest: 暂停期间零调度零回包，恢复继续同一迭代器，暂停中reset释放旧任务
+ok 42 - 暂停期间零调度零回包，恢复继续同一迭代器，暂停中reset释放旧任务
+  ---
+  duration_ms: 0.855
+  type: 'test'
+  ...
+# Subtest: 最终无方案重试三轮后停圈，累计节点预算记录完整且不声称无解
+ok 43 - 最终无方案重试三轮后停圈，累计节点预算记录完整且不声称无解
+  ---
+  duration_ms: 0.5723
+  type: 'test'
+  ...
+# Subtest: 单卡创建搜索或迭代错误隔离，其他卡继续完成且错误卡不重试
+ok 44 - 单卡创建搜索或迭代错误隔离，其他卡继续完成且错误卡不重试
+  ---
+  duration_ms: 0.6098
+  type: 'test'
+  ...
+# Subtest: 冻结列表中被base截断的冷门候选仍生成任务，阶段和餐次沿用实际前序及各自参考尺
+ok 45 - 冻结列表中被base截断的冷门候选仍生成任务，阶段和餐次沿用实际前序及各自参考尺
+  ---
+  duration_ms: 4.6254
+  type: 'test'
+  ...
+# Subtest: 显式空pending列表停止base回退，finite卡不排任务且重复冻结候选只排一次
+ok 46 - 显式空pending列表停止base回退，finite卡不排任务且重复冻结候选只排一次
+  ---
+  duration_ms: 1.0266
+  type: 'test'
+  ...
+# Subtest: 全部地点卡和活动卡直接渲染 description 全文，旧摘要不覆盖，更新与空值安全
+ok 47 - 全部地点卡和活动卡直接渲染 description 全文，旧摘要不覆盖，更新与空值安全
+  ---
+  duration_ms: 69.8566
+  type: 'test'
+  ...
+# Subtest: 露营是显式跨午夜分别方式，费用按双人一晚设计并进入图谱
+ok 48 - 露营是显式跨午夜分别方式，费用按双人一晚设计并进入图谱
+  ---
+  duration_ms: 2.9821
+  type: 'test'
+  ...
+# Subtest: 露营限制、费用精度和分别方式登记接受严格校验
+ok 49 - 露营限制、费用精度和分别方式登记接受严格校验
+  ---
+  duration_ms: 389.5566
+  type: 'test'
+  ...
+# Subtest: 新场景字段保留到运行目录和图谱，旧场景有兼容默认值
+ok 50 - 新场景字段保留到运行目录和图谱，旧场景有兼容默认值
+  ---
+  duration_ms: 279.0004
+  type: 'test'
+  ...
+# Subtest: 新场景字段拒绝错误类型、越界需求及不完整周内费用
+ok 51 - 新场景字段拒绝错误类型、越界需求及不完整周内费用
+  ---
+  duration_ms: 98.933
+  type: 'test'
+  ...
+# Subtest: 活动 socialDemand 保留在 featureValues 与图谱并拒绝无效值
+ok 52 - 活动 socialDemand 保留在 featureValues 与图谱并拒绝无效值
+  ---
+  duration_ms: 168.745
+  type: 'test'
+  ...
+# Subtest: 天气 cloudy 和旧 unknown 均合法，自动天气保留阴天
+ok 53 - 天气 cloudy 和旧 unknown 均合法，自动天气保留阴天
+  ---
+  duration_ms: 382.1609
+  type: 'test'
+  ...
+# Subtest: 饮食冷食与易上火标签兼容生食和辣味，编译选项和图谱均保留
+ok 54 - 饮食冷食与易上火标签兼容生食和辣味，编译选项和图谱均保留
+  ---
+  duration_ms: 124.2576
+  type: 'test'
+  ...
+# Subtest: 情境条件及产生式的判断和动作有可查询图谱内容
+ok 55 - 情境条件及产生式的判断和动作有可查询图谱内容
+  ---
+  duration_ms: 46.2183
+  type: 'test'
+  ...
+# Subtest: 新增标签全部登记且 ID 片段条件与完整引用分别验证
+ok 56 - 新增标签全部登记且 ID 片段条件与完整引用分别验证
+  ---
+  duration_ms: 172.3027
+  type: 'test'
+  ...
+# Subtest: 新增原创知识可编译，标签与活动挂载完整
+ok 57 - 新增原创知识可编译，标签与活动挂载完整
+  ---
+  duration_ms: 2.8729
+  type: 'test'
+  ...
+# Subtest: 社交要求覆盖场景与具体活动，区分独处、课堂和多人参与
+ok 58 - 社交要求覆盖场景与具体活动，区分独处、课堂和多人参与
+  ---
+  duration_ms: 0.6511
+  type: 'test'
+  ...
+# Subtest: 自助餐工作日与周末为两人示例，餐食活动不重复收费
+ok 59 - 自助餐工作日与周末为两人示例，餐食活动不重复收费
+  ---
+  duration_ms: 1.343
+  type: 'test'
+  ...
+# Subtest: 树木园仅白天，观萤保留季节与不保证出现的限制
+ok 60 - 树木园仅白天，观萤保留季节与不保证出现的限制
+  ---
+  duration_ms: 0.3067
+  type: 'test'
+  ...
+# Subtest: 园区划船与营地保留前置，城市摩天轮及旅行卡可独立安排
+ok 61 - 园区划船与营地保留前置，城市摩天轮及旅行卡可独立安排
+  ---
+  duration_ms: 1.5459
+  type: 'test'
+  ...
+# Subtest: 真实引擎拒绝未到公园就划船，按序入园划船可重放
+ok 62 - 真实引擎拒绝未到公园就划船，按序入园划船可重放
+  ---
+  duration_ms: 27.0695
+  type: 'test'
+  ...
+# Subtest: 梦幻场景仅标记少数大型计划；忌口标签沿用现有词表
+ok 63 - 梦幻场景仅标记少数大型计划；忌口标签沿用现有词表
+  ---
+  duration_ms: 1.418
+  type: 'test'
+  ...
+# Subtest: 独立往返旅行不能压缩为三小时，梦幻长卡含餐，热气球保留下午入口
+ok 64 - 独立往返旅行不能压缩为三小时，梦幻长卡含餐，热气球保留下午入口
+  ---
+  duration_ms: 83.2474
+  type: 'test'
+  ...
+# Subtest: 全部新枚举规范化，unknown兼容多云，默认值稳定且不推断周期或同意
+ok 65 - 全部新枚举规范化，unknown兼容多云，默认值稳定且不推断周期或同意
+  ---
+  duration_ms: 26.8621
+  type: 'test'
+  ...
+# Subtest: 雨天安静人少认知疲劳关系人格为软偏好，保留预算时间资源排除及明确忌口
+ok 66 - 雨天安静人少认知疲劳关系人格为软偏好，保留预算时间资源排除及明确忌口
+  ---
+  duration_ms: 60.6178
+  type: 'test'
+  ...
+# Subtest: 手工规则把疲劳雨天安静人流降为软分，产生式推导仍有作用与trace
+ok 67 - 手工规则把疲劳雨天安静人流降为软分，产生式推导仍有作用与trace
+  ---
+  duration_ms: 3.9821
+  type: 'test'
+  ...
+# Subtest: 晴天户外只有简短防晒提醒；周期不推断忌口、同意或牛排功效
+ok 68 - 晴天户外只有简短防晒提醒；周期不推断忌口、同意或牛排功效
+  ---
+  duration_ms: 84.6604
+  type: 'test'
+  ...
+# Subtest: 开心促进一方兴趣与交换爱好，主题与人格低权重可解释且图谱仍参与
+ok 69 - 开心促进一方兴趣与交换爱好，主题与人格低权重可解释且图谱仍参与
+  ---
+  duration_ms: 5.8159
+  type: 'test'
+  ...
+# Subtest: 同场地所选活动社交性改变初次约会与MBTI软分，未选活动不影响
+ok 70 - 同场地所选活动社交性改变初次约会与MBTI软分，未选活动不影响
+  ---
+  duration_ms: 35.378
+  type: 'test'
+  ...
+# Subtest: 周中周末费用进入阶段、候选、预算与总金额，队列仅降低软分
+ok 71 - 周中周末费用进入阶段、候选、预算与总金额，队列仅降低软分
+  ---
+  duration_ms: 11.0449
+  type: 'test'
+  ...
+# Subtest: 梦幻场景仅探索100出现且提高排序，固定前缀也不能绕过任何硬约束
+ok 72 - 梦幻场景仅探索100出现且提高排序，固定前缀也不能绕过任何硬约束
+  ---
+  duration_ms: 49.1027
+  type: 'test'
+  ...
+# Subtest: camping明确选择且仅跨午夜，费用和停留预留仍独立核算
+not ok 73 - camping明确选择且仅跨午夜，费用和停留预留仍独立核算
+  ---
+  duration_ms: 6.51
+  type: 'test'
+  location: 'D:\\AAAWorkSpace\\python project\\约会策划\\datemate\\tests\\creative-rules.test.mjs:96:1'
+  failureType: 'testCodeFailure'
+  error: |-
+    H_DEPARTURE_EXPLORATION:露营需要探索度至少80。
+    
+    false !== true
+    
+  code: 'ERR_ASSERTION'
+  name: 'AssertionError'
+  expected: true
+  actual: false
+  operator: 'strictEqual'
+  stack: |-
+    TestContext.<anonymous> (file:///D:/AAAWorkSpace/python%20project/%E7%BA%A6%E4%BC%9A%E7%AD%96%E5%88%92/datemate/tests/creative-rules.test.mjs:100:10)
+    Test.runInAsyncScope (node:async_hooks:214:14)
+    Test.run (node:internal/test_runner/test:1047:25)
+    Test.processPendingSubtests (node:internal/test_runner/test:744:18)
+    Test.postRun (node:internal/test_runner/test:1173:19)
+    Test.run (node:internal/test_runner/test:1101:12)
+    async Test.processPendingSubtests (node:internal/test_runner/test:744:7)
+  ...
+# Subtest: 新增状态通过事实推导匹配产生式场景，重逢图谱路径与同意约束同时保留
+ok 74 - 新增状态通过事实推导匹配产生式场景，重逢图谱路径与同意约束同时保留
+  ---
+  duration_ms: 16.837
+  type: 'test'
+  ...
+# Subtest: 场景级前置不可由空活动绕过，完成前置后可进入且保留费用时间核算
+ok 75 - 场景级前置不可由空活动绕过，完成前置后可进入且保留费用时间核算
+  ---
+  duration_ms: 14.9148
+  type: 'test'
+  ...
+# Subtest: 新一页默认阴天，个人状态不预填
+ok 76 - 新一页默认阴天，个人状态不预填
+  ---
+  duration_ms: 2.0179
+  type: 'test'
+  ...
+# Subtest: 不去关键词匹配地点与活动名称，不把无关说明当成地点
+ok 77 - 不去关键词匹配地点与活动名称，不把无关说明当成地点
+  ---
+  duration_ms: 1.9594
+  type: 'test'
+  ...
+# Subtest: 雨天和人少改变偏好但保留手选前缀，周末价格重排
+ok 78 - 雨天和人少改变偏好但保留手选前缀，周末价格重排
+  ---
+  duration_ms: 0.9581
+  type: 'test'
+  ...
+# Subtest: 退出梦幻模式只释放首个梦幻地点及后续，清理相关同意和餐次
+ok 79 - 退出梦幻模式只释放首个梦幻地点及后续，清理相关同意和餐次
+  ---
+  duration_ms: 1.5844
+  type: 'test'
+  ...
+# Subtest: 全部场景显式登记规划默认时段，午夜与凌晨候选使用明确时窗
+ok 80 - 全部场景显式登记规划默认时段，午夜与凌晨候选使用明确时窗
+  ---
+  duration_ms: 3.6919
+  type: 'test'
+  ...
+# Subtest: 华农夜间停留地保留手工学校及校区归属，不冒用官方开放结论
+ok 81 - 华农夜间停留地保留手工学校及校区归属，不冒用官方开放结论
+  ---
+  duration_ms: 0.6646
+  type: 'test'
+  ...
+# Subtest: 构建拒绝省略、空、越界、重叠或未排序每日时段及不明时间依据
+ok 82 - 构建拒绝省略、空、越界、重叠或未排序每日时段及不明时间依据
+  ---
+  duration_ms: 52.3195
+  type: 'test'
+  ...
+# Subtest: 既有绝对时间窗保留，不与每日时段互相替换
+ok 83 - 既有绝对时间窗保留，不与每日时段互相替换
+  ---
+  duration_ms: 0.5282
+  type: 'test'
+  ...
+# Subtest: 四种别离卡使用目录全文，酒店提醒和露营文案不截断，更新时不回退到硬编码
+ok 84 - 四种别离卡使用目录全文，酒店提醒和露营文案不截断，更新时不回退到硬编码
+  ---
+  duration_ms: 56.6334
+  type: 'test'
+  ...
+# Subtest: 食堂仅固定地点的必去锚点联合选择实际早餐，不能空场馆冒充用餐
+ok 85 - 食堂仅固定地点的必去锚点联合选择实际早餐，不能空场馆冒充用餐
+  ---
+  duration_ms: 802.7645
+  type: 'test'
+  ...
+# Subtest: Switch店仅固定地点仍按双方play兴趣择优玩法，旧精确空活动锚点保持空组合
+ok 86 - Switch店仅固定地点仍按双方play兴趣择优玩法，旧精确空活动锚点保持空组合
+  ---
+  duration_ms: 1125.1187
+  type: 'test'
+  ...
+# Subtest: sceneOnly锚点匹配人工前缀时只比地点，但人工活动仍精确校验且不被清空
+ok 87 - sceneOnly锚点匹配人工前缀时只比地点，但人工活动仍精确校验且不被清空
+  ---
+  duration_ms: 896.6097
+  type: 'test'
+  ...
+# Subtest: sceneOnly保留固定时间和窗口，未满足准备条件不得为了必去偷偷选玩法
+ok 88 - sceneOnly保留固定时间和窗口，未满足准备条件不得为了必去偷偷选玩法
+  ---
+  duration_ms: 8.4312
+  type: 'test'
+  ...
+# Subtest: 内置和手工雨天规则提醒或降分无遮蔽室外，不硬排除，缺省遮蔽等价false
+ok 89 - 内置和手工雨天规则提醒或降分无遮蔽室外，不硬排除，缺省遮蔽等价false
+  ---
+  duration_ms: 5.1512
+  type: 'test'
+  ...
+# Subtest: 有遮蔽户外支持雨夜零预算安静疲劳组合，候选及见证统一评估
+ok 90 - 有遮蔽户外支持雨夜零预算安静疲劳组合，候选及见证统一评估
+  ---
+  duration_ms: 35.7185
+  type: 'test'
+  ...
+# Subtest: 天气适配仅降分，固定选择与完整见证接受不适配场景，默认阴天
+ok 91 - 天气适配仅降分，固定选择与完整见证接受不适配场景，默认阴天
+  ---
+  duration_ms: 58.6093
+  type: 'test'
+  ...
+# Subtest: 安静、人少、低脑力偏好在未载入知识规则时仍降分，不拒绝固定选择或见证
+ok 92 - 安静、人少、低脑力偏好在未载入知识规则时仍降分，不拒绝固定选择或见证
+  ---
+  duration_ms: 3.4825
+  type: 'test'
+  ...
+# Subtest: 同一地点连续停留及休息后继续停留不产生虚假转场，重复仍有软罚
+ok 93 - 同一地点连续停留及休息后继续停留不产生虚假转场，重复仍有软罚
+  ---
+  duration_ms: 39.7265
+  type: 'test'
+  ...
+# Subtest: 连续休息始终继承实际地点关门边界，不能第二次休息丢失地点
+ok 94 - 连续休息始终继承实际地点关门边界，不能第二次休息丢失地点
+  ---
+  duration_ms: 7.9484
+  type: 'test'
+  ...
+# Subtest: 非period模式的真实绝对开放窗仍约束连续休息，旧引擎复盘拒绝
+ok 95 - 非period模式的真实绝对开放窗仍约束连续休息，旧引擎复盘拒绝
+  ---
+  duration_ms: 4.8476
+  type: 'test'
+  ...
+# Subtest: 低疲劳原地休息可补足停留，天气安静为软偏好，开放窗与校区仍为硬约束
+ok 96 - 低疲劳原地休息可补足停留，天气安静为软偏好，开放窗与校区仍为硬约束
+  ---
+  duration_ms: 39.1853
+  type: 'test'
+  ...
+# Subtest: 长跨度多餐仍履行硬用餐要求，重复住宿基础地点不会挤出饭点
+ok 97 - 长跨度多餐仍履行硬用餐要求，重复住宿基础地点不会挤出饭点
+  ---
+  duration_ms: 57.8426
+  type: 'test'
+  ...
+# Subtest: 基础候选不能吞预算、必去、否决、明确时间和负担硬限制
+ok 98 - 基础候选不能吞预算、必去、否决、明确时间和负担硬限制
+  ---
+  duration_ms: 14.0145
+  type: 'test'
+  ...
+# Subtest: 默认各自回去独立于地点，保留15分钟预留而不伪增目录时长
+ok 99 - 默认各自回去独立于地点，保留15分钟预留而不伪增目录时长
+  ---
+  duration_ms: 21.8844
+  type: 'test'
+  ...
+# Subtest: 酒店只可手动选择且跨度跨午夜，探索度和目录顺序不能自动选酒店
+ok 100 - 酒店只可手动选择且跨度跨午夜，探索度和目录顺序不能自动选酒店
+  ---
+  duration_ms: 15.9006
+  type: 'test'
+  ...
+# Subtest: 一二三线设计房费来自目录，总费用及剩余预算包含房费
+ok 101 - 一二三线设计房费来自目录，总费用及剩余预算包含房费
+  ---
+  duration_ms: 15.1151
+  type: 'test'
+  ...
+# Subtest: 房费上界先参与搜索，不能先花光预算再附加酒店；失败仍能换免费分别
+ok 102 - 房费上界先参与搜索，不能先花光预算再附加酒店；失败仍能换免费分别
+  ---
+  duration_ms: 6.7613
+  type: 'test'
+  ...
+# Subtest: 固定尾段和鲁棒缓冲必须给分别时间留位置；不能落在跨度以外
+ok 103 - 固定尾段和鲁棒缓冲必须给分别时间留位置；不能落在跨度以外
+  ---
+  duration_ms: 4.0966
+  type: 'test'
+  ...
+# Subtest: 饭点菜单同样预留房费，不能展示已被酒店耗尽预算的付费用餐为合法
+ok 104 - 饭点菜单同样预留房费，不能展示已被酒店耗尽预算的付费用餐为合法
+  ---
+  duration_ms: 10.9773
+  type: 'test'
+  ...
+# Subtest: 房费与活动费用使用整数分，0.1+0.2预算边界精确
+ok 105 - 房费与活动费用使用整数分，0.1+0.2预算边界精确
+  ---
+  duration_ms: 19.4666
+  type: 'test'
+  ...
+# Subtest: 切换分别方式可还原，输入及目录不变，房费修订使复盘失效
+ok 106 - 切换分别方式可还原，输入及目录不变，房费修订使复盘失效
+  ---
+  duration_ms: 9.734
+  type: 'test'
+  ...
+# Subtest: 旧windows不需要分别目录，不产生分别对象或新增费用时间
+ok 107 - 旧windows不需要分别目录，不产生分别对象或新增费用时间
+  ---
+  duration_ms: 2.0582
+  type: 'test'
+  ...
+# Subtest: 时段模式缺失目录、负房费或无效时长明确作为数据错误
+ok 108 - 时段模式缺失目录、负房费或无效时长明确作为数据错误
+  ---
+  duration_ms: 1.398
+  type: 'test'
+  ...
+# Subtest: 共享时段解析合并间隔、排序去重，夜晚保留次日绝对分钟
+ok 109 - 共享时段解析合并间隔、排序去重，夜晚保留次日绝对分钟
+  ---
+  duration_ms: 7.9091
+  type: 'test'
+  ...
+# Subtest: 时段输入删除时长限制，覆盖旧duration/windows，通用windows仍保持分窗语义
+ok 110 - 时段输入删除时长限制，覆盖旧duration/windows，通用windows仍保持分窗语义
+  ---
+  duration_ms: 1.517
+  type: 'test'
+  ...
+# Subtest: 饭点来自跨度，只有早餐能提前吃、只有宵夜能跳过
+ok 111 - 饭点来自跨度，只有早餐能提前吃、只有宵夜能跳过
+  ---
+  duration_ms: 0.6463
+  type: 'test'
+  ...
+# Subtest: 所有10种连续选择使用真实目录满足全部饭点和每个时段
+ok 112 - 所有10种连续选择使用真实目录满足全部饭点和每个时段
+  ---
+  duration_ms: 10567.538
+  type: 'test'
+  ...
+# Subtest: 早餐和宵夜特殊选择无耗时、无费用阶段，菜单仍能切回实际吃饭
+ok 113 - 早餐和宵夜特殊选择无耗时、无费用阶段，菜单仍能切回实际吃饭
+  ---
+  duration_ms: 1103.9872
+  type: 'test'
+  ...
+# Subtest: 同一餐馆同一合并窗口可吃不同餐次，main_meal不成为全局互斥
+ok 114 - 同一餐馆同一合并窗口可吃不同餐次，main_meal不成为全局互斥
+  ---
+  duration_ms: 28.7318
+  type: 'test'
+  ...
+# Subtest: 跳过宵夜可释放跨饭点自动尾段，菜单切换和候选续算均产生合法真实用餐
+ok 115 - 跳过宵夜可释放跨饭点自动尾段，菜单切换和候选续算均产生合法真实用餐
+  ---
+  duration_ms: 15.2618
+  type: 'test'
+  ...
+# Subtest: 没有实际吃饭活动、错误餐次及仅提供场景资源均不能伪装完成饭点
+ok 116 - 没有实际吃饭活动、错误餐次及仅提供场景资源均不能伪装完成饭点
+  ---
+  duration_ms: 2.8539
+  type: 'test'
+  ...
+# Subtest: 人工固定餐卡超出子集仍精确有效，活动时长不能改变场景时长
+ok 117 - 人工固定餐卡超出子集仍精确有效，活动时长不能改变场景时长
+  ---
+  duration_ms: 23.4974
+  type: 'test'
+  ...
+# Subtest: 菜单位于当前前序状态：预算、忌口、地点、准备和开放时段全部生效
+ok 118 - 菜单位于当前前序状态：预算、忌口、地点、准备和开放时段全部生效
+  ---
+  duration_ms: 4.3108
+  type: 'test'
+  ...
+# Subtest: 自动用餐被枚举截断时仍保留最小真实吃饭组合，且餐候选不混入普通场景
+ok 119 - 自动用餐被枚举截断时仍保留最小真实吃饭组合，且餐候选不混入普通场景
+  ---
+  duration_ms: 23.423
+  type: 'test'
+  ...
+# Subtest: 人工前缀不能越过未吃饭点，预约不能跨过未覆盖时段
+ok 120 - 人工前缀不能越过未吃饭点，预约不能跨过未覆盖时段
+  ---
+  duration_ms: 1.7827
+  type: 'test'
+  ...
+# Subtest: 明确夜晚预约可执行到次日02:00，结束缓冲仍按绝对分钟校验
+ok 121 - 明确夜晚预约可执行到次日02:00，结束缓冲仍按绝对分钟校验
+  ---
+  duration_ms: 2.1401
+  type: 'test'
+  ...
+# Subtest: 长期限节点预算、候选预算、depth限制可控；未完成饭点不能作为完整terminal
+ok 122 - 长期限节点预算、候选预算、depth限制可控；未完成饭点不能作为完整terminal
+  ---
+  duration_ms: 1.7605
+  type: 'test'
+  ...
+# Subtest: 长跨度0→90→0重规划保持确定性、输入不变、饭点和末段覆盖不可被探索分数抵消
+ok 123 - 长跨度0→90→0重规划保持确定性、输入不变、饭点和末段覆盖不可被探索分数抵消
+  ---
+  duration_ms: 3523.2821
+  type: 'test'
+  ...
+# Subtest: 上午下午真实覆盖优于提前结束和长等待，午间间隔允许真实活动
+ok 124 - 上午下午真实覆盖优于提前结束和长等待，午间间隔允许真实活动
+  ---
+  duration_ms: 668.4499
+  type: 'test'
+  ...
+# Subtest: 纯餐饮和多用途地点分开：玻璃房桌游仍可作为普通阶段，不偷吃一顿饭
+ok 125 - 纯餐饮和多用途地点分开：玻璃房桌游仍可作为普通阶段，不偷吃一顿饭
+  ---
+  duration_ms: 294.8179
+  type: 'test'
+  ...
+# Subtest: 零预算首次早餐失败仍返回可恢复的餐槽，改会面前吃后零费用可行
+ok 126 - 零预算首次早餐失败仍返回可恢复的餐槽，改会面前吃后零费用可行
+  ---
+  duration_ms: 425.9025
+  type: 'test'
+  ...
+# Subtest: 每日窗口重复到次日，跨午夜和相邻分段合并，真实关门间隙保留
+ok 127 - 每日窗口重复到次日，跨午夜和相邻分段合并，真实关门间隙保留
+  ---
+  duration_ms: 26.2072
+  type: 'test'
+  ...
+# Subtest: 晚间19点及次日06点边界、跨入晚间、饭点与休息不误延长
+ok 128 - 晚间19点及次日06点边界、跨入晚间、饭点与休息不误延长
+  ---
+  duration_ms: 1.178
+  type: 'test'
+  ...
+# Subtest: 每日营业和原有绝对预约窗口取交集
+ok 129 - 每日营业和原有绝对预约窗口取交集
+  ---
+  duration_ms: 0.625
+  type: 'test'
+  ...
+# Subtest: 普通夜间阶段的end、schedule、activeMinutes、候选和trace使用真实60分钟
+ok 130 - 普通夜间阶段的end、schedule、activeMinutes、候选和trace使用真实60分钟
+  ---
+  duration_ms: 32.1535
+  type: 'test'
+  ...
+# Subtest: 开放结束恰好覆盖完整阶段可行，多一分钟或闭店前缀、锚点、见证均拒绝
+ok 131 - 开放结束恰好覆盖完整阶段可行，多一分钟或闭店前缀、锚点、见证均拒绝
+  ---
+  duration_ms: 80.7653
+  type: 'test'
+  ...
+# Subtest: 自动安排和候选只包含完整开放的地点
+ok 132 - 自动安排和候选只包含完整开放的地点
+  ---
+  duration_ms: 11.5503
+  type: 'test'
+  ...
+# Subtest: 非时钟合成测试忽略每日窗口且保留基础时长，绝对预约仍有效
+ok 133 - 非时钟合成测试忽略每日窗口且保留基础时长，绝对预约仍有效
+  ---
+  duration_ms: 11.1458
+  type: 'test'
+  ...
+# Subtest: 时钟UI过滤按实际停留及饭点判断，不以原20分钟误判营业容量
+ok 134 - 时钟UI过滤按实际停留及饭点判断，不以原20分钟误判营业容量
+  ---
+  duration_ms: 1.4452
+  type: 'test'
+  ...
+# Subtest: 空每日窗口和无效时钟分钟作为目录错误拒绝
+ok 135 - 空每日窗口和无效时钟分钟作为目录错误拒绝
+  ---
+  duration_ms: 2.3509
+  type: 'test'
+  ...
+# Subtest: 活动预约窗及整体容量也按延长后的实际停留校验
+ok 136 - 活动预约窗及整体容量也按延长后的实际停留校验
+  ---
+  duration_ms: 3.8967
+  type: 'test'
+  ...
+# Subtest: 宵夜30分钟真实计入阶段与活动，分别保持15分钟
+ok 137 - 宵夜30分钟真实计入阶段与活动，分别保持15分钟
+  ---
+  duration_ms: 5.5602
+  type: 'test'
+  ...
+# Subtest: 原地休息不能凭空开始或延续到已进入地点闭店之后
+ok 138 - 原地休息不能凭空开始或延续到已进入地点闭店之后
+  ---
+  duration_ms: 31.4718
+  type: 'test'
+  ...
+# Subtest: 真实目录night无学校有通用游荡，scau夜晚及晚上+夜晚均有真实开放阶段
+ok 139 - 真实目录night无学校有通用游荡，scau夜晚及晚上+夜晚均有真实开放阶段
+  ---
+  duration_ms: 2290.5998
+  type: 'test'
+  ...
+# Subtest: 每个已评候选有产生其真实q的完整compact见证，快捷验证不展开搜索且不修改输入
+ok 140 - 每个已评候选有产生其真实q的完整compact见证，快捷验证不展开搜索且不修改输入
+  ---
+  duration_ms: 47.7479
+  type: 'test'
+  ...
+# Subtest: 有效见证兜底极小搜索预算，保留新搜索，并可从replay重放所有fingerprint
+ok 141 - 有效见证兜底极小搜索预算，保留新搜索，并可从replay重放所有fingerprint
+  ---
+  duration_ms: 8.0395
+  type: 'test'
+  ...
+# Subtest: 同地点普通到访与无index预约身份不混淆，固定prefix和预约时间必须重验
+ok 142 - 同地点普通到访与无index预约身份不混淆，固定prefix和预约时间必须重验
+  ---
+  duration_ms: 7.5068
+  type: 'test'
+  ...
+# Subtest: 预算、疲劳、资源消耗、依赖、同意、饮食与开放时间按当前context和catalog重验
+ok 143 - 预算、疲劳、资源消耗、依赖、同意、饮食与开放时间按当前context和catalog重验
+  ---
+  duration_ms: 7.8503
+  type: 'test'
+  ...
+# Subtest: 无效见证被ignored且不写入replay，不替代正常搜索；同seed普通结果保持确定
+ok 144 - 无效见证被ignored且不写入replay，不替代正常搜索；同seed普通结果保持确定
+  ---
+  duration_ms: 4.8061
+  type: 'test'
+  ...
+# Subtest: 饭点角色、固定餐馆、时段覆盖、分别费用和缓冲在完整见证重验中生效
+ok 145 - 饭点角色、固定餐馆、时段覆盖、分别费用和缓冲在完整见证重验中生效
+  ---
+  duration_ms: 29.4378
+  type: 'test'
+  ...
+# Subtest: 人工前缀反事实候选的q绑定各自终态；已知低效见证仍允许新搜索找到更好方案
+ok 146 - 人工前缀反事实候选的q绑定各自终态；已知低效见证仍允许新搜索找到更好方案
+  ---
+  duration_ms: 10.6672
+  type: 'test'
+  ...
+# Subtest: 同场景选0、1、3活动起止时间固定，费用、负担与资源仍逐项核算
+ok 147 - 同场景选0、1、3活动起止时间固定，费用、负担与资源仍逐项核算
+  ---
+  duration_ms: 53.8987
+  type: 'test'
+  ...
+# Subtest: 取消多活动重新计算，而非残留费用与负担
+ok 148 - 取消多活动重新计算，而非残留费用与负担
+  ---
+  duration_ms: 388.0947
+  type: 'test'
+  ...
+# Subtest: 单选、互斥、依赖缺失和循环都被独立精确拒绝
+ok 149 - 单选、互斥、依赖缺失和循环都被独立精确拒绝
+  ---
+  duration_ms: 7.0646
+  type: 'test'
+  ...
+# Subtest: 固定人工组合不在活动子集枚举中仍接受精确校验
+ok 150 - 固定人工组合不在活动子集枚举中仍接受精确校验
+  ---
+  duration_ms: 2.3536
+  type: 'test'
+  ...
+# Subtest: 顺序、包含与并行活动均在固定场景内，保留依赖顺序而不增加时长
+ok 151 - 顺序、包含与并行活动均在固定场景内，保留依赖顺序而不增加时长
+  ---
+  duration_ms: 2.5489
+  type: 'test'
+  ...
+# Subtest: 采购→后续使用→消耗资源跨阶段生效，缺准备时不得假定已准备
+ok 152 - 采购→后续使用→消耗资源跨阶段生效，缺准备时不得假定已准备
+  ---
+  duration_ms: 9.1191
+  type: 'test'
+  ...
+# Subtest: 前序完成活动可满足另一个场景的前置活动
+ok 153 - 前序完成活动可满足另一个场景的前置活动
+  ---
+  duration_ms: 7.8345
+  type: 'test'
+  ...
+# Subtest: 整数分避免0.1+0.2浮点边界溢出，费用上界为硬约束
+ok 154 - 整数分避免0.1+0.2浮点边界溢出，费用上界为硬约束
+  ---
+  duration_ms: 3.2997
+  type: 'test'
+  ...
+# Subtest: 多窗口不在间隔中安排，窗口允许分别安排正餐
+ok 155 - 多窗口不在间隔中安排，窗口允许分别安排正餐
+  ---
+  duration_ms: 2.6269
+  type: 'test'
+  ...
+# Subtest: 后续锚点固定时间与序号，不能被前序活动挤占
+ok 156 - 后续锚点固定时间与序号，不能被前序活动挤占
+  ---
+  duration_ms: 3.3366
+  type: 'test'
+  ...
+# Subtest: 锚点无index按指定未来顺序保留，不能默默丢弃
+ok 157 - 锚点无index按指定未来顺序保留，不能默默丢弃
+  ---
+  duration_ms: 2.2202
+  type: 'test'
+  ...
+# Subtest: 鲁棒预留只能收紧可行域，探索不能抵消硬约束
+ok 158 - 鲁棒预留只能收紧可行域，探索不能抵消硬约束
+  ---
+  duration_ms: 4.549
+  type: 'test'
+  ...
+# Subtest: 图谱多跳实际进入双方偏好特征和排序，共享兴趣与公平性可解释
+ok 159 - 图谱多跳实际进入双方偏好特征和排序，共享兴趣与公平性可解释
+  ---
+  duration_ms: 7.2588
+  type: 'test'
+  ...
+# Subtest: 尚未选择的活动路径不会提前贡献图谱偏好
+ok 160 - 尚未选择的活动路径不会提前贡献图谱偏好
+  ---
+  duration_ms: 2.676
+  type: 'test'
+  ...
+# Subtest: 束搜索考虑后续资源价值，保留Pareto取舍并诚实披露非最优性
+ok 161 - 束搜索考虑后续资源价值，保留Pareto取舍并诚实披露非最优性
+  ---
+  duration_ms: 11.4557
+  type: 'test'
+  ...
+# Subtest: 主动结束限制真实求解阶段，未知预算不成为零预算
+ok 162 - 主动结束限制真实求解阶段，未知预算不成为零预算
+  ---
+  duration_ms: 19.5396
+  type: 'test'
+  ...
+# Subtest: 新目录0→90→0可复现，前缀保持、输入不变，mall可浏览多选
+ok 163 - 新目录0→90→0可复现，前缀保持、输入不变，mall可浏览多选
+  ---
+  duration_ms: 11217.1535
+  type: 'test'
+  ...
+# Subtest: 低探索自动推荐实际玩法，手工空选仍合法，低负担不靠无限休息
+ok 164 - 低探索自动推荐实际玩法，手工空选仍合法，低负担不靠无限休息
+  ---
+  duration_ms: 4922.2071
+  type: 'test'
+  ...
+# Subtest: 场景与功能重复是软偏好；显式跨窗口重复用餐仍可执行
+ok 165 - 场景与功能重复是软偏好；显式跨窗口重复用餐仍可执行
+  ---
+  duration_ms: 3.4115
+  type: 'test'
+  ...
+# Subtest: 鲁棒时间不确定量跨阶段累加，等待可吸收前序偏差
+ok 166 - 鲁棒时间不确定量跨阶段累加，等待可吸收前序偏差
+  ---
+  duration_ms: 5.1617
+  type: 'test'
+  ...
+# Subtest: 明确未找到与输入无效分开，节点截断不伪称不可行证明
+ok 167 - 明确未找到与输入无效分开，节点截断不伪称不可行证明
+  ---
+  duration_ms: 1.0476
+  type: 'test'
+  ...
+# Subtest: 首页理由只解释真正勾选的共同兴趣，不推断未填兴趣
+ok 168 - 首页理由只解释真正勾选的共同兴趣，不推断未填兴趣
+  ---
+  duration_ms: 2.5196
+  type: 'test'
+  ...
+# Subtest: 原始轨迹完整保留顺序、重复规则、嵌套事实与全部证据且不修改源数据
+ok 169 - 原始轨迹完整保留顺序、重复规则、嵌套事实与全部证据且不修改源数据
+  ---
+  duration_ms: 2.7276
+  type: 'test'
+  ...
+# Subtest: 决策解释保留参考尺和特征原值，仅在返回的已评分候选中比较
+ok 170 - 决策解释保留参考尺和特征原值，仅在返回的已评分候选中比较
+  ---
+  duration_ms: 0.9019
+  type: 'test'
+  ...
+# Subtest: 手动低分与多个必去、排除约束如实解释，不伪造规则过程
+ok 171 - 手动低分与多个必去、排除约束如实解释，不伪造规则过程
+  ---
+  duration_ms: 1.9782
+  type: 'test'
+  ...
+# Subtest: 无序多必去地点单独解释，不当作手动锁定或预约锚点
+ok 172 - 无序多必去地点单独解释，不当作手动锁定或预约锚点
+  ---
+  duration_ms: 0.5396
+  type: 'test'
+  ...
+# Subtest: 缺失与待评估分数保持未知，不被当作0分或可行候选
+ok 173 - 缺失与待评估分数保持未知，不被当作0分或可行候选
+  ---
+  duration_ms: 1.2451
+  type: 'test'
+  ...
+# Subtest: 短摘要不把数组或计数字典中的内部成果、物品混作出发前准备
+ok 174 - 短摘要不把数组或计数字典中的内部成果、物品混作出发前准备
+  ---
+  duration_ms: 0.4338
+  type: 'test'
+  ...
+# Subtest: 真实引擎输出的分数计算与规则轨迹直接用于解释
+ok 175 - 真实引擎输出的分数计算与规则轨迹直接用于解释
+  ---
+  duration_ms: 23.1852
+  type: 'test'
+  ...
+# Subtest: 饭点与实际疲惫推理用因果过程解释，保留用户可读的判断步骤
+ok 176 - 饭点与实际疲惫推理用因果过程解释，保留用户可读的判断步骤
+  ---
+  duration_ms: 0.9579
+  type: 'test'
+  ...
+# Subtest: 同seed和默认上下文hash确定复现；seed优先级、导出复盘与输入不变
+ok 177 - 同seed和默认上下文hash确定复现；seed优先级、导出复盘与输入不变
+  ---
+  duration_ms: 1358.9926
+  type: 'test'
+  ...
+# Subtest: rootWorker携带recorded search复盘，默认及显式搜索设置输出hash一致
+ok 178 - rootWorker携带recorded search复盘，默认及显式搜索设置输出hash一致
+  ---
+  duration_ms: 5666.5089
+  type: 'test'
+  ...
+# Subtest: 错误seed拒绝输入；零探索不受seed影响且仍取真实最高分
+ok 179 - 错误seed拒绝输入；零探索不受seed影响且仍取真实最高分
+  ---
+  duration_ms: 111.2871
+  type: 'test'
+  ...
+# Subtest: 多seed提高后续顺序与20张之外的场景覆盖，搜索预算和束宽保持有界
+ok 180 - 多seed提高后续顺序与20张之外的场景覆盖，搜索预算和束宽保持有界
+  ---
+  duration_ms: 779.3998
+  type: 'test'
+  ...
+# 12 seeds: 10 routes; low cards=20; high coverage=48; nodes=816
+# Subtest: 探索确实穿透beam剪枝发现资源后续，非仅随机排列已有候选
+ok 181 - 探索确实穿透beam剪枝发现资源后续，非仅随机排列已有候选
+  ---
+  duration_ms: 149.3359
+  type: 'test'
+  ...
+# Subtest: 已选探索方案评分只取实际后续；同步候选求解与分片求解取相同最高真实q
+ok 182 - 已选探索方案评分只取实际后续；同步候选求解与分片求解取相同最高真实q
+  ---
+  duration_ms: 250.1191
+  type: 'test'
+  ...
+# Subtest: 高探索遵守预算、场地、前序消耗资源、必去、预约、同意及审核过滤
+ok 183 - 高探索遵守预算、场地、前序消耗资源、必去、预约、同意及审核过滤
+  ---
+  duration_ms: 71.6691
+  type: 'test'
+  ...
+# Subtest: 高探索仍允许重复，人工前缀不因子集或探索被替换
+ok 184 - 高探索仍允许重复，人工前缀不因子集或探索被替换
+  ---
+  duration_ms: 3.5125
+  type: 'test'
+  ...
+# Subtest: 多seed真实目录覆盖餐次、预约前缀和鲁棒结束缓冲，卡片分数与展露rank分离
+ok 185 - 多seed真实目录覆盖餐次、预约前缀和鲁棒结束缓冲，卡片分数与展露rank分离
+  ---
+  duration_ms: 4019.6242
+  type: 'test'
+  ...
+# Subtest: 真实目录多seed覆盖和耗时对比（报告实测，不用易波动时钟作为通过门槛）
+ok 186 - 真实目录多seed覆盖和耗时对比（报告实测，不用易波动时钟作为通过门槛）
+  ---
+  duration_ms: 7754.1364
+  type: 'test'
+  ...
+# {"seeds":8,"routes":6,"lowCoverage":20,"highCoverage":32,"topFiveCoverage":{"low":5,"high":22},"seedsWithProminentPending":8,"newScenes":["supermarket","switch_store","taishan_lab_garden","taishan_supermarket_front","teaching4_slope","public_lounge","quiet_confession_corner","track_walk","taishan_glass","scau_wandering","tea","scau_arboretum_day"],"medianMs":{"low":285.23,"high":457.97},"medianNodes":{"low":6336,"high":6688}}
+# Subtest: 展示混排仅使用统一基础序位，q和localUtility尺度不进入展示噪声
+ok 187 - 展示混排仅使用统一基础序位，q和localUtility尺度不进入展示噪声
+  ---
+  duration_ms: 1.4136
+  type: 'test'
+  ...
+# Subtest: 显式卡片上限仍生效，探索噪声独立于真实效用及调用顺序
+ok 188 - 显式卡片上限仍生效，探索噪声独立于真实效用及调用顺序
+  ---
+  duration_ms: 108.7284
+  type: 'test'
+  ...
+# Subtest: 已选唯一吃饭活动保持选中，换吃法仍替换同组，普通可选活动仍能取消
+ok 189 - 已选唯一吃饭活动保持选中，换吃法仍替换同组，普通可选活动仍能取消
+  ---
+  duration_ms: 2.064
+  type: 'test'
+  ...
+# Subtest: 早段新增消费可释放后段酒店预算；后段选择不能回改早段
+ok 190 - 早段新增消费可释放后段酒店预算；后段选择不能回改早段
+  ---
+  duration_ms: 59.7419
+  type: 'test'
+  ...
+# Subtest: 新地点知识库0→90→0复算一致，候选指数同口径且无未验证高分
+ok 191 - 新地点知识库0→90→0复算一致，候选指数同口径且无未验证高分
+  ---
+  duration_ms: 2185.3416
+  type: 'test'
+  ...
+# Subtest: 商场0/1/3活动时间固定，费用和体力变化并影响后续
+ok 192 - 商场0/1/3活动时间固定，费用和体力变化并影响后续
+  ---
+  duration_ms: 1327.2624
+  type: 'test'
+  ...
+# Subtest: 双方游戏兴趣通过实际玩法或地点匹配，裸商场不冒充电子游戏体验
+ok 193 - 双方游戏兴趣通过实际玩法或地点匹配，裸商场不冒充电子游戏体验
+  ---
+  duration_ms: 619.5839
+  type: 'test'
+  ...
+# Subtest: 雨天改变排序，两人50元预算仍为硬约束
+ok 194 - 雨天改变排序，两人50元预算仍为硬约束
+  ---
+  duration_ms: 500.4637
+  type: 'test'
+  ...
+# Subtest: 双方偏好互换保持对称
+ok 195 - 双方偏好互换保持对称
+  ---
+  duration_ms: 1281.9491
+  type: 'test'
+  ...
+# Subtest: 真实图谱两跳与疲惫规则链仍参与，来源原文不公开
+ok 196 - 真实图谱两跳与疲惫规则链仍参与，来源原文不公开
+  ---
+  duration_ms: 5.0767
+  type: 'test'
+  ...
+# Subtest: 同版本号下手工知识修订也会拒绝过期复盘
+ok 197 - 同版本号下手工知识修订也会拒绝过期复盘
+  ---
+  duration_ms: 297.2844
+  type: 'test'
+  ...
+# Subtest: 有遮蔽的室外场景默认允许雨天，显式适用天气和字段类型仍受校验
+ok 198 - 有遮蔽的室外场景默认允许雨天，显式适用天气和字段类型仍受校验
+  ---
+  duration_ms: 307.9511
+  type: 'test'
+  ...
+# Subtest: 手工源编译与运行时导出一致，规则和图谱挂载完整
+ok 199 - 手工源编译与运行时导出一致，规则和图谱挂载完整
+  ---
+  duration_ms: 96.5406
+  type: 'test'
+  ...
+# Subtest: 地点是名词，合并的玩法归入原去处并移除旧场景节点
+ok 200 - 地点是名词，合并的玩法归入原去处并移除旧场景节点
+  ---
+  duration_ms: 2.1755
+  type: 'test'
+  ...
+# Subtest: 场地基本体验和所选玩法的兴趣标签明确分开
+ok 201 - 场地基本体验和所选玩法的兴趣标签明确分开
+  ---
+  duration_ms: 0.7995
+  type: 'test'
+  ...
+# Subtest: 原地休息无活动，交谈和听歌挂在公共休息区
+ok 202 - 原地休息无活动，交谈和听歌挂在公共休息区
+  ---
+  duration_ms: 0.4667
+  type: 'test'
+  ...
+# Subtest: 桌游活动共享同一ID，玻璃房增量不影响桌游店
+ok 203 - 桌游活动共享同一ID，玻璃房增量不影响桌游店
+  ---
+  duration_ms: 1.0219
+  type: 'test'
+  ...
+# Subtest: 玻璃房到场和正餐活动分开核算，正餐提供用餐目标
+ok 204 - 玻璃房到场和正餐活动分开核算，正餐提供用餐目标
+  ---
+  duration_ms: 0.6343
+  type: 'test'
+  ...
+# Subtest: 观影与滑冰票价放在活动，器材要求随所选玩法生效
+ok 205 - 观影与滑冰票价放在活动，器材要求随所选玩法生效
+  ---
+  duration_ms: 0.4839
+  type: 'test'
+  ...
+# Subtest: 活动在场景内进行，建议时长及可调区间由场景统一管理
+ok 206 - 活动在场景内进行，建议时长及可调区间由场景统一管理
+  ---
+  duration_ms: 173.7784
+  type: 'test'
+  ...
+# Subtest: 151份来源元数据与原创摘要保留，用户设计证据明确待确认
+ok 207 - 151份来源元数据与原创摘要保留，用户设计证据明确待确认
+  ---
+  duration_ms: 1.2812
+  type: 'test'
+  ...
+# Subtest: 四餐角色均有实际用餐活动，早餐与宵夜适用语义独立
+ok 208 - 四餐角色均有实际用餐活动，早餐与宵夜适用语义独立
+  ---
+  duration_ms: 1.3304
+  type: 'test'
+  ...
+# Subtest: 非法餐次、无用餐活动和空场馆用餐目标在构建前被拒绝
+ok 209 - 非法餐次、无用餐活动和空场馆用餐目标在构建前被拒绝
+  ---
+  duration_ms: 98.7913
+  type: 'test'
+  ...
+# Subtest: 华农自述地点具有校内与泰山区属性，引用本地定位证据
+ok 210 - 华农自述地点具有校内与泰山区属性，引用本地定位证据
+  ---
+  duration_ms: 9.3458
+  type: 'test'
+  ...
+# Subtest: 四种离开目录独立于地点，默认各自回去且住宿须过夜并明确选择
+ok 211 - 四种离开目录独立于地点，默认各自回去且住宿须过夜并明确选择
+  ---
+  duration_ms: 1.3336
+  type: 'test'
+  ...
+# Subtest: 非法离开引用、默认住宿、自动住宿与房费在构建前拒绝
+ok 212 - 非法离开引用、默认住宿、自动住宿与房费在构建前拒绝
+  ---
+  duration_ms: 371.6182
+  type: 'test'
+  ...
+# Subtest: 图节点与边唯一，证据和端点闭环
+ok 213 - 图节点与边唯一，证据和端点闭环
+  ---
+  duration_ms: 1.9865
+  type: 'test'
+  ...
+# Subtest: 未知活动、重复ID、悬空override和跨类型冲突在构建前报错
+ok 214 - 未知活动、重复ID、悬空override和跨类型冲突在构建前报错
+  ---
+  duration_ms: 32.3458
+  type: 'test'
+  ...
+# Subtest: 未知来源、证据、资源、先行活动和非法规则被拒绝
+ok 215 - 未知来源、证据、资源、先行活动和非法规则被拒绝
+  ---
+  duration_ms: 80.2125
+  type: 'test'
+  ...
+# Subtest: 原文发布、伪造已核实信息、负价格和休息玩法被拒绝
+ok 216 - 原文发布、伪造已核实信息、负价格和休息玩法被拒绝
+  ---
+  duration_ms: 34.0863
+  type: 'test'
+  ...
+# Subtest: 手工修改可传播且编译不改源，相同输入产生相同字节
+ok 217 - 手工修改可传播且编译不改源，相同输入产生相同字节
+  ---
+  duration_ms: 282.1979
+  type: 'test'
+  ...
+# Subtest: 编译器禁止把输出写进手工源
+ok 218 - 编译器禁止把输出写进手工源
+  ---
+  duration_ms: 0.9925
+  type: 'test'
+  ...
+# Subtest: 旧语料入口默认拒绝，并在读取语料前阻止覆盖编辑源
+ok 219 - 旧语料入口默认拒绝，并在读取语料前阻止覆盖编辑源 # SKIP
+  ---
+  duration_ms: 0.1135
+  type: 'test'
+  ...
+# Subtest: 七个章节完整覆盖公开数据，采用来源与登记材料准确区分
+ok 220 - 七个章节完整覆盖公开数据，采用来源与登记材料准确区分
+  ---
+  duration_ms: 178.3776
+  type: 'test'
+  ...
+# Subtest: 资源、地点、活动及规则关联用中文名称，机器字段不泄漏
+ok 221 - 资源、地点、活动及规则关联用中文名称，机器字段不泄漏
+  ---
+  duration_ms: 47.2724
+  type: 'test'
+  ...
+# Subtest: 独立阅读页保留未在当前范围及未允许公开规划的条目
+ok 222 - 独立阅读页保留未在当前范围及未允许公开规划的条目
+  ---
+  duration_ms: 1.1599
+  type: 'test'
+  ...
+# Subtest: 所有用户文本转义，链接只允许已有 http/https，原文与机器字段不渲染
+ok 223 - 所有用户文本转义，链接只允许已有 http/https，原文与机器字段不渲染
+  ---
+  duration_ms: 1.3182
+  type: 'test'
+  ...
+# Subtest: 首次 render 懒生成，后续调用复用 DOM，纯函数不修改输入
+ok 224 - 首次 render 懒生成，后续调用复用 DOM，纯函数不修改输入
+  ---
+  duration_ms: 65.0863
+  type: 'test'
+  ...
+# Subtest: 区分周中周末费用，未知规则条件省略以避免伪解释
+ok 225 - 区分周中周末费用，未知规则条件省略以避免伪解释
+  ---
+  duration_ms: 0.6746
+  type: 'test'
+  ...
+# Subtest: 雨夜拆分后能合回原来一段，连续操作不遗留强制拆分条件
+ok 226 - 雨夜拆分后能合回原来一段，连续操作不遗留强制拆分条件
+  ---
+  duration_ms: 101.5944
+  type: 'test'
+  ...
+# Subtest: 不同地点合并保留前段选择，取消后段及转场并重新核算费用
+ok 227 - 不同地点合并保留前段选择，取消后段及转场并重新核算费用
+  ---
+  duration_ms: 2448.2818
+  type: 'test'
+  ...
+# Subtest: 拆成三段后可以逐次合并，剩余段数要求随之减少
+ok 228 - 拆成三段后可以逐次合并，剩余段数要求随之减少
+  ---
+  duration_ms: 69.057
+  type: 'test'
+  ...
+# Subtest: 拆分来源随选择保留，全部重选或改变硬条件后清除，不给普通阶段加合并入口
+ok 229 - 拆分来源随选择保留，全部重选或改变硬条件后清除，不给普通阶段加合并入口
+  ---
+  duration_ms: 326.3766
+  type: 'test'
+  ...
+# Subtest: 中间两段合并保留已确认早餐及前序时间，后面午餐仍然安排
+ok 230 - 中间两段合并保留已确认早餐及前序时间，后面午餐仍然安排
+  ---
+  duration_ms: 2057.0402
+  type: 'test'
+  ...
+# Subtest: 合并不能吞掉餐次、分别卡或后一段的预约
+ok 231 - 合并不能吞掉餐次、分别卡或后一段的预约
+  ---
+  duration_ms: 383.1367
+  type: 'test'
+  ...
+# Subtest: 超出场景可调区间时不允许合并，不能改写原来的时长
+ok 232 - 超出场景可调区间时不允许合并，不能改写原来的时长
+  ---
+  duration_ms: 0.9429
+  type: 'test'
+  ...
+# Subtest: 合并延长到闭馆之后时完整校验会拒绝，不会放宽开放时间
+ok 233 - 合并延长到闭馆之后时完整校验会拒绝，不会放宽开放时间
+  ---
+  duration_ms: 177.2969
+  type: 'test'
+  ...
+# Subtest: 合并不能借取消后段绕过必去地点
+ok 234 - 合并不能借取消后段绕过必去地点
+  ---
+  duration_ms: 1615.9818
+  type: 'test'
+  ...
+# Subtest: 夜间搜索和必去添加排除白天关闭地点，学校条件仍同时生效
+ok 235 - 夜间搜索和必去添加排除白天关闭地点，学校条件仍同时生效
+  ---
+  duration_ms: 12.4786
+  type: 'test'
+  ...
+# Subtest: 夜间普通场景必须有连续60分钟，跨午夜连续窗口允许停留
+ok 236 - 夜间普通场景必须有连续60分钟，跨午夜连续窗口允许停留
+  ---
+  duration_ms: 2.4232
+  type: 'test'
+  ...
+# Subtest: 无periodIds的旧相对时间fixture保留原有学校范围语义
+ok 237 - 无periodIds的旧相对时间fixture保留原有学校范围语义
+  ---
+  duration_ms: 1.0058
+  type: 'test'
+  ...
+# Subtest: 夜间图谱移除关闭场景及专属活动和边，保留共享活动且不修改输入
+ok 238 - 夜间图谱移除关闭场景及专属活动和边，保留共享活动且不修改输入
+  ---
+  duration_ms: 1.0335
+  type: 'test'
+  ...
+# Subtest: 时段切换保留显式必去以报告冲突，关闭地点从新增下拉移除
+ok 239 - 时段切换保留显式必去以报告冲突，关闭地点从新增下拉移除
+  ---
+  duration_ms: 3.5782
+  type: 'test'
+  ...
+# Subtest: 宵夜餐馆以30分钟连续开放窗筛选，29分钟排除
+ok 240 - 宵夜餐馆以30分钟连续开放窗筛选，29分钟排除
+  ---
+  duration_ms: 0.5014
+  type: 'test'
+  ...
+# Subtest: 00:40图书馆从真实timeline DOM完全移除，冻结旧候选也不能复活
+ok 241 - 00:40图书馆从真实timeline DOM完全移除，冻结旧候选也不能复活
+  ---
+  duration_ms: 124.5686
+  type: 'test'
+  ...
+# Subtest: 19:00普通30分钟candidate需容纳60分钟，短开放窗卡完全移除
+ok 242 - 19:00普通30分钟candidate需容纳60分钟，短开放窗卡完全移除
+  ---
+  duration_ms: 68.5203
+  type: 'test'
+  ...
+# Subtest: 真实户外场景：晴天有温和加分，多云中性，雨天降分；室内无晴天奖励
+ok 243 - 真实户外场景：晴天有温和加分，多云中性，雨天降分；室内无晴天奖励
+  ---
+  duration_ms: 3.5794
+  type: 'test'
+  ...
+# Subtest: 生日、纪念日、表白匹配具体语义，通用庆祝只获较低奖励
+ok 244 - 生日、纪念日、表白匹配具体语义，通用庆祝只获较低奖励
+  ---
+  duration_ms: 3.6104
+  type: 'test'
+  ...
+# Subtest: 临考短会在考试期加分，普通与假期降分但仍可手动安排
+ok 245 - 临考短会在考试期加分，普通与假期降分但仍可手动安排
+  ---
+  duration_ms: 71.1222
+  type: 'test'
+  ...
+# Subtest: 周末费用使用真实自助餐价，不只改变解释文案
+ok 246 - 周末费用使用真实自助餐价，不只改变解释文案
+  ---
+  duration_ms: 90.6123
+  type: 'test'
+  ...
+# Subtest: MBTI外向维度对真实双人桌游和多人剧本活动给出相反的轻量倾向
+ok 247 - MBTI外向维度对真实双人桌游和多人剧本活动给出相反的轻量倾向
+  ---
+  duration_ms: 1.6142
+  type: 'test'
+  ...
+# Subtest: 经期舒适偏好与明示忌口独立，生食禁忌仍精确拒绝
+ok 248 - 经期舒适偏好与明示忌口独立，生食禁忌仍精确拒绝
+  ---
+  duration_ms: 68.649
+  type: 'test'
+  ...
+# Subtest: 开心状态以实际兴趣和活动标签加分，未开心无交换奖励
+ok 249 - 开心状态以实际兴趣和活动标签加分，未开心无交换奖励
+  ---
+  duration_ms: 1.5673
+  type: 'test'
+  ...
+# Subtest: 长期关系对宿舍日常的降分规则可触发，重逢触发共同体验规则
+ok 250 - 长期关系对宿舍日常的降分规则可触发，重逢触发共同体验规则
+  ---
+  duration_ms: 117.6389
+  type: 'test'
+  ...
+# Subtest: 中日主题按真实餐馆标签匹配
+ok 251 - 中日主题按真实餐馆标签匹配
+  ---
+  duration_ms: 0.6299
+  type: 'test'
+  ...
+# Subtest: 划船先入湖区可完成，缺前置拒绝；包餐整段的主体活动不重复收费
+ok 252 - 划船先入湖区可完成，缺前置拒绝；包餐整段的主体活动不重复收费
+  ---
+  duration_ms: 55.8608
+  type: 'test'
+  ...
+# Subtest: 园内摩天轮包含在游园时段与套票内，城市摩天轮可独立选
+ok 253 - 园内摩天轮包含在游园时段与套票内，城市摩天轮可独立选
+  ---
+  duration_ms: 122.2788
+  type: 'test'
+  ...
+# Subtest: 真实华农泰山专属地点仍要求学校与校区，通用校园短会无需冒用校内权限
+ok 254 - 真实华农泰山专属地点仍要求学校与校区，通用校园短会无需冒用校内权限
+  ---
+  duration_ms: 37.1608
+  type: 'test'
+  ...
+# Subtest: 地点搜索支持中文、英文 ID、aliases、keywords 和大小写空白
+ok 255 - 地点搜索支持中文、英文 ID、aliases、keywords 和大小写空白
+  ---
+  duration_ms: 3.7782
+  type: 'test'
+  ...
+# Subtest: 多词要求全部匹配，空查询可浏览，无匹配返回空列表，始终排除 rest
+ok 256 - 多词要求全部匹配，空查询可浏览，无匹配返回空列表，始终排除 rest
+  ---
+  duration_ms: 0.9896
+  type: 'test'
+  ...
+# Subtest: bans 可添加多个地点并去重，返回独立数组且不改变原输入
+ok 257 - bans 可添加多个地点并去重，返回独立数组且不改变原输入
+  ---
+  duration_ms: 0.7621
+  type: 'test'
+  ...
+# Subtest: bans 拒绝对侧冲突、缺失和休息地点，失败不改变输入
+ok 258 - bans 拒绝对侧冲突、缺失和休息地点，失败不改变输入
+  ---
+  duration_ms: 1.1858
+  type: 'test'
+  ...
+# Subtest: requiredSceneIds 可添加多个地点并去重，返回独立数组且不改变原输入
+ok 259 - requiredSceneIds 可添加多个地点并去重，返回独立数组且不改变原输入
+  ---
+  duration_ms: 0.3151
+  type: 'test'
+  ...
+# Subtest: requiredSceneIds 拒绝对侧冲突、缺失和休息地点，失败不改变输入
+ok 260 - requiredSceneIds 拒绝对侧冲突、缺失和休息地点，失败不改变输入
+  ---
+  duration_ms: 0.6743
+  type: 'test'
+  ...
+# Subtest: 缺省两类列表可初始化，非法类别明确拒绝
+ok 261 - 缺省两类列表可初始化，非法类别明确拒绝
+  ---
+  duration_ms: 0.5493
+  type: 'test'
+  ...
+# Subtest: 搜索与下拉浏览不提交规划，实际添加/删除才提交，重复及冲突只显示提示
+ok 262 - 搜索与下拉浏览不提交规划，实际添加/删除才提交，重复及冲突只显示提示
+  ---
+  duration_ms: 2.479
+  type: 'test'
+  ...
+# Subtest: 恢复多个地点及旧 sceneOnly 数据不提交，读写结果与调用方数组隔离
+ok 263 - 恢复多个地点及旧 sceneOnly 数据不提交，读写结果与调用方数组隔离
+  ---
+  duration_ms: 13.256
+  type: 'test'
+  ...
+# Subtest: 更换时段保留白天必去项以报告冲突，切换学校仍释放范围外地点
+ok 264 - 更换时段保留白天必去项以报告冲突，切换学校仍释放范围外地点
+  ---
+  duration_ms: 19.5694
+  type: 'test'
+  ...
+# Subtest: 单选活动可全部取消，互斥餐饮跨组保持一项
+ok 265 - 单选活动可全部取消，互斥餐饮跨组保持一项
+  ---
+  duration_ms: 3.4013
+  type: 'test'
+  ...
+# Subtest: 零输入默认下午四小时，偏好与用餐选择没有隐式持久状态
+ok 266 - 零输入默认下午四小时，偏好与用餐选择没有隐式持久状态
+  ---
+  duration_ms: 2.5817
+  type: 'test'
+  ...
+# Subtest: 复盘入口拒绝其他格式和超范围探索度
+ok 267 - 复盘入口拒绝其他格式和超范围探索度
+  ---
+  duration_ms: 0.3436
+  type: 'test'
+  ...
+# Subtest: 知识摘要按文本转义，时间与双人区间统一展示
+ok 268 - 知识摘要按文本转义，时间与双人区间统一展示
+  ---
+  duration_ms: 0.5492
+  type: 'test'
+  ...
+# Subtest: 跨午夜显示次日时钟而非25点，复盘拒绝非连续时段
+ok 269 - 跨午夜显示次日时钟而非25点，复盘拒绝非连续时段
+  ---
+  duration_ms: 0.6984
+  type: 'test'
+  ...
+# Subtest: 露营探索度79退回各自回去，80保留露营，阈值切换不改变人工prefix
+ok 270 - 露营探索度79退回各自回去，80保留露营，阈值切换不改变人工prefix
+  ---
+  duration_ms: 5.3438
+  type: 'test'
+  ...
+# Subtest: 分别意图在79拒绝露营，80允许，拒绝选择不修改状态
+ok 271 - 分别意图在79拒绝露营，80允许，拒绝选择不修改状态
+  ---
+  duration_ms: 1.5803
+  type: 'test'
+  ...
+# Subtest: 真实stage投影保留餐次和显式预约，自动排程不能转为预约
+ok 272 - 真实stage投影保留餐次和显式预约，自动排程不能转为预约
+  ---
+  duration_ms: 0.4152
+  type: 'test'
+  ...
+# Subtest: 阶段点击固定实际0到current，裁掉后续人工前缀与结束限制
+ok 273 - 阶段点击固定实际0到current，裁掉后续人工前缀与结束限制
+  ---
+  duration_ms: 0.855
+  type: 'test'
+  ...
+# Subtest: 连续点击保留前序待提交场景和活动，不依赖旧result已刷新
+ok 274 - 连续点击保留前序待提交场景和活动，不依赖旧result已刷新
+  ---
+  duration_ms: 0.6251
+  type: 'test'
+  ...
+# Subtest: 同场景活动更新保留真实和待提交的显式预约，换场景释放旧预约
+ok 275 - 同场景活动更新保留真实和待提交的显式预约，换场景释放旧预约
+  ---
+  duration_ms: 1.2244
+  type: 'test'
+  ...
+# Subtest: pending餐次身份不匹配真实槽位时忽略，后续pending不会被带入
+ok 276 - pending餐次身份不匹配真实槽位时忽略，后续pending不会被带入
+  ---
+  duration_ms: 0.639
+  type: 'test'
+  ...
+# Subtest: 真实餐馆切换固定到当前餐，并释放后续餐馆锁
+ok 277 - 真实餐馆切换固定到当前餐，并释放后续餐馆锁
+  ---
+  duration_ms: 1.8212
+  type: 'test'
+  ...
+# Subtest: 虚拟餐卡同index不吞入普通阶段，首端和末端插入均支持
+ok 278 - 虚拟餐卡同index不吞入普通阶段，首端和末端插入均支持
+  ---
+  duration_ms: 1.1281
+  type: 'test'
+  ...
+# Subtest: 餐次点击也保留前序未完成选择并重算同意，不重复固定已经经过的同餐次
+ok 279 - 餐次点击也保留前序未完成选择并重算同意，不重复固定已经经过的同餐次
+  ---
+  duration_ms: 1.0915
+  type: 'test'
+  ...
+# Subtest: 探索保留已确认选择及相关同意，只释放后续未确认餐馆
+ok 280 - 探索保留已确认选择及相关同意，只释放后续未确认餐馆
+  ---
+  duration_ms: 0.7811
+  type: 'test'
+  ...
+# Subtest: 只有全部重新推荐才清空已选；改变软偏好保留选择，改变硬条件再重排
+ok 281 - 只有全部重新推荐才清空已选；改变软偏好保留选择，改变硬条件再重排
+  ---
+  duration_ms: 0.7565
+  type: 'test'
+  ...
+# Subtest: 探索接受零seed，拒绝非uint32和非整数探索度
+ok 282 - 探索接受零seed，拒绝非uint32和非整数探索度
+  ---
+  duration_ms: 13.6709
+  type: 'test'
+  ...
+# Subtest: 失败餐菜单空stages可恢复，旧失败prefix和结束位置不带入
+ok 283 - 失败餐菜单空stages可恢复，旧失败prefix和结束位置不带入
+  ---
+  duration_ms: 2.963
+  type: 'test'
+  ...
+# Subtest: 未完成餐菜单仅投影已有真实前序，餐卡索引仍严格检查结构与范围
+ok 284 - 未完成餐菜单仅投影已有真实前序，餐卡索引仍严格检查结构与范围
+  ---
+  duration_ms: 1.1334
+  type: 'test'
+  ...
+# Subtest: 探索保留旧字符串特殊模式和对象模式，释放餐馆并保留结束硬上限
+ok 285 - 探索保留旧字符串特殊模式和对象模式，释放餐馆并保留结束硬上限
+  ---
+  duration_ms: 10.8801
+  type: 'test'
+  ...
+# Subtest: 所有意图函数支持冻结输入且返回独立副本
+ok 286 - 所有意图函数支持冻结输入且返回独立副本
+  ---
+  duration_ms: 4.7697
+  type: 'test'
+  ...
+# Subtest: 无效阶段、活动和餐次在意图边界给出明确错误
+ok 287 - 无效阶段、活动和餐次在意图边界给出明确错误
+  ---
+  duration_ms: 1.1127
+  type: 'test'
+  ...
+# Subtest: 通过真实求解器验证阶段前缀、明确同意及餐馆替换不重复餐次
+ok 288 - 通过真实求解器验证阶段前缀、明确同意及餐馆替换不重复餐次
+  ---
+  duration_ms: 683.778
+  type: 'test'
+  ...
+# Subtest: 阶段动作保留之前餐馆和特殊模式，释放之后的场馆与活动并保留其它硬条件
+ok 289 - 阶段动作保留之前餐馆和特殊模式，释放之后的场馆与活动并保留其它硬条件
+  ---
+  duration_ms: 0.6437
+  type: 'test'
+  ...
+# Subtest: 当前餐加入prefix保留显式预约，虚拟餐插入不借用普通阶段预约
+ok 290 - 当前餐加入prefix保留显式预约，虚拟餐插入不借用普通阶段预约
+  ---
+  duration_ms: 0.8017
+  type: 'test'
+  ...
+# Subtest: 失败菜单同insertIndex仍释放后续餐馆，特殊餐次保持无当前真实阶段
+ok 291 - 失败菜单同insertIndex仍释放后续餐馆，特殊餐次保持无当前真实阶段
+  ---
+  duration_ms: 0.8911
+  type: 'test'
+  ...
+# Subtest: 分别动作固定所有真实阶段及pending前序，重算同意并保留餐次与时间硬条件
+ok 292 - 分别动作固定所有真实阶段及pending前序，重算同意并保留餐次与时间硬条件
+  ---
+  duration_ms: 0.5763
+  type: 'test'
+  ...
+# Subtest: 酒店费用变化时真实求解保持全部前段，预算不足明确失败而不替换前段
+ok 293 - 酒店费用变化时真实求解保持全部前段，预算不足明确失败而不替换前段
+  ---
+  duration_ms: 44.078
+  type: 'test'
+  ...
+# Subtest: 上下文入口同时返回白名单与足量库存，可直接用于初始化和请求
+ok 294 - 上下文入口同时返回白名单与足量库存，可直接用于初始化和请求
+  ---
+  duration_ms: 46.2184
+  type: 'test'
+  ...
+# Subtest: 真实 metadata 白名单只排除六个行程成果，并保留可自行准备的野餐食物
+ok 295 - 真实 metadata 白名单只排除六个行程成果，并保留可自行准备的野餐食物
+  ---
+  duration_ms: 85.9915
+  type: 'test'
+  ...
+# Subtest: 未知前置项不会自动加入白名单；新的前序产出也不会进入默认库存
+ok 296 - 未知前置项不会自动加入白名单；新的前序产出也不会进入默认库存
+  ---
+  duration_ms: 1.2444
+  type: 'test'
+  ...
+# Subtest: 真实完整阶段清单包含场景与所选活动，按 ID 去重并保留使用阶段
+ok 297 - 真实完整阶段清单包含场景与所选活动，按 ID 去重并保留使用阶段
+  ---
+  duration_ms: 1.5473
+  type: 'test'
+  ...
+# Subtest: 不读取未选玩法、候选项或默认活动，清空玩法后只留下场景要求
+ok 298 - 不读取未选玩法、候选项或默认活动，清空玩法后只留下场景要求
+  ---
+  duration_ms: 1.8674
+  type: 'test'
+  ...
+# Subtest: 真实玻璃房桌游覆盖要求生效，不向其他场地的同 ID 活动扩散
+ok 299 - 真实玻璃房桌游覆盖要求生效，不向其他场地的同 ID 活动扩散
+  ---
+  duration_ms: 4.1474
+  type: 'test'
+  ...
+# Subtest: 真实采购→分享由已选前序供给；第二次分享只需额外准备一份
+ok 300 - 真实采购→分享由已选前序供给；第二次分享只需额外准备一份
+  ---
+  duration_ms: 6.2405
+  type: 'test'
+  ...
+# Subtest: 后续采购不能追溯满足更早的使用；产出与消耗均按数量核算
+ok 301 - 后续采购不能追溯满足更早的使用；产出与消耗均按数量核算
+  ---
+  duration_ms: 0.4761
+  type: 'test'
+  ...
+# Subtest: 数组与计数字典混合要求取最大值，耗材累计而工具可复用
+ok 302 - 数组与计数字典混合要求取最大值，耗材累计而工具可复用
+  ---
+  duration_ms: 0.6184
+  type: 'test'
+  ...
+# Subtest: 同阶段活动按前置关系及稳定 ID 排序核算，消费不能提前获得产出
+ok 303 - 同阶段活动按前置关系及稳定 ID 排序核算，消费不能提前获得产出
+  ---
+  duration_ms: 1.2332
+  type: 'test'
+  ...
+# Subtest: 场景先于活动检查，活动产出只能供同阶段后续活动或后续阶段使用
+ok 304 - 场景先于活动检查，活动产出只能供同阶段后续活动或后续阶段使用
+  ---
+  duration_ms: 0.3268
+  type: 'test'
+  ...
+# Subtest: 真实拍照→冲印及手作链不将共同成果列为外部准备
+ok 305 - 真实拍照→冲印及手作链不将共同成果列为外部准备
+  ---
+  duration_ms: 2.2315
+  type: 'test'
+  ...
+# Subtest: 默认有限库存覆盖最大阶段数的多个消耗活动，能经 normalize 和 JSON Worker 传输
+ok 306 - 默认有限库存覆盖最大阶段数的多个消耗活动，能经 normalize 和 JSON Worker 传输
+  ---
+  duration_ms: 4.5913
+  type: 'test'
+  ...
+# Subtest: 真实 engine 可连续消费两份手作材料；仅 preparedIds 的一份会失败
+ok 307 - 真实 engine 可连续消费两份手作材料；仅 preparedIds 的一份会失败
+  ---
+  duration_ms: 1190.247
+  type: 'test'
+  ...
+# Subtest: 真实 engine 不因默认准备绕过共同拍照或冲印前置约束
+ok 308 - 真实 engine 不因默认准备绕过共同拍照或冲印前置约束
+  ---
+  duration_ms: 1144.8744
+  type: 'test'
+  ...
+# Subtest: 默认库存不会注入新的内部消耗资源，H_RESOURCE 仍严格执行
+ok 309 - 默认库存不会注入新的内部消耗资源，H_RESOURCE 仍严格执行
+  ---
+  duration_ms: 2.0532
+  type: 'test'
+  ...
+# Subtest: 扁平活动引用、场景覆盖与独立元数据受支持，未知选择明确失败
+ok 310 - 扁平活动引用、场景覆盖与独立元数据受支持，未知选择明确失败
+  ---
+  duration_ms: 0.728
+  type: 'test'
+  ...
+# Subtest: 不修改 catalog、完整阶段或元数据；各次结果独立且顺序稳定
+ok 311 - 不修改 catalog、完整阶段或元数据；各次结果独立且顺序稳定
+  ---
+  duration_ms: 0.4228
+  type: 'test'
+  ...
+# Subtest: 前向链在下一轮消费派生事实，并保存真实输入输出轨迹
+ok 312 - 前向链在下一轮消费派生事实，并保存真实输入输出轨迹
+  ---
+  duration_ms: 3.9127
+  type: 'test'
+  ...
+# Subtest: unknown、缺失和false不会混同，已禁用规则不触发
+ok 313 - unknown、缺失和false不会混同，已禁用规则不触发
+  ---
+  duration_ms: 1.8702
+  type: 'test'
+  ...
+# Subtest: 规则行动按当前场景活动执行，偏好、准备、警告均有输出事实
+ok 314 - 规则行动按当前场景活动执行，偏好、准备、警告均有输出事实
+  ---
+  duration_ms: 4.9016
+  type: 'test'
+  ...
+# Subtest: 内置雨天规则分两步推导淋雨风险与警告，阴天不触发且不硬排除
+ok 315 - 内置雨天规则分两步推导淋雨风险与警告，阴天不触发且不硬排除
+  ---
+  duration_ms: 1.1739
+  type: 'test'
+  ...
+# Subtest: 图谱支持多跳、证据合并、深度界限和有环图终止
+ok 316 - 图谱支持多跳、证据合并、深度界限和有环图终止
+  ---
+  duration_ms: 1.7551
+  type: 'test'
+  ...
+# Subtest: 显式标签构成可查询的场景—属性—偏好路径，输入图谱不变
+ok 317 - 显式标签构成可查询的场景—属性—偏好路径，输入图谱不变
+  ---
+  duration_ms: 0.978
+  type: 'test'
+  ...
+# Subtest: 真实默认下午自动推荐包含体验；用户固定裸商场仍合法
+ok 318 - 真实默认下午自动推荐包含体验；用户固定裸商场仍合法
+  ---
+  duration_ms: 743.8927
+  type: 'test'
+  ...
+# Subtest: 明确生日和纪念日保留主题分支，完整收益出现前不被长停留淘汰
+ok 319 - 明确生日和纪念日保留主题分支，完整收益出现前不被长停留淘汰
+  ---
+  duration_ms: 1931.242
+  type: 'test'
+  ...
+# Subtest: 真实停留效用递减，不能把地点匹配按小时重复计分
+ok 320 - 真实停留效用递减，不能把地点匹配按小时重复计分
+  ---
+  duration_ms: 167.2239
+  type: 'test'
+  ...
+# Subtest: 真实全天100跨种子可探索不同路线且梦幻硬预算保持有效
+ok 321 - 真实全天100跨种子可探索不同路线且梦幻硬预算保持有效
+  ---
+  duration_ms: 13166.2145
+  type: 'test'
+  ...
+# Subtest: 考试季单时段可提前结束，多时段和明确预约不放宽覆盖
+ok 322 - 考试季单时段可提前结束，多时段和明确预约不放宽覆盖
+  ---
+  duration_ms: 898.7317
+  type: 'test'
+  ...
+# Subtest: 预算不限时夜间自动停留保留分别空间，切换露营和一起走不修改阶段
+ok 323 - 预算不限时夜间自动停留保留分别空间，切换露营和一起走不修改阶段
+  ---
+  duration_ms: 1038.6597
+  type: 'test'
+  ...
+# Subtest: 较长分别方式无空间时自动推荐退回所选方式；人工固定时长不被缩短
+ok 324 - 较长分别方式无空间时自动推荐退回所选方式；人工固定时长不被缩短
+  ---
+  duration_ms: 9.6151
+  type: 'test'
+  ...
+# Subtest: 重复允许但真实效用软减重复玩法；探索择优槽保留不同地点
+ok 325 - 重复允许但真实效用软减重复玩法；探索择优槽保留不同地点
+  ---
+  duration_ms: 11.8952
+  type: 'test'
+  ...
+# Subtest: 小子集上限也保留排序前部玩法及其前置
+ok 326 - 小子集上限也保留排序前部玩法及其前置
+  ---
+  duration_ms: 2.9883
+  type: 'test'
+  ...
+# Subtest: 四时段普通模式回归：节点上限内找到并独立重演完整方案
+ok 327 - 四时段普通模式回归：节点上限内找到并独立重演完整方案
+  ---
+  duration_ms: 4092.5237
+  type: 'test'
+  ...
+# Subtest: 四时段100在不同预算下仍保持真实费用和完整见证
+ok 328 - 四时段100在不同预算下仍保持真实费用和完整见证
+  ---
+  duration_ms: 4132.6458
+  type: 'test'
+  ...
+# Subtest: 完整后续效用统一比较，较长方案不能因候选自己的分母变成低分
+ok 329 - 完整后续效用统一比较，较长方案不能因候选自己的分母变成低分
+  ---
+  duration_ms: 64.3741
+  type: 'test'
+  ...
+# Subtest: 人工锁定允许较低分，反事实候选释放当前锁定并保留此前阶段和未来锚点
+ok 330 - 人工锁定允许较低分，反事实候选释放当前锁定并保留此前阶段和未来锚点
+  ---
+  duration_ms: 47.2824
+  type: 'test'
+  ...
+# Subtest: 仅局部可行、预算截断且未完成正餐目标的候选明确待评估
+ok 331 - 仅局部可行、预算截断且未完成正餐目标的候选明确待评估
+  ---
+  duration_ms: 2.5322
+  type: 'test'
+  ...
+# Subtest: 可提前结束的一阶段裸候选未探索后续时也不能拿局部分伪装规划分
+ok 332 - 可提前结束的一阶段裸候选未探索后续时也不能拿局部分伪装规划分
+  ---
+  duration_ms: 2.0376
+  type: 'test'
+  ...
+# Subtest: 人工活动精确计分，不借同地点更优活动组合的分数
+ok 333 - 人工活动精确计分，不借同地点更优活动组合的分数
+  ---
+  duration_ms: 4.0641
+  type: 'test'
+  ...
+# Subtest: 固定参考尺不做批内min-max，不因新加低分地点改变已知分数，也不饱和成一批99
+ok 334 - 固定参考尺不做批内min-max，不因新加低分地点改变已知分数，也不饱和成一批99
+  ---
+  duration_ms: 5.8903
+  type: 'test'
+  ...
+# Subtest: 整轮人工候选后续求解共用固定计算预算，复盘显式校验评分版本
+ok 335 - 整轮人工候选后续求解共用固定计算预算，复盘显式校验评分版本
+  ---
+  duration_ms: 39.6035
+  type: 'test'
+  ...
+# Subtest: 零探索联合择优地点与实际玩法，双方play兴趣增加匹配体验
+ok 336 - 零探索联合择优地点与实际玩法，双方play兴趣增加匹配体验
+  ---
+  duration_ms: 344.708
+  type: 'test'
+  ...
+# Subtest: 默认活动列表不强制自动选择，不改变相同组合的真实效用
+ok 337 - 默认活动列表不强制自动选择，不改变相同组合的真实效用
+  ---
+  duration_ms: 4.8547
+  type: 'test'
+  ...
+# Subtest: 活动耗时字段完全不参与阶段时间或候选评分，场景分钟才影响时间窗
+ok 338 - 活动耗时字段完全不参与阶段时间或候选评分，场景分钟才影响时间窗
+  ---
+  duration_ms: 4.4894
+  type: 'test'
+  ...
+# Subtest: 多用途地点只有所选meal_completed活动才完成正餐，并正确登记当前用餐窗口
+ok 339 - 多用途地点只有所选meal_completed活动才完成正餐，并正确登记当前用餐窗口
+  ---
+  duration_ms: 237.1403
+  type: 'test'
+  ...
+# Subtest: 默认雨夜保留少量长停留，不靠反复休息填时间
+ok 340 - 默认雨夜保留少量长停留，不靠反复休息填时间
+  ---
+  duration_ms: 587.1496
+  type: 'test'
+  ...
+# Subtest: 手调最后一段时长按个人选择结束，不再自动追加地点填满时间
+ok 341 - 手调最后一段时长按个人选择结束，不再自动追加地点填满时间
+  ---
+  duration_ms: 349.3027
+  type: 'test'
+  ...
+# Subtest: 主动拆分产生第二个可选阶段；之后换场景也不能更改第一段
+ok 342 - 主动拆分产生第二个可选阶段；之后换场景也不能更改第一段
+  ---
+  duration_ms: 959.4569
+  type: 'test'
+  ...
+# Subtest: 后序选择保留已确认前序的地点、活动和可变时长
+ok 343 - 后序选择保留已确认前序的地点、活动和可变时长
+  ---
+  duration_ms: 1121.2925
+  type: 'test'
+  ...
+# Subtest: 早餐具体选项尊重范围；自备早餐不能自动冒充免费餐
+ok 344 - 早餐具体选项尊重范围；自备早餐不能自动冒充免费餐
+  ---
+  duration_ms: 1203.8542
+  type: 'test'
+  ...
+# Subtest: 时长和拆分动作使用同一意图投影及完整后续验证
+ok 345 - 时长和拆分动作使用同一意图投影及完整后续验证
+  ---
+  duration_ms: 599.6733
+  type: 'test'
+  ...
+# Subtest: 当前选择会挤掉后面必需的餐费时直接硬拒绝，避免显示不能兑现的选项
+ok 346 - 当前选择会挤掉后面必需的餐费时直接硬拒绝，避免显示不能兑现的选项
+  ---
+  duration_ms: 6.3129
+  type: 'test'
+  ...
+# Subtest: normalize 对必去集合去重并与输入隔离
+ok 347 - normalize 对必去集合去重并与输入隔离
+  ---
+  duration_ms: 3.8496
+  type: 'test'
+  ...
+# Subtest: 必去输入为体验→准备，搜索按真实资源依赖调整为准备→体验且两者均访问
+ok 348 - 必去输入为体验→准备，搜索按真实资源依赖调整为准备→体验且两者均访问
+  ---
+  duration_ms: 125.2072
+  type: 'test'
+  ...
+# Subtest: 多项不去全部排除，即使被排除地点具有更高评分
+ok 349 - 多项不去全部排除，即使被排除地点具有更高评分
+  ---
+  duration_ms: 8.1567
+  type: 'test'
+  ...
+# Subtest: 必去与不去冲突或必去地点不存在时明确返回 H_REQUIRED_SCENE
+ok 350 - 必去与不去冲突或必去地点不存在时明确返回 H_REQUIRED_SCENE
+  ---
+  duration_ms: 2.5392
+  type: 'test'
+  ...
+# Subtest: 集合必去与固定前缀、未来预约共存，不改变前缀活动及预约时间窗口
+ok 351 - 集合必去与固定前缀、未来预约共存，不改变前缀活动及预约时间窗口
+  ---
+  duration_ms: 11.1705
+  type: 'test'
+  ...
+# Subtest: 束宽 1 保留低分必去的访问进度，不能被高分非必去分支吞掉
+ok 352 - 束宽 1 保留低分必去的访问进度，不能被高分非必去分支吞掉
+  ---
+  duration_ms: 3.2016
+  type: 'test'
+  ...
+# Subtest: 分片生成器经过实际 yield 后仍满足所有必去及多个不去约束
+ok 353 - 分片生成器经过实际 yield 后仍满足所有必去及多个不去约束
+  ---
+  duration_ms: 45.3677
+  type: 'test'
+  ...
+# Subtest: 阶段上限不足时同步与生成器均不得将遗漏必去的部分计划判为成功
+ok 354 - 阶段上限不足时同步与生成器均不得将遗漏必去的部分计划判为成功
+  ---
+  duration_ms: 1.1608
+  type: 'test'
+  ...
+# Subtest: 两场景登记60分钟规划停留及各自每日时段
+ok 355 - 两场景登记60分钟规划停留及各自每日时段
+  ---
+  duration_ms: 2.1369
+  type: 'test'
+  ...
+# Subtest: 校内游荡上午及夜晚均允许，跨午夜仍连续开放
+ok 356 - 校内游荡上午及夜晚均允许，跨午夜仍连续开放
+  ---
+  duration_ms: 8.2934
+  type: 'test'
+  ...
+# Subtest: 看星星19点至次日06点连续开放，18:59和白天拒绝且停留须完整覆盖
+ok 357 - 看星星19点至次日06点连续开放，18:59和白天拒绝且停留须完整覆盖
+  ---
+  duration_ms: 0.9565
+  type: 'test'
+  ...
+# Subtest: 真实引擎夜晚固定前缀允许通用校内游荡和看星星且不限定宿舍区
+ok 358 - 真实引擎夜晚固定前缀允许通用校内游荡和看星星且不限定宿舍区
+  ---
+  duration_ms: 412.6165
+  type: 'test'
+  ...
+# Subtest: 通用校内游荡的真实夜晚前缀不要求华农权限
+ok 359 - 通用校内游荡的真实夜晚前缀不要求华农权限
+  ---
+  duration_ms: 653.9824
+  type: 'test'
+  ...
+# Subtest: 真实引擎固定前缀不能绕过东区实验楼学校权限或看星星下午关闭时段
+ok 360 - 真实引擎固定前缀不能绕过东区实验楼学校权限或看星星下午关闭时段
+  ---
+  duration_ms: 29.7621
+  type: 'test'
+  ...
+# Subtest: 学校和宿舍区依赖范围归一化，all和未知选择不能保留专属地点权限
+ok 361 - 学校和宿舍区依赖范围归一化，all和未知选择不能保留专属地点权限
+  ---
+  duration_ms: 5.8142
+  type: 'test'
+  ...
+# Subtest: 通用校园、学校级、泰山区三层权限及活动范围使用同一个helper
+ok 362 - 通用校园、学校级、泰山区三层权限及活动范围使用同一个helper
+  ---
+  duration_ms: 0.776
+  type: 'test'
+  ...
+# Subtest: 全部场景显式声明学校属性，名称类别描述中的华农地点没有漏标
+ok 363 - 全部场景显式声明学校属性，名称类别描述中的华农地点没有漏标
+  ---
+  duration_ms: 2.0573
+  type: 'test'
+  ...
+# Subtest: 校内游荡和院楼顶楼看星星保留稳定ID，均适用于通用校园
+ok 364 - 校内游荡和院楼顶楼看星星保留稳定ID，均适用于通用校园
+  ---
+  duration_ms: 0.8627
+  type: 'test'
+  ...
+# Subtest: 未选华农的真实目录在校内及周边night自动规划包含通用校园停留
+ok 365 - 未选华农的真实目录在校内及周边night自动规划包含通用校园停留
+  ---
+  duration_ms: 1531.7997
+  type: 'test'
+  ...
+# Subtest: 构建器拒绝未知学校、未知校区和不一致的专属地点属性
+ok 366 - 构建器拒绝未知学校、未知校区和不一致的专属地点属性
+  ---
+  duration_ms: 51.2547
+  type: 'test'
+  ...
+# Subtest: 探索和普通候选、最终行程均不泄漏未选择的学校或宿舍区专属场景
+ok 367 - 探索和普通候选、最终行程均不泄漏未选择的学校或宿舍区专属场景
+  ---
+  duration_ms: 62.2872
+  type: 'test'
+  ...
+# Subtest: 人工固定前缀、锚点、必去地点不能绕过学校或宿舍区校验
+ok 368 - 人工固定前缀、锚点、必去地点不能绕过学校或宿舍区校验
+  ---
+  duration_ms: 2.1461
+  type: 'test'
+  ...
+# Subtest: 饭点餐卡及未评估菜单过滤学校专属地点，固定餐馆同样校验
+ok 369 - 饭点餐卡及未评估菜单过滤学校专属地点，固定餐馆同样校验
+  ---
+  duration_ms: 13.5833
+  type: 'test'
+  ...
+# Subtest: 通用校园食堂及其挂载活动只有原创设计依据，不把华农地点事实推广到所有学校
+ok 370 - 通用校园食堂及其挂载活动只有原创设计依据，不把华农地点事实推广到所有学校
+  ---
+  duration_ms: 1.3201
+  type: 'test'
+  ...
+# Subtest: 未选华农的真实目录在校内及校内周边均可规划早餐、午餐、晚餐
+ok 371 - 未选华农的真实目录在校内及校内周边均可规划早餐、午餐、晚餐
+  ---
+  duration_ms: 5154.6436
+  type: 'test'
+  ...
+# Subtest: 新加载不预选学校或宿舍区，学校选择支持复盘
+ok 372 - 新加载不预选学校或宿舍区，学校选择支持复盘
+  ---
+  duration_ms: 3.0199
+  type: 'test'
+  ...
+# Subtest: 复盘拒绝未知学校、未知宿舍区及脱离父条件的选择
+ok 373 - 复盘拒绝未知学校、未知宿舍区及脱离父条件的选择
+  ---
+  duration_ms: 1.2515
+  type: 'test'
+  ...
+# Subtest: 旧复盘没有学校字段时仍通过格式检查，不推定华农身份
+ok 374 - 旧复盘没有学校字段时仍通过格式检查，不推定华农身份
+  ---
+  duration_ms: 0.2971
+  type: 'test'
+  ...
+# Subtest: 取消学校或宿舍区解除专属固定餐馆，保留通用餐馆和特殊餐次选择
+ok 375 - 取消学校或宿舍区解除专属固定餐馆，保留通用餐馆和特殊餐次选择
+  ---
+  duration_ms: 2.0891
+  type: 'test'
+  ...
+# Subtest: 所有入口共享学校、宿舍区与活动范围权限
+ok 376 - 所有入口共享学校、宿舍区与活动范围权限
+  ---
+  duration_ms: 3.1501
+  type: 'test'
+  ...
+# Subtest: 不限制或未选学校会清空隐藏后代，包括旧导入值
+ok 377 - 不限制或未选学校会清空隐藏后代，包括旧导入值
+  ---
+  duration_ms: 0.3309
+  type: 'test'
+  ...
+# Subtest: 表单首次未选学校和宿舍区；父项变化同步清空，不会在展开后复活
+ok 378 - 表单首次未选学校和宿舍区；父项变化同步清空，不会在展开后复活
+  ---
+  duration_ms: 0.7015
+  type: 'test'
+  ...
+# Subtest: 泰山区 radio 再次点击标签或空格激活可恢复未选
+ok 379 - 泰山区 radio 再次点击标签或空格激活可恢复未选
+  ---
+  duration_ms: 0.5132
+  type: 'test'
+  ...
+# Subtest: 地点同步与父范围切换清理隐藏必去、不去以及旧 anchors
+ok 380 - 地点同步与父范围切换清理隐藏必去、不去以及旧 anchors
+  ---
+  duration_ms: 2.0187
+  type: 'test'
+  ...
+# Subtest: 知识图谱去除范围外场景、专属活动和关联边，保留通用活动
+ok 381 - 知识图谱去除范围外场景、专属活动和关联边，保留通用活动
+  ---
+  duration_ms: 0.5263
+  type: 'test'
+  ...
+# Subtest: 推荐与用餐候选、对比备选过滤不修改引擎原始结果
+ok 382 - 推荐与用餐候选、对比备选过滤不修改引擎原始结果
+  ---
+  duration_ms: 0.5826
+  type: 'test'
+  ...
+# Subtest: 真实知识库中已验证的场景与活动，点击后在最小搜索预算下仍有完整路径
+ok 383 - 真实知识库中已验证的场景与活动，点击后在最小搜索预算下仍有完整路径
+  ---
+  duration_ms: 5314.6986
+  type: 'test'
+  ...
+# Subtest: 固定seed默认探索选次优，utility_best在同一高探索搜索中选择已发现最高真实效用
+ok 384 - 固定seed默认探索选次优，utility_best在同一高探索搜索中选择已发现最高真实效用
+  ---
+  duration_ms: 948.1804
+  type: 'test'
+  ...
+# Subtest: 多个固定seed保留默认探索路线变化，显式择优逐次取本轮发现最高效用
+ok 385 - 多个固定seed保留默认探索路线变化，显式择优逐次取本轮发现最高效用
+  ---
+  duration_ms: 891.7643
+  type: 'test'
+  ...
+# Subtest: 择优对全部完整终态取最大值，包括早于maxStages结束的最优方案
+ok 386 - 择优对全部完整终态取最大值，包括早于maxStages结束的最优方案
+  ---
+  duration_ms: 13.1825
+  type: 'test'
+  ...
+# Subtest: 高探索真实目标仍奖励新颖性，utility_best不等价于把exploration清零
+ok 387 - 高探索真实目标仍奖励新颖性，utility_best不等价于把exploration清零
+  ---
+  duration_ms: 2.8485
+  type: 'test'
+  ...
+# Subtest: 资源前序、必去和预约仍固定，knownPlan在最小预算下兜底并完整复盘
+ok 388 - 资源前序、必去和预约仍固定，knownPlan在最小预算下兜底并完整复盘
+  ---
+  duration_ms: 50.3248
+  type: 'test'
+  ...
+# Subtest: 高探索择优复盘保存selectionMode且全部fingerprint保持一致
+ok 389 - 高探索择优复盘保存selectionMode且全部fingerprint保持一致
+  ---
+  duration_ms: 282.8624
+  type: 'test'
+  ...
+# Subtest: 零探索旧调用自动归一为utility_best且不受seed影响，无效mode等价于省略
+ok 390 - 零探索旧调用自动归一为utility_best且不受seed影响，无效mode等价于省略
+  ---
+  duration_ms: 1532.9107
+  type: 'test'
+  ...
+# Subtest: 分别DOM在探索度79没有露营卡，80验证后显示，降回79移除旧卡
+ok 391 - 分别DOM在探索度79没有露营卡，80验证后显示，降回79移除旧卡
+  ---
+  duration_ms: 107.6912
+  type: 'test'
+  ...
+# Subtest: 真实宵夜标题按钮无需候选witness即可跳过，busy禁用且卡片不含skip
+ok 392 - 真实宵夜标题按钮无需候选witness即可跳过，busy禁用且卡片不含skip
+  ---
+  duration_ms: 32.318
+  type: 'test'
+  ...
+# Subtest: 按钮仅未跳过宵夜存在，失败虚拟宵夜可恢复，skip的pending/render立即移除占位
+ok 393 - 按钮仅未跳过宵夜存在，失败虚拟宵夜可恢复，skip的pending/render立即移除占位
+  ---
+  duration_ms: 112.3106
+  type: 'test'
+  ...
+# Subtest: 跳过宵夜保留此前人工prefix和预约，释放当前及后续选择而不锁住自动时间
+ok 394 - 跳过宵夜保留此前人工prefix和预约，释放当前及后续选择而不锁住自动时间
+  ---
+  duration_ms: 1.5591
+  type: 'test'
+  ...
+# Subtest: evening/night的skip重规划连接宵夜前后时间，保留前序并无宵夜阶段或额外等待
+ok 395 - evening/night的skip重规划连接宵夜前后时间，保留前序并无宵夜阶段或额外等待
+  ---
+  duration_ms: 39.2969
+  type: 'test'
+  ...
+# Subtest: 会面前早餐支持特殊卡，宵夜跳过已移到标题按钮且不再接受旧卡ID
+ok 396 - 会面前早餐支持特殊卡，宵夜跳过已移到标题按钮且不再接受旧卡ID
+  ---
+  duration_ms: 2.9973
+  type: 'test'
+  ...
+# Subtest: 再点击当前餐馆保留已经勾选的玩法，换馆才取新的实际餐食
+ok 397 - 再点击当前餐馆保留已经勾选的玩法，换馆才取新的实际餐食
+  ---
+  duration_ms: 0.4849
+  type: 'test'
+  ...
+# Subtest: 保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选择和稳定 key
+ok 398 - 保留阶段的真实 DOM 顺序、候选集合、评分更新、即时选择和稳定 key
+  ---
+  duration_ms: 137.2782
+  type: 'test'
+  ...
+# Subtest: 每个 scene 和当前活动 toggle 都门控，verified 才传 witness；旧轮结果被拒绝
+ok 399 - 每个 scene 和当前活动 toggle 都门控，verified 才传 witness；旧轮结果被拒绝
+  ---
+  duration_ms: 84.8799
+  type: 'test'
+  ...
+# Subtest: 冲突卡隐藏；有限搜索失败可浏览且不可选；已选活动不会被非法取消
+ok 400 - 冲突卡隐藏；有限搜索失败可浏览且不可选；已选活动不会被非法取消
+  ---
+  duration_ms: 100.1474
+  type: 'test'
+  ...
+# Subtest: viewport 提优覆盖活动，pending 撤销可选性，特殊餐卡也携带 knownPlan
+ok 401 - viewport 提优覆盖活动，pending 撤销可选性，特殊餐卡也携带 knownPlan
+  ---
+  duration_ms: 44.0642
+  type: 'test'
+  ...
+# Subtest: 分别卡验证后携带 witness，pending 不接收证书，失败规划允许特殊餐恢复
+ok 402 - 分别卡验证后携带 witness，pending 不接收证书，失败规划允许特殊餐恢复
+  ---
+  duration_ms: 40.9157
+  type: 'test'
+  ...
+# Subtest: 未选中的未验证及冲突活动隐藏；重复点击当前场景传已验证 witness
+ok 403 - 未选中的未验证及冲突活动隐藏；重复点击当前场景传已验证 witness
+  ---
+  duration_ms: 23.3669
+  type: 'test'
+  ...
+# Subtest: verified 点击冻结前段顺序；探索排序与评分值保持确定
+ok 404 - verified 点击冻结前段顺序；探索排序与评分值保持确定
+  ---
+  duration_ms: 36.9833
+  type: 'test'
+  ...
+# Subtest: centerSelected 居中全部横条，包括保留用餐、当前阶段与分别；同选项仍门控
+ok 405 - centerSelected 居中全部横条，包括保留用餐、当前阶段与分别；同选项仍门控
+  ---
+  duration_ms: 48.8344
+  type: 'test'
+  ...
+# Subtest: utility_best 选择与 seeded_exploration 展示分离，stage/result displayMode 均保探索排名
+ok 406 - utility_best 选择与 seeded_exploration 展示分离，stage/result displayMode 均保探索排名
+  ---
+  duration_ms: 55.5108
+  type: 'test'
+  ...
+1..406
+# tests 406
+# suites 0
+# pass 404
+# fail 1
+# cancelled 0
+# skipped 1
+# todo 0
+# duration_ms 43085.4035

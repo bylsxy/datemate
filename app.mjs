@@ -1,23 +1,25 @@
-import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=a4420782c4d5e641';
-import {createTimeline} from './timeline.mjs?v=a4420782c4d5e641';
-import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=a4420782c4d5e641';
-import {createReasonView} from './reasons-view.mjs?v=a4420782c4d5e641';
-import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=a4420782c4d5e641';
-import {createPlacePicker} from './place-picker.mjs?v=a4420782c4d5e641';
-import {createLibraryView} from './library-view.mjs?v=a4420782c4d5e641';
-import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=a4420782c4d5e641';
-import {dietaryOptions} from './data/activities.mjs?v=a4420782c4d5e641';
-import * as reasoning from './reasoning.mjs?v=a4420782c4d5e641';
-import {normalizePeriods} from './time-periods.mjs?v=a4420782c4d5e641';
-import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=a4420782c4d5e641';
-import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=a4420782c4d5e641';
+import {catalog,rules,graph,sources,evidence} from './data/catalog.mjs?v=43ea07b0521b5869';
+import {createTimeline} from './timeline.mjs?v=43ea07b0521b5869';
+import {buildActionJobs,candidateKey} from './candidate-validation.mjs?v=43ea07b0521b5869';
+import {createReasonView} from './reasons-view.mjs?v=43ea07b0521b5869';
+import {defaultPreparationResources,planPreparations} from './preparation.mjs?v=43ea07b0521b5869';
+import {createPlacePicker} from './place-picker.mjs?v=43ea07b0521b5869';
+import {createLibraryView} from './library-view.mjs?v=43ea07b0521b5869';
+import {createSchoolScopeControls,normalizeUIScope,isSceneInUIScope,filterUIResult,filterUIGraph,filterScopedMealChoices} from './scope-ui.mjs?v=43ea07b0521b5869';
+import {dietaryOptions} from './data/activities.mjs?v=43ea07b0521b5869';
+import * as reasoning from './reasoning.mjs?v=43ea07b0521b5869';
+import {normalizePeriods} from './time-periods.mjs?v=43ea07b0521b5869';
+import {escapeHTML as esc,interestLabels,defaultContext,validateReplay,excludedKeywordIds} from './planner.mjs?v=43ea07b0521b5869';
+import {selectStageIntent,selectMealIntent,selectDepartureIntent,exploreIntent,setStageDurationIntent,splitStageIntent,mergeStageIntent,restartIntent,updateContextIntent} from './planning-intent.mjs?v=43ea07b0521b5869';
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
 const sceneById=new Map(catalog.scenes.map(s=>[s.id,s]));
+const activityById=new Map(catalog.activities.map(a=>[a.id,a]));
+const resourceLabelById=new Map((graph.nodes||[]).filter(n=>n.type==='resource').map(n=>[n.id.replace(/^resource:/,''),n.label]));
 const preparationDefaults=defaultPreparationResources(catalog);
 const newContext=()=>normalizeUIScope({...defaultContext(),school:'',campusArea:'',...structuredClone(preparationDefaults)});
 let state={context:newContext(),exploration:0,prefix:[]}, result=null, sequence=0, busy=false, pending=null, active=null, lastElapsed=0, sliderTimer, conditionTimer, conditionsValid=true;
 const clone=x=>structuredClone(x);
-const createWorker=()=>new Worker(new URL('./worker.mjs?v=a4420782c4d5e641',import.meta.url),{type:'module'});
+const createWorker=()=>new Worker(new URL('./worker.mjs?v=43ea07b0521b5869',import.meta.url),{type:'module'});
 const worker=createWorker();
 let validationWorker=null,validationGeneration=null,validationJobs=new Map();
 const timeline=createTimeline({catalog,onScene:commitStage,onActivities:commitStage,onMeal:commitMeal,onDeparture:commitDeparture,onDuration:commitDuration,onSplit:commitSplit,onMerge:commitMerge,getIntent:snapshot,onCandidateVisible:prioritizeCandidate,onActionsChanged:startValidation});
@@ -25,6 +27,163 @@ const placePicker=createPlacePicker({root:$('.place-choice'),scenes:catalog.scen
 const scopeControls=createSchoolScopeControls($('#conditions-form'));
 const reasonView=createReasonView({container:$('#reason-content'),scenes:catalog.scenes,rules});
 const libraryView=createLibraryView({container:$('#library-content'),catalog,sources,evidence,rules});
+
+const ATLAS_STORAGE_KEY='datemate_atlas_v1';
+const FEATURED_SCENE_META={
+  scau_orchid_firefly:{badge:'时段与天气限定',clue:'华农校内 · 晴朗天气 · 傍晚 18:00–20:00 开放窗口',preset:'scau_firefly'},
+  faculty_rooftop_stars:{badge:'夜间限定',clue:'晚间 19:00 至次日 06:00 开放 · 晴天或待确认天气',preset:'zero_budget'},
+  campus_picnic:{badge:'图谱物资联动',clue:'需先在【泰山超市】完成【采购一份野餐包】（provides → requires）',preset:'scau_firefly'},
+  scau_arboretum_day:{badge:'华农限定',clue:'华农校内 · 白天 08:00–17:30 · 晴天自然观察与人像'},
+  quiet_confession_corner:{badge:'情境专属',clue:'傍晚 16:00–21:00 · 晴天 · 适合准备表白与安静交流'},
+  photo_printing:{badge:'图谱前序联动',clue:'需先完成含【共同拍照 (photo_pair)】的前序活动（follows 边）'},
+  dream_balloon_trip:{badge:'探索度 100 限定',clue:'将探索度滑块拉至 100 开启梦幻模式，且活动范围不限',preset:'dream_100'},
+  dream_island_day:{badge:'探索度 100 限定',clue:'探索度 100 梦幻模式专属全天跨城海岛线',preset:'dream_100'},
+  dream_concert_trip:{badge:'探索度 100 限定',clue:'探索度 100 梦幻模式 · 晚间演出行程',preset:'dream_100'},
+  seaside_sunrise:{badge:'跨午夜/黎明限定',clue:'需先完成海边去程，在清晨窗口衔接日出观察'},
+  astronomy_session:{badge:'夜间观星限定',clue:'晚间至凌晨窗口开放 · 适合安静与自然偏好'},
+  open_air_cinema:{badge:'晚间限定',clue:'晚间时段开放 · 晴朗或干爽天气下的露天放映'},
+  cross_district_day:{badge:'半日探索',clue:'下午连续时段 · 适合高探索度或纪念日跨区漫游',preset:'dream_100'},
+  campus_exam_short_meet:{badge:'时期规则触发',clue:'时期选择【临考】时由 R-exam-campus-short 规则优先推荐',preset:'exam_short'}
+};
+let unlockedAtlas={scenes:new Set(),activities:new Set()};
+let currentAtlasFilter='featured';
+let toastTimer=null;
+function loadAtlasState(){
+  try{
+    const raw=localStorage.getItem(ATLAS_STORAGE_KEY);
+    if(raw){
+      const parsed=JSON.parse(raw);
+      unlockedAtlas.scenes=new Set(Array.isArray(parsed.scenes)?parsed.scenes:[]);
+      unlockedAtlas.activities=new Set(Array.isArray(parsed.activities)?parsed.activities:[]);
+    }
+  }catch{}
+}
+function saveAtlasState(){
+  try{
+    localStorage.setItem(ATLAS_STORAGE_KEY,JSON.stringify({scenes:[...unlockedAtlas.scenes],activities:[...unlockedAtlas.activities]}));
+  }catch{}
+}
+loadAtlasState();
+
+function updateAtlasCounters(){
+  const total=catalog.scenes.length+catalog.activities.length;
+  const count=unlockedAtlas.scenes.size+unlockedAtlas.activities.size;
+  const h=$('#header-atlas-count');if(h)h.textContent=`${count} / ${total}`;
+  const i=$('#inline-atlas-count');if(i)i.textContent=`${count}/${total}`;
+}
+function fmtWindow(w){
+  const f=m=>`${String(Math.floor((m%1440)/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+  return `${f(w.startMinute)}–${w.endMinute===1440?'24:00':f(w.endMinute)}`;
+}
+function sceneClueText(scene){
+  if(FEATURED_SCENE_META[scene.id]?.clue)return FEATURED_SCENE_META[scene.id].clue;
+  const parts=[];
+  if(scene.scauOnly)parts.push(scene.place?.campusArea==='taishan'?'华农泰山区专属':'华农校内专属');
+  if(scene.dreamOnly)parts.push('探索度 = 100（梦幻模式）');
+  if(scene.dailyWindows?.length&&!(scene.dailyWindows.length===1&&scene.dailyWindows[0].startMinute===0&&scene.dailyWindows[0].endMinute===1440)){
+    parts.push(`开放时段 ${scene.dailyWindows.map(fmtWindow).join(' / ')}`);
+  }
+  const reqs=[...(scene.requires||[]),...(scene.preconditions||[])];
+  if(reqs.length)parts.push(`前置条件：${reqs.map(r=>resourceLabelById.get(r)||r).join('、')}`);
+  if(scene.weather?.length===1&&scene.weather[0]==='clear')parts.push('仅限晴天');
+  return parts.join(' · ')||'常规条件即可在对应时段匹配';
+}
+function recordPlanUnlocks(r){
+  if(!r?.ok||!Array.isArray(r.stages))return;
+  let newlyFeatured=null;
+  for(const stage of r.stages){
+    if(stage.sceneId){
+      const wasUnlocked=unlockedAtlas.scenes.has(stage.sceneId);
+      unlockedAtlas.scenes.add(stage.sceneId);
+      if(!wasUnlocked&&FEATURED_SCENE_META[stage.sceneId]&&!newlyFeatured){
+        newlyFeatured={scene:sceneById.get(stage.sceneId),meta:FEATURED_SCENE_META[stage.sceneId],fit:stage.fitScore};
+      }
+    }
+    for(const aid of stage.activityIds||[])unlockedAtlas.activities.add(aid);
+  }
+  saveAtlasState();
+  updateAtlasCounters();
+  if(newlyFeatured?.scene)showUnlockToast(newlyFeatured.scene,newlyFeatured.meta,newlyFeatured.fit);
+}
+function showUnlockToast(scene,meta,fit){
+  const toast=$('#unlock-toast');if(!toast)return;
+  $('#unlock-toast-title').textContent=`${scene.title}（${meta.badge}）`;
+  $('#unlock-toast-desc').textContent=`${meta.clue}${Number.isFinite(fit)?` · 本次契合度 ${fit}`:''}`;
+  toast.hidden=false;
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{toast.hidden=true;},6500);
+}
+function renderAtlasView(){
+  const summaryEl=$('#atlas-summary'),gridEl=$('#atlas-grid');
+  if(!summaryEl||!gridEl)return;
+  const total=catalog.scenes.length+catalog.activities.length;
+  const unlockedTotal=unlockedAtlas.scenes.size+unlockedAtlas.activities.size;
+  const scauScenes=catalog.scenes.filter(s=>s.scauOnly);
+  const scauUnlocked=scauScenes.filter(s=>unlockedAtlas.scenes.has(s.id)).length;
+  summaryEl.innerHTML=[
+    ['已点亮总计',`${unlockedTotal} / ${total}`],
+    ['场景图鉴',`${unlockedAtlas.scenes.size} / ${catalog.scenes.length}`],
+    ['活动图鉴',`${unlockedAtlas.activities.size} / ${catalog.activities.length}`],
+    ['华农专属地点',`${scauUnlocked} / ${scauScenes.length}`]
+  ].map(([label,val])=>`<div class="stat-tile"><strong>${esc(val)}</strong><span>${esc(label)}</span></div>`).join('');
+
+  let items=[];
+  if(currentAtlasFilter==='featured'){
+    items=catalog.scenes.filter(s=>FEATURED_SCENE_META[s.id]||s.dreamOnly||s.scauOnly).map(s=>({kind:'scene',item:s}));
+  }else if(currentAtlasFilter==='scau'){
+    items=catalog.scenes.filter(s=>s.scauOnly).map(s=>({kind:'scene',item:s}));
+  }else if(currentAtlasFilter==='linked'){
+    const linkedScenes=catalog.scenes.filter(s=>(s.requires?.length||s.provides?.length||s.predecessorIds?.length||s.activities?.some(a=>a.requires?.length||a.provides?.length||a.predecessorIds?.length)));
+    items=linkedScenes.map(s=>({kind:'scene',item:s}));
+  }else if(currentAtlasFilter==='scenes'){
+    items=catalog.scenes.map(s=>({kind:'scene',item:s}));
+  }else{
+    items=catalog.activities.map(a=>({kind:'activity',item:a}));
+  }
+
+  gridEl.innerHTML=items.map(({kind,item})=>{
+    const isScene=kind==='scene';
+    const unlocked=isScene?unlockedAtlas.scenes.has(item.id):unlockedAtlas.activities.has(item.id);
+    const meta=isScene?FEATURED_SCENE_META[item.id]:null;
+    const badge=meta?.badge||(isScene?(item.dreamOnly?'探索度 100':item.scauOnly?(item.place?.campusArea==='taishan'?'华农泰山区':'华农校内'):'常规场景'):'可选活动');
+    const cost=item.cost?`¥${item.cost[0]}–${item.cost[1]}`:'';
+    const duration=isScene&&item.minutes?`${item.minutes} 分钟`:'场景内活动';
+    const clue=isScene?sceneClueText(item):((item.requires?.length||item.provides?.length)?`图谱关联：${[...(item.requires||[]).map(r=>`需 ${resourceLabelById.get(r)||r}`),...(item.provides||[]).map(r=>`产出 ${resourceLabelById.get(r)||r}`)].join(' · ')}`:'挂载于对应场景卡内勾选触发');
+    const presetAttr=meta?.preset?`<button type="button" class="atlas-try-btn" data-try-preset="${esc(meta.preset)}">载入此情境</button>`:'';
+    return `<article class="atlas-card${unlocked?' is-unlocked':' is-locked'}">
+      <div class="atlas-card-top">
+        <span class="atlas-badge">${esc(badge)}</span>
+        <span class="atlas-status">${unlocked?'● 已点亮':'○ 待探索'}</span>
+      </div>
+      <h3 class="atlas-title">${esc(item.title)}</h3>
+      <p class="atlas-desc">${esc(unlocked?item.description:`尚未在当前行程中点亮。可通过下方知识图谱条件线索触发该${isScene?'场景':'活动'}。`)}</p>
+      <div class="atlas-clue"><strong>图谱线索：</strong>${esc(clue)}</div>
+      <div class="atlas-footer">
+        <span>${esc(duration)} · ${esc(cost)}</span>
+        ${presetAttr}
+      </div>
+    </article>`;
+  }).join('');
+}
+
+function updateConditionsSummary(){
+  const pillsEl=$('#conditions-summary-pills'),ctaEl=$('.conditions-summary-cta'),detailsEl=$('#conditions');
+  if(!pillsEl)return;
+  const c=state.context||{};
+  const slotNames={morning:'上午',afternoon:'下午',evening:'晚上',night:'夜晚'};
+  const slots=(c.periodIds||['afternoon']).map(id=>slotNames[id]||id).join('+');
+  const areaNames={all:'范围不限',near:'校内及周边',campus:c.school==='scau'?(c.campusArea==='taishan'?'华农泰山区':'华农校内'):'校内'};
+  const weatherNames={clear:'晴天',cloudy:'阴天',rain:'雨天',unknown:'阴天'};
+  const parts=[slots,areaNames[c.area]||'校内及周边',weatherNames[c.weather]||'阴天'];
+  if(c.budget!==null&&c.budget!==undefined)parts.push(`预算 ≤ ¥${c.budget}`);
+  if(c.fatigueA>=6||c.fatigueB>=6)parts.push('疲惫恢复');
+  if(c.season==='exam')parts.push('临考短会');
+  if(c.occasion==='confession')parts.push('准备表白');
+  else if(c.occasion==='anniversary')parts.push('纪念日');
+  pillsEl.textContent=parts.join(' · ');
+  if(ctaEl&&detailsEl)ctaEl.textContent=detailsEl.open?'收起参数':'展开 18 项参数';
+}
+
 function stopValidation(){validationWorker?.terminate();validationWorker=null;validationGeneration=null;validationJobs.clear();}
 function prioritizeCandidate(choice){
   const key=choice.actionKey||choice.key||candidateKey(choice);
@@ -155,6 +314,7 @@ function syncControls(){
   for(const [name,values]of [['preferencesA',c.preferencesA?.length?c.preferencesA:['']],['preferencesB',c.preferencesB?.length?c.preferencesB:['']],['diet',c.dietaryRestrictions],['slots',c.periodIds],['themes',c.themes],['area',[c.area]],['cityTier',[c.cityTier||'tier1']]])$$(`input[name="${name}"]`).forEach(x=>x.checked=(values||[]).includes(x.value));
   scopeControls.set(c);placePicker.setChoices({...c,bans:c.placeBans??c.bans});refreshGraphScope(c);
   $('#exploration').value=state.exploration;paintExploration(state.exploration);
+  updateConditionsSummary();
 }
 function traceText(t){return t.message||t.text||t.title||rules.find(r=>r.id===t.ruleId)?.title||t.rule||'规则已触发';}
 function traceHTML(t){const ins=t.inputFacts||[],outs=t.outputFacts||[];return `<div class="trace-item"><span class="trace-id">${esc(t.ruleId||t.id||t.rule||'状态更新')}</span><p>${esc(traceText(t))}</p>${ins.length?`<p>输入：${esc(ins.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}${outs.length?`<p>推导：${esc(outs.map(x=>typeof x==='string'?x:JSON.stringify(x)).join('；'))}</p>`:''}</div>`;}
@@ -176,12 +336,16 @@ function render({preserveThrough=-1,preserveKey=null}={}){
   timeline.render(result,{preserveThrough,preserveKey,centerSelected:true});
   const r=result;
   reasonView.setResult(r,state.context);
+  const shareBar=$('#plan-Share-bar');
   if(!r.ok){
     $('#ending').textContent='';$('#ending').hidden=true;
+    if(shareBar)shareBar.hidden=true;
     $('#replay-id').textContent='';$('#comparison').textContent='';$('#search-details').textContent='';$('#rule-trace').textContent='';
     for(const id of ['ending','reason-content','rule-trace','comparison','search-details'])document.getElementById(id).setAttribute('aria-busy','false');
     return;
   }
+  recordPlanUnlocks(r);
+  if(shareBar)shareBar.hidden=false;
   const balance=Math.ceil(r.totalCost[1]);$('#ending').hidden=balance===0;
   $('#ending').innerHTML=balance?`建议<strong>余额 ≥ ${balance} rmb</strong>`:'';
   $('#replay-id').textContent=`输入 ${r.fingerprint} · 输出 ${r.outputFingerprint}`;
@@ -199,7 +363,7 @@ async function commitStage(index,sceneId,activityIds,{knownPlan=null}={}){
 async function commitMeal(role,choice,{fromStage=0,knownPlan=null}={}){
   const skipSupper=role==='supper'&&choice.mode==='skip';
   if(!result||!conditionsValid||busy||(result.ok&&!knownPlan?.length&&!skipSupper))return false;
-  if(choice.sceneId&&!isSceneInUIScope(sceneById.get(choice.sceneId),snapshot().context))return false;
+  if(choice.sceneId&&!isSceneInUIScope(sceneById.get(sceneId),snapshot().context))return false;
   clearTimeout(sliderTimer);sliderTimer=null;
   if(choice.sceneId&&knownPlan?.[fromStage]?.sceneId===choice.sceneId&&Number.isInteger(knownPlan[fromStage].durationMinutes))choice={...choice,durationMinutes:knownPlan[fromStage].durationMinutes};
   const next=selectMealIntent(snapshot(),result,role,choice,fromStage,catalog);
@@ -275,8 +439,10 @@ function initializeKnowledge(){
   const counts=[['场景',catalog.scenes.length],['活动',catalog.activities.length],['规则',rules.length],['图谱边',graph.edges.length]];
 $('#knowledge-summary').innerHTML=counts.map(([l,n])=>`<div class="stat-tile"><strong>${n}</strong><span>${l}</span></div>`).join('');
   const adopted=sources.filter(s=>s.adoptedEvidenceIds?.length);$('#source-audit').innerHTML=`<p class="field-hint">${sources.length}份本地语料登记 · ${adopted.length}份来源形成采用证据 · ${evidence.length}条原创摘要。关键词候选经过局部核对后才能成为证据，模型参数单独标为设计值。</p>`+adopted.map(s=>`<div class="source-item"><strong>${esc(s.title)}</strong><br>${esc(s.category)} · ${s.adoptedEvidenceIds.length}条证据 · SHA-256 ${s.sha256.slice(0,14)}…<br>本地文本已定位；现实信息与作品归属需回源核实。</div>`).join('');
-  $('#conditions').open=true;
+  $('#conditions').open=false;
+  updateAtlasCounters();
 }
+$('#conditions').addEventListener('toggle',updateConditionsSummary);
 $('#conditions-form').addEventListener('submit',ev=>{ev.preventDefault();applyConditions({restart:true});});
 function conditionsError(message=''){
   conditionsValid=!message;
@@ -307,23 +473,212 @@ $('#budget').addEventListener('input',()=>{clearTimeout(conditionTimer);$('#expo
 $('#ban-keywords').addEventListener('input',()=>{clearTimeout(conditionTimer);$('#export').disabled=true;conditionTimer=setTimeout(applyConditions,160);});
 $('#exploration').addEventListener('input',ev=>{const e=Number(ev.target.value);paintExploration(e);clearTimeout(sliderTimer);sliderTimer=null;sliderTimer=setTimeout(()=>{sliderTimer=null;const seed=crypto.getRandomValues(new Uint32Array(1))[0];const next=exploreIntent(snapshot(),e,seed,catalog);compute(next,'已保留你的选择，为后面换些灵感。',{selectionMode:'seeded_exploration',preserveThrough:next.prefix.length-1});},130);});
 $('#restart-plan').addEventListener('click',()=>{if(!conditionsValid||busy)return;clearTimeout(sliderTimer);sliderTimer=null;const next=restartIntent(displayedIntent(),crypto.getRandomValues(new Uint32Array(1))[0]);compute(next,'已重新推荐，仍可从上往下慢慢选。',{selectionMode:next.exploration>0?'seeded_exploration':'utility_best'});});
+
+const PRESET_CONFIGS={
+  scau_firefly:()=>{
+    const periods=normalizePeriods(['afternoon','evening']);
+    return {
+      context:normalizeUIScope({...newContext(),...periods,weather:'clear',weekPart:'weekend',relationship:'flirting',occasion:'confession',area:'campus',school:'scau',campusArea:'taishan',budget:100,preferencesA:['nature','photo'],preferencesB:['romantic','night'],preparedIds:['venue_checked','phone_camera','picnic_mat','water']}),
+      exploration:0,
+      prefix:[
+        {sceneId:'supermarket',activityIds:['purchase_picnic'],durationMinutes:30},
+        {sceneId:'campus_picnic',activityIds:['picnic_share','picnic_cloud'],durationMinutes:180},
+        {sceneId:'canteen',activityIds:['campus_budget_meal'],durationMinutes:45},
+        {sceneId:'scau_orchid_firefly',activityIds:['firefly_observe','firefly_evening_notes'],durationMinutes:40},
+        {sceneId:'bridge_walk',activityIds:['bridge_view']}
+      ],
+      message:'已载入【华农泰山 · 野餐物资链与兰园傍晚观萤】完整链路。'
+    };
+  },
+  rain_fatigue:()=>{
+    const periods=normalizePeriods(['afternoon']);
+    return {
+      context:normalizeUIScope({...newContext(),...periods,weather:'rain',fatigueA:6,fatigueB:6,area:'near'}),
+      exploration:0,
+      prefix:[],
+      message:'已载入【雨天疲惫】情境：触发两轮产生式推导（R-fatigue-derive → R-fatigue-rest）。'
+    };
+  },
+  exam_short:()=>{
+    const periods=normalizePeriods(['evening']);
+    return {
+      context:normalizeUIScope({...newContext(),...periods,season:'exam',area:'campus',school:'scau'}),
+      exploration:0,
+      prefix:[],
+      message:'已载入【临考间隙】情境：触发 R-exam-campus-short 短会规则。'
+    };
+  },
+  zero_budget:()=>{
+    const periods=normalizePeriods(['evening']);
+    return {
+      context:normalizeUIScope({...newContext(),...periods,budget:0,weather:'clear',themes:['romantic'],area:'campus',school:'scau',campusArea:'taishan'}),
+      exploration:0,
+      prefix:[
+        {sceneId:'scau_orchid_firefly',activityIds:['firefly_observe','firefly_evening_notes'],durationMinutes:40},
+        {sceneId:'dorm_downstairs_shelter',activityIds:['talk_next']}
+      ],
+      message:'已载入【零预算校园夜游】情境：0 元硬约束下的傍晚观萤与夜谈。'
+    };
+  },
+  dream_100:()=>{
+    const periods=normalizePeriods(['morning','afternoon','evening']);
+    return {
+      context:normalizeUIScope({...newContext(),...periods,occasion:'anniversary',area:'all',mealChoices:{breakfast:{sceneId:'campus_canteen',activityIds:['breakfast_eat']}}}),
+      exploration:100,
+      prefix:[],
+      message:'已载入【纪念日 · 探索度 100】梦幻模式行程。'
+    };
+  }
+};
+async function applyPreset(presetKey){
+  const builder=PRESET_CONFIGS[presetKey];if(!builder)return;
+  clearTimeout(sliderTimer);sliderTimer=null;clearTimeout(conditionTimer);conditionTimer=null;
+  $$('.preset-chip').forEach(btn=>btn.classList.toggle('active',btn.dataset.preset===presetKey));
+  if($('#view-plan').hidden)showView('plan');
+  const cfg=builder();
+  state={context:cfg.context,exploration:cfg.exploration,prefix:cfg.prefix};
+  syncControls();
+  await compute(state,cfg.message,{selectionMode:cfg.exploration>0?'seeded_exploration':'utility_best'});
+}
+$$('[data-preset]').forEach(btn=>btn.addEventListener('click',()=>applyPreset(btn.dataset.preset)));
+$$('[data-atlas-filter]').forEach(btn=>btn.addEventListener('click',()=>{
+  currentAtlasFilter=btn.dataset.atlasFilter;
+  $$('[data-atlas-filter]').forEach(x=>x.classList.toggle('active',x===btn));
+  renderAtlasView();
+}));
+$('#atlas-grid')?.addEventListener('click',ev=>{
+  const btn=ev.target.closest('[data-try-preset]');
+  if(btn)applyPreset(btn.dataset.tryPreset);
+});
+
 function closeMenu(){ $('#more-menu').hidden=true;$('#more-menu-toggle').setAttribute('aria-expanded','false'); }
 function showView(name){
   closeMenu();$$('.view').forEach(x=>x.hidden=x.id!==`view-${name}`);
-  $('#menu-home').hidden=name==='plan';$('.sidebar').hidden=name==='library';
+  $('#menu-home').hidden=name==='plan';$('.sidebar').hidden=name!=='plan';
+  const presetBar=$('.preset-bar');if(presetBar)presetBar.hidden=name!=='plan';
   if(name==='library')libraryView.render();
+  if(name==='atlas')renderAtlasView();
   if(name==='plan')timeline.recenter();
   validationWorker?.postMessage({type:'pauseValidation',paused:name!=='plan'||document.hidden});
   if(name==='plan')timeline.refreshVisibleCandidates();
   window.scrollTo({top:0,behavior:matchMedia('(prefers-reduced-motion: reduce)').matches?'auto':'smooth'});
-  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 4.4.1</p><p>知识库 · ${esc(catalog.version)}</p><h3>小组成员</h3><p>徐阳、廖信同、黎欣欣、周艳雯、殷浚峰</p>`;
+  if(name==='about')$('#about-info').innerHTML=`<p>DateMate · 版本 5.0.0</p><p>知识库 · ${esc(catalog.version)}（${sources.length} 份语料 / ${graph.nodes.length} 节点 / ${graph.edges.length} 边）</p><h3>小组成员</h3><p>徐阳、廖信同、黎欣欣、周艳雯、殷浚峰</p>`;
 }
 $('#more-menu-toggle').addEventListener('click',()=>{const open=$('#more-menu').hidden;$('#more-menu').hidden=!open;$('#more-menu-toggle').setAttribute('aria-expanded',String(open));});
 $$('[data-view]').forEach(button=>button.addEventListener('click',()=>showView(button.dataset.view)));
 $$('[data-home]').forEach(button=>button.addEventListener('click',()=>showView('plan')));
 document.addEventListener('click',event=>{if(!event.target.closest('#more-menu')&&!event.target.closest('#more-menu-toggle'))closeMenu();});
-document.addEventListener('keydown',event=>{if(event.key==='Escape')closeMenu();});
+document.addEventListener('keydown',event=>{if(event.key==='Escape'){closeMenu();if($('#poster-modal'))$('#poster-modal').hidden=true;}});
 $('#query-graph').addEventListener('click',graphQuery);
+
+function drawItineraryPoster(){
+  if(!result?.ok)return;
+  const canvas=$('#poster-canvas');if(!canvas)return;
+  const ctx=canvas.getContext('2d');
+  const W=760,H=Math.max(960,360+result.stages.length*118);
+  canvas.width=W;canvas.height=H;
+  ctx.fillStyle='#fbf9f6';ctx.fillRect(0,0,W,H);
+  ctx.strokeStyle='#e8e4e0';ctx.lineWidth=2;ctx.strokeRect(24,24,W-48,H-48);
+
+  ctx.fillStyle='#b54869';
+  ctx.fillRect(56,56,44,44);
+  ctx.fillStyle='#ffffff';
+  ctx.font='bold 30px Georgia, serif';
+  ctx.fillText('d.',66,88);
+
+  ctx.fillStyle='#252736';
+  ctx.font='600 28px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText('DateMate · 约会行程单',116,84);
+  ctx.fillStyle='#737582';
+  ctx.font='400 14px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText($('#conditions-summary-pills')?.textContent||'确定性知识图谱与产生式推理生成',116,108);
+
+  ctx.strokeStyle='#e8e4e0';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(56,132);ctx.lineTo(W-56,132);ctx.stroke();
+
+  const fmt=m=>`${String(Math.floor((m%1440)/60)).padStart(2,'0')}:${String(m%60).padStart(2,'0')}`;
+  let y=168;
+  result.stages.forEach((st,idx)=>{
+    const sc=sceneById.get(st.sceneId);
+    const title=sc?.title||st.sceneId;
+    const acts=(st.activityIds||[]).map(aid=>sc?.activities?.find(a=>a.id===aid)?.title||activityById.get(aid)?.title||aid).join(' / ')||'自由停留与交流';
+    const meta=FEATURED_SCENE_META[st.sceneId];
+
+    ctx.fillStyle='#ffffff';
+    ctx.fillRect(56,y,W-112,96);
+    ctx.strokeStyle=meta?'#b54869':'#e8e4e0';
+    ctx.lineWidth=meta?1.5:1;
+    ctx.strokeRect(56,y,W-112,96);
+
+    ctx.fillStyle='#b54869';
+    ctx.font='600 15px ui-monospace,Consolas,monospace';
+    ctx.fillText(`${String(idx+1).padStart(2,'0')}  ${fmt(st.start ?? st.startMinute)}–${fmt(st.end ?? st.endMinute)}`,76,y+32);
+
+    ctx.fillStyle='#252736';
+    ctx.font='600 20px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText(title,230,y+33);
+
+    if(meta){
+      ctx.fillStyle='#fae7ee';
+      ctx.fillRect(W-210,y+14,136,24);
+      ctx.fillStyle='#b54869';
+      ctx.font='600 12px "PingFang SC","Microsoft YaHei",sans-serif';
+      ctx.fillText(meta.badge,W-198,y+30);
+    }
+
+    ctx.fillStyle='#737582';
+    ctx.font='400 14px "PingFang SC","Microsoft YaHei",sans-serif';
+    ctx.fillText(`活动：${acts.slice(0,36)}`,76,y+66);
+    const costArr=st.cost||(st.costCents?st.costCents.map(v=>v/100):[0,0]);
+    ctx.fillText(`费用 ¥${costArr[0]}–${costArr[1]} · 契合指数 ${st.fitScore ?? '—'}`,W-260,y+66);
+    y+=114;
+  });
+
+  y+=14;
+  ctx.strokeStyle='#e8e4e0';ctx.lineWidth=1;
+  ctx.beginPath();ctx.moveTo(56,y);ctx.lineTo(W-56,y);ctx.stroke();
+  y+=34;
+
+  const cost=result.totalCost||[0,0];
+  const m=result.metrics||{};
+  ctx.fillStyle='#252736';
+  ctx.font='600 18px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText(`预计双人总费用：¥${cost[0]}–${cost[1]}`,56,y);
+  ctx.fillStyle='#737582';
+  ctx.font='400 13px "PingFang SC","Microsoft YaHei",sans-serif';
+  ctx.fillText(`双人效用 ${Math.round(m.utilityA||0)} / ${Math.round(m.utilityB||0)} · 公平度 ${Math.round((m.fairness||1)*100)}% · 已点亮图鉴 ${unlockedAtlas.scenes.size+unlockedAtlas.activities.size}/236`,56,y+28);
+  ctx.font='400 12px ui-monospace,Consolas,monospace';
+  ctx.fillText(`输出校验指纹 #${result.outputFingerprint} · 788 节点知识图谱 + 59 条产生式规则驱动`,56,y+54);
+  ctx.fillText('在线体验：bylsxy.github.io/datemate（《人工智能》第 17 组开源项目）',56,y+78);
+
+  const qx=W-152,qy=y-18,qs=96,cells=11,cs=qs/cells;
+  ctx.fillStyle='#ffffff';ctx.fillRect(qx-6,qy-6,qs+12,qs+12);
+  ctx.strokeStyle='#e8e4e0';ctx.strokeRect(qx-6,qy-6,qs+12,qs+12);
+  const seedStr=result.outputFingerprint||'datemate';
+  ctx.fillStyle='#252736';
+  for(let r=0;r<cells;r++){
+    for(let c=0;c<cells;c++){
+      const finder=(r<3&&c<3)||(r<3&&c>=cells-3)||(r>=cells-3&&c<3);
+      const bit=finder||((seedStr.charCodeAt((r*cells+c)%seedStr.length)+r*7+c*13)%3===0);
+      if(bit)ctx.fillRect(qx+c*cs,qy+r*cs,cs-0.8,cs-0.8);
+    }
+  }
+}
+$('#share-poster-btn')?.addEventListener('click',()=>{
+  if(!result?.ok)return;
+  drawItineraryPoster();
+  $('#poster-modal').hidden=false;
+});
+$('#poster-close-btn')?.addEventListener('click',()=>{$('#poster-modal').hidden=true;});
+$('#poster-modal')?.addEventListener('click',ev=>{if(ev.target===$('#poster-modal'))$('#poster-modal').hidden=true;});
+$('#poster-download-btn')?.addEventListener('click',()=>{
+  const canvas=$('#poster-canvas');if(!canvas)return;
+  const a=document.createElement('a');
+  a.href=canvas.toDataURL('image/png');
+  a.download=`DateMate_行程单_${result?.outputFingerprint||'plan'}.png`;
+  a.click();
+});
+
 async function copyText(text){
   if(navigator.clipboard?.writeText){try{await navigator.clipboard.writeText(text);return;}catch{}}
   const textarea=document.createElement('textarea'),focus=document.activeElement;
