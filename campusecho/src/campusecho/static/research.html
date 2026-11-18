@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#173f36">
+  <meta name="description" content="CampusEcho 知识图谱多跳问答、混合搜索与校园任务采纳工作台">
+  <title>CampusEcho · 多跳推理工作台</title>
+  <link rel="stylesheet" href="research.css?v=0.3.0">
+</head>
+<body data-view="search">
+  <a class="skip-link" href="#main-content">跳到主要内容</a>
+  <svg class="icon-sprite" aria-hidden="true" focusable="false">
+    <symbol id="i-search" viewBox="0 0 24 24"><circle cx="10.5" cy="10.5" r="6.5"/><path d="m15.5 15.5 5 5"/></symbol>
+    <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></symbol>
+    <symbol id="i-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4.5 21c.8-4.2 3.3-6.5 7.5-6.5s6.7 2.3 7.5 6.5"/></symbol>
+    <symbol id="i-play" viewBox="0 0 24 24"><path d="m8 5 11 7-11 7Z"/></symbol>
+    <symbol id="i-pause" viewBox="0 0 24 24"><path d="M8 5v14M16 5v14"/></symbol>
+    <symbol id="i-prev" viewBox="0 0 24 24"><path d="m15 6-6 6 6 6M7 5v14"/></symbol>
+    <symbol id="i-next" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6M17 5v14"/></symbol>
+    <symbol id="i-refresh" viewBox="0 0 24 24"><path d="M20 7v5h-5M4 17v-5h5"/><path d="M6.1 9a7 7 0 0 1 11.4-2L20 12M4 12l2.5 5a7 7 0 0 0 11.4-2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="m5 12 4 4L19 6"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M5 12h14m-5-5 5 5-5 5"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.2 1.2M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.2-1.2"/></symbol>
+    <symbol id="i-alert" viewBox="0 0 24 24"><path d="M12 3 2.8 20h18.4Z"/><path d="M12 9v5m0 3v.1"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-layers" viewBox="0 0 24 24"><path d="m12 3 9 5-9 5-9-5Zm-9 9 9 5 9-5M3 16l9 5 9-5"/></symbol>
+    <symbol id="i-code" viewBox="0 0 24 24"><path d="m8 6-6 6 6 6m8-12 6 6-6 6M14 4l-4 16"/></symbol>
+    <symbol id="i-route" viewBox="0 0 24 24"><circle cx="5" cy="18" r="2"/><circle cx="19" cy="6" r="2"/><path d="M7 18h4a4 4 0 0 0 4-4V8"/></symbol>
+  </svg>
+
+  <header class="app-header">
+    <div class="header-inner">
+      <a class="brand" href="#search" aria-label="CampusEcho 知识搜索首页">
+        <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 30 30"><path d="M5 23V12l10-6 10 6v11M3 24h24M9 24V14h12v10M13 24v-6h4v6M5 12h20"/></svg></span>
+        <span class="brand-copy"><strong>校园回响</strong><small>CAMPUS ECHO / 推理工作台</small></span>
+      </a>
+      <nav class="main-nav" aria-label="主功能">
+        <button type="button" class="nav-item is-active" data-view-target="search" aria-current="page"><svg class="icon"><use href="#i-search"/></svg><span>知识搜索</span></button>
+        <button type="button" class="nav-item" data-view-target="sandbox"><svg class="icon"><use href="#i-grid"/></svg><span>校园沙盒</span></button>
+      </nav>
+      <div class="header-actions">
+        <span class="connection-pill" id="connection-pill" data-state="loading"><i></i><span id="connection-text">正在连接知识库</span></span>
+        <button type="button" class="role-button" id="open-role-panel"><svg class="icon"><use href="#i-user"/></svg><span>角色现场</span><b id="role-state-dot" aria-label="角色现场有更新"></b></button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="app-view search-view" id="search" aria-labelledby="search-title">
+      <div class="view-heading">
+        <div>
+          <div class="eyebrow"><span></span>知识图谱搜索</div>
+          <h1 id="search-title">知识图谱多跳问答，加入 GA-A* 与分类器。</h1>
+          <p>以 BFS、A* 与 MCTS 为搜索底座，比较 GA-A*、GA+分类器和受限 LLM 引导的路径、代价与证据。</p>
+        </div>
+        <div class="heading-stats" aria-label="知识库概况">
+          <div><strong id="graph-node-count">—</strong><span>图节点</span></div>
+          <div><strong id="graph-edge-count">—</strong><span>关系边</span></div>
+          <div><strong id="question-count">—</strong><span>问题卡</span></div>
+        </div>
+      </div>
+
+      <section class="panel composer-panel" aria-labelledby="composer-title">
+        <div class="panel-heading composer-heading">
+          <div><span class="section-kicker">01 / 组合查询</span><h2 id="composer-title">这次要回答什么？</h2></div>
+          <button type="button" class="text-button" id="refresh-sources"><svg class="icon"><use href="#i-refresh"/></svg>刷新知识源</button>
+        </div>
+        <div class="question-cards" id="question-cards" aria-label="问题卡">
+          <div class="skeleton question-skeleton"></div><div class="skeleton question-skeleton"></div><div class="skeleton question-skeleton"></div>
+        </div>
+        <form class="query-builder" id="query-form">
+          <label class="query-field" for="query-input">
+            <span>组合查询</span>
+            <textarea id="query-input" rows="2" spellcheck="false">哪些论文或方法经过多跳关系与 Transformer 相关？请列出实体和支撑来源。</textarea>
+          </label>
+          <div class="entity-chips" id="entity-chips" aria-label="已选实体">
+            <button type="button" class="entity-chip" data-entity="model:attention"><span>模型</span>Transformer<svg class="icon"><use href="#i-close"/></svg></button>
+            <button type="button" class="entity-chip" data-entity="paper:attention"><span>论文</span>Attention Is All You Need<svg class="icon"><use href="#i-close"/></svg></button>
+            <button type="button" class="entity-chip" data-entity="method:attention"><span>方法</span>Self-Attention<svg class="icon"><use href="#i-close"/></svg></button>
+            <button type="button" class="entity-add" id="focus-graph">+ 从图谱添加</button>
+          </div>
+          <div class="query-actions">
+            <fieldset class="algorithm-picker" id="algorithm-picker">
+              <legend>搜索算法</legend>
+              <label><input type="radio" name="algorithm" value="astar" checked><span><b>A*</b><small>代价与启发</small></span></label>
+              <label><input type="radio" name="algorithm" value="ga_astar"><span><b>GA-A*</b><small>学习权重</small></span></label>
+              <label><input type="radio" name="algorithm" value="ga_classifier"><span><b>GA+分类器</b><small>路径价值</small></span></label>
+              <label><input type="radio" name="algorithm" value="mcts"><span><b>MCTS</b><small>访问与价值</small></span></label>
+              <label><input type="radio" name="algorithm" value="llm"><span><b>LLM 引导</b><small>评分与异常</small></span></label>
+            </fieldset>
+            <button class="primary-button run-button" id="run-search" type="submit"><svg class="icon"><use href="#i-search"/></svg><span>运行组合搜索</span><kbd>⌘ ↵</kbd></button>
+          </div>
+        </form>
+        <div class="source-notice" id="source-notice" role="status" aria-live="polite"><span class="notice-icon"><svg class="icon"><use href="#i-clock"/></svg></span><p>正在读取问题卡与知识图谱…</p></div>
+      </section>
+
+      <div class="research-grid">
+        <section class="panel graph-panel" id="graph-panel" aria-labelledby="graph-title">
+          <div class="panel-heading compact">
+            <div><span class="section-kicker">02 / 图谱入口</span><h2 id="graph-title">知识图谱</h2></div>
+            <span class="mini-status" id="graph-status">读取中</span>
+          </div>
+          <div class="graph-toolbar">
+            <label class="mini-search"><svg class="icon"><use href="#i-search"/></svg><input id="graph-filter" type="search" placeholder="筛选实体" aria-label="筛选知识图谱实体"></label>
+            <button type="button" class="icon-button" id="reset-graph" aria-label="重置图谱视图" title="重置图谱视图"><svg class="icon"><use href="#i-refresh"/></svg></button>
+          </div>
+          <div class="knowledge-graph" id="knowledge-graph" role="group" aria-label="可点击的校园知识图谱">
+            <div class="graph-loading"><span></span><p>正在布局节点…</p></div>
+          </div>
+          <div class="graph-legend"><span><i class="legend-dot person"></i>人物</span><span><i class="legend-dot place"></i>地点</span><span><i class="legend-dot evidence"></i>证据</span><span><i class="legend-dot active"></i>当前路径</span></div>
+          <p class="graph-hint">点节点加入查询；搜索时高亮已展开路径。</p>
+        </section>
+
+        <section class="panel trace-panel" id="trace-panel" aria-labelledby="trace-title">
+          <div class="panel-heading compact trace-heading">
+            <div><span class="section-kicker">03 / 搜索过程</span><h2 id="trace-title">逐步播放搜索树</h2></div>
+            <div class="trace-status" id="trace-status" data-state="idle"><i></i><span>等待运行</span></div>
+          </div>
+          <div class="algorithm-summary" id="algorithm-summary">
+            <div><span>算法</span><strong>A*</strong></div><div><span>展开节点</span><strong>—</strong></div><div><span>路径代价</span><strong>—</strong></div><div><span>置信度</span><strong>—</strong></div>
+          </div>
+          <div class="trace-stage" id="trace-stage">
+            <div class="trace-empty"><span class="empty-orbit"><svg class="icon"><use href="#i-route"/></svg></span><h3>运行一次搜索</h3><p>搜索树会按节点展开顺序出现，可逐帧查看算法指标。</p></div>
+          </div>
+          <div class="playback-bar">
+            <div class="playback-controls">
+              <button type="button" class="icon-button" id="trace-prev" aria-label="上一步" disabled><svg class="icon"><use href="#i-prev"/></svg></button>
+              <button type="button" class="play-button" id="trace-play" aria-label="播放搜索过程" disabled><svg class="icon"><use href="#i-play"/></svg></button>
+              <button type="button" class="icon-button" id="trace-next" aria-label="下一步" disabled><svg class="icon"><use href="#i-next"/></svg></button>
+              <span class="step-counter" id="step-counter">0 / 0</span>
+            </div>
+            <div class="timeline-wrap"><input type="range" id="trace-timeline" min="0" max="0" value="0" disabled aria-label="搜索步骤时间轴"><div class="timeline-marks" id="timeline-marks"></div></div>
+            <label class="speed-control">速度<select id="trace-speed" aria-label="播放速度"><option value="1400">0.5×</option><option value="850" selected>1×</option><option value="450">2×</option></select></label>
+          </div>
+          <article class="step-detail" id="step-detail" aria-live="polite">
+            <div class="step-detail-head"><span class="step-index">—</span><div><small>当前步骤</small><h3>尚未运行</h3></div><span class="step-state">等待</span></div>
+            <p>选择问题与算法后，点击“运行组合搜索”。</p>
+          </article>
+        </section>
+
+        <section class="panel evidence-panel" id="evidence-panel" aria-labelledby="evidence-title">
+          <div class="panel-heading compact">
+            <div><span class="section-kicker">04 / 证据路径</span><h2 id="evidence-title">结论如何成立</h2></div>
+            <span class="evidence-count" id="evidence-count">0 条</span>
+          </div>
+          <div class="answer-card" id="answer-card">
+            <span class="answer-label">当前结论</span>
+            <h3>等待搜索</h3>
+            <p>运行后会显示候选结论、置信度和仍需核实的部分。</p>
+          </div>
+          <ol class="evidence-path" id="evidence-path">
+            <li class="evidence-empty"><span><svg class="icon"><use href="#i-link"/></svg></span><p>证据路径将随搜索步骤同步更新。</p></li>
+          </ol>
+          <div class="evidence-footer">
+            <div class="confidence-block"><span>证据完整度</span><div class="confidence-track"><i id="evidence-confidence"></i></div><strong id="evidence-confidence-text">—</strong></div>
+            <button type="button" class="secondary-button" id="send-to-sandbox" disabled>带入校园沙盒<svg class="icon"><use href="#i-arrow"/></svg></button>
+          </div>
+        </section>
+      </div>
+
+      <section class="panel comparison-panel" aria-labelledby="comparison-title">
+        <div class="panel-heading compact">
+          <div><span class="section-kicker">05 / 同题对照</span><h2 id="comparison-title">同一问题，不同搜索策略</h2></div>
+          <div class="comparison-tools"><span id="comparison-question">尚未运行</span><button type="button" class="text-button" id="run-comparison"><svg class="icon"><use href="#i-layers"/></svg>运行五种策略对照</button></div>
+        </div>
+        <div class="comparison-table-wrap">
+          <table class="comparison-table">
+            <thead><tr><th>策略</th><th>候选答案</th><th>展开节点</th><th>路径代价</th><th>置信度</th><th>异常</th><th>相对表现</th><th></th></tr></thead>
+            <tbody id="comparison-body"><tr class="table-empty"><td colspan="8">运行搜索后，这里会并排展示 A*、GA-A*、GA+分类器、MCTS 与受限 LLM 引导结果。</td></tr></tbody>
+          </table>
+        </div>
+      </section>
+    </section>
+
+    <section class="app-view sandbox-view" id="sandbox" aria-labelledby="sandbox-title" hidden>
+      <div class="view-heading sandbox-heading">
+        <div>
+          <div class="eyebrow"><span></span>校园任务沙盒</div>
+          <h1 id="sandbox-title">把搜索结论放进真实任务约束里。</h1>
+          <p>选择任务、匹配人员、预留资源，再查看采纳后校园路线与角色现场如何变化。</p>
+        </div>
+        <div class="sandbox-state" id="sandbox-state"><span>方案状态</span><strong>待配置</strong><small>尚未采纳</small></div>
+      </div>
+
+      <div class="sandbox-grid">
+        <section class="panel topic-panel" aria-labelledby="topic-title">
+          <div class="panel-heading compact"><div><span class="section-kicker">01 / 任务选题</span><h2 id="topic-title">这次要完成什么？</h2></div></div>
+          <div class="topic-list" id="topic-list">
+            <button type="button" class="topic-card is-selected" data-topic="find"><span class="topic-number">01</span><div><strong>找到小汐</strong><p>根据位置证据与来源可靠度，确定最先核实的校园地点。</p></div><i><svg class="icon"><use href="#i-check"/></svg></i></button>
+            <button type="button" class="topic-card" data-topic="inform"><span class="topic-number">02</span><div><strong>传达活动改址</strong><p>在截止前完成见面、告知与出发方式确认。</p></div><i><svg class="icon"><use href="#i-check"/></svg></i></button>
+            <button type="button" class="topic-card" data-topic="umbrella"><span class="topic-number">03</span><div><strong>雨天送伞</strong><p>核对同地条件与物品状态，规划最短交付路径。</p></div><i><svg class="icon"><use href="#i-check"/></svg></i></button>
+          </div>
+          <div class="topic-context">
+            <span>带入的搜索结论</span>
+            <div id="linked-answer"><b>尚未带入</b><p>完成知识搜索后，可把候选答案与证据一起送入沙盒。</p></div>
+          </div>
+        </section>
+
+        <section class="panel map-panel" id="sandbox-map-panel" aria-labelledby="sandbox-map-title">
+          <div class="panel-heading compact">
+            <div><span class="section-kicker">02 / 校园现场</span><h2 id="sandbox-map-title">路线与角色位置</h2></div>
+            <span class="location-pill" id="sandbox-location"><svg class="icon"><use href="#i-pin"/></svg>教学楼</span>
+          </div>
+          <div class="campus-map" id="campus-map" role="group" aria-label="六个校园地点的任务地图">
+            <svg class="map-background" viewBox="0 0 680 390" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+              <path class="water" d="M520 0c-38 46-28 93-6 137s-21 89 8 137 31 75 57 116h101V0Z"/>
+              <g class="trees"><circle cx="53" cy="83" r="14"/><circle cx="75" cy="96" r="9"/><circle cx="90" cy="77" r="11"/><circle cx="306" cy="57" r="10"/><circle cx="326" cy="48" r="7"/><circle cx="338" cy="65" r="11"/><circle cx="600" cy="244" r="12"/><circle cx="623" cy="232" r="8"/><circle cx="640" cy="251" r="13"/><circle cx="241" cy="350" r="11"/><circle cx="264" cy="360" r="8"/><circle cx="288" cy="345" r="10"/></g>
+              <text x="407" y="365" class="map-caption">AFTER THE RAIN / CAMPUS ECHO</text>
+              <g id="sandbox-routes" class="map-routes"></g>
+              <g id="sandbox-route-labels" class="map-route-labels"></g>
+            </svg>
+            <button type="button" class="map-node" data-place="teaching" data-x="16" data-y="24"><svg viewBox="0 0 24 24"><path d="M4 21V8l8-4 8 4v13M2 21h20M8 21v-5h8v5M8 10h1m6 0h1m-8 3h1m6 0h1M12 4V1"/></svg><strong>教学楼</strong><small>出发地点</small><span class="map-person player-marker" id="player-marker">你</span></button>
+            <button type="button" class="map-node" data-place="library" data-x="49" data-y="17"><svg viewBox="0 0 24 24"><path d="m3 8 9-5 9 5M3 9h18M5 10v9m5-9v9m4-9v9m5-9v9M3 21h18"/></svg><strong>图书馆</strong><small>5 分钟</small><span class="map-person xiaxi-marker" id="xiaxi-marker" hidden>汐</span></button>
+            <button type="button" class="map-node" data-place="club" data-x="80" data-y="25"><svg viewBox="0 0 24 24"><path d="M4 21V6h16v15M2 21h20M8 21v-5h8v5M8 10h2m4 0h2M8 13h2m4 0h2M8 6V3h8v3"/></svg><strong>社团室</strong><small>4 分钟</small><span class="map-person clue-marker" id="clue-marker">线索</span></button>
+            <button type="button" class="map-node" data-place="walkway" data-x="33" data-y="62"><svg viewBox="0 0 24 24"><path d="m2 10 10-7 10 7M4 10h16M5 10v11m14-11v11M9 10v11m6-11v11M3 21h18"/></svg><strong>有顶连廊</strong><small>4 分钟</small></button>
+            <button type="button" class="map-node" data-place="canteen" data-x="13" data-y="80"><svg viewBox="0 0 24 24"><path d="M4 21V8h16v13M2 21h20M3 8h18l-3-5H6L3 8ZM8 12v4m-1-4v2h2v-2m-1 4v3m7-7c-2 1-2 4 0 4v3m0-7v4"/></svg><strong>食堂</strong><small>5 分钟</small></button>
+            <button type="button" class="map-node" data-place="venue" data-x="80" data-y="78"><svg viewBox="0 0 24 24"><path d="M3 21V9l9-5 9 5v12M2 21h20M7 21v-8h10v8M5 9h14M12 4V1h6l-2 2 2 2h-6"/></svg><strong>活动会场</strong><small>7 分钟</small></button>
+          </div>
+          <div class="map-footer"><div class="map-legend"><span><i class="legend-dot current"></i>当前位置</span><span><i class="legend-dot candidate"></i>证据指向</span><span><i class="legend-dot route"></i>采纳路线</span></div><p id="map-summary">先核对社团室与图书馆两条位置线索。</p></div>
+        </section>
+
+        <section class="panel plan-panel" aria-labelledby="plan-title">
+          <div class="panel-heading compact"><div><span class="section-kicker">03 / 人员与资源</span><h2 id="plan-title">任务方案</h2></div><span class="plan-score" id="plan-score">适配度 —</span></div>
+          <div class="plan-section">
+            <div class="plan-section-title"><h3>人员匹配</h3><span>可多选</span></div>
+            <div class="people-list" id="people-list">
+              <label class="person-row"><input type="checkbox" value="roommate" checked><span class="person-avatar avatar-roommate">室</span><span class="person-copy"><strong>室友</strong><small>图书馆目击 · 可靠度 0.68</small></span><span class="match-value">82%</span></label>
+              <label class="person-row"><input type="checkbox" value="clubmate" checked><span class="person-avatar avatar-clubmate">社</span><span class="person-copy"><strong>社团同学</strong><small>社团室线索 · 可靠度 0.66</small></span><span class="match-value">78%</span></label>
+              <label class="person-row"><input type="checkbox" value="xiaxi"><span class="person-avatar avatar-xiaxi">汐</span><span class="person-copy"><strong>小汐</strong><small>任务对象 · 需要当面确认</small></span><span class="match-value">—</span></label>
+            </div>
+          </div>
+          <div class="plan-section">
+            <div class="plan-section-title"><h3>资源安排</h3><span>游戏分钟</span></div>
+            <label class="resource-row" for="time-budget"><span>可行动时间</span><input type="range" id="time-budget" min="12" max="60" value="40" step="2"><output id="time-budget-value">40 分钟</output></label>
+            <label class="resource-row select-row" for="travel-mode"><span>到场方式</span><select id="travel-mode"><option value="escort">与小汐同行</option><option value="meet">会场会合</option><option value="solo">先到核实</option></select><output>预留 7 分钟</output></label>
+            <label class="resource-row check-row"><span>携带物品</span><span class="resource-check"><input type="checkbox" id="carry-umbrella" checked>雨伞</span><output>已准备</output></label>
+          </div>
+          <div class="plan-warning" id="plan-warning"><svg class="icon"><use href="#i-alert"/></svg><p>当前先核实社团室，预计剩余 11 分钟；保留到场缓冲。</p></div>
+        </section>
+      </div>
+
+      <section class="panel adoption-panel" aria-labelledby="adoption-title">
+        <div class="adoption-copy">
+          <span class="section-kicker">04 / 采纳证明</span>
+          <h2 id="adoption-title">让方案真正进入校园任务</h2>
+          <p>采纳后会提交当前问题、人员分配、资源与证据引用；成功后路线、角色状态和回执同步更新。</p>
+          <button type="button" class="primary-button adopt-button" id="adopt-plan"><svg class="icon"><use href="#i-check"/></svg><span>采纳方案并写入任务</span><svg class="icon arrow"><use href="#i-arrow"/></svg></button>
+          <div class="adopt-status" id="adopt-status" role="status" aria-live="polite"><i></i><span>等待采纳</span></div>
+        </div>
+        <ol class="proof-steps" id="proof-steps">
+          <li data-proof="search"><span>1</span><div><strong>搜索结论</strong><p>候选地点与证据路径</p></div><small>待采纳</small></li>
+          <li data-proof="people"><span>2</span><div><strong>人员匹配</strong><p>来源角色与任务对象</p></div><small>待采纳</small></li>
+          <li data-proof="resources"><span>3</span><div><strong>资源预留</strong><p>时间、路线与物品</p></div><small>待采纳</small></li>
+          <li data-proof="world"><span>4</span><div><strong>角色现场</strong><p>路线和状态同步</p></div><small>待采纳</small></li>
+        </ol>
+        <aside class="receipt-card" id="receipt-card">
+          <div class="receipt-head"><span><svg class="icon"><use href="#i-code"/></svg>采纳回执</span><span class="receipt-state" id="receipt-state">未生成</span></div>
+          <dl><div><dt>方案</dt><dd id="receipt-topic">找到小汐</dd></div><div><dt>搜索运行</dt><dd id="receipt-run">—</dd></div><div><dt>证据</dt><dd id="receipt-evidence">0 条</dd></div><div><dt>回执编号</dt><dd id="receipt-id">—</dd></div></dl>
+          <p id="receipt-note">采纳成功后在此显示服务端回执与状态变化。</p>
+        </aside>
+      </section>
+    </section>
+  </main>
+
+  <aside class="role-drawer" id="role-drawer" aria-labelledby="role-drawer-title" aria-hidden="true">
+    <div class="drawer-backdrop" data-close-role></div>
+    <div class="drawer-panel" role="dialog" aria-modal="true">
+      <div class="drawer-head"><div><span class="section-kicker">角色现场</span><h2 id="role-drawer-title">雨后的校园</h2></div><button type="button" class="icon-button" id="close-role-panel" aria-label="关闭角色现场"><svg class="icon"><use href="#i-close"/></svg></button></div>
+      <div class="role-scene">
+        <div class="role-portrait" aria-hidden="true"><span class="portrait-halo"></span><div class="portrait-figure"><i class="hair"></i><i class="face"></i><i class="body"></i></div><b>汐</b></div>
+        <div class="role-current"><span class="role-tag">小汐</span><h3 id="role-location">可能位于社团室</h3><p id="role-copy">社团同学的线索指向社团室，但旧照片来自更早时间。先核实再行动。</p><div class="role-facts"><span><svg class="icon"><use href="#i-clock"/></svg><b id="role-time">剩余 40 分钟</b></span><span><svg class="icon"><use href="#i-pin"/></svg><b id="role-place">社团室</b></span></div></div>
+      </div>
+      <div class="role-map-mini" aria-label="角色现场路线概览">
+        <svg viewBox="0 0 420 180" aria-hidden="true"><path class="mini-route base" d="M55 45 205 35 345 55 150 130 365 145"/><path class="mini-route active" id="role-route" d="M55 45 345 55 150 130"/><circle cx="55" cy="45" r="8"/><circle cx="205" cy="35" r="6"/><circle cx="345" cy="55" r="8" class="target"/><circle cx="150" cy="130" r="6"/><circle cx="365" cy="145" r="6"/></svg>
+        <span class="mini-label teaching">教学楼</span><span class="mini-label library">图书馆</span><span class="mini-label club">社团室</span><span class="mini-label walkway">连廊</span><span class="mini-label venue">会场</span>
+      </div>
+      <div class="role-feed"><h3>现场状态</h3><ol id="role-events"><li><span>T+20</span><p>收到社团同学关于社团室的位置线索。</p></li><li><span>T+20</span><p>室友提到曾在图书馆看见小汐。</p></li><li><span>当前</span><p>两条线索的时间与来源不同，等待进一步核实。</p></li></ol></div>
+      <button type="button" class="secondary-button drawer-sandbox-link" id="drawer-open-sandbox">在校园沙盒中继续<svg class="icon"><use href="#i-arrow"/></svg></button>
+    </div>
+  </aside>
+
+  <nav class="mobile-nav" aria-label="移动端主功能">
+    <button type="button" class="is-active" data-view-target="search"><svg class="icon"><use href="#i-search"/></svg><span>知识搜索</span></button>
+    <button type="button" data-view-target="sandbox"><svg class="icon"><use href="#i-grid"/></svg><span>校园沙盒</span></button>
+    <button type="button" id="mobile-role"><svg class="icon"><use href="#i-user"/></svg><span>角色现场</span></button>
+  </nav>
+
+  <div class="toast-region" id="toast-region" aria-live="polite" aria-atomic="true"></div>
+  <div class="sr-only" id="announcement" role="status" aria-live="polite"></div>
+  <script src="research.js?v=0.3.0"></script>
+</body>
+</html>

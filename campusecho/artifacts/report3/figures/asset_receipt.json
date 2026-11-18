@@ -1,0 +1,192 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-11-17T20:15:34.978649+00:00",
+  "status": "complete",
+  "frozen_root": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\kg\\formal_test_20261118",
+  "frozen_files": {
+    "config.json": "3e452facc0a48ab7b4b55c60e6ed469944ce4c91f6fb231c33da549166066ebf",
+    "fingerprints.json": "7569ecab87a0f7cc5513ace11b11dd7ccfd6b773f69a1da7c9a875dd5ffcee54",
+    "metrics.csv": "7734bf556eb00e3b27d51a8df548e010f7587ed234a1dd772480bd3b0a9359f9",
+    "parameters.json": "c123520d7a4de9e17184722b76074ad9e81aadb660e027659620ab298378cded",
+    "protocol.json": "a1bab847bb82431b0b887132d613a08edfc3bf4588d00921587a75381a0e54ee",
+    "records.csv": "666f6ffdca5151cbafc6c5a2f3799b5a5c44764f6a984652c20e1a8da5fa47ec",
+    "records.jsonl": "dca518af5c46c624d29bb4dec1cec92a3008028bb16f9b9adbb7401a9d5d809e",
+    "report_table.json": "ed7389772ddee3a3b29f700a6c7f290dc05c67b0f572f3a676014a940f9b5688",
+    "report_table.md": "ffa0faf5a94e89e02d97aae7c0f235a00ccc4caf6a730bfad1be6f07caebb206",
+    "summary.json": "67869dd9fd93f2f3e3f6a2a0de5fb19b818841d4c8496f3707441c4b59bad130"
+  },
+  "output": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures",
+  "figures": [
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\01_method_candidates.png",
+      "sha256": "94f3f8ad4f564385c7486e3d9965620f7f8dd8dcdb919f26341bcdcee82e36de",
+      "bytes": 106565
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\02_answer_path_validity.png",
+      "sha256": "b9ffc509dcdcb1089fd65d001143ee792e9e0e7f87ee4e409f179300e167c395",
+      "bytes": 149611
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\03_ga_weights.png",
+      "sha256": "430bd3a4409bb3ce5ba75c6e72b571306d8200c4ae58647c57dbbfbc93f9c7cb",
+      "bytes": 118404
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\04_ga_fitness.png",
+      "sha256": "0586fe16a8df4930943818a54f6df97ccad98619b40cc6922d482dc84e122696",
+      "bytes": 83068
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\05_classifier_calibration.png",
+      "sha256": "741355cba1786c128a6da6dfd5af073d173844ca03d6578718373d0a41efe83b",
+      "bytes": 138597
+    }
+  ],
+  "data": [
+    {
+      "figure": "01_method_candidates.png",
+      "methods": [
+        "bfs",
+        "hand_astar",
+        "ga_astar",
+        "mcts",
+        "ga_astar_classifier"
+      ],
+      "mean_candidate_checks": [
+        8.45625,
+        14.08125,
+        5.2125,
+        8.10625,
+        7.21875
+      ],
+      "mean_expanded_nodes": [
+        5.01875,
+        8.5625,
+        3.59375,
+        1.83125,
+        3.2
+      ]
+    },
+    {
+      "figure": "02_answer_path_validity.png",
+      "methods": [
+        "bfs",
+        "hand_astar",
+        "ga_astar",
+        "mcts",
+        "ga_astar_classifier"
+      ],
+      "answer_accuracy": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "path_valid_rate": [
+        1.0,
+        1.0,
+        1.0,
+        1.0,
+        1.0
+      ],
+      "path_complete_rate": [
+        0.13125,
+        0.13125,
+        0.13125,
+        0.13125,
+        0.13125
+      ]
+    },
+    {
+      "figure": "03_ga_weights.png",
+      "features": [
+        "目标接近",
+        "证据支持",
+        "路径效率",
+        "前沿平衡"
+      ],
+      "initial_weights": [
+        0.1811068783365473,
+        0.4327060910225853,
+        0.3558742786937973,
+        0.03031275194707017
+      ],
+      "final_weights": [
+        0.663013285672417,
+        0.06281547621309151,
+        0.0778998278709586,
+        0.19627141024353287
+      ]
+    },
+    {
+      "figure": "04_ga_fitness.png",
+      "generations": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ],
+      "best_fitness": [
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ],
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ],
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ],
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ],
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ],
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ],
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ],
+        [
+          1.0,
+          -3.6093418259023355,
+          -3.6093418259023355
+        ]
+      ]
+    },
+    {
+      "figure": "05_classifier_calibration.png",
+      "threshold": 0.8,
+      "source": "val_balanced_accuracy",
+      "positive_count": 2162,
+      "negative_count": 299,
+      "sample_count": 2461
+    }
+  ],
+  "claim_boundaries": [
+    "Figures use only formal_test_20261118.",
+    "The classifier figure reports validation counts and threshold provenance.",
+    "No LLM scores were recorded; report three must not claim an LLM benefit."
+  ]
+}

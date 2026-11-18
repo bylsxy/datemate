@@ -1,0 +1,56 @@
+{
+  "video": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\CampusEcho_两分钟汇报.mp4",
+  "duration_seconds": 120.0,
+  "slides": 6,
+  "voice": "Microsoft Huihui Desktop",
+  "timeline": [
+    {
+      "slide": 1,
+      "image": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片1.PNG",
+      "audio": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\video\\audio\\slide-01.wav",
+      "start_seconds": 0.0,
+      "duration_seconds": 14.849,
+      "narration": "大家好，我们是第24组。CampusEcho 处理角色只掌握局部线索时的搜索、推理与行动问题。冻结测试有160道题，五种策略共800条记录。"
+    },
+    {
+      "slide": 2,
+      "image": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片2.PNG",
+      "audio": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\video\\audio\\slide-02.wav",
+      "start_seconds": 14.849,
+      "duration_seconds": 7.716,
+      "narration": "统一搜索空间保证比较公平。答案与路径分别评分，这解释了为什么答案正确不等于路径完整。"
+    },
+    {
+      "slide": 3,
+      "image": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片3.PNG",
+      "audio": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\video\\audio\\slide-03.wav",
+      "start_seconds": 22.564,
+      "duration_seconds": 10.26,
+      "narration": "BFS 按层扩展，A* 用启发权重排序，MCTS 用模拟回报选择分支。冻结测试中，MCTS 的平均扩展节点最低。"
+    },
+    {
+      "slide": 4,
+      "image": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片4.PNG",
+      "audio": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\video\\audio\\slide-04.wav",
+      "start_seconds": 32.825,
+      "duration_seconds": 13.842,
+      "narration": "GA 与分类器都只用训练和验证数据，测试前冻结。加入分类器后扩展节点从3.59降到3.20，但候选检查升到7.22。阈值0.80来自验证集平衡准确率。"
+    },
+    {
+      "slide": 5,
+      "image": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片5.PNG",
+      "audio": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\video\\audio\\slide-05.wav",
+      "start_seconds": 46.667,
+      "duration_seconds": 16.936,
+      "narration": "LLM 只承担建议角色。输出先经过 JSON 白名单，再检查动作是否合法。官方 DeepSeek 已完成真实评分与解释验证。正式冻结实验没有把 LLM 评分混入算法对照，因此稳定收益仍需通过正式对照确认。"
+    },
+    {
+      "slide": 6,
+      "image": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片6.PNG",
+      "audio": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\video\\audio\\slide-06.wav",
+      "start_seconds": 63.603,
+      "duration_seconds": 56.397,
+      "narration": "观察、搜索、选择、执行和回写组成校园任务闭环。成员为徐阳、廖信同、黎欣欣、周艳雯、殷浚峰，按平等顺序列名。谢谢大家。"
+    }
+  ]
+}

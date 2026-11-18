@@ -1,0 +1,9 @@
+# 冻结实验的哈希以原始字节为准，禁止任何换行转换。
+artifacts/kg/formal_test_20261118/** -text
+
+# 课堂产物按二进制保存。
+artifacts/report3/*.docx binary
+artifacts/report3/*.pdf binary
+artifacts/report3/*.pptx binary
+artifacts/report3/*.mp4 binary
+artifacts/report3/figures/*.png binary

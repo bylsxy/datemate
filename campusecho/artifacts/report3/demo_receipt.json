@@ -1,0 +1,27 @@
+{
+  "status": "complete",
+  "video": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\CampusEcho_系统运行演示.mp4",
+  "duration_seconds": 13.88,
+  "narration_seconds": 13.6095,
+  "video_stream_seconds": 13.88,
+  "audio_stream_seconds": 13.61,
+  "tail_seconds": 0.271,
+  "receipt_state": "已写入",
+  "receipt_id": "9bb19003b57f458180a5bb8928602190",
+  "receipt_hold_seconds": 2.09,
+  "viewport": [
+    1600,
+    900
+  ],
+  "browser": "Google Chrome 157 headless",
+  "narration": "打开CampusEcho，知识图谱包含504个实体和1234条三元组。选择一个自然语言多跳问题，运行A星搜索，查看逐步轨迹和每一跳来源。切换MCTS、GA与分类器策略，比较扩展节点和候选检查。最后把有效路径带入校园任务，采纳后生成回执，世界状态随证明更新。",
+  "workflow": [
+    "load graph and natural question",
+    "run A*",
+    "play complete trace",
+    "run MCTS",
+    "run method comparison",
+    "send verified result to sandbox",
+    "adopt and show receipt"
+  ]
+}

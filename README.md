@@ -1,5 +1,19 @@
 # DateMate · 约会策划
 
+## CampusEcho 综合课程项目
+
+本次人工智能课程项目位于 [`campusecho/`](campusecho/)。CampusEcho 面向校园多跳问答，比较 BFS、A*、GA-A*、路径价值分类器、MCTS 与受限 LLM 引导搜索，并把验证后的答案、证据和资源约束写入校园任务。
+
+- [项目运行说明](campusecho/README.md)
+- [课堂报告 PDF](campusecho/artifacts/report3/CampusEcho_课堂报告.pdf)
+- [课堂报告 DOCX](campusecho/artifacts/report3/CampusEcho_课堂报告.docx)
+- [两分钟汇报 PPTX](campusecho/artifacts/report3/CampusEcho_两分钟汇报.pptx)
+- [两分钟汇报视频](campusecho/artifacts/report3/CampusEcho_两分钟汇报.mp4)
+- [系统运行演示](campusecho/artifacts/report3/CampusEcho_系统运行演示.mp4)
+- [运行与验收说明](campusecho/docs/CampusEcho_运行与验收说明.md)
+
+以下内容保留原有 DateMate 约会策划项目。
+
 [在线使用](https://bylsxy.github.io/datemate/)。
 
 首页呈现条件、探索度、场景时间与地点活动卡。地点卡位置固定，点击立即高亮并平滑居中，边缘卡随滚动缩小；计算中的内容使用骨架屏，连续点击保留最新选择。卡片右上角显示0—100方案契合分，尚未评估完整后续时显示“待评估”。知识、对比、输入输出和版本信息通过右下角主题色圆形悬浮按钮向上展开的“三”菜单进入；输入输出页可复制当前条件及已计算方案。错误提示会自动滚入视野。

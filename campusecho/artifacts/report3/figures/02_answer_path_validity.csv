@@ -1,0 +1,6 @@
+﻿method,method_label,answer_accuracy,path_valid_rate,path_complete_rate
+bfs,BFS,1.0,1.0,0.13125
+hand_astar,手工 A*,1.0,1.0,0.13125
+ga_astar,GA-A*,1.0,1.0,0.13125
+mcts,MCTS,1.0,1.0,0.13125
+ga_astar_classifier,GA-A*+分类器,1.0,1.0,0.13125

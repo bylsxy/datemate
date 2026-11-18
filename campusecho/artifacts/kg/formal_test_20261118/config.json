@@ -1,0 +1,28 @@
+{
+  "classifier_epochs": 600,
+  "classifier_prefix_limit": 100000,
+  "classifier_threshold": null,
+  "exploration_weight": 1.4142135623730951,
+  "fit_limit": 480,
+  "ga_generations": 8,
+  "ga_population_size": 12,
+  "ga_seeds": [
+    20261118
+  ],
+  "include_private_labels": false,
+  "limit": 240,
+  "llm_subset_limit": 60,
+  "max_candidate_checks": null,
+  "max_expansions": 1024,
+  "mcts_simulations": 100,
+  "methods": [
+    "bfs",
+    "hand_astar",
+    "ga_astar",
+    "mcts",
+    "ga_astar_classifier"
+  ],
+  "rollout_depth": 8,
+  "seed": 20261118,
+  "split": "test"
+}

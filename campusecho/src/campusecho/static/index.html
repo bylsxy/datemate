@@ -1,0 +1,397 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#236355">
+<title>CampusEcho · 校园回响 · 把消息带给她</title>
+<style>
+:root{color-scheme:light;--paper:#f5f6f0;--ink:#263e35;--muted:#647468;--green:#236355;--deep:#174b40;--line:#dce5db;--rose:#a25b55;--shadow:0 6px 26px #294c380b}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font:15px/1.6 system-ui,-apple-system,"Segoe UI","Microsoft YaHei",sans-serif}button,input,select{font:inherit;color:inherit}button,select,input{border:1px solid var(--line);border-radius:10px;background:white;min-height:44px}button{cursor:pointer;padding:10px 14px;touch-action:manipulation;transition:background .15s,border-color .15s}button:hover:enabled{border-color:var(--green);background:#f1f6ef}button:disabled{cursor:wait;opacity:.55}button.primary{background:var(--green);color:white;border-color:var(--green)}button.primary:hover:enabled{background:var(--deep)}button:focus-visible,input:focus-visible,select:focus-visible,summary:focus-visible,a:focus-visible{outline:3px solid #b58a42;outline-offset:4px}input,select{padding:8px 10px}h1,h2,h3,p{margin:0}h1{font-size:clamp(27px,3.4vw,40px);font-weight:650;line-height:1.3;letter-spacing:-.035em}h2{font-size:19px;line-height:1.45;font-weight:650}h3{font-size:14px}p{overflow-wrap:anywhere}svg{display:block}small,.small{font-size:12px;color:var(--muted)}[hidden]{display:none!important}.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}.skip-link{position:fixed;top:-70px;left:15px;padding:12px;background:var(--deep);color:white;z-index:10;border-radius:8px}.skip-link:focus{top:12px}.shell{width:min(1240px,100% - 48px);margin:auto}.topbar{display:flex;align-items:center;justify-content:space-between;gap:20px;padding:23px 0 19px;border-bottom:1px solid var(--line)}.brand{display:flex;align-items:center;gap:11px}.brand-mark{display:grid;place-items:center;width:38px;height:38px;background:var(--green);color:#f6f4d9;border-radius:12px}.brand-name{font-size:18px;font-weight:750;letter-spacing:.07em}.brand-caption{display:block;font-size:10px;letter-spacing:.1em;color:var(--muted)}.mode-switch{display:flex;gap:4px;background:#e6ebe2;padding:4px;border-radius:12px}.mode-switch button{border:0;background:transparent;padding:8px 17px;font-size:13px;min-height:44px}.mode-switch button[aria-pressed="true"]{background:white;color:var(--deep);font-weight:650;box-shadow:0 2px 8px #1c4d3210}.intro{padding:31px 0 24px;display:grid;grid-template-columns:1fr auto;gap:30px;align-items:center}.eyebrow{font-size:11px;letter-spacing:.13em;color:var(--green);font-weight:650}.intro h1{margin:8px 0 12px}.background{color:var(--muted);font-size:14px;line-height:1.9}.background span{display:block}.chapter{width:116px;height:116px;display:grid;place-items:center;position:relative;border-radius:50%;background:#e8eedf;color:var(--green)}.chapter:before,.chapter:after{content:"";position:absolute;inset:9px;border:1px dashed #9bad93;border-radius:50%}.chapter:after{inset:22px;border-style:solid;border-color:#bac9b0}.chapter span{font:italic 39px Georgia,serif}.chapter small{position:absolute;bottom:23px;font-size:8px;letter-spacing:.12em}.sessionbar{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;padding:12px 0 20px}.session-controls{display:flex;gap:10px;align-items:center;flex-wrap:wrap}.field{display:flex;align-items:center;gap:7px;font-size:12px;color:var(--muted)}#scenario{font-size:13px;max-width:235px}#seed{width:75px;font-size:13px}.session-controls button{font-size:12px;padding:8px 12px}.connection{font-size:12px;color:var(--muted);display:flex;gap:7px;align-items:center}.connection:before{content:"";width:7px;height:7px;border-radius:50%;background:#809783}.connection[data-state="busy"]:before{background:#b58a42}.connection[data-state="error"]:before{background:#a85850}.notice{display:flex;align-items:center;gap:14px;background:#fff0e9;border:1px solid #efd2c3;padding:14px 17px;border-radius:12px;margin-bottom:18px;color:#824331;font-size:13px}.notice p{flex:1}.notice button{font-size:12px;flex:none}.mission-card{grid-area:mission}.map-card{grid-area:map}.next-card{grid-area:next}.clues-card{grid-area:clues}.play-grid{display:grid;grid-template-areas:"map mission" "clues next";grid-template-columns:minmax(0,1.65fr) minmax(330px,1fr);gap:20px;align-items:start}.column{display:grid;gap:20px;min-width:0}.card{background:white;border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow);overflow:hidden}.card-pad{padding:23px}.card-head{display:flex;justify-content:space-between;align-items:start;gap:15px}.card-head p{font-size:12px;color:var(--muted);margin-top:5px}.tiny-label{color:var(--muted);font-size:10px;letter-spacing:.12em;font-weight:600;margin-bottom:5px}.tag{display:inline-flex;align-items:center;gap:5px;padding:4px 9px;border:1px solid #dfe7dc;border-radius:6px;background:#f4f7f0;color:var(--green);font-size:11px;white-space:nowrap}.location-tag{font-size:12px;font-weight:650;color:var(--green);white-space:nowrap}.location-tag:before{content:"●";font-size:8px;margin-right:6px}
+.campus-map{position:relative;aspect-ratio:680/360;margin:5px 14px 0;background:radial-gradient(ellipse at 70% 24%,#f1f4df,transparent 42%),radial-gradient(ellipse at 22% 75%,#e7f0e7,transparent 46%),#f7f9f4;border:1px solid #e7ecdf;border-radius:13px;isolation:isolate}.campus-map>svg{width:100%;height:100%;position:absolute;inset:0;pointer-events:none}.route{stroke:#d3decd;stroke-width:8;fill:none;stroke-linecap:round}.route-inner{stroke:#fbfcf7;stroke-width:2;stroke-dasharray:3 6;fill:none}.route.available{stroke:#adc9ad}.route.recommended{stroke:#d0b277}.route-label{font:11px system-ui;fill:#60765d;paint-order:stroke;stroke:#f7f9f4;stroke-width:6px;stroke-linejoin:round}.map-node{position:absolute;transform:translate(-50%,-50%);width:107px;min-height:70px;padding:8px 4px 7px;display:flex;flex-direction:column;align-items:center;justify-content:center;border:1px solid #d6dfd0;border-radius:12px;background:#fffffff7;box-shadow:0 3px 10px #30442a08;line-height:1.4;z-index:1}.map-node svg{width:24px;height:24px;margin-bottom:4px;stroke:#627960;stroke-width:1.5;fill:none;stroke-linecap:round;stroke-linejoin:round}.map-node strong{font-size:12px;font-weight:600}.node-note{font-size:9px;color:var(--muted);margin-top:3px;min-height:13px}.map-node[aria-disabled="true"]{cursor:default;background:#fcfdf9;color:#718170}.map-node[aria-disabled="false"]{border-color:#7fa17e}.map-node.current{background:var(--green);border-color:var(--green);color:white;box-shadow:0 5px 14px #23635525}.map-node.current svg{stroke:#f4f3d9}.map-node.current .node-note{color:#e5ebd8}.map-node.clue{outline:2px dashed #b49b62;outline-offset:4px}.map-person{position:absolute;right:-7px;top:-10px;background:#f8efd3;color:#775920;border:2px solid white;border-radius:20px;font-size:9px;padding:2px 6px;white-space:nowrap}.map-legend{display:flex;gap:15px;flex-wrap:wrap;padding:14px 23px 8px;font-size:10px;color:var(--muted)}.legend-dot{display:inline-block;width:8px;height:8px;background:var(--green);border-radius:3px;margin-right:5px}.legend-dot.reachable{background:white;border:1px solid #7fa17e}.legend-dot.possible{background:transparent;border:1px dashed #b49b62}.map-help{font-size:12px;color:var(--muted);padding:0 23px 18px;min-height:38px}
+.mission-card{background:#f9fbf5}.mission-heading{display:flex;justify-content:space-between;align-items:start;gap:12px}.mission-title{font-size:16px;line-height:1.55}.status-pill{font-size:10px;white-space:nowrap;padding:4px 8px;border-radius:20px;color:#416e3c;background:#e7efdf;border:1px solid #d5e2ca}.clock-row{display:flex;justify-content:space-between;align-items:center;gap:14px;padding:18px 0 12px}.clock-number{font:500 32px/1.2 ui-monospace,Consolas,monospace;letter-spacing:-.06em}.clock-caption{font-size:10px;color:var(--muted);margin-top:4px}.remaining{text-align:right;font-size:12px}.remaining strong{font-size:22px;font-weight:600;margin:0 3px;color:var(--green)}.time-track{height:5px;background:#e2e9db;border-radius:10px;overflow:hidden}.time-fill{height:100%;width:0;background:#86a87b;transition:width .25s}.mission-card.urgent .remaining strong{color:var(--rose)}.mission-card.urgent .time-fill{background:#bf8170}.turn-note{font-size:10px;color:var(--muted);margin:7px 0 17px}.goals{list-style:none;margin:0;padding:0;display:grid}.goal{display:flex;gap:12px;position:relative;padding:0 0 16px;align-items:flex-start}.goal:last-child{padding-bottom:0}.goal:not(:last-child):before{content:"";position:absolute;top:25px;left:11px;bottom:3px;border-left:1px solid #d8e1d1}.step-badge{width:24px;height:24px;border:1px solid #d5decf;border-radius:50%;display:grid;place-items:center;flex:none;font-size:10px;background:#f9fbf5;color:#7b8c74}.goal.done .step-badge{background:var(--green);border-color:var(--green);color:white}.goal.active .step-badge{border-color:var(--green);color:var(--green);box-shadow:0 0 0 3px #e5eddd}.goal-label{font-size:12px;margin-top:2px;color:var(--muted)}.goal.active .goal-label,.goal.done .goal-label{color:var(--ink)}.goal.active .goal-label{font-weight:650}.goal-detail{font-size:10px;color:var(--muted);margin-top:2px}.next-card .card-head{margin-bottom:15px}.recommendation{padding:13px 14px;background:#eef4e9;border:1px solid #dae6d2;border-radius:11px;margin-bottom:14px}.recommendation p{font-size:12px;line-height:1.75}.recommendation button{width:100%;margin-top:11px;display:flex;align-items:center;justify-content:space-between;gap:12px;text-align:left;font-size:13px}.action-cost{font-size:10px;white-space:nowrap;opacity:.85}.action-group{margin-top:15px}.action-group h3{font-size:10px;letter-spacing:.05em;color:var(--muted);margin-bottom:8px;font-weight:500}.actions{display:grid;gap:7px}.action-button{display:flex;width:100%;align-items:center;justify-content:space-between;gap:10px;text-align:left;font-size:12px;min-height:45px;padding:9px 11px;line-height:1.45}.action-button.task-action{border-color:#aac5a3;background:#f6faf1}.actions-empty{font-size:12px;color:var(--muted);padding:5px 0 10px}.clues-list{margin-top:15px}.clue-row{display:flex;gap:12px;padding:14px 0;border-top:1px solid #edf0e8;align-items:start}.clue-avatar{width:33px;height:33px;flex:none;display:grid;place-items:center;border-radius:11px;background:#edf2e6;color:#55724b;font-size:12px}.clue-body{min-width:0;flex:1}.clue-title{display:flex;justify-content:space-between;gap:10px;align-items:center}.clue-title strong{font-size:12px;font-weight:650}.clue-title time{font-size:10px;color:var(--muted);white-space:nowrap}.clue-copy{font-size:12px;color:#596d5e;margin-top:3px;line-height:1.75}.clue-meta{font:10px/1.8 ui-monospace,monospace;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}.source-note{font-size:11px;color:var(--muted);padding:11px 13px;background:#f5f7f0;border-radius:9px;margin-top:7px}.empty-clue{font-size:12px;color:var(--muted);padding:17px 0 5px}.log-card{margin-top:20px}.log-list{padding:0;margin:13px 0 0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 28px;max-height:265px;overflow:auto;overscroll-behavior:contain}.log-item{display:flex;gap:13px;padding:12px 0;border-top:1px solid #edf0e8;align-items:start}.log-time{font:11px/1.8 ui-monospace,monospace;color:var(--green);min-width:45px}.log-item p{font-size:12px}.result-card{margin-bottom:20px;padding:25px 29px;display:grid;grid-template-columns:44px 1fr auto;align-items:center;gap:18px;border-color:#a9c5a2;background:#f0f6e9}.result-icon{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;font-size:22px;background:var(--green);color:white}.result-card h2{margin:3px 0 5px;font-size:23px}.result-card p{font-size:13px;color:#526f4f}.result-card[data-tone="missed"]{background:#fcf2ed;border-color:#dfc3b5}.result-card[data-tone="missed"] .result-icon{background:#a16c54}.result-card[data-tone="rescheduled"]{background:#faf6e9;border-color:#d3c8ad}.result-card[data-tone="rescheduled"] .result-icon{background:#9a8251}.result-facts{display:flex;gap:14px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--muted)}
+.research{margin-top:26px;border-top:1px solid var(--line);padding-top:25px}.research-header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:17px}.research-header p{font-size:12px;color:var(--muted);margin-top:5px}.research-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:17px;align-items:start}.research-grid .card-pad{padding:20px}.method-number{display:inline-grid;place-items:center;width:23px;height:23px;background:#edf3e8;color:#55724b;border-radius:6px;margin-right:6px;font-size:10px}.method-caption{font-size:11px;color:var(--muted);line-height:1.75;margin:8px 0 14px}.bar-row{display:grid;grid-template-columns:60px minmax(10px,1fr) 45px;gap:8px;align-items:center;font-size:10px;margin:7px 0}.track{height:6px;background:#edf1e7;border-radius:8px;overflow:hidden}.fill{height:100%;background:#85a47b;border-radius:8px}.bar-value{font:10px ui-monospace,monospace;text-align:right;color:var(--muted)}.method-meta{font-size:10px;color:var(--muted);margin:12px 0;line-height:1.8}.method-divider{border-top:1px solid var(--line);padding-top:13px;margin-top:14px}.method-divider h3{font-size:12px;margin-bottom:11px}.proof-chips{display:flex;gap:5px;flex-wrap:wrap}.proof-chips .tag{white-space:normal;font:10px ui-monospace,monospace}.research-bottom{margin-top:17px}.research-bottom summary{font-size:12px}summary{cursor:pointer;min-height:44px;padding:10px 0;font-weight:600}details[open]>summary{margin-bottom:8px}.audit-toggle{display:flex;gap:8px;align-items:center;font-size:12px;min-height:44px}.audit-toggle input{width:17px;height:17px;min-height:0;accent-color:var(--green)}.audit-note{color:#8a5b1c;font-size:11px;margin:5px 0 12px}.policy-metrics{display:flex;gap:7px;flex-wrap:wrap;margin-top:8px}.parameters{font-size:11px;color:var(--muted);margin:14px 1px}pre{white-space:pre-wrap;overflow-wrap:anywhere;max-height:350px;overflow:auto;margin:10px 0;padding:13px;background:#f4f7ef;border:1px solid var(--line);border-radius:9px;font:11px/1.8 ui-monospace,monospace}.research-detail{display:none}body[data-mode="research"] .research-detail{display:block}.footer{display:flex;justify-content:space-between;gap:12px;padding:25px 0 28px;color:var(--muted);font-size:10px}
+@media(max-width:980px){.play-grid{grid-template-columns:minmax(0,1.35fr) minmax(300px,1fr);gap:15px}.card-pad{padding:19px}.map-node{width:86px;min-height:63px}.map-node svg{width:21px;height:21px}.map-node strong{font-size:11px}.node-note{font-size:8px}.map-legend{gap:10px;padding-left:18px}.research-grid{grid-template-columns:1fr 1fr}.research-grid .card:last-child{grid-column:1/-1}}
+@media(max-width:760px){.shell{width:calc(100% - 32px)}.topbar{padding:17px 0;gap:10px}.brand-caption{font-size:9px;letter-spacing:.02em}.brand-name{font-size:16px}.brand-mark{width:34px;height:34px}.mode-switch button{padding:7px 10px;font-size:11px}.intro{padding:24px 0 15px;grid-template-columns:1fr}.chapter{display:none}.background{font-size:12px}.intro h1{font-size:29px;margin-bottom:12px}.sessionbar{padding-bottom:15px;gap:10px}.session-controls{gap:7px}.field{font-size:11px}#scenario{max-width:192px;font-size:12px}#seed{width:61px}.connection{font-size:11px}.play-grid{grid-template-columns:1fr;grid-template-areas:"mission" "map" "next" "clues";gap:16px}.column{display:contents}.map-card{order:1}.mission-card{order:0}.next-card{order:2}.clues-card{order:3}.goals{grid-template-columns:1fr 1fr;gap:12px 15px}.goal{padding-bottom:0}.goal:before{display:none}.goal-label{font-size:11px}.clock-row{padding:13px 0 10px}.turn-note{margin-bottom:13px}.card-pad{padding:19px}.campus-map{margin-left:10px;margin-right:10px}.map-node{width:100px;min-height:67px}.map-node strong{font-size:12px}.node-note{font-size:9px}.map-help{padding-left:19px;padding-right:19px}.log-card{margin-top:16px}.log-list{grid-template-columns:1fr;max-height:275px}.research-grid{grid-template-columns:1fr}.research-grid .card:last-child{grid-column:auto}.research-header{align-items:start;flex-direction:column;gap:10px}.result-card{grid-template-columns:35px 1fr;gap:12px;padding:20px}.result-icon{width:35px;height:35px;font-size:17px}.result-card h2{font-size:20px}.result-card>button{grid-column:2;justify-self:start}.result-card p{font-size:12px}.footer{font-size:9px;flex-wrap:wrap}.notice{flex-wrap:wrap}.notice p{flex-basis:100%}}
+@media(max-width:400px){.shell{width:calc(100% - 24px)}.brand-caption{display:none}.brand{gap:7px}.mode-switch button{padding:7px 8px}.intro h1{font-size:26px}.map-node{width:82px;min-height:60px}.map-node svg{height:18px;width:18px}.map-node strong{font-size:10px}.node-note{font-size:8px}.map-person{font-size:8px;padding:1px 4px}.seed-field{display:flex}.map-legend{font-size:9px;gap:9px}.card-head h2{font-size:17px}.location-tag{font-size:11px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{transition:none!important;scroll-behavior:auto!important}}
+</style>
+</head>
+<body data-mode="player">
+<a class="skip-link" href="#actions-heading">跳到下一步行动</a>
+<header class="shell">
+<div class="topbar">
+  <div class="brand"><div class="brand-mark" aria-hidden="true"><svg viewBox="0 0 30 30" width="26" height="26" fill="none" stroke="currentColor" stroke-width="1.4"><path d="M5 23V12l10-6 10 6v11M3 24h24M9 24V14h12v10M13 24v-6h4v6M5 12h20"/></svg></div><div><div class="brand-name">校园回响</div><span class="brand-caption">CAMPUS ECHO / 机制体验实验台</span></div></div>
+  <div class="mode-switch" role="group" aria-label="体验模式"><button type="button" id="player-mode" aria-pressed="true">玩家模式</button><button type="button" id="research-mode" aria-pressed="false">研究模式</button></div>
+</div>
+<div class="intro">
+  <div><div class="eyebrow">一场雨后的约定 · 机制实验台</div><h1>在铃声响起前，把消息带给她。</h1><p class="background"><span>校园活动临时改了地点，小汐还没有收到消息。</span><span>关于她在哪儿的线索彼此矛盾，时间也在每次行动中流逝。</span><span>找到她、传达改址，再确认同行或各自前往新会场。</span></p></div>
+  <div class="chapter" aria-hidden="true"><span>02</span><small>CAMPUS NOTES</small></div>
+</div>
+<div class="sessionbar">
+  <div class="session-controls"><label class="field">场景 <select id="scenario" aria-describedby="scenario-hint"><option value="mission" selected>教学回放 · 把消息带给她</option><option value="challenge">随机挑战 · 新起点与线索</option><option value="conflict">矛盾线索 · 机制案例</option><option value="duplicate">十次转述 · 同源去重</option><option value="umbrella">记得那把伞 · 同地交付</option></select></label><label class="field seed-field">种子 <input id="seed" type="number" value="17" step="1" min="0" max="2147483647" inputmode="numeric" aria-label="世界种子，相同种子可重放实验"></label><button type="button" id="reset">重新开始</button><button type="button" id="new-scene" aria-label="生成不同种子，开始一个新的随机挑战">换一个场景</button><button type="button" id="refresh">同步状态</button></div>
+  <p class="connection" id="status" role="status" aria-live="polite" data-state="busy">正在连接校园…</p>
+</div>
+<p class="small" id="scenario-hint" style="margin:-8px 0 18px">教学回放适合熟悉任务；随机挑战会改变起点与线索。输入种子后点“重新开始”可重放，点“换一个场景”可直接开始新挑战。</p>
+<div id="error-box" class="notice" hidden><p id="error" role="alert"></p><button type="button" id="retry">重新同步</button></div>
+</header>
+<main class="shell" id="main-content">
+<section class="card result-card" id="result" tabindex="-1" aria-labelledby="result-title" hidden><div class="result-icon" id="result-icon" aria-hidden="true">✓</div><div><div class="eyebrow">这一次的回响</div><h2 id="result-title"></h2><p id="result-reason"></p><div class="result-facts" id="result-facts"></div></div><button type="button" id="play-again" class="primary">再走一次校园</button></section>
+<div class="play-grid">
+<section class="card card-pad mission-card" id="mission-card" aria-labelledby="task-heading">
+  <div class="mission-heading"><div><div class="tiny-label">YOUR MISSION / 本次目标</div><h2 class="mission-title" id="task-heading">把活动改址的消息带给小汐</h2></div><span class="status-pill" id="task-status">准备中</span></div>
+  <div class="clock-row"><div><div class="clock-number" id="clock">T+—</div><div class="clock-caption" id="deadline">游戏时钟 · 等待任务时限</div></div><div class="remaining">剩余<strong id="remaining">—</strong>分钟</div></div>
+  <div class="time-track" role="progressbar" aria-label="任务剩余时间" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="time-progress"><div class="time-fill" id="time-fill"></div></div><p class="turn-note">每次行动推进时间；停留阅读不会消耗时间。</p><ol class="goals" id="goals"></ol>
+</section>
+<section class="card map-card" aria-labelledby="map-heading">
+  <div class="card-pad card-head"><div><div class="tiny-label">CAMPUS / 校园路线</div><h2 id="map-heading">下一站，去哪里？</h2><p>点选可直达地点，路线上标注步行分钟数。</p></div><span class="location-tag" id="current-location">等待定位</span></div>
+  <div class="campus-map" role="group" aria-label="六个地点的校园地图，使用 Tab 切换地点，Enter 前往可直达地点">
+    <svg viewBox="0 0 680 360" aria-hidden="true" focusable="false" preserveAspectRatio="none">
+      <path d="M495 5c-25 29-22 48-4 71s-14 58-2 87 18 16 30 42 11 81 51 111l58 39h52V5Z" fill="#e5efed" stroke="#d7e5df"/>
+      <g fill="#dbe8d2"><circle cx="41" cy="147" r="12"/><circle cx="60" cy="156" r="8"/><circle cx="77" cy="139" r="10"/><circle cx="288" cy="42" r="11"/><circle cx="309" cy="34" r="8"/><circle cx="318" cy="51" r="9"/><circle cx="575" cy="192" r="11"/><circle cx="596" cy="182" r="8"/><circle cx="615" cy="199" r="12"/><circle cx="243" cy="321" r="11"/><circle cx="263" cy="332" r="8"/><circle cx="287" cy="317" r="10"/></g>
+      <text x="411" y="329" fill="#97a98d" style="font:italic 10px Georgia,serif;letter-spacing:2px">AFTER THE RAIN</text>
+      <g id="map-routes"></g><g id="route-labels" class="route-label"></g>
+    </svg>
+    <button type="button" class="map-node" data-place="teaching" style="left:16%;top:24%" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V8l8-4 8 4v13M2 21h20M8 21v-5h8v5M8 10h1m6 0h1m-8 3h1m6 0h1M12 4V1"/></svg><strong>教学楼</strong><span class="node-note">出发地点</span><span class="map-person" hidden></span></button>
+    <button type="button" class="map-node" data-place="library" style="left:49%;top:18%" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m3 8 9-5 9 5M3 9h18M5 10v9m5-9v9m4-9v9m5-9v9M3 21h18"/></svg><strong>图书馆</strong><span class="node-note"></span><span class="map-person" hidden></span></button>
+    <button type="button" class="map-node" data-place="club" style="left:81%;top:26%" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V6h16v15M2 21h20M8 21v-5h8v5M8 10h2m4 0h2M8 13h2m4 0h2M8 6V3h8v3"/></svg><strong>社团室</strong><span class="node-note"></span><span class="map-person" hidden></span></button>
+    <button type="button" class="map-node" data-place="walkway" style="left:33%;top:62%" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m2 10 10-7 10 7M4 10h16M5 10v11m14-11v11M9 10v11m6-11v11M3 21h18"/></svg><strong>有顶连廊</strong><span class="node-note"></span><span class="map-person" hidden></span></button>
+    <button type="button" class="map-node" data-place="canteen" style="left:13%;top:81%" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 21V8h16v13M2 21h20M3 8h18l-3-5H6L3 8ZM8 12v4m-1-4v2h2v-2m-1 4v3m7-7c-2 1-2 4 0 4v3m0-7v4"/></svg><strong>食堂</strong><span class="node-note"></span><span class="map-person" hidden></span></button>
+    <button type="button" class="map-node" data-place="venue" style="left:81%;top:78%" aria-disabled="true"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 21V9l9-5 9 5v12M2 21h20M7 21v-8h10v8M5 9h14M12 4V1h6l-2 2 2 2h-6"/></svg><strong>活动会场</strong><span class="node-note"></span><span class="map-person" hidden></span></button>
+  </div>
+  <div class="map-legend" aria-hidden="true"><span><i class="legend-dot"></i>你的位置</span><span><i class="legend-dot reachable"></i>可直达</span><span><i class="legend-dot possible"></i>线索指向，尚待核实</span></div><p class="map-help" id="map-help" aria-live="polite">先读一条线索，再联系同学或前往核实。</p>
+</section>
+<section class="card card-pad next-card" aria-labelledby="actions-heading"><div class="card-head"><div><div class="tiny-label">NEXT / 轮到你了</div><h2 id="actions-heading" tabindex="-1">现在可以做什么</h2></div></div><div class="recommendation"><div class="tiny-label" id="guidance-label">第一步提示</div><p id="guidance">先核对线索，再联系小汐或向同学核实。每个按钮都标明时间成本。</p><div id="recommended-action"></div><div class="policy-metrics research-detail" id="policy-metrics"></div></div><div id="actions" class="actions"><p class="actions-empty">会话就绪后，可执行的行动会出现在这里。</p></div><p class="small" id="inventory" style="margin-top:14px"></p></section>
+<section class="card card-pad clues-card" aria-labelledby="clues-heading"><div class="card-head"><div><div class="tiny-label">CLUES / 角色可见</div><h2 id="clues-heading">她可能在哪里</h2></div><span class="tag" id="clue-count">等待线索</span></div><div id="records" class="clues-list"><p class="empty-clue">连接后，这里会显示你实际收到的消息。</p></div><p class="source-note" id="source-note">同一消息的多次转发，不等于多份独立证据。</p></section>
+</div>
+<section class="card card-pad log-card" aria-labelledby="log-heading"><div class="card-head"><div><div class="tiny-label">FOOTPRINTS / 行动记录</div><h2 id="log-heading">这一路的回响</h2></div><span class="small" id="log-count">尚未行动</span></div><ol class="log-list" id="log"><li class="log-item"><span class="log-time">起点</span><p>你即将走进校园，做出第一个选择。</p></li></ol></section>
+<section class="research" id="research" aria-labelledby="research-heading" hidden>
+<div class="research-header"><div><div class="eyebrow">RESEARCH / 判断可以被检查</div><h2 id="research-heading" style="margin-top:5px">三种推理，同一份可见输入</h2><p>规则给出可证明的事实；贝叶斯更新判断；证据理论处理冲突与未知。</p></div><label class="audit-toggle"><input type="checkbox" id="debug">显示研究审计真值</label></div>
+<div class="research-grid">
+  <article class="card card-pad"><h3><span class="method-number">01</span>贝叶斯后验</h3><p class="method-caption">结合来源与线索年龄的学习后验；当前直接目击由规则单独确认。</p><div id="bayes"></div><p class="method-meta" id="bayes-meta"></p></article>
+  <article class="card card-pad"><h3><span class="method-number">02</span>证据理论 · D-S</h3><p class="method-caption">比较标准合成与将冲突保留为未知的 Yager 合成。</p><h3 style="font-size:12px;margin-bottom:10px">Dempster</h3><div id="dempster"></div><div class="method-divider"><h3>Yager</h3><div id="yager"></div></div></article>
+  <article class="card card-pad"><h3><span class="method-number">03</span>规则推导</h3><p class="method-caption">只有满足前提的事实，才能推出同地见面与物品交付等结论。</p><div id="rules"></div><details><summary>展开事实与推导链</summary><pre id="facts-proof"></pre></details></article>
+</div>
+<p class="parameters" id="parameters"></p>
+<article class="card card-pad research-bottom"><details><summary>展开策略比较与计算轨迹</summary><p class="method-caption">建议仅使用角色视图。这里保留候选行动的成本、信息价值与原始计算，便于复现实验。</p><pre id="proof"></pre></details><details id="audit-details"><summary>研究者审计 · 与角色推理隔离</summary><p class="audit-note">这里包含世界真值，仅供研究核查；玩家地图与行动建议不读取审计数据。</p><div id="audit"><p class="small">勾选“显示研究审计真值”后，单独从服务端读取。</p></div></details></article>
+</section>
+</main>
+<footer class="shell footer"><span>CAMPUS ECHO · 校园回响</span><span>可见线索 → 推理判断 → 行动 → 结果</span></footer>
+<div class="sr-only" id="announcement" role="status" aria-live="polite" aria-atomic="true"></div>
+<script>
+"use strict";
+const $ = id => document.getElementById(id);
+const names = {player:"你",xiaxi:"小汐",roommate:"室友",clubmate:"社团同学",direct:"小汐的直接回复"};
+const places = {teaching:"教学楼",library:"图书馆",club:"社团室",canteen:"食堂",walkway:"有顶连廊",venue:"活动会场",transit:"在途"};
+const coordinates = {teaching:[109,86],library:[333,65],club:[551,94],walkway:[224,223],canteen:[88,292],venue:[551,281]};
+const fallbackEdges = [["teaching","library",5],["teaching","walkway",4],["library","club",6],["club","walkway",4],["walkway","canteen",5],["walkway","venue",7],["canteen","venue",8]];
+let session = null, current = null, busy = false, mode = "player", needsSync = false, localLog = [], initialTick = 0, metXiaxi = false;
+function el(tag,text,cls) { const node = document.createElement(tag); if (text !== undefined && text !== null) node.textContent = String(text); if (cls) node.className = cls; return node; }
+const list = value => Array.isArray(value) ? value : [];
+const finite = value => typeof value === "number" && Number.isFinite(value);
+const human = value => typeof value === "string" ? value.replaceAll("小夕","小汐") : "";
+const readable = value => typeof value === "string" ? human(value) : value == null ? "" : JSON.stringify(value);
+const label = id => current?.map?.places?.[id] || current?.labels?.[id] || places[id] || names[id] || id || "未知地点";
+const person = id => names[id] || id || "同学";
+const num = value => finite(value) ? Number.isInteger(value) ? String(value) : value.toFixed(1) : "—";
+const json = data => ({method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(data)});
+const terminal = task => ["success","rescheduled","missed"].includes(task?.status);
+function announce(text) { $("announcement").textContent = text; }
+function errorText(detail) { return typeof detail === "string" ? detail : Array.isArray(detail) ? detail.map(row => row.msg || readable(row)).join("；") : "服务暂时无法完成请求"; }
+async function request(url,options = {}) {
+  const controller = new AbortController(), timeout = setTimeout(() => controller.abort(),12000);
+  try {
+    const response = await fetch(url,{...options,signal:controller.signal});
+    let body;
+    try { body = await response.json(); }
+    catch { const error = new Error("校园接口返回了无法读取的数据，请确认本地服务已启动。"); error.uncertain = options.method === "POST" && (response.ok || response.status >= 500); throw error; }
+    if (!response.ok) { const error = new Error(errorText(body.detail)); error.status = response.status; error.uncertain = options.method === "POST" && response.status >= 500; throw error; }
+    return body;
+  } catch (error) {
+    if (error.name === "AbortError" || error instanceof TypeError) {
+      const networkError = new Error(error.name === "AbortError" ? "连接超时。请同步状态后再行动，以免重复操作。" : "暂时连接不到校园服务，请检查服务后同步状态。");
+      networkError.uncertain = options.method === "POST"; throw networkError;
+    }
+    throw error;
+  } finally { clearTimeout(timeout); }
+}
+function setBusy(value) {
+  busy = value;
+  for (const id of ["reset","new-scene","refresh","retry","play-again","scenario","seed","player-mode","research-mode","debug"]) $(id).disabled = value;
+  $("refresh").disabled = value || !session;
+  document.querySelectorAll("[data-action]").forEach(button => { button.disabled = value || needsSync || terminal(current?.task); });
+  document.querySelectorAll(".map-node").forEach(button => {
+    button.disabled = value;
+    const canMove = legalActions().some(action => action.kind === "move" && action.target === button.dataset.place);
+    button.setAttribute("aria-disabled",String(value || needsSync || terminal(current?.task) || !canMove));
+  });
+  $("main-content").setAttribute("aria-busy",String(value));
+  $("status").textContent = value ? "正在更新校园…" : current ? needsSync ? "请先同步状态，再继续行动" : "世界已同步 · 修订 " + (current.revision ?? "—") : "校园尚未连接";
+  $("status").dataset.state = value ? "busy" : needsSync || !current ? "error" : "ready";
+}
+async function work(fn) {
+  if (busy) return;
+  $("error-box").hidden = true; setBusy(true);
+  try { await fn(); }
+  catch (error) {
+    if (error.uncertain && session) needsSync = true;
+    if (error.status === 409 && session) {
+      try { await refresh(); error.message = "世界状态已更新，已为你同步，请重新选择行动。"; }
+      catch { needsSync = true; error.message = "世界状态已更新，但同步失败。请先同步状态再行动。"; }
+    }
+    $("error").textContent = error.message || "操作暂未完成，请同步状态。";
+    $("error-box").hidden = false; $("retry").textContent = session ? "重新同步" : "重新连接";
+  } finally { setBusy(false); }
+}
+function actionKey(action) { return action ? [action.kind,action.actor_id || "player",action.target || "",action.item || "",action.minutes ?? 2].join("|") : ""; }
+function legalActions() { return list(current?.analysis?.actions).filter(action => action && typeof action.kind === "string" && (!action.actor_id || action.actor_id === "player")); }
+function policyAction(policy) { return policy?.action ? legalActions().find(action => actionKey(action) === actionKey(policy.action)) || null : null; }
+function actionLabel(action) {
+  if (typeof action.label === "string") return human(action.label);
+  if (action.kind === "confirm") return action.item === "meet" ? "约定各自前往，在会场会合" : "约定同行，一起前往会场";
+  const mapping = {
+    move:"前往" + label(action.target),
+    ask:action.target === "xiaxi" ? "联系小汐，确认她的位置" : "向" + person(action.target) + "核对线索",
+    give:"把" + (action.item === "umbrella" ? "雨伞" : action.item || "物品") + "交给" + person(action.target),
+    wait:"原地等候 " + num(action.minutes ?? 2) + " 分钟",
+    inform:"当面告诉小汐：活动已改址",reschedule:"和小汐另约时间 · 结束本次任务"
+  };
+  return mapping[action.kind] || human(action.description) || "执行行动：" + action.kind + (action.target ? " · " + label(action.target) : "");
+}
+function actionCost(action) { return finite(action.minutes) ? action.minutes === 0 ? "不耗时" : action.minutes + " 分钟" : "按规则计时"; }
+function makeActionButton(action,primary = false) {
+  const button = el("button",undefined,primary ? "primary" : "action-button" + (["inform","confirm"].includes(action.kind) ? " task-action" : ""));
+  button.type = "button"; button.dataset.action = actionKey(action); button.disabled = busy || needsSync || terminal(current?.task);
+  button.append(el("span",actionLabel(action)),el("span",actionCost(action),"action-cost"));
+  button.setAttribute("aria-label",actionLabel(action) + "，" + actionCost(action));
+  button.addEventListener("click",() => work(() => performAction(action)));
+  return button;
+}
+function sawXiaxi(view) { return list(view.observations).some(row => row.kind === "sighting" && row.observed_at === view.tick && list(row.support).includes(view.location)); }
+function renderTask(task = {},view = {}) {
+  const tick = finite(view.tick) ? view.tick : 0, assigned = task.status && task.status !== "not_assigned";
+  const deadline = finite(task.deadline) ? task.deadline : finite(view.deadline) ? view.deadline : null;
+  const remaining = finite(task.remaining_minutes) ? Math.max(0,task.remaining_minutes) : deadline !== null ? Math.max(0,deadline-tick) : null;
+  const progress = task.progress || {}, ended = terminal(task);
+  if (sawXiaxi(view) || progress.is_informed || progress.confirmed) metXiaxi = true;
+  $("task-heading").textContent = human(task.goal) || (assigned ? "在截止前，与小汐抵达新会场" : ["mission","challenge"].includes($("scenario").value) ? "把活动改址的消息带给小汐" : "核对线索，观察判断与行动");
+  $("clock").textContent = "T+" + num(tick);
+  $("deadline").textContent = deadline !== null ? "游戏时钟 · 截止 T+" + num(deadline) : assigned ? "游戏时钟 · 时限等待接口返回" : "游戏时钟 · 机制案例无任务结算";
+  $("remaining").textContent = remaining === null ? "—" : num(remaining);
+  const fraction = remaining !== null && deadline > 0 ? Math.max(0,Math.min(100,remaining/deadline*100)) : 0;
+  $("time-fill").style.width = fraction + "%"; $("time-progress").setAttribute("aria-valuenow",String(Math.round(fraction)));
+  $("time-progress").setAttribute("aria-valuetext",remaining === null ? "没有任务时限" : "剩余 " + num(remaining) + " 分钟");
+  $("mission-card").classList.toggle("urgent",remaining !== null && remaining <= 10 && !ended);
+  $("task-status").textContent = ({success:"已完成",rescheduled:"已另约时间",missed:"已错过",not_assigned:"机制案例",active:"进行中"})[task.status] || "等待任务";
+  $("goals").replaceChildren();
+  if (task.status === "not_assigned") {
+    const item = el("li",undefined,"goal active"); item.append(el("span","·","step-badge"),el("p","本案例用于比较推理、来源去重与同地交付，不进行限时任务结算。","goal-label")); $("goals").append(item);
+  } else {
+    const steps = [
+      {label:"核对线索，找到小汐",done:metXiaxi,detail:"先联系同学，或去线索地点查看"},
+      {label:"当面传达活动改址",done:!!progress.is_informed,detail:"见面后点击“当面告诉小汐”"},
+      {label:"确认同行或各自前往",done:!!progress.confirmed,detail:progress.confirmed ? progress.confirmation_mode === "escort" ? "已约定同行" : "已约定在会场会合" : "选择同行，或约定在会场会合"},
+      {label:"抵达新会场，查看结算",done:task.status === "success",detail:progress.confirmed ? progress.confirmation_mode === "escort" ? "沿地图前往会场，小汐会与你同行" : "各自赶往会场，双方到齐后结算" : "完成出发约定后前往活动会场"}
+    ];
+    const activeIndex = steps.findIndex(step => !step.done);
+    steps.forEach((step,index) => {
+      const active = !ended && index === activeIndex, item = el("li",undefined,"goal" + (step.done ? " done" : active ? " active" : "")), body = el("div");
+      body.append(el("p",step.label,"goal-label"));
+      if (active || (index === 2 && step.done)) body.append(el("p",step.detail,"goal-detail"));
+      item.append(el("span",step.done ? "✓" : index+1,"step-badge"),body);
+      item.setAttribute("aria-label",step.label + (step.done ? "，已完成" : active ? "，当前步骤" : "，待完成")); $("goals").append(item);
+    });
+  }
+  renderResult(task,view);
+}
+function failureReason(task,view) {
+  const progress = task.progress || {};
+  if (!progress.is_informed) return "截止前未能当面向小汐传达改址消息，活动约定未完成。下次可优先核对新线索，减少无效等待。";
+  if (!progress.confirmed) return "改址消息已传达，但截止前没有确认同行或会场会合的安排。下次见面后记得继续选择出发方式。";
+  if (view.location !== (task.goal_location || "venue")) return "已经确认出发方式，但你未能在截止前抵达新会场。下次可比较路线的步行时间。";
+  return "你已抵达新会场，但双方未能在截止前到齐。独立前往时，也需要为小汐的路程留出时间。";
+}
+function renderResult(task,view) {
+  const ended = terminal(task); $("result").hidden = !ended; if (!ended) return;
+  const outcome = task.outcome && typeof task.outcome === "object" ? task.outcome : {}, status = task.status;
+  const titles = {success:"消息带到了，约定也有了回响。",rescheduled:"今天先告别，下次再好好见面。",missed:"这一次，没能赶上约定。"};
+  const reasons = {success:"你当面传达了改址消息，确认了出发方式，并与小汐在截止前抵达新会场。",rescheduled:"你们确认了另约时间。这是独立结局，本次任务已结束。",missed:failureReason(task,view)};
+  $("result").dataset.tone = status; $("result-icon").textContent = ({success:"✓",rescheduled:"↗",missed:"!"})[status];
+  $("result-title").textContent = human(outcome.title) || titles[status];
+  $("result-reason").textContent = human(outcome.reason || task.reason || task.failure_reason) || reasons[status];
+  $("result-facts").replaceChildren(el("span","结算时刻 T+" + num(task.settled_at ?? view.tick)));
+  if (finite(task.remaining_minutes)) $("result-facts").append(el("span","剩余 " + num(Math.max(0,task.remaining_minutes)) + " 分钟"));
+  if (task.progress?.confirmation_mode) $("result-facts").append(el("span",task.progress.confirmation_mode === "escort" ? "出发方式：同行" : "出发方式：会场会合"));
+}
+function svgNode(tag,attributes) { const node = document.createElementNS("http://www.w3.org/2000/svg",tag); for (const [key,value] of Object.entries(attributes)) node.setAttribute(key,String(value)); return node; }
+function renderRoutes(view,analysis) {
+  const routes = $("map-routes"), labels = $("route-labels"), edges = Array.isArray(current.map?.edges) ? current.map.edges : fallbackEdges, recommended = policyAction(analysis.policy);
+  routes.replaceChildren(); labels.replaceChildren();
+  for (const edge of edges) {
+    if (!Array.isArray(edge) || !coordinates[edge[0]] || !coordinates[edge[1]] || !finite(edge[2])) continue;
+    const [from,to,minutes] = edge, [x1,y1] = coordinates[from], [x2,y2] = coordinates[to], target = view.location === from ? to : view.location === to ? from : null;
+    const available = !!target && legalActions().some(action => action.kind === "move" && action.target === target);
+    const path = "M" + x1 + " " + y1 + "L" + x2 + " " + y2;
+    routes.append(svgNode("path",{d:path,class:"route" + (available ? " available" : "") + (target && recommended?.kind === "move" && recommended.target === target ? " recommended" : "")}),svgNode("path",{d:path,class:"route-inner"}));
+    const text = svgNode("text",{x:(x1+x2)/2-5,y:(y1+y2)/2 + (from === "canteen" || to === "canteen" ? 15 : -10)}); text.textContent = minutes + "′"; labels.append(text);
+  }
+}
+function renderMap(view,analysis) {
+  const observed = sawXiaxi(view), candidate = observed ? view.location : analysis.decision?.location, moves = legalActions().filter(action => action.kind === "move");
+  $("current-location").textContent = "你在" + label(view.location); renderRoutes(view,analysis);
+  document.querySelectorAll(".map-node").forEach(button => {
+    const place = button.dataset.place, move = moves.find(action => action.target === place), here = view.location === place, unavailable = !move || terminal(current.task) || needsSync;
+    button.classList.toggle("current",here); button.classList.toggle("clue",candidate === place && !observed);
+    button.setAttribute("aria-disabled",String(unavailable)); button.setAttribute("aria-current",here ? "location" : "false");
+    button.querySelector("strong").textContent = label(place);
+    button.querySelector(".node-note").textContent = here ? "你在这里" : move ? "步行 " + num(move.minutes) + " 分钟" : place === "venue" ? "改址后的终点" : "需经过其他地点";
+    const badge = button.querySelector(".map-person"); badge.hidden = candidate !== place; badge.textContent = observed ? "看见小汐" : "线索指向";
+    button.setAttribute("aria-label",label(place) + (here ? "，你在这里" : !unavailable ? "，可直达，" + actionCost(move) : "，当前不可前往") + (candidate === place ? observed ? "，亲眼看见小汐" : "，线索指向这里，尚待核实" : ""));
+  });
+  $("map-help").textContent = terminal(current.task) ? "本次任务已结算。你可以阅读行动记录，或重新开始。" : observed ? "你亲眼看到了小汐。到行动区传达改址，继续确认出发方式。" : "实线框地点可直达；线索标记是位置判断，仍需到场核实。";
+}
+function renderClues(view) {
+  const records = list(view.observations).slice().sort((a,b) => (b.received_at ?? 0)-(a.received_at ?? 0)), roots = new Set(records.map(row => row.origin || row.id));
+  $("clue-count").textContent = records.length + " 条线索"; $("records").replaceChildren();
+  for (const record of records) {
+    const sight = record.kind === "sighting", source = sight ? "亲眼所见" : person(record.source), support = list(record.support).map(label).join("、"), age = finite(record.observed_at) && finite(view.tick) ? Math.max(0,view.tick-record.observed_at) : null;
+    const row = el("article",undefined,"clue-row"), avatar = el("div",sight ? "见" : source.slice(0,1),"clue-avatar"), body = el("div",undefined,"clue-body"), heading = el("div",undefined,"clue-title"); avatar.setAttribute("aria-hidden","true");
+    heading.append(el("strong",source),el("time",age === 0 ? "此刻" : age !== null ? age + " 分钟前" : "已收到"));
+    body.append(heading,el("p",sight ? "小汐就在" + (support || label(view.location)) + "，你现在可以和她见面。" : support ? "关于小汐的位置，消息指向「" + support + "」。" : "这条消息暂未指向明确地点。","clue-copy"));
+    body.append(el("p","来源 " + (record.source || "—") + " · 根来源 " + (record.origin || "—") + " · 观测 T+" + num(record.observed_at) + " / 接收 T+" + num(record.received_at) + " · 设计可靠度 " + num(record.reliability) + " · 记录 " + (record.id || "—"),"clue-meta research-detail"));
+    row.append(avatar,body); $("records").append(row);
+  }
+  if (!records.length) $("records").append(el("p","目前还没有收到小汐的位置线索。先联系她，或向同学核实。","empty-clue"));
+  $("source-note").textContent = records.length > roots.size ? records.length + " 条记录来自 " + roots.size + " 个根来源；重复转发不会自动增加独立证据。" : "消息可能过时，也可能互相矛盾。亲眼目击与及时回复更值得优先核实。";
+}
+function fallbackGuidance(task,view) {
+  if (task?.status === "not_assigned") return "先核对线索或联系同学，再移动到候选地点。切换研究模式可观察同一行动如何改变三种推理结果。";
+  if (task?.progress?.confirmed) return task.progress.confirmation_mode === "escort" ? "已经约定同行。点击地图前往新会场，小汐会与你同行，双方到场后结算。" : "已经约定在会场会合。沿地图前往新会场；若先到达，可等候小汐，但请留意截止时间。";
+  if (task?.progress?.is_informed) return "改址已经传达。现在请选择约定同行，或约定各自前往并在会场会合；也可以另约时间。";
+  if (sawXiaxi(view)) return "你已经找到小汐。点击“当面告诉小汐：活动已改址”，再确认出发安排。";
+  return "第一步：核对收到的线索，联系小汐或向同学询问；再点击地图去候选地点亲眼确认。";
+}
+function renderActions(analysis,task,view) {
+  const policy = analysis.policy || {}, recommended = policyAction(policy), ended = terminal(task), actions = legalActions();
+  const firstStep = current.revision === 0 && task?.status === "active";
+  $("guidance-label").textContent = ended ? "本次任务已结束" : firstStep ? "第一步提示" : recommended ? "建议下一步" : "行动提示";
+  $("guidance").textContent = ended ? "回看你走过的路线与判断，或换个选择重新开始。" : firstStep ? "先核对收到的线索，再联系小汐或向同学核实。" + (recommended ? "可以从“" + actionLabel(recommended) + "”开始。" : "点击校园地图，可到候选地点亲眼确认。") : human(policy.reason) || fallbackGuidance(task,view);
+  $("recommended-action").replaceChildren(); $("policy-metrics").replaceChildren();
+  if (recommended && !ended) $("recommended-action").append(makeActionButton(recommended,true));
+  if (finite(policy.expected_cost)) $("policy-metrics").append(el("span","预期成本 " + num(policy.expected_cost),"tag"));
+  if (finite(policy.information_value)) $("policy-metrics").append(el("span","信息价值 " + num(policy.information_value),"tag"));
+  $("actions").replaceChildren();
+  if (ended) { $("actions").append(el("p","本次行动已结束，结算卡与行动记录已保留。","actions-empty")); return; }
+  const groups = [
+    {title:"沟通与任务",items:actions.filter(action => !["move","wait","give","reschedule"].includes(action.kind))},
+    {title:"步行前往 · 也可直接点击地图",items:actions.filter(action => action.kind === "move")},
+    {title:"物品与等候",items:actions.filter(action => ["give","wait"].includes(action.kind))},
+    {title:"另一种结局",items:actions.filter(action => action.kind === "reschedule")}
+  ];
+  for (const group of groups) {
+    if (!group.items.length) continue;
+    const wrapper = el("div",undefined,"action-group"), buttons = el("div",undefined,"actions"); wrapper.append(el("h3",group.title)); group.items.forEach(action => buttons.append(makeActionButton(action))); wrapper.append(buttons); $("actions").append(wrapper);
+  }
+  if (!actions.length) $("actions").append(el("p","服务端暂未返回可执行行动。请同步状态后查看。","actions-empty"));
+}
+function renderLog(view) {
+  const memories = list(view.memories).filter(event =>
+    !["arrival","departure"].includes(event.kind) &&
+    (event.kind !== "template" || ["mission-success","mission-missed"].includes(event.template_id)));
+  const entries = memories.length ? memories.map(event => ({tick:event.tick,title:human(event.detail) || actionLabel({kind:event.kind,target:event.target,item:event.item})})) : localLog;
+  $("log-count").textContent = entries.length ? entries.length + " 次行动与结算" : "尚未行动"; $("log").replaceChildren();
+  for (const entry of entries.slice(-24).reverse()) { const item = el("li",undefined,"log-item"); item.append(el("span","T+" + num(entry.tick),"log-time"),el("p",entry.title)); $("log").append(item); }
+  const start = el("li",undefined,"log-item"); start.append(el("span","T+" + num(initialTick),"log-time"),el("p",["mission","challenge"].includes($("scenario").value) ? "你收到活动改址的消息，开始在校园里寻找小汐。" : "机制案例开始：核对当前角色收到的线索。")); $("log").append(start);
+}
+function renderBars(id,row = {}) {
+  const root = $(id); root.replaceChildren();
+  const values = Object.entries(row.probabilities || {}).filter(([,value]) => finite(value)).sort((a,b) => b[1]-a[1]);
+  if (!values.length) root.append(el("p",row.status === "complete_conflict" ? "证据完全冲突，标准合成当前无定义。" : row.status === "zero_likelihood" ? "证据出现零似然，当前后验无定义。" : "暂无可计算的位置分布。","method-meta"));
+  for (const [state,value] of values) {
+    const line = el("div",undefined,"bar-row"), track = el("div",undefined,"track"), fill = el("div",undefined,"fill");
+    fill.style.width = Math.max(0,Math.min(100,value*100)) + "%"; track.append(fill); track.setAttribute("aria-hidden","true"); line.append(el("span",label(state)),track,el("span",(value*100).toFixed(1) + "%","bar-value")); root.append(line);
+  }
+  if (finite(row.conflict)) root.append(el("p","冲突 K=" + row.conflict.toFixed(3) + " · 未分配质量=" + (finite(row.ignorance) ? row.ignorance.toFixed(3) : "—"),"method-meta"));
+  if (row.selected) root.append(el("p","选用 " + list(row.selected).length + " 条 · 去除同源 " + list(row.discarded).length + " 条","method-meta"));
+}
+function renderResearch(data) {
+  const analysis = data.analysis || {}, methods = analysis.evidence_methods || {}, facts = list(analysis.facts), proof = list(analysis.proof);
+  renderBars("bayes",analysis.bayes); renderBars("dempster",methods.dempster); renderBars("yager",methods.yager);
+  $("bayes-meta").textContent = "选用记录：" + (list(analysis.bayes?.selected).join("、") || "暂无") + "。";
+  $("rules").replaceChildren(el("p","当前事实 " + facts.length + " 条 · 推导记录 " + proof.length + " 条","method-meta"));
+  const chips = el("div",undefined,"proof-chips"); [...new Set(proof.map(row => row.rule))].forEach(rule => chips.append(el("span",rule,"tag"))); $("rules").append(chips);
+  $("facts-proof").textContent = JSON.stringify({facts,proof,metrics:analysis.logic_metrics},null,2);
+  $("parameters").textContent = human(analysis.parameter_status) || "概率、可靠度与策略参数均由服务端提供，请结合实验校准状态解读。";
+  $("proof").textContent = JSON.stringify({policy:analysis.policy,decision:analysis.decision,proof,bayes:analysis.bayes,ds:analysis.evidence_methods,memories:data.view?.memories,task:data.task},null,2);
+  $("audit").replaceChildren();
+  if (mode === "research" && $("debug").checked && data.audit) $("audit").append(el("pre",JSON.stringify(data.audit,null,2)));
+  else $("audit").append(el("p",$("debug").checked ? "本次响应尚无审计数据，请同步状态。" : "勾选“显示研究审计真值”后，单独从服务端读取。","small"));
+}
+function validatePayload(data) {
+  if (!data || typeof data !== "object" || !data.view || !data.analysis || !Number.isSafeInteger(data.revision) || data.revision < 0) throw new Error("会话响应缺少角色视图、推理结果或有效修订号，请同步状态。");
+}
+function render(data) {
+  validatePayload(data);
+  current = data; const view = data.view, analysis = data.analysis;
+  renderTask(data.task || {},view); renderMap(view,analysis); renderClues(view); renderActions(analysis,data.task,view); renderLog(view); renderResearch(data);
+  $("inventory").textContent = "随身物品：" + (list(view.possessions).map(item => item === "umbrella" ? "雨伞" : item).join("、") || "暂无") + "。";
+}
+async function refresh() {
+  if (!session) return;
+  const debug = mode === "research" && $("debug").checked;
+  const data = await request("/api/session/" + encodeURIComponent(session) + "?actor=player&debug=" + debug); needsSync = false; render(data);
+}
+async function reset() {
+  const seed = Number($("seed").value);
+  if (!Number.isSafeInteger(seed) || seed < 0 || seed > 2147483647) throw new Error("请填写 0 到 2147483647 之间的整数种子。");
+  const data = await request("/api/session",json({scenario:$("scenario").value,seed}));
+  if (typeof data?.session_id !== "string" || !data.session_id) throw new Error("服务端没有返回会话编号，请重新连接。");
+  validatePayload(data);
+  session = data.session_id; needsSync = false; localLog = []; initialTick = data.view?.tick ?? 0; metXiaxi = false; render(data);
+  if (mode === "research" && $("debug").checked) await refresh();
+  announce(($("scenario").value === "challenge" ? "随机挑战" : $("scenario").value === "mission" ? "教学回放" : "机制案例") + "已开始，种子 " + seed + "。先核对线索，再选择下一步行动。");
+}
+async function newScene() {
+  const previous = Number($("seed").value), candidate = Math.floor(Math.random()*2147483648);
+  $("seed").value = String(candidate === previous ? (candidate+1)%2147483648 : candidate);
+  $("scenario").value = "challenge";
+  await reset();
+}
+async function performAction(action) {
+  if (!session || needsSync || terminal(current?.task)) return;
+  // 只提交服务端给出的原 Action，并用修订号防止重复执行。
+  const data = await request("/api/session/" + encodeURIComponent(session) + "/action",json({...action,revision:current.revision}));
+  try { render(data); } catch (error) { error.uncertain = true; throw error; }
+  localLog.push({tick:data.view.tick,title:actionLabel(action)});
+  if (!list(data.view.memories).length) renderLog(data.view);
+  if (mode === "research" && $("debug").checked) await refresh();
+  announce(actionLabel(action) + "。游戏时间 T+" + num(current.view.tick) + (finite(current.task?.remaining_minutes) ? "，剩余 " + num(current.task.remaining_minutes) + " 分钟。" : "。") + (terminal(current.task) ? $("result-title").textContent : "请选择下一步行动。"));
+  (terminal(current.task) ? $("result") : $("actions-heading")).focus({preventScroll:!terminal(current.task)});
+}
+async function setMode(next) {
+  mode = next; document.body.dataset.mode = next; $("research").hidden = next !== "research";
+  $("player-mode").setAttribute("aria-pressed",String(next === "player")); $("research-mode").setAttribute("aria-pressed",String(next === "research"));
+  // 退出研究模式即关闭审计；地图和建议始终不读取 audit。
+  if (next === "player") { $("debug").checked = false; $("audit-details").open = false; $("audit").replaceChildren(); }
+  if (session) await refresh();
+  announce(next === "research" ? "已切换研究模式，下方可检查推理、来源、证据与审计。" : "已切换玩家模式，继续核对线索与行动。");
+}
+document.querySelectorAll(".map-node").forEach(button => button.addEventListener("click",() => {
+  if (busy) return;
+  const place = button.dataset.place;
+  if (needsSync) { $("map-help").textContent = "请先点击“同步状态”，确认上一次行动的结果。"; return; }
+  if (terminal(current?.task)) { $("map-help").textContent = "本次任务已结算，可以重新开始再做选择。"; return; }
+  const action = legalActions().find(row => row.kind === "move" && row.target === place);
+  if (action) work(() => performAction(action));
+  else $("map-help").textContent = current?.view.location === place ? "你已经在" + label(place) + "。可以查看线索或选择沟通行动。" : "从当前位置无法直达" + label(place) + "，请沿地图路线经过其他地点。";
+}));
+$("reset").addEventListener("click",() => work(reset)); $("play-again").addEventListener("click",() => work(reset));
+$("new-scene").addEventListener("click",() => work(newScene));
+$("refresh").addEventListener("click",() => work(refresh)); $("retry").addEventListener("click",() => work(session ? refresh : reset));
+$("scenario").addEventListener("change",() => work(reset));
+$("debug").addEventListener("change",() => work(async () => { $("audit-details").open = $("debug").checked; await refresh(); }));
+$("player-mode").addEventListener("click",() => work(() => setMode("player"))); $("research-mode").addEventListener("click",() => work(() => setMode("research")));
+work(reset);
+</script>
+</body>
+</html>

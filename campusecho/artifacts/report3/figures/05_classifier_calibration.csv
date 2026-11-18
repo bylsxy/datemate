@@ -1,0 +1,6 @@
+﻿item,value
+threshold,0.8
+source,val_balanced_accuracy
+positive_count,2162
+negative_count,299
+sample_count,2461

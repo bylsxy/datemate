@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "score_version": "campus-echo-model-scores-2026-11-18-v1",
+  "models": {
+    "deepseek-flash": {
+      "score": 33,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 Max",
+      "evidence": "本机 AxonHub 于 2026-10-24 完成基础回复、运行时身份和并行工具调用验证。"
+    },
+    "gpt-6.1-sol": {
+      "score": 55,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 Max",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-sol-low": {
+      "score": 35,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 low",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-sol-medium": {
+      "score": 46,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 medium",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-sol-high": {
+      "score": 50,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 high",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-sol-xhigh": {
+      "score": 52,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 xhigh",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-terra-low": {
+      "score": 29,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 low",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-terra-medium": {
+      "score": 38,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 medium",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-terra-high": {
+      "score": 42,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 high",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-terra-xhigh": {
+      "score": 45,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 xhigh",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    },
+    "gpt-6.1-terra-max": {
+      "score": 51,
+      "verified": true,
+      "source": "Artificial Analysis Intelligence Index v5.0.1 max",
+      "evidence": "项目模型矩阵记录；仅表示综合评分，不表示本项目已通过真实网络调用。"
+    }
+  }
+}

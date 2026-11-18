@@ -1,0 +1,6 @@
+﻿method,method_label,mean_candidate_checks,mean_expanded_nodes
+bfs,BFS,8.45625,5.01875
+hand_astar,手工 A*,14.08125,8.5625
+ga_astar,GA-A*,5.2125,3.59375
+mcts,MCTS,8.10625,1.83125
+ga_astar_classifier,GA-A*+分类器,7.21875,3.2

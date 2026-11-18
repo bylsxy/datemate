@@ -1,0 +1,67 @@
+{
+  "ablation_labels": {
+    "ga_astar": {
+      "ablation_of": null,
+      "classifier": false,
+      "classifier_threshold": null,
+      "heuristic": "GA 学习权重"
+    },
+    "ga_astar_classifier": {
+      "ablation_of": "ga_astar",
+      "classifier": true,
+      "classifier_threshold": "val 校准",
+      "heuristic": "GA 学习权重叠加路径分类器"
+    }
+  },
+  "answer_metric": "set equality over terminal entity IDs",
+  "data_fingerprint_scope": "graph, public questions, private labels and manifest",
+  "llm_subset": {
+    "callback_receives_private_labels": false,
+    "maximum": 60,
+    "same_questions_for_all_methods": true,
+    "strata": [
+      "split",
+      "min_hops",
+      "max_hops",
+      "kind"
+    ]
+  },
+  "method_labels": {
+    "bfs": "BFS",
+    "ga_astar": "GA-A*",
+    "ga_astar_classifier": "GA-A*+分类器",
+    "hand_astar": "手工 A*",
+    "mcts": "MCTS"
+  },
+  "methods": [
+    "bfs",
+    "hand_astar",
+    "ga_astar",
+    "mcts",
+    "ga_astar_classifier"
+  ],
+  "metrics": [
+    "answer_accuracy",
+    "path_valid_rate",
+    "path_complete_rate",
+    "mean_expanded_nodes",
+    "mean_candidate_checks",
+    "mean_reasoning_steps",
+    "mean_redundant_ratio",
+    "success_rate",
+    "mean_elapsed_seconds",
+    "failure_reason_counts"
+  ],
+  "path_metric": "exact equality over all fixed-hop simple paths",
+  "schema_version": 1,
+  "search_state": "layered (entity_id, depth) to preserve fixed-hop paths",
+  "source_fingerprint_scope": "experiment runner, search, learning, data loader, CLI and tests",
+  "splits": {
+    "evaluation": "test",
+    "fit": [
+      "train",
+      "val"
+    ],
+    "test_frozen": true
+  }
+}

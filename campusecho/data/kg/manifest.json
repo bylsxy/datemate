@@ -1,0 +1,100 @@
+{
+  "academic_sources_verified": true,
+  "academic_verification": "6 篇论文的 arXiv API 元数据与 OpenAlex 公开记录已核对；关系按论文摘要与公开书目字段人工映射。",
+  "answer_projection": "questions_public.jsonl contains no answers or paths; answers_private.jsonl is evaluator-only",
+  "campus_layer": "fictional; no real person, club, event or place is asserted",
+  "counts": {
+    "entities": 504,
+    "labels": {
+      "core": 662,
+      "robust": 112
+    },
+    "questions": {
+      "core": 662,
+      "robust": 112
+    },
+    "sources": 28,
+    "triples": 1234
+  },
+  "family_splits": {
+    "academic:attention": "train",
+    "academic:bert": "test",
+    "academic:rag": "val",
+    "academic:resnet": "test",
+    "academic:vgg": "train",
+    "academic:word2vec": "train",
+    "campus:cloud_sail": "test",
+    "campus:crescent": "train",
+    "campus:evening_star": "train",
+    "campus:far_hill": "train",
+    "campus:green_grain": "test",
+    "campus:kapok": "train",
+    "campus:lake_reflection": "val",
+    "campus:light_pick": "train",
+    "campus:morning_mist": "val",
+    "campus:returning_boat": "val",
+    "campus:ripple": "train",
+    "campus:south_branch": "train",
+    "campus:spring_creek": "train",
+    "campus:star_bridge": "test",
+    "campus:white_dew": "train",
+    "campus:wind_listener": "train"
+  },
+  "files": {
+    "answers_private.jsonl": {
+      "bytes": 456237,
+      "sha256": "d36cde9cc1641d9d8fad966d9632461ac6272f938ce46da26529a72df738e079"
+    },
+    "graph.json": {
+      "bytes": 722702,
+      "sha256": "dc16200076fbde4f9b6201f2824b497f17f6fb7082f38ecabe70986bd1e3d1e6"
+    },
+    "questions_public.jsonl": {
+      "bytes": 515754,
+      "sha256": "96e7164f4049268f5a5483784b722f2a943c033196254fcade5419efc7c37e4f"
+    }
+  },
+  "generator": "campusecho_kg_v1",
+  "question_hops": "2-4; labels store every simple valid path",
+  "relation_whitelist": [
+    "ABOUT",
+    "ADVISES",
+    "ATTENDS",
+    "AUTHORED_BY",
+    "EVALUATED_ON",
+    "FRIEND_OF",
+    "HAS_MODALITY",
+    "HELD_AT",
+    "INTERESTED_IN",
+    "INTRODUCES",
+    "LOCATED_IN",
+    "MEETS_AT",
+    "MEMBER_OF",
+    "MENTORS",
+    "ORGANIZES",
+    "PART_OF",
+    "PUBLISHED_AT",
+    "PUBLISHED_BY",
+    "USES",
+    "VOLUNTEERS_AT"
+  ],
+  "retrieved_at": "2026-11-18",
+  "schema_version": 1,
+  "seed": 20261118,
+  "source_types": [
+    "paper",
+    "openalex_metadata",
+    "fictional"
+  ],
+  "split_entities": {
+    "test": 104,
+    "train": 301,
+    "val": 99
+  },
+  "split_policy": "family_id; all entities, triples and questions stay together",
+  "split_ratios": {
+    "test": 0.2063,
+    "train": 0.5972,
+    "val": 0.1964
+  }
+}

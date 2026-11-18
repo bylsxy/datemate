@@ -1,0 +1,153 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-11-17T21:01:43.047280+00:00",
+  "status": "complete",
+  "source": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\docs\\report3.md",
+  "source_sha256": "9f29c562618a366db2c442a7f71bc2389611afbbd0c102b52d4f52641dd0762c",
+  "docx": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\CampusEcho_课堂报告.docx",
+  "docx_sha256": "fa55ceb0a68a632594bcf4ffdc7de29cf1f6b04a199d7113c8b957564d5c9b80",
+  "pandoc": "D:\\Anaconda3\\Library\\bin\\pandoc.exe",
+  "pandoc_native_math": true,
+  "statistics": {
+    "chinese_characters": 8838,
+    "all_text_characters": 15554,
+    "math_characters": 490,
+    "native_math_objects": 51,
+    "display_equations": 11,
+    "images": 5,
+    "tables": 1,
+    "raw_latex_markers": []
+  },
+  "pdf": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\CampusEcho_课堂报告.pdf",
+  "pdf_sha256": "c995be493e6bebd87503a151b54646ff0f59d23a1c4b32a24b79ce0de5edbbf0",
+  "pages": 16,
+  "pngs": [
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-01.png",
+      "sha256": "bbea69166d24e701cea18b095b97b48326bd6b69ef92ab7e419d626b7c7429e8",
+      "bytes": 480513
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-02.png",
+      "sha256": "ced1c78cf566714dc4dde3deb947f6506ee65b4ea3e0d011ff6acab9e0c2b55c",
+      "bytes": 508206
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-03.png",
+      "sha256": "cf86cfd4c4e6030e1cae2ab20cd0cc7d7732ff36f118e8d8d079a2e02a21ec99",
+      "bytes": 467311
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-04.png",
+      "sha256": "1770e1edab7ee807cdff4b7027ecf20e327019ad542289c01ab3d03f4686df32",
+      "bytes": 346959
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-05.png",
+      "sha256": "1fe95facd48d6a927c1e38b3f2b2556a402ef39774844422b57f75ae5e5d92a8",
+      "bytes": 317975
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-06.png",
+      "sha256": "1966d4a4f7e01db1fa4cc8455ba09a23dd84c19dab42d2929afc5666cb5b5639",
+      "bytes": 417695
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-07.png",
+      "sha256": "5c1e3e80f03a3fa1f2ac4ad55a25eff81d6542d2b07ea87d761b17ef2ecb861d",
+      "bytes": 470174
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-08.png",
+      "sha256": "f753a3a13962efa183712d67f5ffed2ca58e13ca603c6e92bc99a7858a6b5655",
+      "bytes": 490993
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-09.png",
+      "sha256": "db2d4c8a407829a656dfcffad1a1a22b782973fc8cda5fa9b3f8f0b5c64aecd6",
+      "bytes": 309002
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-10.png",
+      "sha256": "99aab2e88b188aa86ab2ec30e7dee0363c47c1f4039cfa9f07c7a0be91b363f8",
+      "bytes": 312391
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-11.png",
+      "sha256": "aee51cce3fe72488f1ec40e1ecf0d07aec1ea3ab2deabaea5c41541cfc104c95",
+      "bytes": 211969
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-12.png",
+      "sha256": "2532f8e70a2d511674bff8038387f6fefe0ce56e48529a243c00f665f536e280",
+      "bytes": 203475
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-13.png",
+      "sha256": "96f4ced087d2c86f85587a53b012e6e3cbd8b1232b4ef70a519dd98841c7ae13",
+      "bytes": 455154
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-14.png",
+      "sha256": "55e9519304e6e88ec2e56122ee8067d443eae986794c54246d41406be6153e26",
+      "bytes": 518631
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-15.png",
+      "sha256": "57a2cbf4ef8018220f0ed899565417bae88b781e76bca7a78796cd0569b20ba9",
+      "bytes": 500577
+    },
+    {
+      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\render\\page-16.png",
+      "sha256": "0130cf99ce0af506060a2aae8eee8320cf24a477d05ea8cc95aa7fee8f062f52",
+      "bytes": 131044
+    }
+  ],
+  "render": {
+    "backend": "Microsoft Word COM ExportAsFixedFormat + Poppler",
+    "dpi": 140,
+    "visual_review": "complete"
+  },
+  "frozen_record_audit": {
+    "bfs": {
+      "questions": 160,
+      "complete": 21,
+      "empty_valid": 53,
+      "partial_valid": 86
+    },
+    "hand_astar": {
+      "questions": 160,
+      "complete": 21,
+      "empty_valid": 53,
+      "partial_valid": 86
+    },
+    "ga_astar": {
+      "questions": 160,
+      "complete": 21,
+      "empty_valid": 53,
+      "partial_valid": 86
+    },
+    "mcts": {
+      "questions": 160,
+      "complete": 21,
+      "empty_valid": 53,
+      "partial_valid": 86
+    },
+    "ga_astar_classifier": {
+      "questions": 160,
+      "complete": 21,
+      "empty_valid": 53,
+      "partial_valid": 86
+    }
+  },
+  "required_pdf_text": [
+    "第24组",
+    "2026-11-18",
+    "LLM",
+    "实网"
+  ],
+  "claim_boundaries": [
+    "LLM 实网评分与解释完成验证；稳定收益仍需正式对照。",
+    "冻结记录中 53 道无解题返回空集，86 道可解题返回非空真子集，21 道返回全部标准路径。"
+  ]
+}

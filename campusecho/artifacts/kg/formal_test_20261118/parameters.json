@@ -1,0 +1,144 @@
+{
+  "classifier": {
+    "bias": 2.6266945492236604,
+    "feature_names": [
+      "goal_proximity",
+      "evidence_support",
+      "path_efficiency",
+      "frontier_balance"
+    ],
+    "mean": [
+      0.6642443650695808,
+      0.8716795992938416,
+      0.3600812907993613,
+      0.6985877727533035
+    ],
+    "scale": [
+      0.30348054306469596,
+      0.2720400944979385,
+      0.18854606262072585,
+      0.30636522938032323
+    ],
+    "schema_version": 1,
+    "weights": [
+      2.3289212065117493,
+      -0.1625308884878314,
+      -0.24831512337111014,
+      -1.6414516925225642
+    ]
+  },
+  "classifier_threshold": 0.8,
+  "ga": {
+    "best_fitness": [
+      1.0,
+      -3.6093418259023355,
+      -3.6093418259023355
+    ],
+    "config": {
+      "crossover_rate": 0.8,
+      "elite_count": 2,
+      "generations": 8,
+      "mutation_rate": 0.2,
+      "mutation_scale": 0.15,
+      "population_size": 12,
+      "seeds": [
+        20261118
+      ],
+      "tournament_size": 3
+    },
+    "feature_names": [
+      "goal_proximity",
+      "evidence_support",
+      "path_efficiency",
+      "frontier_balance"
+    ],
+    "generation_best_fitness": [
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ],
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ],
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ],
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ],
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ],
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ],
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ],
+      [
+        1.0,
+        -3.6093418259023355,
+        -3.6093418259023355
+      ]
+    ],
+    "initial_weights": [
+      0.1811068783365473,
+      0.4327060910225853,
+      0.3558742786937973,
+      0.03031275194707017
+    ],
+    "schema_version": 1,
+    "weights": [
+      0.663013285672417,
+      0.06281547621309151,
+      0.0778998278709586,
+      0.19627141024353287
+    ]
+  },
+  "ga_weights": [
+    0.663013285672417,
+    0.06281547621309151,
+    0.0778998278709586,
+    0.19627141024353287
+  ],
+  "metadata": {
+    "classifier_calibration": {
+      "negative_count": 299,
+      "positive_count": 2162,
+      "sample_count": 2461,
+      "source": "val_balanced_accuracy",
+      "threshold": 0.8,
+      "valid": true
+    },
+    "classifier_fallback_reason": null,
+    "classifier_status": "fitted",
+    "classifier_threshold_source": "val_balanced_accuracy",
+    "fit_question_count": 614,
+    "fit_splits": [
+      "train",
+      "val"
+    ],
+    "frozen_before_test": true,
+    "ga_fallback_reason": null,
+    "ga_status": "fitted",
+    "test_used_for_fit": false,
+    "train_question_count": 471,
+    "train_sample_count": 8119,
+    "val_question_count": 143,
+    "val_sample_count": 2461
+  },
+  "schema_version": 1
+}

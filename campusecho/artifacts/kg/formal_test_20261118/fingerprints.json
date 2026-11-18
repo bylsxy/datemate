@@ -1,0 +1,42 @@
+{
+  "data": {
+    "answers_private.jsonl": {
+      "bytes": 456237,
+      "sha256": "d36cde9cc1641d9d8fad966d9632461ac6272f938ce46da26529a72df738e079"
+    },
+    "graph.json": {
+      "bytes": 722702,
+      "sha256": "dc16200076fbde4f9b6201f2824b497f17f6fb7082f38ecabe70986bd1e3d1e6"
+    },
+    "manifest.json": {
+      "bytes": 2666,
+      "sha256": "a97ffa2fe3a580d280246e3ba4d8edb32b2a1fe05004375456de8f18c1d3b2c0"
+    },
+    "questions_public.jsonl": {
+      "bytes": 515754,
+      "sha256": "96e7164f4049268f5a5483784b722f2a943c033196254fcade5419efc7c37e4f"
+    }
+  },
+  "data_scope": [
+    "graph.json",
+    "questions_public.jsonl",
+    "answers_private.jsonl",
+    "manifest.json"
+  ],
+  "source": {
+    "src/campusecho/kg_data.py": "d8cf43339ee59526b7aa35cbcbc52e9fbaab93d5f09175f0290dbe0b2577cd8f",
+    "src/campusecho/kg_experiment.py": "de89d76171b2e0d3aa9a3a50ed7275787730c260e1e3aefcd357e38fdea78bcd",
+    "src/campusecho/kg_learning.py": "a659eaaa8b6afc647d8ec87e4f9682fcf3497e0e630201550e395b7e421a3afe",
+    "src/campusecho/kg_search.py": "b6c0e96d66b0a5f94965a2f2709b2e4341feed1576448c8092e25bc9dc0b50bc",
+    "tests/test_kg_experiment.py": "84151eb9f6359dcb1beda4050c7d9ae1e3881ec96fbcf73c7688c733f3cc25c6",
+    "tools/run_kg_experiment.py": "6ea3f5ee653c093b116cb97644dd992a116597426a5355cf5ded72733f79cb74"
+  },
+  "source_scope": [
+    "src/campusecho/kg_experiment.py",
+    "src/campusecho/kg_search.py",
+    "src/campusecho/kg_learning.py",
+    "src/campusecho/kg_data.py",
+    "tools/run_kg_experiment.py",
+    "tests/test_kg_experiment.py"
+  ]
+}

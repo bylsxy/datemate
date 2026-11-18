@@ -1,0 +1,81 @@
+{
+  "schema_version": 1,
+  "built_at": "2026-11-17T20:54:16.477486+00:00",
+  "status": "complete",
+  "pptx": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\CampusEcho_两分钟汇报.pptx",
+  "group": "第24组",
+  "date": "2026-11-18",
+  "members": [
+    "徐阳",
+    "廖信同",
+    "黎欣欣",
+    "周艳雯",
+    "殷浚峰"
+  ],
+  "frozen_root": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\kg\\formal_test_20261118",
+  "inspection": {
+    "slides": 6,
+    "width_inches": 13.3333,
+    "height_inches": 7.5,
+    "text_characters": 1450,
+    "required_text": [
+      "CampusEcho",
+      "第24组",
+      "2026-11-18",
+      "徐阳",
+      "廖信同",
+      "黎欣欣",
+      "周艳雯",
+      "殷浚峰",
+      "官方 DeepSeek 已完成真实评分与解释验证",
+      "正式冻结实验未混入 LLM",
+      "稳定收益仍需正式对照",
+      "GA-A*",
+      "分类器"
+    ],
+    "forbidden_text_absent": [
+      "报告三",
+      "报告编号",
+      "套壳",
+      "第91组",
+      "LLM 评分为 0 条",
+      "实网调用与收益仍待验证",
+      "实网 LLM 收益尚未验证"
+    ]
+  },
+  "render": {
+    "status": "complete",
+    "backend": "Microsoft PowerPoint COM",
+    "pngs": [
+      {
+        "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片1.PNG",
+        "bytes": 70480
+      },
+      {
+        "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片2.PNG",
+        "bytes": 88357
+      },
+      {
+        "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片3.PNG",
+        "bytes": 99762
+      },
+      {
+        "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片4.PNG",
+        "bytes": 117373
+      },
+      {
+        "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片5.PNG",
+        "bytes": 83428
+      },
+      {
+        "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\ppt-render\\幻灯片6.PNG",
+        "bytes": 85862
+      }
+    ]
+  },
+  "claim_boundaries": [
+    "官方 DeepSeek 已完成真实评分与解释验证。",
+    "正式冻结实验未混入 LLM 评分，稳定收益仍需正式对照。",
+    "PPT 不包含报告编号或套壳。"
+  ]
+}
