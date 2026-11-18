@@ -1,0 +1,19 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "model": "Qwen2.5-1.5B-Instruct-Q4_K_M",
+  "files": {
+    "records.jsonl": {
+      "bytes": 13146,
+      "sha256": "eeb791706819d28417be3fc999290dae8aae0393163d17b6323a99fbfc423676"
+    },
+    "summary.json": {
+      "bytes": 1614,
+      "sha256": "3556e4a742d2a66a45e232a078b9d64dd9913f2fa2aacbe72df5de8a191bc2fa"
+    },
+    "report_table.md": {
+      "bytes": 419,
+      "sha256": "cd47bd7aa2e06f5809f73109b1695cb14cc9a73825753a7d6f639bd46ba3c77c"
+    }
+  }
+}

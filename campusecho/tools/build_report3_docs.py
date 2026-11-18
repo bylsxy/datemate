@@ -464,7 +464,7 @@ def build_documents(
         "frozen_record_audit": completion_audit,
         "required_pdf_text": list(required),
         "claim_boundaries": [
-            "LLM 实网评分与解释完成验证；稳定收益仍需正式对照。",
+            "本地 Qwen2.5-1.5B 完成 12 题固定子集 LLM-A* 与错误 reward 对照；DeepSeek 全量收益仍未验证。",
             "冻结记录中 53 道无解题返回空集，86 道可解题返回非空真子集，21 道返回全部标准路径。",
         ],
     }

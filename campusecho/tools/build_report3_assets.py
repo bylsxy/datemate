@@ -7,6 +7,7 @@ import csv
 import hashlib
 import json
 import math
+import sys
 from dataclasses import dataclass
 from datetime import UTC, datetime
 from pathlib import Path
@@ -20,6 +21,14 @@ import numpy as np
 from matplotlib import font_manager
 
 PROJECT = Path(__file__).resolve().parents[1]
+sys.path.insert(0, str(PROJECT / "src"))
+
+from campusecho.kg_data import load_kg_data
+from campusecho.kg_experiment import _stable_seed
+from campusecho.kg_search import SearchConfig, astar, bfs, mcts
+from campusecho.research_api import _problem
+from campusecho.search_tree import build_search_tree
+
 DEFAULT_FROZEN = PROJECT / "artifacts/kg/formal_test_20261118"
 DEFAULT_OUTPUT = PROJECT / "artifacts/report3/figures"
 EXPECTED_METHODS = ("bfs", "hand_astar", "ga_astar", "mcts", "ga_astar_classifier")
@@ -29,7 +38,9 @@ FIGURE_FILES = (
     "03_ga_weights.png",
     "04_ga_fitness.png",
     "05_classifier_calibration.png",
+    "06_search_tree_bfs_astar_mcts.png",
 )
+TREE_QUESTION_ID = "core:campus-star_bridge:011"
 INK = "#1D2A32"
 MUTED = "#667783"
 GRID = "#DCE3E7"
@@ -432,6 +443,185 @@ def plot_classifier_calibration(frozen, output):
     }
 
 
+def _tree_positions(tree):
+    """Small deterministic tidy-tree layout in percentage coordinates."""
+
+    by_id = {node["id"]: node for node in tree["nodes"]}
+    children = {node["id"]: [] for node in tree["nodes"]}
+    for edge in tree["edges"]:
+        if edge["source"] in children and edge["target"] in by_id:
+            children[edge["source"]].append(edge["target"])
+    for values in children.values():
+        values.sort(key=lambda item: (by_id[item]["order"], item))
+    leaf = 0
+    max_depth = max((node["depth"] for node in tree["nodes"]), default=1) or 1
+
+    def visit(node_id, depth):
+        nonlocal leaf
+        node = by_id[node_id]
+        kids = children.get(node_id, [])
+        xs = [visit(child, depth + 1) for child in kids]
+        x = sum(xs) / len(xs) if xs else leaf
+        if not xs:
+            leaf += 1
+        node["_x"] = x
+        node["_y"] = 8 + (depth / max_depth) * 84
+        return x
+
+    root_id = tree["root_id"] if tree["root_id"] in by_id else tree["nodes"][0]["id"]
+    visit(root_id, 0)
+    for node in tree["nodes"]:
+        if "_x" not in node:
+            visit(node["id"], node["depth"])
+    width = max(1, leaf - 1)
+    for node in tree["nodes"]:
+        node["_x"] = 4 + (node["_x"] / width) * 92
+    return by_id
+
+
+def plot_search_tree(frozen, output):
+    """Draw the same frozen test question through BFS, A* and MCTS.
+
+    The figure is built from the public graph and public question only.  It
+    does not read private answers or path labels, so it can be regenerated
+    without changing the evaluation split.
+    """
+
+    data = load_kg_data(PROJECT / "data" / "kg", verify=True)
+    question = next(
+        item for item in data.questions["core"] if item.question_id == TREE_QUESTION_ID
+    )
+    config = SearchConfig(
+        max_expansions=32,
+        max_candidate_checks=256,
+        max_solutions=1,
+        max_depth=question.max_hops,
+        mcts_simulations=24,
+        rollout_depth=8,
+        seed=_stable_seed(20261118, question.question_id),
+    )
+    runs = {
+        "BFS": bfs(_problem(data, question), config),
+        "A*": astar(
+            _problem(data, question),
+            lambda state: float(max(0, question.max_hops - state.depth)),
+            config,
+        ),
+        "MCTS": mcts(_problem(data, question), config),
+    }
+    algorithm_ids = {"BFS": "bfs", "A*": "astar", "MCTS": "mcts"}
+    trees = {
+        name: build_search_tree(data, result, question, algorithm_ids[name])
+        for name, result in runs.items()
+    }
+    colors = {
+        "root": "#526D82",
+        "expanded": "#8A9A5B",
+        "frontier": "#D7B56D",
+        "pruned": "#C66A4A",
+        "dead": "#A45454",
+        "goal": "#C66A4A",
+    }
+    fig, axes = plt.subplots(1, 3, figsize=(12.2, 4.8))
+    for ax, (name, result) in zip(axes, runs.items()):
+        tree = trees[name]
+        by_id = _tree_positions(tree)
+        for edge in tree["edges"]:
+            source, target = by_id[edge["source"]], by_id[edge["target"]]
+            ax.plot(
+                [source["_x"], target["_x"]],
+                [source["_y"], target["_y"]],
+                color="#DCE3E7",
+                linewidth=1.1,
+                zorder=1,
+            )
+        for node in tree["nodes"]:
+            ax.scatter(
+                node["_x"],
+                node["_y"],
+                s=52 if node["depth"] else 78,
+                color=colors.get(node["status"], "#9AAAB3"),
+                edgecolor="white",
+                linewidth=0.7,
+                zorder=3,
+            )
+            if node["depth"] == 0 or node["status"] == "goal":
+                ax.annotate(
+                    node["label"],
+                    (node["_x"], node["_y"]),
+                    xytext=(0, 8),
+                    textcoords="offset points",
+                    ha="center",
+                    fontsize=7.5,
+                    color=INK,
+                )
+        ax.set_title(
+            f"{name}\n扩展 {len(result.expanded_nodes)} · 候选 {result.candidate_checks}",
+            loc="left",
+            fontsize=12,
+        )
+        ax.set_xlim(-3, 103)
+        ax.set_ylim(101, -3)
+        ax.axis("off")
+        ax.text(
+            0,
+            -0.04,
+            f"树节点 {len(tree['nodes'])} · 剪枝 {tree['counts']['pruned']} · "
+            f"{'命中' if result.success else '未命中'}",
+            transform=ax.transAxes,
+            fontsize=8,
+            color=MUTED,
+        )
+    handles = [
+        plt.Line2D([], [], marker="o", linestyle="", color=colors[key], label=label)
+        for key, label in (
+            ("root", "根节点"),
+            ("expanded", "已扩展"),
+            ("frontier", "前沿"),
+            ("pruned", "剪枝"),
+            ("goal", "目标"),
+        )
+    ]
+    fig.legend(
+        handles=handles,
+        loc="lower center",
+        ncol=5,
+        frameon=False,
+        bbox_to_anchor=(0.5, -0.01),
+        fontsize=8.5,
+    )
+    fig.suptitle(
+        f"同一道 4 跳测试题的搜索树展开形态：{question.question_id}",
+        x=0.06,
+        ha="left",
+        fontsize=15,
+        weight="bold",
+    )
+    fig.subplots_adjust(top=0.80, bottom=0.14, wspace=0.08)
+    _finish(
+        fig,
+        output / FIGURE_FILES[5],
+        "只读取公开图谱与公开问题；搜索事件由当前内核实时生成，不读取私有答案。",
+    )
+    return {
+        "figure": FIGURE_FILES[5],
+        "question_id": question.question_id,
+        "hops": question.max_hops,
+        "methods": {
+            name: {
+                "expanded_nodes": len(result.expanded_nodes),
+                "candidate_checks": result.candidate_checks,
+                "success": result.success,
+                "stop_reason": result.stop_reason,
+                "tree_nodes": len(trees[name]["nodes"]),
+                "tree_edges": len(trees[name]["edges"]),
+                "pruned_nodes": trees[name]["counts"]["pruned"],
+            }
+            for name, result in runs.items()
+        },
+    }
+
+
 def build_assets(frozen_root=DEFAULT_FROZEN, output=DEFAULT_OUTPUT):
     frozen = load_frozen(frozen_root)
     output = Path(output).resolve()
@@ -443,6 +633,7 @@ def build_assets(frozen_root=DEFAULT_FROZEN, output=DEFAULT_OUTPUT):
         plot_ga_weights(frozen, output),
         plot_ga_fitness(frozen, output),
         plot_classifier_calibration(frozen, output),
+        plot_search_tree(frozen, output),
     ]
     rows, methods = frozen.test_rows, frozen.method_order
     _write_csv(
@@ -495,6 +686,24 @@ def build_assets(frozen_root=DEFAULT_FROZEN, output=DEFAULT_OUTPUT):
             ["sample_count", c["sample_count"]],
         ],
     )
+    tree = plots[5]
+    _write_csv(
+        output / "06_search_tree.csv",
+        [
+            "algorithm",
+            "expanded_nodes",
+            "candidate_checks",
+            "success",
+            "stop_reason",
+            "tree_nodes",
+            "tree_edges",
+            "pruned_nodes",
+        ],
+        [
+            [name, *row.values()]
+            for name, row in tree["methods"].items()
+        ],
+    )
     receipt = {
         "schema_version": 1,
         "built_at": datetime.now(UTC).isoformat(),
@@ -512,9 +721,10 @@ def build_assets(frozen_root=DEFAULT_FROZEN, output=DEFAULT_OUTPUT):
         ],
         "data": plots,
         "claim_boundaries": [
-            "Figures use only formal_test_20261118.",
+            "The five metric figures use only formal_test_20261118.",
+            "The search-tree figure reads the public graph and one public frozen test question; no private labels.",
             "The classifier figure reports validation counts and threshold provenance.",
-            "No LLM scores were recorded; report three must not claim an LLM benefit.",
+            "The fixed-subset LLM comparison is separate from the frozen five-method table and uses local Qwen2.5-1.5B.",
         ],
     }
     (output / "asset_receipt.json").write_text(

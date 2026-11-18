@@ -41,7 +41,7 @@ python -m venv .venv
 .\.venv\Scripts\python.exe -m campusecho serve --port 8842
 ```
 
-浏览器访问 `http://127.0.0.1:8842/`。首页提供知识搜索与校园沙盒；`http://127.0.0.1:8842/classic` 保留机制实验界面。知识搜索可逐帧播放搜索树、查看证据路径，并运行五种策略的同题对照。沙盒提供找到小汐、传达活动改址和雨天送伞三个任务，采纳成功后显示回执并同步角色现场。
+浏览器访问 `http://127.0.0.1:8842/`。首页提供知识搜索与校园沙盒；`http://127.0.0.1:8842/classic` 保留机制实验界面。知识搜索可逐帧播放真正的父子搜索树、查看证据路径，并运行六种策略的同题对照。沙盒提供找到小汐、传达活动改址和雨天送伞三个任务，采纳成功后显示回执并同步角色现场。
 
 命令行也可以直接检查机制案例或运行初步基准：
 
@@ -65,6 +65,14 @@ python -m venv .venv
 ```powershell
 .\.venv\Scripts\python.exe -m pytest -q tests\test_kg_experiment.py tests\test_kg_search.py tests\test_kg_learning.py tests\test_kg_hybrid.py tests\test_research_api.py
 ```
+
+固定子集 LLM-A* 对照位于 `artifacts/kg/llm_compare_20261118`，紧预算双刃剑实验位于 `artifacts/kg/llm_compare_budget_20261118`。实验使用本机 llama.cpp 的 OpenAI 兼容端点；默认模型为 Qwen2.5-1.5B-Instruct Q4_K_M，运行命令：
+
+```powershell
+.\.venv\Scripts\python.exe tools\run_llm_experiment.py --base-url http://127.0.0.1:8080/v1 --model "<本地模型路径>" --limit 12 --max-llm-calls 6
+```
+
+该实验不读取私有答案；LLM 只接收公开问题、当前路径和候选动作，最终路径仍由本地 A* 与校验器决定。
 
 受控校园模拟研究位于 `artifacts/research`。默认数据生成器创建 3000 条训练轨迹、1000 条验证轨迹和 1000 条测试轨迹，每条轨迹保留三张快照。正式静态实验比较规则、Bayes、强 Bayes、D-S 变体与混合方法；动态实验让五种策略共享初始世界和外部日程，记录成功、错过、改约、询问、额外路程、时间与约束违规。小样本检查应写入独立目录：
 

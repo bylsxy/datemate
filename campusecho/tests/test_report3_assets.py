@@ -128,11 +128,11 @@ def test_report_explains_frozen_completion_composition():
     assert "冻结记录中没有“可解但没有返回路径”的题。" in report
 
 
-def test_build_assets_creates_five_research_figures(tmp_path):
+def test_build_assets_creates_six_research_figures(tmp_path):
     output = tmp_path / "figures"
     receipt = build_assets(FROZEN, output)
     assert receipt["status"] == "complete"
-    assert len(receipt["figures"]) == 5
+    assert len(receipt["figures"]) == 6
     assert tuple(Path(item["path"]).name for item in receipt["figures"]) == FIGURE_FILES
     for name in FIGURE_FILES:
         path = output / name
@@ -152,6 +152,10 @@ def test_build_assets_creates_five_research_figures(tmp_path):
         load_frozen(FROZEN).parameters["ga"]["best_fitness"]
     )
     assert data[4]["sample_count"] == 2461
+    tree = data[5]
+    assert tree["question_id"] == "core:campus-star_bridge:011"
+    assert set(tree["methods"]) == {"BFS", "A*", "MCTS"}
+    assert all(row["tree_nodes"] > 1 and row["tree_edges"] > 0 for row in tree["methods"].values())
 
 
 def test_ppt_has_six_slides_required_text_and_sixteen_by_nine(tmp_path):

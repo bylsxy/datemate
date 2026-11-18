@@ -1,8 +1,8 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-17T20:15:34.978649+00:00",
+  "built_at": "2026-11-18T05:26:04.753553+00:00",
   "status": "complete",
-  "frozen_root": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\kg\\formal_test_20261118",
+  "frozen_root": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/kg/formal_test_20261118",
   "frozen_files": {
     "config.json": "3e452facc0a48ab7b4b55c60e6ed469944ce4c91f6fb231c33da549166066ebf",
     "fingerprints.json": "7569ecab87a0f7cc5513ace11b11dd7ccfd6b773f69a1da7c9a875dd5ffcee54",
@@ -15,32 +15,37 @@
     "report_table.md": "ffa0faf5a94e89e02d97aae7c0f235a00ccc4caf6a730bfad1be6f07caebb206",
     "summary.json": "67869dd9fd93f2f3e3f6a2a0de5fb19b818841d4c8496f3707441c4b59bad130"
   },
-  "output": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures",
+  "output": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/report3/figures",
   "figures": [
     {
-      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\01_method_candidates.png",
-      "sha256": "94f3f8ad4f564385c7486e3d9965620f7f8dd8dcdb919f26341bcdcee82e36de",
-      "bytes": 106565
+      "path": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/report3/figures/01_method_candidates.png",
+      "sha256": "fe61788f957218c26aa9f4bae984d4d76094bf903275721f18ebf6f4d122d97a",
+      "bytes": 93929
     },
     {
-      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\02_answer_path_validity.png",
-      "sha256": "b9ffc509dcdcb1089fd65d001143ee792e9e0e7f87ee4e409f179300e167c395",
-      "bytes": 149611
+      "path": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/report3/figures/02_answer_path_validity.png",
+      "sha256": "9e603582022dbb2bfc540ddbca3fca04c04ad284dcd668313a62ae602c782c29",
+      "bytes": 120333
     },
     {
-      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\03_ga_weights.png",
-      "sha256": "430bd3a4409bb3ce5ba75c6e72b571306d8200c4ae58647c57dbbfbc93f9c7cb",
-      "bytes": 118404
+      "path": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/report3/figures/03_ga_weights.png",
+      "sha256": "b14970f29796433e65135085d719fa773cccabc8d7228387ba965953b45d1d03",
+      "bytes": 101355
     },
     {
-      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\04_ga_fitness.png",
-      "sha256": "0586fe16a8df4930943818a54f6df97ccad98619b40cc6922d482dc84e122696",
-      "bytes": 83068
+      "path": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/report3/figures/04_ga_fitness.png",
+      "sha256": "56aa289702c2aa79f68e61911f7999d102f507a8259064612ad4492bd9d7a51e",
+      "bytes": 72671
     },
     {
-      "path": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\figures\\05_classifier_calibration.png",
-      "sha256": "741355cba1786c128a6da6dfd5af073d173844ca03d6578718373d0a41efe83b",
-      "bytes": 138597
+      "path": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/report3/figures/05_classifier_calibration.png",
+      "sha256": "ffd8646d91bc50a5a059781cc5c6e1f2cf9e33297aaafb4c620dede6c6849766",
+      "bytes": 116553
+    },
+    {
+      "path": "/Users/c/Desktop/人工智能大作业/datemate/campusecho/artifacts/report3/figures/06_search_tree_bfs_astar_mcts.png",
+      "sha256": "ceabceadd425bfac44efb9654509455cd5738bc9b547fbfeba6a9068afeaa729",
+      "bytes": 189965
     }
   ],
   "data": [
@@ -182,11 +187,46 @@
       "positive_count": 2162,
       "negative_count": 299,
       "sample_count": 2461
+    },
+    {
+      "figure": "06_search_tree_bfs_astar_mcts.png",
+      "question_id": "core:campus-star_bridge:011",
+      "hops": 4,
+      "methods": {
+        "BFS": {
+          "expanded_nodes": 17,
+          "candidate_checks": 28,
+          "success": true,
+          "stop_reason": "goal_found",
+          "tree_nodes": 29,
+          "tree_edges": 28,
+          "pruned_nodes": 8
+        },
+        "A*": {
+          "expanded_nodes": 20,
+          "candidate_checks": 33,
+          "success": true,
+          "stop_reason": "goal_found",
+          "tree_nodes": 34,
+          "tree_edges": 33,
+          "pruned_nodes": 8
+        },
+        "MCTS": {
+          "expanded_nodes": 5,
+          "candidate_checks": 32,
+          "success": true,
+          "stop_reason": "goal_found",
+          "tree_nodes": 9,
+          "tree_edges": 8,
+          "pruned_nodes": 0
+        }
+      }
     }
   ],
   "claim_boundaries": [
-    "Figures use only formal_test_20261118.",
+    "The five metric figures use only formal_test_20261118.",
+    "The search-tree figure reads the public graph and one public frozen test question; no private labels.",
     "The classifier figure reports validation counts and threshold provenance.",
-    "No LLM scores were recorded; report three must not claim an LLM benefit."
+    "The fixed-subset LLM comparison is separate from the frozen five-method table and uses local Qwen2.5-1.5B."
   ]
 }

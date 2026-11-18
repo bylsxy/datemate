@@ -20,6 +20,10 @@ from typing import Literal
 Algorithm = Literal["bfs", "astar", "mcts"]
 GoalPredicate = Callable[["SearchState"], bool]
 Heuristic = Callable[["SearchState"], float]
+CandidateScorer = Callable[
+    ["SearchState", Sequence[tuple[Hashable, str, float]]],
+    Mapping[tuple[Hashable, str], float],
+]
 Edge = tuple[Hashable, str, Hashable, float]
 
 
@@ -548,10 +552,16 @@ def astar(
     problem: SearchProblem,
     heuristic: Heuristic | None = None,
     config: SearchConfig | None = None,
+    *,
+    candidate_scorer: CandidateScorer | None = None,
+    candidate_score_weight: float = 0.0,
 ) -> SearchResult:
     """使用可注入启发函数进行 A* 搜索；None 等价于 h=0。"""
 
     config = config or SearchConfig()
+    candidate_score_weight = _finite_nonnegative(
+        candidate_score_weight, "candidate_score_weight"
+    )
     trace = _Trace("astar", config, problem.start)
     root = SearchState(problem.start)
     trace.event("start", root)
@@ -594,6 +604,11 @@ def astar(
         if depth_limit is not None and state.depth >= depth_limit:
             depth_limited = True
             continue
+        candidate_scores = (
+            candidate_scorer(state, problem.raw_candidates(state))
+            if candidate_scorer is not None
+            else {}
+        )
         for neighbor, relation, weight in problem.raw_candidates(state):
             if not trace.check_candidate():
                 break
@@ -623,7 +638,12 @@ def astar(
             seen_paths.add(child.path)
             if prior_cost is None or child.cost < prior_cost:
                 best_cost[child_key] = child.cost
-            estimate = child.cost + _heuristic_value(heuristic, child)
+            reward = candidate_scores.get((neighbor, relation), 0.0)
+            estimate = (
+                child.cost
+                + _heuristic_value(heuristic, child)
+                - candidate_score_weight * reward
+            )
             counter += 1
             heapq.heappush(frontier, (estimate, child.cost, counter, child))
     stop_reason = "budget_exhausted" if trace.budget_stop else (
@@ -850,6 +870,7 @@ a_star = astar
 
 __all__ = [
     "Algorithm",
+    "CandidateScorer",
     "SearchConfig",
     "SearchEvent",
     "SearchProblem",

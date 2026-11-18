@@ -18,6 +18,7 @@ from .kg_data import KGData, QuestionPublic, load_kg_data
 from .kg_hybrid import HybridConfig, hybrid_search
 from .kg_search import SearchConfig, SearchProblem, SearchResult, search
 from .llm_gateway import GatewayConfig, LLMGateway
+from .search_tree import build_search_tree
 from .world import WorldState, legal_actions, observe, scenario, step
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -237,6 +238,7 @@ def _trace(
     data: KGData,
     result: SearchResult,
     question: QuestionPublic,
+    algorithm: str,
 ) -> list[dict[str, object]]:
     rows: list[dict[str, object]] = []
     seen: set[tuple[str, ...]] = set()
@@ -298,18 +300,36 @@ def _trace(
         rows.append(
             {
                 "id": str(event.node),
+                "node_id": "|".join(str(item) for item in event.path),
+                "parent_id": (
+                    "|".join(str(item) for item in event.path[:-1])
+                    if len(event.path) > 1
+                    else None
+                ),
+                "path": list(event.path),
                 "label": node.name if node else str(event.node),
                 "state": "目标" if event.kind == "stop" and result.success else "展开",
                 "detail": event.detail or f"路径深度 {event.depth}",
                 "evidence": evidence,
                 "g": event.cost,
-                "h": max(0, question.min_hops - event.depth),
-                "f": event.cost + max(0, question.min_hops - event.depth),
-                "visits": result.rollout_workload if result.algorithm == "mcts" else None,
+                "h": (
+                    float(max(0, question.max_hops - event.depth))
+                    if algorithm in {"astar", "hand_astar"}
+                    else None
+                ),
+                "f": (
+                    event.cost + max(0, question.max_hops - event.depth)
+                    if algorithm in {"astar", "hand_astar"}
+                    else None
+                ),
+                "visits": None,
                 "value": None,
                 "score": None,
                 "confidence": None,
                 "cost": event.cost,
+                "depth": event.depth,
+                "event_kind": event.kind,
+                "order": event.step,
             }
         )
     return rows
@@ -465,7 +485,13 @@ class ResearchService:
                 "rollout_workload": run.result.rollout_workload,
                 "stop_reason": run.result.stop_reason,
             },
-            "steps": _trace(self.data, run.result, run.question),
+            "steps": _trace(self.data, run.result, run.question, run.algorithm),
+            "tree": build_search_tree(
+                self.data,
+                run.result,
+                run.question,
+                run.algorithm,
+            ),
             "evidence_path": evidence,
         }
 

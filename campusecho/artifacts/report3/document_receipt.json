@@ -1,21 +1,21 @@
 {
   "schema_version": 1,
-  "built_at": "2026-11-17T21:01:43.047280+00:00",
+  "built_at": "2026-11-18T08:28:21.175426+00:00",
   "status": "complete",
   "source": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\docs\\report3.md",
-  "source_sha256": "9f29c562618a366db2c442a7f71bc2389611afbbd0c102b52d4f52641dd0762c",
+  "source_sha256": "9d513ed953923b6b16a8297bb1a9a51c33906fe4818d1bcd47fe9e49a82b0c12",
   "docx": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\CampusEcho_课堂报告.docx",
-  "docx_sha256": "fa55ceb0a68a632594bcf4ffdc7de29cf1f6b04a199d7113c8b957564d5c9b80",
+  "docx_sha256": "f1354b9865dd850a7cacfed8872d98c4e75927050aa0ea78fd0f61bd8af8d8d3",
   "pandoc": "D:\\Anaconda3\\Library\\bin\\pandoc.exe",
   "pandoc_native_math": true,
   "statistics": {
-    "chinese_characters": 8838,
-    "all_text_characters": 15554,
-    "math_characters": 490,
-    "native_math_objects": 51,
+    "chinese_characters": 11234,
+    "all_text_characters": 20450,
+    "math_characters": 504,
+    "native_math_objects": 52,
     "display_equations": 11,
-    "images": 5,
-    "tables": 1,
+    "images": 6,
+    "tables": 4,
     "raw_latex_markers": []
   },
   "pdf": "D:\\AAAWorkSpace\\python project\\约会策划\\实验二\\campusecho\\artifacts\\report3\\CampusEcho_课堂报告.pdf",
@@ -147,7 +147,11 @@
     "实网"
   ],
   "claim_boundaries": [
-    "LLM 实网评分与解释完成验证；稳定收益仍需正式对照。",
+    "本地 Qwen2.5-1.5B 完成 12 题固定子集 LLM-A* 与错误 reward 对照；DeepSeek 全量收益仍未验证。",
     "冻结记录中 53 道无解题返回空集，86 道可解题返回非空真子集，21 道返回全部标准路径。"
-  ]
+  ],
+  "pdf_sync": {
+    "status": "stale",
+    "reason": "Word/Poppler PDF regeneration is pending; DOCX includes the LLM fixed-subset section."
+  }
 }

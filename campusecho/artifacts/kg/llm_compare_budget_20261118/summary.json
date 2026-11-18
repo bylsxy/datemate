@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "status": "complete",
+  "generated_at": "2026-11-18T08:13:51.891106+00:00",
+  "model": "qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "model_path": "/tmp/campusecho-models/qwen2.5-1.5b-instruct-q4_k_m.gguf",
+  "base_url": "http://127.0.0.1:8080/v1",
+  "seed": 20261118,
+  "limit": 12,
+  "max_llm_calls": 6,
+  "question_ids": [
+    "core:academic-bert:000",
+    "core:academic-bert:002",
+    "core:academic-bert:010",
+    "core:academic-resnet:009",
+    "core:campus-cloud_sail:004",
+    "core:campus-cloud_sail:020",
+    "core:campus-cloud_sail:033",
+    "core:campus-green_grain:014",
+    "core:campus-green_grain:020",
+    "core:campus-green_grain:025",
+    "core:campus-green_grain:033",
+    "core:campus-star_bridge:025"
+  ],
+  "methods": {
+    "A*": {
+      "questions": 12,
+      "success_rate": 0.6666666666666666,
+      "mean_expanded_nodes": 3.0833333333333335,
+      "mean_candidate_checks": 5.166666666666667,
+      "mean_elapsed_seconds": 0.0008504654591282209,
+      "llm_degraded_rate": 0.0,
+      "mean_llm_calls": 0.0
+    },
+    "LLM-A*": {
+      "questions": 12,
+      "success_rate": 0.8333333333333334,
+      "mean_expanded_nodes": 2.75,
+      "mean_candidate_checks": 3.75,
+      "mean_elapsed_seconds": 0.43048049323260784,
+      "llm_degraded_rate": 0.0,
+      "mean_llm_calls": 2.0833333333333335
+    },
+    "LLM-A*-wrong": {
+      "questions": 12,
+      "success_rate": 0.6666666666666666,
+      "mean_expanded_nodes": 3.0833333333333335,
+      "mean_candidate_checks": 5,
+      "mean_elapsed_seconds": 0.6238620173729336,
+      "llm_degraded_rate": 0.0,
+      "mean_llm_calls": 2.6666666666666665
+    }
+  }
+}

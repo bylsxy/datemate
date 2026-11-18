@@ -17,6 +17,7 @@ const API = Object.freeze({
 });
 
 const ALGORITHMS = {
+  bfs: { name: "BFS", caption: "逐层展开", mark: "BFS" },
   astar: { name: "A*", caption: "代价与启发", mark: "A*" },
   ga_astar: { name: "GA-A*", caption: "学习权重", mark: "GA" },
   ga_classifier: { name: "GA+分类器", caption: "路径价值", mark: "ML" },
@@ -104,6 +105,13 @@ const FALLBACK_TRACE = {
 };
 
 function fallbackTrace(algorithm) {
+  if (algorithm === "bfs") {
+    return clone(FALLBACK_TRACE.astar).map((step, index) => ({
+      ...step,
+      state: index === 0 ? "根节点" : "逐层展开",
+      detail: `BFS 第 ${index} 层候选；按队列顺序展开。`,
+    }));
+  }
   return clone(FALLBACK_TRACE[algorithm] ?? FALLBACK_TRACE.astar);
 }
 
@@ -376,6 +384,9 @@ function normalizeTrace(payload, algorithm) {
   if (!raw.length) return fallbackTrace(algorithm);
   return raw.map((step, index) => ({
     id: String(step.id ?? step.node_id ?? `step-${index}`),
+    nodeId: String(step.node_id ?? step.id ?? `step-${index}`),
+    parentId: step.parent_id == null ? null : String(step.parent_id),
+    path: list(step.path).map(item => String(item)),
     label: String(step.label ?? step.name ?? step.node ?? step.entity ?? `步骤 ${index + 1}`),
     state: String(step.state ?? step.status ?? (index === raw.length - 1 ? "目标" : "展开")),
     detail: String(step.detail ?? step.reason ?? step.explanation ?? step.summary ?? "搜索推进到下一个候选。"),
@@ -387,12 +398,57 @@ function normalizeTrace(payload, algorithm) {
     anomaly: step.anomaly ?? step.warning ?? null,
     cost: finite(step.cost ?? step.path_cost) ? (step.cost ?? step.path_cost) : finite(step.g) ? step.g : null,
     confidence: finite(step.confidence) ? step.confidence : null,
+    depth: finite(step.depth) ? step.depth : null,
+    eventKind: String(step.event_kind ?? step.kind ?? "candidate"),
+    order: finite(step.order) ? step.order : index,
   }));
+}
+
+function normalizeTree(payload) {
+  if (!payload || !Array.isArray(payload.nodes) || !payload.nodes.length) return null;
+  return {
+    rootId: payload.root_id ?? payload.rootId ?? null,
+    nodes: payload.nodes.map((node, index) => ({
+      id: String(node.id ?? `node-${index}`),
+      parentId: node.parent_id == null ? null : String(node.parent_id),
+      label: String(node.label ?? node.entity_id ?? node.id ?? `节点 ${index + 1}`),
+      path: list(node.path).map(item => String(item)),
+      depth: node.depth != null && finite(Number(node.depth)) ? Number(node.depth) : null,
+      order: node.order != null && finite(Number(node.order)) ? Number(node.order) : index,
+      status: String(node.status ?? "frontier"),
+      statusLabel: String(node.status_label ?? node.status ?? "前沿"),
+      detail: String(node.detail ?? ""),
+      g: finite(node.g) ? node.g : null,
+      h: finite(node.h) ? node.h : null,
+      f: finite(node.f) ? node.f : null,
+      visits: finite(node.visits) ? node.visits : null,
+      value: finite(node.value) ? node.value : null,
+      score: finite(node.score) ? node.score : null,
+    })),
+    edges: list(payload.edges).map((edge, index) => ({
+      id: String(edge.id ?? `edge-${index}`),
+      source: String(edge.source ?? ""),
+      target: String(edge.target ?? ""),
+      order: edge.order != null && finite(Number(edge.order)) ? Number(edge.order) : index,
+    })).filter(edge => edge.source && edge.target),
+    counts: payload.counts ?? {},
+    rolloutWorkload: Number(payload.rollout_workload ?? 0),
+  };
 }
 
 function normalizeRun(payload, algorithm, question) {
   const data = payload?.data ?? payload ?? {};
   const trace = normalizeTrace(data, algorithm);
+  const tree = normalizeTree(data.tree);
+  if (tree) {
+    const traceOrder = new Map(
+      trace.map((step, index) => [step.path.join("|"), index])
+    );
+    tree.nodes.forEach(node => {
+      const order = traceOrder.get(node.path.join("|"));
+      if (order != null) node.order = order;
+    });
+  }
   const answer = data.answer ?? data.result ?? data.conclusion ?? {};
   const answerLabel = typeof answer === "string" ? answer : answer.label ?? answer.title ?? answer.candidate ?? answer.entity ?? trace.at(-1)?.label ?? "暂无结论";
   const confidence = finite(data.confidence) ? data.confidence : finite(answer.confidence) ? answer.confidence : finite(trace.at(-1)?.confidence) ? trace.at(-1).confidence : finite(trace.at(-1)?.score) ? trace.at(-1).score : .72;
@@ -411,6 +467,7 @@ function normalizeRun(payload, algorithm, question) {
     cost: Number(data.path_cost ?? metrics.path_cost ?? trace.at(-1)?.cost ?? trace.at(-1)?.g ?? 0),
     anomaly: data.anomaly ?? data.warning ?? trace.find(step => step.anomaly)?.anomaly ?? null,
     trace,
+    tree,
     evidence: list(data.evidence_path ?? data.evidence ?? answer.evidence ?? trace.at(-1)?.evidence).map((item, index) => typeof item === "string" ? { title: item, detail: "", source: "" } : { title: item.title ?? item.label ?? item.id ?? `证据 ${index + 1}`, detail: item.detail ?? item.summary ?? "", source: item.source ?? item.source_id ?? "" }),
   };
 }
@@ -450,11 +507,134 @@ function traceLayout(trace) {
   return positions;
 }
 
+function treeLayout(tree) {
+  const byId = new Map(tree.nodes.map(node => [node.id, node]));
+  const children = new Map(tree.nodes.map(node => [node.id, []]));
+  tree.edges.forEach(edge => {
+    if (byId.has(edge.source) && byId.has(edge.target)) {
+      children.get(edge.source).push(edge.target);
+    }
+  });
+  children.forEach(items => items.sort((a, b) => {
+    const left = byId.get(a), right = byId.get(b);
+    return (left?.order ?? 0) - (right?.order ?? 0) || a.localeCompare(b);
+  }));
+  let leaf = 0;
+  const maxDepth = Math.max(1, ...tree.nodes.map(node => node.depth ?? 0));
+  const visited = new Set();
+  const visit = (id, depth) => {
+    if (visited.has(id)) return null;
+    visited.add(id);
+    const node = byId.get(id);
+    if (!node) return null;
+    const kids = children.get(id) ?? [];
+    const positions = kids.map(child => visit(child, depth + 1)).filter(Boolean);
+    let x;
+    if (!positions.length) {
+      x = leaf;
+      leaf += 1;
+    } else {
+      x = positions.reduce((sum, value) => sum + value, 0) / positions.length;
+    }
+    node.layoutX = x;
+    node.layoutY = 7 + (Math.max(0, depth) / maxDepth) * 86;
+    return x;
+  };
+  const rootId = tree.rootId && byId.has(tree.rootId) ? tree.rootId : tree.nodes[0]?.id;
+  if (rootId) visit(rootId, 0);
+  tree.nodes.forEach(node => {
+    if (!visited.has(node.id)) visit(node.id, 0);
+  });
+  const width = Math.max(1, leaf - 1);
+  tree.nodes.forEach(node => {
+    node.layoutX = 5 + ((node.layoutX ?? 0) / width) * 90;
+  });
+  return tree.nodes;
+}
+
+function treeNodeMetric(node, algorithm) {
+  if (algorithm === "astar") {
+    return `<span>g ${formatNumber(node.g)} · h ${formatNumber(node.h)}</span><small>f ${formatNumber(node.f)}</small>`;
+  }
+  if (algorithm === "mcts") {
+    return `<span>深度 ${formatNumber(node.depth)}</span><small>${escapeHtml(node.statusLabel)}</small>`;
+  }
+  return `<span>深度 ${formatNumber(node.depth)}</span><small>${escapeHtml(node.statusLabel)}</small>`;
+}
+
+function renderPlayback(trace) {
+  const timeline = $("#trace-timeline");
+  timeline.disabled = false;
+  timeline.max = String(trace.length - 1);
+  timeline.value = String(state.traceIndex);
+  $("#step-counter").textContent = `${state.traceIndex + 1} / ${trace.length}`;
+  $("#trace-prev").disabled = state.traceIndex === 0;
+  $("#trace-next").disabled = state.traceIndex === trace.length - 1;
+  $("#trace-play").disabled = false;
+  $("#trace-play").innerHTML = `<svg class="icon"><use href="#${state.playing ? "i-pause" : "i-play"}"/></svg>`;
+  renderStepDetail();
+  renderEvidence();
+}
+
+function renderTree() {
+  const stage = $("#trace-stage");
+  const tree = state.run.tree;
+  const nodes = treeLayout(tree);
+  const byId = new Map(nodes.map(node => [node.id, node]));
+  const previousScroll = stage.scrollLeft;
+  const density = Math.max(100, Math.ceil(nodes.length / 14) * 100);
+  const treeRoot = document.createElement("div");
+  treeRoot.className = "trace-tree is-hierarchy";
+  treeRoot.style.width = `${density}%`;
+  const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svg.setAttribute("class", "trace-tree-lines");
+  svg.setAttribute("viewBox", "0 0 100 100");
+  svg.setAttribute("preserveAspectRatio", "none");
+  tree.edges.forEach(edge => {
+    const source = byId.get(edge.source), target = byId.get(edge.target);
+    if (!source || !target) return;
+    const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+    line.setAttribute("x1", String(source.layoutX));
+    line.setAttribute("y1", String(source.layoutY));
+    line.setAttribute("x2", String(target.layoutX));
+    line.setAttribute("y2", String(target.layoutY));
+    line.setAttribute("class", `tree-edge${target.order <= state.traceIndex ? " is-active" : ""}`);
+    svg.append(line);
+  });
+  treeRoot.append(svg);
+  nodes
+    .slice()
+    .sort((a, b) => (a.order ?? 0) - (b.order ?? 0) || a.id.localeCompare(b.id))
+    .forEach(node => {
+      const element = document.createElement("button");
+      element.type = "button";
+      element.dataset.nodeId = node.id;
+      element.className = `trace-node is-${node.status}${node.order <= state.traceIndex ? " is-visited" : ""}${node.order === state.traceIndex ? " is-current" : ""}${node.status === "goal" ? " is-solution" : ""}`;
+      element.style.cssText = `left:${node.layoutX}%;top:${node.layoutY}%`;
+      element.innerHTML = `<strong>${escapeHtml(node.label)}</strong>${treeNodeMetric(node, state.algorithm)}`;
+      element.title = `${node.statusLabel}：${node.detail}`;
+      element.addEventListener("click", () => {
+        stopPlayback();
+        state.traceIndex = Math.max(0, Math.min(state.trace.length - 1, node.order));
+        renderTrace();
+      });
+      treeRoot.append(element);
+    });
+  stage.replaceChildren(treeRoot);
+  stage.classList.add("is-tree");
+  requestAnimationFrame(() => {
+    const centered = Math.max(0, (stage.scrollWidth - stage.clientWidth) / 2);
+    stage.scrollLeft = previousScroll > 0 ? previousScroll : centered;
+  });
+  renderPlayback(state.trace);
+}
+
 function renderTrace() {
   const stage = $("#trace-stage");
   const trace = state.trace;
   renderAlgorithmSummary();
   if (!trace.length) {
+    stage.classList.remove("is-tree");
     stage.innerHTML = `<div class="trace-empty"><span class="empty-orbit"><svg class="icon"><use href="#i-route"/></svg></span><h3>运行一次搜索</h3><p>搜索树会按节点展开顺序出现，可逐帧查看算法指标。</p></div>`;
     $("#trace-prev").disabled = true;
     $("#trace-play").disabled = true;
@@ -463,6 +643,11 @@ function renderTrace() {
     $("#step-counter").textContent = "0 / 0";
     return;
   }
+  if (state.run?.tree) {
+    renderTree();
+    return;
+  }
+  stage.classList.remove("is-tree");
   const positions = traceLayout(trace);
   stage.replaceChildren();
   const tree = document.createElement("div");
@@ -485,20 +670,11 @@ function renderTrace() {
     tree.append(node);
   });
   stage.append(tree);
-  const timeline = $("#trace-timeline");
-  timeline.disabled = false;
-  timeline.max = String(trace.length - 1);
-  timeline.value = String(state.traceIndex);
-  $("#step-counter").textContent = `${state.traceIndex + 1} / ${trace.length}`;
-  $("#trace-prev").disabled = state.traceIndex === 0;
-  $("#trace-next").disabled = state.traceIndex === trace.length - 1;
-  $("#trace-play").disabled = false;
-  $("#trace-play").innerHTML = `<svg class="icon"><use href="#${state.playing ? "i-pause" : "i-play"}"/></svg>`;
-  renderStepDetail();
-  renderEvidence();
+  renderPlayback(trace);
 }
 
 function traceMetric(step) {
+  if (state.algorithm === "bfs") return `<span>深度 ${formatNumber(step.depth)}</span><small>逐层展开</small>`;
   if (["astar", "ga_astar", "ga_classifier"].includes(state.algorithm)) return `<span>g ${formatNumber(step.g)} · h ${formatNumber(step.h)}</span><small>f ${formatNumber(step.f)}</small>`;
   if (state.algorithm === "mcts") return `<span>访问 ${formatNumber(step.visits)}</span><small>价值 ${formatNumber(step.value)}</small>`;
   return `<span>评分 ${formatNumber(step.score)}</span><small>${step.anomaly ? "异常" : "正常"}</small>`;
@@ -545,7 +721,7 @@ function renderEvidence() {
 function renderComparison() {
   const body = $("#comparison-body");
   if (!state.comparisons.length) {
-    body.innerHTML = `<tr class="table-empty"><td colspan="8">运行搜索后，这里会并排展示 A*、GA-A*、GA+分类器、MCTS 与受限 LLM 引导结果。</td></tr>`;
+    body.innerHTML = `<tr class="table-empty"><td colspan="8">运行搜索后，这里会并排展示 BFS、A*、GA-A*、GA+分类器、MCTS 与受限 LLM 引导结果。</td></tr>`;
     return;
   }
   const bestCost = Math.min(...state.comparisons.map(row => finite(row.cost) ? row.cost : Infinity));
@@ -572,10 +748,10 @@ function loadComparison(row) {
 }
 
 function localRun(algorithm, question) {
-  const run = normalizeRun({ data: { run_id: `local-${algorithm}-${Date.now()}`, answer: algorithm === "mcts" ? "社团室（价值最高）" : algorithm === "llm" ? "社团室（含时间异常）" : TOPICS[state.topic]?.answer || "社团室", confidence: algorithm === "llm" ? .86 : algorithm === "mcts" ? .84 : .82, anomaly: algorithm === "llm" ? "旧照片时间异常" : null } }, algorithm, question);
+  const run = normalizeRun({ data: { run_id: `local-${algorithm}-${Date.now()}`, answer: algorithm === "mcts" ? "社团室（价值最高）" : algorithm === "llm" ? "社团室（含时间异常）" : algorithm === "bfs" ? "社团室（逐层基线）" : TOPICS[state.topic]?.answer || "社团室", confidence: algorithm === "llm" ? .86 : algorithm === "mcts" ? .84 : .82, anomaly: algorithm === "llm" ? "旧照片时间异常" : null } }, algorithm, question);
   run.trace = fallbackTrace(algorithm);
   run.expanded = run.trace.length;
-  run.cost = algorithm === "astar" ? 16 : algorithm === "mcts" ? 14 : 12;
+  run.cost = algorithm === "astar" ? 16 : algorithm === "mcts" ? 14 : algorithm === "bfs" ? 18 : 12;
   run.evidence = [
     { title: "社团同学线索", detail: "消息指向社团室，接收时间晚于旧照片。", source: "clubmate" },
     { title: "室友目击", detail: "图书馆目击与旧照片同源，不能视为独立支持。", source: "roommate" },
@@ -646,7 +822,7 @@ async function runComparison() {
   const question = state.selectedQuestion;
   const rows = [];
   try {
-    for (const algorithm of ["astar", "ga_astar", "ga_classifier", "mcts", "llm"]) {
+    for (const algorithm of ["bfs", "astar", "ga_astar", "ga_classifier", "mcts", "llm"]) {
       const payload = await requestJson(API.search, {
         method: "POST",
         body: JSON.stringify({ question: $("#query-input").value.trim(), question_id: question?.id ?? null, entities: [...state.selectedEntities], algorithm, max_steps: 24 }),
@@ -655,17 +831,17 @@ async function runComparison() {
       if (["pending", "running", "queued"].includes(run.status)) run = await pollRun(run.id, algorithm, question);
       rows.push(run);
     }
-    setSourceNotice("api", "五种策略已使用同一问题与实体组合完成对照。");
+    setSourceNotice("api", "六种策略已使用同一问题与实体组合完成对照。");
   } catch (error) {
     const fallback = Object.keys(ALGORITHMS).map(algorithm => localRun(algorithm, question));
     rows.splice(0, rows.length, ...fallback);
-    setSourceNotice("fallback", `对照接口暂不可用，当前五行均为本地演示数据（${error.status ? `HTTP ${error.status}` : "网络未连接"}）。`);
+    setSourceNotice("fallback", `对照接口暂不可用，当前六行均为本地演示数据（${error.status ? `HTTP ${error.status}` : "网络未连接"}）。`);
     toast("对照接口暂不可用，已展示本地演示对照。", "error");
   }
   state.comparisons = rows;
   renderComparison();
   setBusy(false);
-  announce("五种策略同题搜索对照已更新。");
+  announce("六种策略同题搜索对照已更新。");
 }
 
 function startPlayback() {

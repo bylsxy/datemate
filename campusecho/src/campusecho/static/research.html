@@ -85,6 +85,7 @@
           <div class="query-actions">
             <fieldset class="algorithm-picker" id="algorithm-picker">
               <legend>搜索算法</legend>
+              <label><input type="radio" name="algorithm" value="bfs"><span><b>BFS</b><small>逐层展开</small></span></label>
               <label><input type="radio" name="algorithm" value="astar" checked><span><b>A*</b><small>代价与启发</small></span></label>
               <label><input type="radio" name="algorithm" value="ga_astar"><span><b>GA-A*</b><small>学习权重</small></span></label>
               <label><input type="radio" name="algorithm" value="ga_classifier"><span><b>GA+分类器</b><small>路径价值</small></span></label>
@@ -164,12 +165,12 @@
       <section class="panel comparison-panel" aria-labelledby="comparison-title">
         <div class="panel-heading compact">
           <div><span class="section-kicker">05 / 同题对照</span><h2 id="comparison-title">同一问题，不同搜索策略</h2></div>
-          <div class="comparison-tools"><span id="comparison-question">尚未运行</span><button type="button" class="text-button" id="run-comparison"><svg class="icon"><use href="#i-layers"/></svg>运行五种策略对照</button></div>
+          <div class="comparison-tools"><span id="comparison-question">尚未运行</span><button type="button" class="text-button" id="run-comparison"><svg class="icon"><use href="#i-layers"/></svg>运行六种策略对照</button></div>
         </div>
         <div class="comparison-table-wrap">
           <table class="comparison-table">
             <thead><tr><th>策略</th><th>候选答案</th><th>展开节点</th><th>路径代价</th><th>置信度</th><th>异常</th><th>相对表现</th><th></th></tr></thead>
-            <tbody id="comparison-body"><tr class="table-empty"><td colspan="8">运行搜索后，这里会并排展示 A*、GA-A*、GA+分类器、MCTS 与受限 LLM 引导结果。</td></tr></tbody>
+            <tbody id="comparison-body"><tr class="table-empty"><td colspan="8">运行搜索后，这里会并排展示 BFS、A*、GA-A*、GA+分类器、MCTS 与受限 LLM 引导结果。</td></tr></tbody>
           </table>
         </div>
       </section>

@@ -51,6 +51,32 @@ def test_search_returns_public_trace_without_private_labels():
     assert client.get(f"/api/search/{payload['run_id']}").json() == payload
 
 
+def test_search_returns_a_real_parent_child_tree_including_bfs():
+    question = client.get("/api/questions").json()["questions"][0]
+    response = client.post(
+        "/api/search",
+        json={
+            "question_id": question["id"],
+            "question": question["query"],
+            "entities": question["entities"],
+            "algorithm": "bfs",
+            "max_steps": 128,
+        },
+    )
+    assert response.status_code == 200
+    tree = response.json()["tree"]
+    nodes = {node["id"]: node for node in tree["nodes"]}
+    assert tree["root_id"] in nodes
+    assert nodes[tree["root_id"]]["parent_id"] is None
+    assert tree["edges"]
+    assert all(edge["source"] in nodes and edge["target"] in nodes for edge in tree["edges"])
+    assert all(
+        node["parent_id"] is None or node["parent_id"] in nodes
+        for node in tree["nodes"]
+    )
+    assert any(node["status"] == "expanded" for node in tree["nodes"])
+
+
 def test_search_validation_and_missing_run():
     assert (
         client.post("/api/search", json={"algorithm": "unknown"}).status_code == 422

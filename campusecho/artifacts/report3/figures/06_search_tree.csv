@@ -1,0 +1,4 @@
+﻿algorithm,expanded_nodes,candidate_checks,success,stop_reason,tree_nodes,tree_edges,pruned_nodes
+BFS,17,28,True,goal_found,29,28,8
+A*,20,33,True,goal_found,34,33,8
+MCTS,5,32,True,goal_found,9,8,0
